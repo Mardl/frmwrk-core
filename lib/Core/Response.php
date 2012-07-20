@@ -34,7 +34,7 @@ class Response extends HttpResponse
 	{
 		header("Status: $status");
 		header("Location: $url");
-		
+		die();
 	}
 
 }
