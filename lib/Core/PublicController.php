@@ -1,0 +1,72 @@
+<?php
+/**
+ * Core\PublicController-Class
+ *
+ * PHP version 5.3
+ *
+ * @category Controller
+ * @package  Core
+ * @author   Alexander Jonser <alex@dreiwerken.de>
+ */
+
+namespace Core;
+
+use App\Models\Right,
+	App\Manager\Right as RightManager,
+	jamwork\common\Registry;
+
+/**
+ * PublicController Class
+ * PublicController inkl. Rechteabfrage
+ * 
+ * @category Controller
+ * @package  Core
+ * @author   Alexander Jonser <alex@dreiwerken.de>
+ */
+class PublicController extends Controller
+{
+	protected $checkPermissions = true;
+	
+	/**
+	 * Construct
+	 */
+	public function __construct() 
+	{
+		parent::__construct();
+		
+		$module 	= $this->request->getParam('module');
+		$controller = $this->request->getParam('controller');
+		$action		= $this->request->getParam('action');
+		$prefix		= $this->request->getParam('prefix');
+		
+		$right = new Right(
+			array(
+				'module' => $module,
+				'controller' => $controller,
+				'action' => $action,
+				'prefix' => $prefix
+			)
+		);
+		
+		if ($this->checkPermissions)
+		{
+			try {
+				$login = Registry::getInstance()->login;
+			}
+			catch (\Exception $e)
+			{
+				$this->response->redirect($this->view->url(array(), 'login', true));
+			}
+				
+			if (!RightManager::isAllowed($right, $login))
+			{
+				throw new \Exception('Zugriff auf nicht erlaubte Aktion');
+			}
+		}
+		
+		$this->view->html->addJsAsset('loggedin');
+		
+	}
+
+
+}
