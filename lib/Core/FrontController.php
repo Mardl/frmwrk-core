@@ -229,7 +229,7 @@ class FrontController
 			if (!is_subclass_of($controllerName, 'Core\\Controller'))
 			{
 				throw new Exception(
-					'Controller „'.$controllerName.'“ must implement Core\\Controller'
+					'Controller „'.$controllerName.'“ must extend Core\\Controller'
 				);
 			}
 		}

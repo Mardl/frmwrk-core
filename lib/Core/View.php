@@ -70,6 +70,27 @@ class View extends ArrayObject
 	public $html;
 
 	/**
+	 * Holds title information
+	 * 
+	 * @var array
+	 */
+	protected $pageTitle = array();
+	
+	/**
+	 * Holds page description
+	 * 
+	 * @var string
+	 */
+	protected $pageDescription = '';
+	
+	/**
+	 * Holds keywords
+	 * 
+	 * @var array
+	 */
+	protected $pageKeywords = array();
+	
+	/**
 	 * Constructor
 	 *
 	 * @param string $template Template filename
@@ -101,7 +122,7 @@ class View extends ArrayObject
 		}
 		catch(Exception $e)
 		{
-			return '';
+			return $e->getMessage();
 		}
 	}
 

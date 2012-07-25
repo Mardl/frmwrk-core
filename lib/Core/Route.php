@@ -117,13 +117,6 @@ class Route
 		// Get file extension
 		$temp = pathinfo($url['path']);
 		
-		/*
-		if (!array_key_exists('dirname', $temp))
-		{
-			$temp['dirname'] = '';
-		}
-		*/
-		
 		$url['path'] = $temp['dirname'].'/'.$temp['filename'];
 		
 		if (isset($temp['extension']) && $temp['extension'])
@@ -143,10 +136,6 @@ class Route
 	
 		foreach ($parts as $key => $part)
 		{
-			/*if (!$part)
-			{
-				continue;
-			}*/
 			
 			// Constant part not exists
 			if (substr($part, 0, 1) != ':' && !isset($urlparts[$key]))

@@ -45,9 +45,7 @@ class Request extends HttpRequest
 	 */
 	public function isAjax()
 	{
-		if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])
-			&& $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
-		)
+		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
 		{
 			return true;
 		}
@@ -70,9 +68,7 @@ class Request extends HttpRequest
 			return true;
 		}
 		// Nginx
-		if (isset($_SERVER['HTTP_X_CLIENT_VERIFY']) 
-			&& $_SERVER['HTTP_X_CLIENT_VERIFY'] == 'SUCCESS'
-		)
+		if (isset($_SERVER['HTTP_X_CLIENT_VERIFY']) && $_SERVER['HTTP_X_CLIENT_VERIFY'] == 'SUCCESS')
 		{
 			return true;
 		}
