@@ -58,14 +58,15 @@ class Navigation
 		{
 			$point = '';
 			ksort($actions['links']);
-			$first = array_pop(array_keys($actions['links']));
+			$first = array_shift(array_keys($actions['links']));
+			
 			
 			if ($actions['links'][$first]['module'] == $currentMod){
-				$point .= '<li class="current"><a href="#" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
+				$point .= '<li class="current"><a href="'.$actions['links'][$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
 			}
 			else
 			{
-				$point .= '<li><a href="#" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
+				$point .= '<li><a href="'.$actions['links'][$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
 			}
 			
 			$point .= '<ul class="subnav">';
