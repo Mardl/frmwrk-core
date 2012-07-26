@@ -14,6 +14,7 @@ class Navigation
 {
 	protected $files = array();
 	protected $links = array();
+	protected $controllerTitles = array();
 	
 	public function __construct(){
 		$this->_open(SITE_PATH);
@@ -23,6 +24,7 @@ class Navigation
 	public function render($user = null)
 	{
 		$groups = \jamwork\common\Registry::getInstance()->conf->NAVGROUPS;
+		$currentMod = \jamwork\common\Registry::getInstance()->getRequest()->getParam('module');
 		
 		if (!empty($groups))
 		{
@@ -49,15 +51,28 @@ class Navigation
 			$groups = $this->links;
 		}
 				
-		echo '<div class="tabmenu">';
-		echo '<ul>';
+		$navigation = '<div class="tabmenu">';
+		$navigation .= '<ul>';
 		
 		foreach ($groups as $group => $actions)
 		{
+			$point = '';
 			ksort($actions['links']);
+			$first = array_pop(array_keys($actions['links']));
 			
-			echo '<li><a href="#" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
-			echo '<ul class="subnav">';
+			if ($actions['links'][$first]['module'] == $currentMod){
+				$point .= '<li class="current"><a href="#" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
+			}
+			else
+			{
+				$point .= '<li><a href="#" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
+			}
+			
+			$point .= '<ul class="subnav">';
+			
+			$subPoints = '';
+			
+			$sp = array();
 			foreach ($actions['links'] as $action)
 			{
 				$right = new \App\Models\Right(
@@ -68,16 +83,55 @@ class Navigation
 						'prefix' => ''
 					)
 				);
-					
+				
 				if (\App\Manager\Right::isAllowed($right, $user)){
-					echo '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+					$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
 				}
+				
 			}
-			echo '</ul>';
+			
+			if (count($sp) == 1)
+			{
+				$key = array_keys($sp);
+				$subPoints .= implode('', $sp[$key[0]]);
+			} 
+			else 
+			{
+				foreach ($sp as $controller => $actions)
+				{
+					if (count($actions) == 1){
+						$subPoints .= $actions[0];
+					} else {
+						$exp = explode('_',$controller);
+						
+						if (isset($this->controllerTitles[$exp[0]][$exp[1]]))
+						{
+							$controller = $this->controllerTitles[$exp[0]][$exp[1]];							
+						}
+						
+						$subPoints .= '<li><a href="#"><span>'.$controller.' &raquo;</span></a>';
+						$subPoints .= '<ul class="subnav">';
+						$subPoints .= implode('', $actions);
+						$subPoints .= '</ul>';
+						$subPoints .= '</li>';
+					}
+				}
+			}	
+			
+			$point .= $subPoints;
+			
+			$point .= '</ul>';
+			
+			if (!empty($subPoints))
+			{
+				$navigation .= $point;
+			}
 		}
 		
-		echo '</ul>';
-		echo '</div>';
+		$navigation .= '</ul>';
+		$navigation .= '</div>';
+		
+		return $navigation;
 	}
 	
 	private function _open($dir)
@@ -122,6 +176,14 @@ class Navigation
 				$reflect = new \ReflectionClass("\\App\\Modules\\".$module."\\Controller\\".$controller);
 				//Methoden auslesen
 				$methods = $reflect->getMethods();
+				
+				$classDoc = $reflect->getDocComment();
+				if ($classDoc !== false){
+					preg_match('/.*\@title ([A-Za-z0-9äöüÄÖÜ]+).*/s', $classDoc, $matchClassDoc);
+					if (!empty($matchClassDoc)){
+						$this->controllerTitles[$module][$controller] = $matchClassDoc[1];
+					}
+				}
 				
 				foreach ($methods as $method)
 				{
