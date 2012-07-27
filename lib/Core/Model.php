@@ -116,15 +116,21 @@ class Model
 	 */
 	public function __construct($data = array())
 	{
+		$this->setDataRow($data);
+		$this->changed = false;
+	}
+	
+	public function setDataRow($data = array()){
+		
 		if (!empty($data))
 		{
 			foreach ($data as $key => $value)
 			{
-				 $setter = 'set'.ucfirst($key);
-				 $this->$setter($value);
+				$setter = 'set'.ucfirst($key);
+				$this->$setter($value);
 			}
 		}
-		$this->changed = false;
+		
 	}
 	
 	/**
