@@ -271,7 +271,7 @@ class View extends ArrayObject
 	 */
 	public function getKeywords($separator=', ')
 	{
-		if (!isset($this->pageKeywords))
+		if (empty($this->pageKeywords))
 		{
 			return false;
 		}
@@ -302,7 +302,7 @@ class View extends ArrayObject
 	 */
 	public function getDescription()
 	{
-		if (!isset($this->pageDescription))
+		if (empty($this->pageDescription))
 		{
 			return null;
 		}
