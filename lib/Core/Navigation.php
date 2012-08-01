@@ -56,6 +56,9 @@ class Navigation
 		
 		foreach ($groups as $group => $actions)
 		{
+			if (empty($actions['links'])){
+				continue;
+			}
 			$point = '';
 			ksort($actions['links']);
 			$first = array_shift(array_keys($actions['links']));
