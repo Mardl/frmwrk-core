@@ -24,7 +24,11 @@ class Navigation
 	public function render($user = null)
 	{
 		$groups = \jamwork\common\Registry::getInstance()->conf->NAVGROUPS;
-		$currentMod = \jamwork\common\Registry::getInstance()->getRequest()->getParam('module');
+		
+		$current = strtolower(\jamwork\common\Registry::getInstance()->getRequest()->getParam('module'));
+		$current .= strtolower(\jamwork\common\Registry::getInstance()->getRequest()->getParam('controller'));
+		$current .= strtolower(\jamwork\common\Registry::getInstance()->getRequest()->getParam('action'));
+		$current .= strtolower(\jamwork\common\Registry::getInstance()->getRequest()->getParam('format'));
 		
 		if (!empty($groups))
 		{
@@ -58,6 +62,7 @@ class Navigation
 		$navigation = '<div class="tabmenu">';
 		$navigation .= '<ul>';
 		
+		
 		foreach ($groups as $group => $actions)
 		{
 			if (empty($actions['links'])){
@@ -71,14 +76,17 @@ class Navigation
 			
 			$first = array_shift($keys);
 			
+			$point .= '<li class="{current}"><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
 			
+			/*
 			if ($links[$first]['module'] == $currentMod){
 				$point .= '<li class="current"><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
 			}
 			else
 			{
-				$point .= '<li><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
+				
 			}
+			*/
 			
 			$point .= '<ul class="subnav">';
 			
@@ -98,6 +106,13 @@ class Navigation
 				
 				if (\App\Manager\Right::isAllowed($right, $user)){
 					$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+				}
+				
+				$link = strtolower($action['module'].$action['controller'].$action['action'].'html');
+				
+				if ($link == $current)
+				{
+					$point = str_replace('{current}', 'current', $point);
 				}
 				
 			}
@@ -134,10 +149,15 @@ class Navigation
 			
 			$point .= '</ul>';
 			
+			$point = str_replace('{current}', '', $point);
+			
 			if (!empty($subPoints))
 			{
 				$navigation .= $point;
 			}
+			
+			
+			
 		}
 		
 		$navigation .= '</ul>';
