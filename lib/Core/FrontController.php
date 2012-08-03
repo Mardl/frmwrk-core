@@ -278,9 +278,14 @@ class FrontController
 	 * 
 	 * @return string
 	 */
-	public function execute() 
+	public function execute($url = null) 
 	{
-		$route = $this->router->searchRoute($_SERVER['REQUEST_URI']);
+		if (is_null($url))
+		{
+			$url = $_SERVER['REQUEST_URI'];
+		}
+		
+		$route = $this->router->searchRoute($url);
 		$this->request->setParams($route->getParams());
 		
 		try {

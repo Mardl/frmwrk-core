@@ -55,7 +55,7 @@ class Router extends ArrayObject
 	{
 		if (!isset($this[$route]))
 		{
-			throw new \Exception('Route '.$route.' not found', 404);
+			return parent::offsetGet('default');
 		}
 		return parent::offsetGet($route);
 	}
