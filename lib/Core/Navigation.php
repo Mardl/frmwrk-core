@@ -60,16 +60,20 @@ class Navigation
 				continue;
 			}
 			$point = '';
-			ksort($actions['links']);
-			$first = array_shift(array_keys($actions['links']));
+			
+			$links = $actions['links'];
+			ksort($links);
+			$keys = array_keys($links);
+			
+			$first = array_shift($keys);
 			
 			
-			if ($actions['links'][$first]['module'] == $currentMod){
-				$point .= '<li class="current"><a href="'.$actions['links'][$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
+			if ($links[$first]['module'] == $currentMod){
+				$point .= '<li class="current"><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
 			}
 			else
 			{
-				$point .= '<li><a href="'.$actions['links'][$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
+				$point .= '<li><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
 			}
 			
 			$point .= '<ul class="subnav">';
@@ -77,7 +81,7 @@ class Navigation
 			$subPoints = '';
 			
 			$sp = array();
-			foreach ($actions['links'] as $action)
+			foreach ($links as $action)
 			{
 				$right = new \App\Models\Right(
 					array(
