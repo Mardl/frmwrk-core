@@ -212,7 +212,7 @@ class Navigation
 							
 							if (!empty($matchDoc) && $matchDoc[1] == 'true'){
 								//Name des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationName ([A-Za-z0-9äöüÄÖÜ]+).*/s', $docComment, $matchDoc);
+								preg_match('/.*\@navigationName ([A-Za-z0-9äöüÄÖÜ ]+).*$/s', $docComment, $matchDoc);
 								$navigationName = $matchDoc[1];
 								
 								//Sortierung des Navigationspunktes ermitteln
