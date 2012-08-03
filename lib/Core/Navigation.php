@@ -48,9 +48,13 @@ class Navigation
 		} 
 		else 
 		{
-			$groups = $this->links;
+			$groups = array();
+			foreach ($this->links as $group => $actions)
+			{
+				$groups[$group]['class'] = '';
+				$groups[$group]['links'] = $actions;
+			}
 		}
-				
 		$navigation = '<div class="tabmenu">';
 		$navigation .= '<ul>';
 		
