@@ -11,6 +11,7 @@
 namespace Core\Application\Models;
 
 use Exception,
+	App\Manager\Directory\Files as FilesManager,
 	Core\Model as BaseModel;
 
 /**
@@ -281,9 +282,11 @@ class User extends BaseModel
      */
     public function getAvatar()
     {
-    	if (!is_null($this->avatar))
+    	if ($this->avatar > 0)
     	{
-    		return $this->avatar;
+    		//return $this->avatar;
+			$fileModel = FilesManager::getFileById($this->avatar);
+			return $fileModel->getThumbnailTarget();
     	}
     	else
     	{
@@ -291,7 +294,20 @@ class User extends BaseModel
     		return  $avatar.($this->isMale()?'male.png':'female.png');
     	}
     }
-    
+
+	/**
+	 * Liefert die FileId des Benutzerbildes
+	 *
+	 * @return string
+	 */
+	public function getAvatarId()
+	{
+		if ($this->avatar > 0)
+		{
+			return $this->avatar;
+		}
+	}
+
     /**
      * Liefert das Alter des Mitglieds
      * 
