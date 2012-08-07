@@ -14,6 +14,7 @@ namespace Core;
 use Exception,
     InvalidArgumentException,
     jamwork\common\Registry,
+	App\Manager\Directory\Files as FilesManager,
 	Core\HTMLHelper;
 
 /**
@@ -319,6 +320,17 @@ class FrontController
 				$this->view->login = \App\Manager\User::getUserById(
 					Registry::getInstance()->getSession()->get('user')
 				);
+				if ($this->view->login->getAvatar() > 0)
+				{
+					$fileModel = FilesManager::getFileById($this->view->login->getAvatar());
+					$avatar = $fileModel->getThumbnailTarget();
+					$this->view->avatarImage = $avatar;
+				}
+				else
+				{
+					$this->view->avatarImage = '/static/images/avatar_'.($this->view->login->isMale()?'male.png':'female.png');
+				}
+				//$this->view->avatarImage = 'testerei.jpg';
 				Registry::getInstance()->login = $this->view->login;
 			}
 			
