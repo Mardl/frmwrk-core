@@ -23,7 +23,9 @@ class Text extends Element{
 	
 	
 	public function __toString(){
-		$output = $this->text;
+		$output = '';
+		
+		$output .= $this->text;
 		if ($this->breakafter){$output .= '<br/>';}
 		
 		return $output;		

@@ -322,34 +322,6 @@ class FrontController
 				Registry::getInstance()->login = $this->view->login;
 			}
 			
-			/*
-			if(isset($_SESSION['user'])) {
-				$user = User::findOneById($_SESSION['user']);
-				
-				if($user) {
-					if(!$user->getLastOnline()) {
-						$user->setLastOnline('now');
-					}
-					if($user->getLastOnline() < DateTime::factory('now')->sub('PT1M')) {
-						$user->setLastOnline('now');
-					}
-					$user->save();
-					Registry::set('login', $user);
-					$this->view->login = $user;
-				} else {
-					if(defined('GUEST_ID')) {
-						$user = User::findOneById(GUEST_ID);
-						Registry::set('login', $user);
-						$this->view->login = $user;
-					}	
-				}
-			} else {
-				if(defined('GUEST_ID')) {
-					$user = User::findOneById(GUEST_ID);
-					Registry::set('login', $user);
-					$this->view->login = $user;
-				}	
-			}*/
 			$result = $this->dispatchLoop();
 		}
 		catch(Exception $e) 

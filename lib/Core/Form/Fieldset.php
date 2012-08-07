@@ -44,7 +44,7 @@ class Fieldset extends Element{
 		{
 			$output = str_replace('{breakafter}', null, $output);
 		}
-				
+		
 		return $output;
 		
 	}

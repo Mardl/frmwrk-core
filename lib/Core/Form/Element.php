@@ -27,6 +27,13 @@ class Element{
 	
 	}
 	
+	public function addElements(array $elements){
+		foreach ($elements as $element){
+			$this->addElement($element);
+		}
+	
+	}
+	
 	public function setRequired($required = true){
 		$this->required = $required;
 		if ($this->label)

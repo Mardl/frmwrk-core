@@ -15,45 +15,54 @@ class Radio extends Input{
 	public function __toString(){
 		$output = '';
 		
-		$option = file_get_contents(APPLICATION_PATH.'/Layout/Form/radio.html.php');
+		$opt = file_get_contents(APPLICATION_PATH.'/Layout/Form/radio.html.php');
 		
 		foreach ($this->options as $option){
 			
 			if ($this->hasCssClasses()){
-				$option = str_replace('{class}', 'class="'.$this->getCssClasses().'"', $option);
+				$opt = str_replace('{class}', 'class="'.$this->getCssClasses().'"', $opt);
 			}
 			else
 			{
-				$option = str_replace('{class}', '', $option);
+				$opt = str_replace('{class}', '', $opt);
 			}
 			
-			$option = str_replace('{style}', $this->getInlineCss(), $option);
+			$opt = str_replace('{style}', $this->getInlineCss(), $opt);
 			
 			if ($this->getId()){
-				$option = str_replace('{id}', $this->getId(), $option);
+				$opt = str_replace('{id}', $this->getId(), $opt);
 			} else {
-				$option = str_replace('{id}', $this->name, $option);
+				$opt = str_replace('{id}', $this->name, $opt);
 			}
 			
-			$option = str_replace('{name}', $this->getName(), $option);
-			$option = str_replace('{label}', $this->getLabel(), $option);
-			$option = str_replace('{attr}', $this->renderAttributes(), $option);
+			$opt = str_replace('{name}', $this->getName(), $opt);
+			$opt = str_replace('{label}', $this->getLabel(), $opt);
+			$opt = str_replace('{attr}', $this->renderAttributes(), $opt);
 			
-			$option = str_replace('{value}', htmlspecialchars($option[0]), $option);
-			$option = str_replace('{title}', htmlspecialchars($option[1]), $option);
+			$opt = str_replace('{value}', htmlspecialchars($option[0]), $opt);
+			$opt = str_replace('{title}', htmlspecialchars($option[1]), $opt);
+			
+			if ($option[2])
+			{
+				$opt = str_replace('{checked}', 'checked="checked"', $opt);
+			} 
+			else 
+			{
+				$opt = str_replace('{checked}', '', $opt);
+			}
 			
 			if ($this->breakafter)
 			{
-				$option = str_replace('{breakafter}', '<br/>', $option);
+				$opt = str_replace('{breakafter}', '<br/>', $opt);
 			}
 			else
 			{
-				$option = str_replace('{breakafter}', null, $option);
+				$opt = str_replace('{breakafter}', null, $opt);
 			}
 			
-			$output .= $option;
+			$output .= $opt;
 		}
-			
+		
 		return $output;
 	}
 	

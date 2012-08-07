@@ -20,6 +20,7 @@ class Label extends Element{
 	}
 	
 	public function __toString(){
+		
 		if (is_null($this->value)){
 			return "Label for '".$this->parent."' has no value";	
 		}
