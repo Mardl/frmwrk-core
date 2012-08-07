@@ -330,10 +330,10 @@ class FrontController
 				{
 					$this->view->avatarImage = '/static/images/avatar_'.($this->view->login->isMale()?'male.png':'female.png');
 				}
-				//$this->view->avatarImage = 'testerei.jpg';
 				Registry::getInstance()->login = $this->view->login;
 			}
 			
+
 			/*
 			if(isset($_SESSION['user'])) {
 				$user = User::findOneById($_SESSION['user']);
@@ -362,6 +362,7 @@ class FrontController
 					$this->view->login = $user;
 				}	
 			}*/
+
 			$result = $this->dispatchLoop();
 		}
 		catch(Exception $e) 
