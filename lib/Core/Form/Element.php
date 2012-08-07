@@ -113,7 +113,18 @@ class Element{
 	}
 	
 	public function getId(){
-		return $this->id;
+		if (empty($this->id) && empty($this->name))
+		{
+			return null;
+		}
+		else 
+		{
+			if (empty($this->id))
+			{
+				return " id='".$this->name."'";
+			}
+			return " id='".$this->id."'";
+		}
 		
 	}
 	

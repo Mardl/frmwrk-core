@@ -29,11 +29,7 @@ class Radio extends Input{
 			
 			$opt = str_replace('{style}', $this->getInlineCss(), $opt);
 			
-			if ($this->getId()){
-				$opt = str_replace('{id}', $this->getId(), $opt);
-			} else {
-				$opt = str_replace('{id}', $this->name, $opt);
-			}
+			$opt = str_replace('{id}', $this->getId(), $opt);
 			
 			$opt = str_replace('{name}', $this->getName(), $opt);
 			$opt = str_replace('{label}', $this->getLabel(), $opt);

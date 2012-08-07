@@ -40,6 +40,14 @@ class Form{
 		
 	}
 	
+	public function getId(){
+		if (!empty($this->id)){
+			return "id='".$this->id."'";
+		}
+		return null;
+		
+	}
+	
 	public function addElement(Form\Element $element){
 		$this->elements[] = $element;
 		
@@ -71,7 +79,7 @@ class Form{
 		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/form.html.php');
 		$output = str_replace('{method}', $this->method, $output);
 		$output = str_replace('{action}', $this->action, $output);
-		$output = str_replace('{id}', $this->id, $output);
+		$output = str_replace('{id}', $this->getId(), $output);
 		$output = str_replace('{elements}', $elements, $output);
 		
 		return $output;

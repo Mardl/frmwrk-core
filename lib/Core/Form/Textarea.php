@@ -23,11 +23,7 @@ class Textarea extends Element{
 		
 		$output = str_replace('{style}', $this->getInlineCss(), $output);
 		
-		if ($this->getId()){
-			$output = str_replace('{id}', $this->getId(), $output);
-		} else {
-			$output = str_replace('{id}', $this->name, $output);
-		}
+		$output = str_replace('{id}', $this->getId(), $output);
 				
 		$output = str_replace('{name}', $this->getName(), $output);
 		$output = str_replace('{attr}', $this->renderAttributes(), $output);

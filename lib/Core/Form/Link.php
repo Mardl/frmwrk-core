@@ -47,7 +47,7 @@ class Link extends Element{
 		}
 		
 		if (!is_null($this->getId())){
-			$output .= ' id="'.$this->getId().'"';
+			$output .= $this->getId();
 		}
 		
 		$output .= ' title="'.$this->title.'" target="'.$this->target.'" >';

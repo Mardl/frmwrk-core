@@ -4,8 +4,9 @@ namespace Core\Form;
 class Div extends Element{
 
 	
-	public function __construct($breakafter=false){
+	public function __construct($css = array(), $breakafter=false){
 		$this->breakafter = $breakafter;
+		$this->addCssClasses($css);
 	}
 	
 

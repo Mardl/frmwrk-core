@@ -39,7 +39,7 @@ class Select extends Element{
 			$output .= $this->getLabel();
 		}
 		
-		$output .= '<select name="'.$this->getName().'" id="'.$this->getId().'"';
+		$output .= '<select name="'.$this->getName().'" '.$this->getId();
 		
 		if ($this->size > 1){
 			$output .= ' size="'.$this->size.'"';

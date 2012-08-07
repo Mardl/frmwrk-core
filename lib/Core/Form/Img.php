@@ -33,7 +33,7 @@ class Img extends Element{
 		
 		
 		if (!is_null($this->getId())){
-			$output .= ' id="'.$this->getId().'"';
+			$output .= $this->getId();
 		}
 		
 		$output .= ' alt="'.$this->alt.'" />';

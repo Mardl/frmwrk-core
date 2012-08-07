@@ -16,12 +16,7 @@ class Button extends Input{
 		$output = str_replace('{type}', $this->type, $output);
 		$output = str_replace('{style}', $this->getInlineCss(), $output);
 		
-		if ($this->getId()){
-			$output = str_replace('{id}', $this->getId(), $output);
-		} else {
-			$output = str_replace('{id}', $this->getName(), $output);
-		}
-				
+		$output = str_replace('{id}', $this->getId(), $output);
 		$output = str_replace('{name}', $this->getName(), $output);
 		$output = str_replace('{label}', $this->getLabel(), $output);
 		
