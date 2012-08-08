@@ -112,15 +112,15 @@ class Form{
 		{
 			$container = $this;
 		}
-	
+		
 		foreach ($container->getElements() as $el){
-			if ($el->getId() == $elementId)
+			if ($el->getPlainId() == $elementId)
 			{
 				return $el;
 			}
 				
 			if ($el->hasElements()){
-				$this->updateElement($elementId, $el);
+				$this->findElement($elementId, $el);
 			}
 		}
 	}

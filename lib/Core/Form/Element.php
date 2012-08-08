@@ -112,6 +112,11 @@ class Element{
 		
 	}
 	
+	public function getPlainId(){
+		return $this->id;
+	
+	}
+	
 	public function getId(){
 		if (empty($this->id) && empty($this->name))
 		{
