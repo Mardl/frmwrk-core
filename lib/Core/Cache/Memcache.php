@@ -65,9 +65,13 @@ class Memcache
 			
 			$this->memcache = new BaseCache();
 			
-			if (defined('CACHE_TTL'))
+			if (defined('CACHE_TTL') && !defined('UPDATE_TTL'))
 			{
 				$this->ttl = CACHE_TTL;
+			}
+			else if (defined('CACHE_TTL') && !defined('UPDATE_TTL'))
+			{
+				$this->ttl = UPDATE_TTL;
 			}
 			else
 			{
@@ -117,5 +121,12 @@ class Memcache
 		return false;
 	}
 	
+	
+	public function remove($key){
+		if ($this->memcache)
+		{
+			return $this->memcache->delete($key);
+		}
+	}
 }
 ?>
