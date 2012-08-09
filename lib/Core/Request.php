@@ -22,6 +22,7 @@ use jamwork\common\HttpRequest;
  */
 class Request extends HttpRequest
 {
+	protected static $instance;
 
 	/**
 	 * Konstruktor
@@ -36,7 +37,13 @@ class Request extends HttpRequest
 		parent::__construct($_GET, $_POST, $_SERVER, $_COOKIE);
 		
 	}
-	
+
+	public static function getInstance(){
+		if (is_null(self::$instance)){
+			self::$instance = new Request($_GET, $_POST, $_SERVER, $_COOKIE);
+		}
+		return self::$instance;
+	}
 	/**
 	 * Is ajax request?
 	 * Tested with Firefox 3, Opera 9, Internet Explorer 7.

@@ -259,7 +259,7 @@ class Route
 			} 
 			else 
 			{
-				$url = 'http://'.Request::getHost().'/';
+				$url = 'http://'.Request::getInstance()->getHost().'/';
 			}
 		} 
 		else 
