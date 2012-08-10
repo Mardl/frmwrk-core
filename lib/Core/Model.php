@@ -119,7 +119,22 @@ class Model
 		$this->setDataRow($data);
 		$this->changed = false;
 	}
-	
+
+	public function getIdField()
+	{
+		return 'id';
+	}
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
 	public function setDataRow($data = array()){
 		
 		if (!empty($data))
@@ -180,7 +195,22 @@ class Model
 	
 		$this->modified = $datetime;
 	}
-	
 
-	
+	/**
+	 * @param boolean $new
+	 */
+	public function setNew($new)
+	{
+		$this->new=$new;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getNew()
+	{
+		return $this->new;
+	}
+
+
 }
