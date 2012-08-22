@@ -78,16 +78,6 @@ class Navigation
 			
 			$point .= '<li class="{current}"><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
 			
-			/*
-			if ($links[$first]['module'] == $currentMod){
-				$point .= '<li class="current"><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
-			}
-			else
-			{
-				
-			}
-			*/
-			
 			$point .= '<ul class="subnav">';
 			
 			$subPoints = '';
@@ -232,7 +222,7 @@ class Navigation
 							
 							if (!empty($matchDoc) && $matchDoc[1] == 'true'){
 								//Name des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationName ([A-Za-z0-9äöüÄÖÜ ]+).*$/s', $docComment, $matchDoc);
+								preg_match('/.*\@navigationName ([A-Za-z0-9äöüÄÖÜ -\/]+).*$/s', $docComment, $matchDoc);
 								$navigationName = $matchDoc[1];
 								
 								//Sortierung des Navigationspunktes ermitteln
