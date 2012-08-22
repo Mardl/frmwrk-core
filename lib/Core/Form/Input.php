@@ -36,9 +36,9 @@ class Input extends Element{
 		$output = str_replace('{name}', $this->getName(), $output);
 		$output = str_replace('{label}', $this->getLabel(), $output);
 		$output = str_replace('{attr}', $this->renderAttributes(), $output);
-		
 		$output = str_replace('{value}', htmlspecialchars($this->getValue()), $output);
-		
+		$output = str_replace('{readonly}', $this->getReadonly() ? 'readonly' : '', $output);
+
 		if ($this->breakafter)
 		{
 			$output = str_replace('{breakafter}', '<br/>', $output);

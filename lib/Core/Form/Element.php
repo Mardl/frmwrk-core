@@ -13,6 +13,7 @@ class Element{
 	protected $value = null;
 	protected $elements = array();
 	protected $breakafter = false;
+	protected $readonly = false;
 	
 	public function __construct($id, $css = array(), $breakafter = false)
 	{
@@ -207,6 +208,16 @@ class Element{
 		}
 		
 		return $output;
+	}
+
+	public function setReadonly($readonly)
+	{
+		$this->readonly = $readonly;
+	}
+
+	public function getReadonly()
+	{
+		return $this->readonly;
 	}
 }
 
