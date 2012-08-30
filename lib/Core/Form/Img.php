@@ -4,7 +4,7 @@ namespace Core\Form;
 class Img extends Element{
 
 	private $path;
-	private $alt;
+	private $alt = null;
 	
 	public function __construct($breakafter=false){
 		$this->breakafter = $breakafter;
@@ -21,27 +21,43 @@ class Img extends Element{
 		
 	
 	public function __toString(){
-		$output = '<img src="'.$this->path.'"';
+		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/image.html.php');
 		
 		if ($this->hasCssClasses()){
-			$output .= ' class="'.$this->getCssClasses().'"';
+			$output = str_replace('{class}', 'class="'.$this->getCssClasses().'"', $output);
+		}
+		else
+		{
+			$output = str_replace('{class}', '', $output);
 		}
 		
-		if ($this->hasInlineCss()){
-			$output .= ' style="'.$this->getInlineCss().'"';
+		$output = str_replace('{src}', $this->path, $output);
+		$output = str_replace('{style}', 'style="'.$this->getInlineCss().'"', $output);
+		
+		$output = str_replace('{id}', $this->getId(), $output);
+		
+		if (!empty($this->alt))
+		{
+			$output = str_replace('{alt}', $this->alt, $output);
+		}
+		else
+		{
+			$output = str_replace('{alt}', $this->path, $output);
 		}
 		
 		
-		if (!is_null($this->getId())){
-			$output .= $this->getId();
+		$output = str_replace('{attr}', $this->renderAttributes(), $output);
+		
+		if ($this->breakafter)
+		{
+			$output = str_replace('{breakafter}', '<br/>', $output);
+		}
+		else
+		{
+			$output = str_replace('{breakafter}', null, $output);
 		}
 		
-		$output .= ' alt="'.$this->alt.'" />';
-		
-		if ($this->breakafter){$output .= '<br/>';}
-		
-		return $output;		
-		
+		return $output;
 	}
 	
 }
