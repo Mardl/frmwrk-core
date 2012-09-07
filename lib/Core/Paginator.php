@@ -42,6 +42,8 @@ class Paginator
 	 */
 	private $_itemsPerPage;
 	
+	private $_class = 'pgright';
+	
 	/**
 	 * Konstruktur
 	 * 
@@ -72,9 +74,14 @@ class Paginator
 	 * 
 	 * @return integer
 	 */
-	function getOffset()
+	public function getOffset()
 	{
 		return ($this->_page * $this->_itemsPerPage);
+	}
+	
+	public function setClass($class)
+	{
+		$this->_class = $class;
 	}
 	
 	/**
@@ -92,6 +99,7 @@ class Paginator
 			$view->steps = ceil($steps);
 			$view->last = $view->steps - 1;
 			$view->current = $this->_page;
+			$view->class = $this->_class;
 			
 			if ($view->current < ($steps - 1))
 			{
