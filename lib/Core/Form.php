@@ -7,7 +7,8 @@ class Form{
 	private $action = null;
 	private $id = 'formular';
 	private $captcha = false;
-
+	private $attributes = array();
+	
 	protected $elements = array();
 	protected $values = array();
 	
@@ -48,6 +49,11 @@ class Form{
 		
 	}
 	
+	public function addAttribute(array $attr){
+		$this->attributes[] = $attr;
+	
+	}
+	
 	public function addElement(Form\Element $element){
 		$this->elements[] = $element;
 		
@@ -76,10 +82,17 @@ class Form{
 			$elements .= $element;
 		}
 		
+		$attributes = '';
+		foreach ($this->attributes as $attr)
+		{
+			$attributes = $attr[0].'="'.$attr[1].'" ';
+		}
+		
 		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/form.html.php');
 		$output = str_replace('{method}', $this->method, $output);
 		$output = str_replace('{action}', $this->action, $output);
 		$output = str_replace('{id}', $this->getId(), $output);
+		$output = str_replace('{attributes}', $attributes, $output);
 		$output = str_replace('{elements}', $elements, $output);
 		
 		return $output;
