@@ -36,6 +36,7 @@ class Memcache
 	 */
 	private $memcache = null;
 	
+	
 	/**
 	 * Liefert die Instanz des Singleton
 	 * 
@@ -126,6 +127,62 @@ class Memcache
 		if ($this->memcache)
 		{
 			return $this->memcache->delete($key);
+		}
+	}
+	
+	public function getKeys()
+	{
+		$memcache = memcache_connect('localhost', 11211);
+		
+		$list = array();
+		$allSlabs = $memcache->getExtendedStats('slabs');
+		
+		foreach ($allSlabs as $server => $slabs)
+		{
+			foreach ($slabs as $slabId => $slabMeta)
+			{
+				if (!is_numeric($slabId))
+				{
+					continue;
+				}
+		
+				$cdump = $memcache->getExtendedStats('cachedump', (int)$slabId, 99999999);
+		
+				foreach ($cdump as $server => $entries)
+				{
+					if (!$entries)
+					{
+						continue;
+					}
+		
+					foreach ($entries as $eName => $eData)
+					{
+						$value = $this->get($eName);
+						 
+						if ($value !== false)
+						{
+							$list[] = $eName;
+						}
+					}
+				}
+			}
+		}
+		
+		return $list;
+	}
+	
+	public function truncateByKeyPrefix($prefix)
+	{
+		if ($this->memcache)
+		{
+			$keys = $this->getKeys();
+			foreach($keys as $key)
+			{
+				if (substr($key, 0, strlen($prefix)) == $prefix)
+				{
+					$this->remove($key);
+				}
+			}
 		}
 	}
 }
