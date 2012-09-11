@@ -9,9 +9,6 @@ class Div extends Element{
 		$this->addCssClasses($css);
 	}
 	
-
-	
-	
 	public function __toString(){
 		$elements = '';
 		foreach ($this->elements as $element){
