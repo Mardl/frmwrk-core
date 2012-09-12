@@ -80,6 +80,13 @@ class HTMLHelper
 	 */
 	private $_links = array();
 	
+	protected $parentView;
+	
+	public function __construct(\Core\View $view)
+	{
+		$this->parentView = $view;
+	}
+	
 	/**
 	 * Get url to app
 	 *
@@ -508,6 +515,91 @@ class HTMLHelper
 		}
 		
 		return implode("\n", $options);
+	}
+	
+	/**
+	 * Liefert einen Standardlink verbunden mit Rechteprüfung
+	 * 
+	 * @param string  $name       Name des Links
+	 * @param array   $data       Daten für den Linkaufbau
+	 * @param array   $css        Array mit den CSS-Klassen als Value
+	 * @param array   $attributes Array mit zusätzlichen Linkattributen, Aufbau ATTRIBUTE=>VALUE
+	 * @param string  $route      Name der zu verwendenden Route
+	 * @param string  $reset      Überschreiben fehlender Attribute mit den Standardwerten
+	 * @param boolean $absolute   http davor setzen oder nicht
+	 * 
+	 * @return string|null
+	 */
+	public function anchor($name, array $data = array(), $css = array(), $attributes = array(), $route = null, $reset = null, $absolute = false){
+		
+		$url = $this->parentView->url($data, $route, $reset, $absolute);
+		$route = $this->parentView->getRoute()->match($url);
+		
+		$link = $url;
+		
+		if (class_exists('\App\Models\Right'))
+		{
+			$data = array(
+				'module' => $route['module'],
+				'controller' => $route['controller'],
+				'action' => $route['action'],
+				'prefix' => $route['prefix']
+			);
+			
+			$right = new \App\Models\Right($data);
+			$allowed = \App\Manager\Right::isAllowed($right, Registry::getInstance()->login);
+			
+			if (!$allowed)
+			{
+				$link = null;
+				$controller = '\\App\Modules\\'.ucfirst($route['module']).'\\Controller\\'.ucfirst($route['controller']);
+				$reflection = new \ReflectionClass($controller);
+				$properties = $reflection->getDefaultProperties();
+				
+				if ($properties['checkPermissions'] == false)
+				{
+					$link = $url;
+				}
+			}
+		}
+		
+		if (!is_null($link))
+		{
+			$anchorString = "<a href='%s'%s%s>%s</a>";
+			
+			$classes = '';
+			$attr = '';
+			
+			if (!empty($css))
+			{
+				$classes = ' class="';
+				foreach ($css as $class)
+				{
+					$classes .= $class.' ';
+				}
+				$classes .= '"';
+			}
+
+			if (!empty($attributes))
+			{
+				$attr = ' ';
+				foreach ($attributes as $attribt => $value)
+				{
+					$attr .= $attribt.'="'.$value.'" ';
+				}
+			}
+			
+			
+			return sprintf(
+				$anchorString,
+				$link,
+				$classes,
+				$attr,
+				$name
+			);
+		}
+		
+		return $link;
 	}
 
 }

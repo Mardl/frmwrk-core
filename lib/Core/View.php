@@ -62,6 +62,8 @@ class View extends ArrayObject
 	 */
 	protected $searchStack = array();
 
+	protected $placeholder = array();
+	
 	/**
 	 * Holds the HTMLHelper
 	 *
@@ -105,6 +107,11 @@ class View extends ArrayObject
 		}
 
 		$this->setRouter(Registry::getInstance()->router);
+		
+		$this->html = new \Core\HTMLHelper($this);
+		$this->html->addCssAsset('default');
+			
+		
 	}
 
 	/**
@@ -115,7 +122,6 @@ class View extends ArrayObject
 	 */
 	public function __toString()
 	{
-		
 		try
 		{
 			return $this->render();
@@ -335,6 +341,16 @@ class View extends ArrayObject
 		return $this->templates;
 	}
 
+	public function addPlaceholder($key, $value)
+	{
+		$this->placeholder[$key] = $value;
+	}
+	
+	public function getPlaceholder($key)
+	{
+		return $this->placeholder[$key];
+	}
+	
 	/**
 	 * Remove templates from stack
 	 *
@@ -382,6 +398,10 @@ class View extends ArrayObject
 				ob_start();
 				include $template;
 				$this->content = ob_get_clean();
+				
+				foreach ($this->placeholder as $key => $value){
+					$this->content = str_replace('{'.$key.'}', $value, $this->content);
+				}
 			}
 			catch(Exception $e) 
 			{
