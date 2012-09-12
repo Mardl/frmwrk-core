@@ -368,7 +368,7 @@ class HTMLHelper
 		$view = new View(APPLICATION_PATH.'/Layout/Helpers/breadcrumbs.html.php');
 		$view->home = $this->getBreadcrumbHome();
 		$view->breadcrumbs = $this->getBreadcrumbs();
-		echo $view;
+		return $view;
 	}
 
 
