@@ -294,6 +294,22 @@ class User extends BaseModel
     		return  $avatar.($this->isMale()?'male.png':'female.png');
     	}
     }
+    
+    /**
+     * Liefert das Profilbild Object
+     *
+     * @return object
+     */
+    public function getAvatarFile()
+    {
+    	if ($this->avatar > 0)
+    	{
+    		//return $this->avatar;
+    		$fileModel = FilesManager::getFileById($this->avatar);
+    		return $fileModel;
+    	}
+    	return null;
+    }
 
 	/**
 	 * Liefert die FileId des Benutzerbildes

@@ -573,10 +573,7 @@ class HTMLHelper
 			if (!empty($css))
 			{
 				$classes = ' class="';
-				foreach ($css as $class)
-				{
-					$classes .= $class.' ';
-				}
+				$classes .= implode(' ', $css);
 				$classes .= '"';
 			}
 
