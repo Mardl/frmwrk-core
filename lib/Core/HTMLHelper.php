@@ -533,7 +533,7 @@ class HTMLHelper
 	public function anchor($name, array $data = array(), $css = array(), $attributes = array(), $route = null, $reset = null, $absolute = false){
 		
 		$url = $this->parentView->url($data, $route, $reset, $absolute);
-		$route = $this->parentView->getRoute()->match($url);
+		$route = $this->parentView->getRoute()->matchUrl($url);
 		
 		$link = $url;
 		

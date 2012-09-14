@@ -162,6 +162,65 @@ class Route
 	}
 
 	/**
+	 * Match $url to route without resetting Router
+	 *
+	 * @param string $url Url
+	 *
+	 * @return boolean
+	 */
+	public function matchUrl($url)
+	{
+		$url = parse_url($url);
+		$result = $this->defaults;
+
+		// Get file extension
+		$temp = pathinfo($url['path']);
+
+		$url['path'] = $temp['dirname'].'/'.$temp['filename'];
+
+		if (isset($temp['extension']) && $temp['extension'])
+		{
+			$result['format'] = $temp['extension'];
+		}
+		else
+		{
+			$result['format'] = 'html';
+		}
+
+		$parts = explode('/', $this->pattern);
+		$parts = array_values(array_filter($parts));
+
+		$urlparts = explode('/', $url['path']);
+		$urlparts = array_values(array_filter($urlparts));
+
+		foreach ($parts as $key => $part)
+		{
+
+			// Constant part not exists
+			if (substr($part, 0, 1) != ':' && !isset($urlparts[$key]))
+			{
+				return false;
+			}
+
+			// Constant part wrong
+			if (substr($part, 0, 1) != ':' && $urlparts[$key] != $part)
+			{
+				return false;
+			}
+
+			// Save dynamic value to $result
+			if (isset($urlparts[$key]) && $urlparts[$key])
+			{
+				$result[substr($part, 1)] = $urlparts[$key];
+			}
+		}
+
+		#$this->getRouter()->setParams($result);
+		return $result;
+
+	}
+
+	/**
 	 * Create url from route
 	 *
 	 * @param array        $params   Parameters

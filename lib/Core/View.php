@@ -193,6 +193,7 @@ class View extends ArrayObject
 		{
 			$route = $this->router->getCurrent();
 		}
+
 		return $this->router[$route]->url($data, $reset, $absolute);
 	}
 
