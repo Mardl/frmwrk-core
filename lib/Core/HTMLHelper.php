@@ -82,7 +82,7 @@ class HTMLHelper
 	
 	protected $parentView;
 	
-	public function __construct(\Core\View $view)
+	public function __construct(\Core\View $view = null)
 	{
 		$this->parentView = $view;
 	}
@@ -140,11 +140,14 @@ class HTMLHelper
 	 */
 	public function addCssAsset($name)
 	{
-		foreach (Registry::getInstance()->conf->CSS_ASSETS[$name] as $cssFile)
+		if (isset(Registry::getInstance()->conf))
 		{
-			if (!in_array($cssFile, $this->_cssFiles))
+			foreach (Registry::getInstance()->conf->CSS_ASSETS[$name] as $cssFile)
 			{
-				$this->addCSSFile($cssFile);
+				if (!in_array($cssFile, $this->_cssFiles))
+				{
+					$this->addCSSFile($cssFile);
+				}
 			}
 		}
 	}
