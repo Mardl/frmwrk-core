@@ -163,7 +163,17 @@ class HTMLHelper
 			'type' => 'text/css',
 			'rel'  => 'stylesheet'
 		);
-		$attributes['href'] = $this->app('css/'.$filename);
+		
+		if (!\Core\String::startsWith($filename, 'http'))
+		{
+			$attributes['href'] = $this->app('css/'.$filename);
+		}
+		else
+		{
+			$attributes['href'] = $filename;
+		}
+		
+		#$attributes['href'] = $this->app('css/'.$filename);
 		$this->_cssFiles[] = $attributes;
 	}
 

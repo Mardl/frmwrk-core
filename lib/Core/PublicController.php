@@ -64,7 +64,10 @@ class PublicController extends Controller
 			}
 		}
 		
-		$this->view->html->addJsAsset('loggedin');
+		if ($this->view->login)
+		{
+			$this->view->html->addJsAsset('loggedin');
+		}
 		
 	}
 

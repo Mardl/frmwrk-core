@@ -107,7 +107,7 @@ class Form{
 		}
 		
 		foreach ($container->getElements() as $el){
-			if ($el->getId() == $elementId)
+			if ($el->getPlainId() == $elementId)
 			{
 				$el->$updateType($value);
 				return;
