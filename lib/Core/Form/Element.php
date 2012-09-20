@@ -204,7 +204,7 @@ class Element{
 		
 		foreach ($this->attributes as $attr => $vals)
 		{
-			$output .= $attr.'="'.implode(' ', $vals).'" ';
+			$output .= $attr."='".implode(' ', $vals)."' ";
 		}
 		
 		return $output;
