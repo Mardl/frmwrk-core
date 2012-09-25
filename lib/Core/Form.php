@@ -121,6 +121,8 @@ class Form{
 	
 	public function findElement($elementId, $container = null)
 	{
+		$target = null;
+		
 		if (is_null($container))
 		{
 			$container = $this;
@@ -133,9 +135,12 @@ class Form{
 			}
 				
 			if ($el->hasElements()){
-				$this->findElement($elementId, $el);
+				$target = $this->findElement($elementId, $el);
 			}
 		}
+		
+		return $target;
+		
 	}
 	
 }
