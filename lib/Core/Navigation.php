@@ -230,7 +230,7 @@ class Navigation
 								$navigationSort = $matchDoc[1];
 								
 								//Gruppierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationGroup ([A-Za-z0-9]+).*/s', $docComment, $matchDoc);
+								preg_match('/.*\@navigationGroup ([A-Za-z0-9äöüÄÖÜ]+).*/s', $docComment, $matchDoc);
 								$navigationGroup = $matchDoc[1];
 								
 								/*
