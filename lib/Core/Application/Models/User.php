@@ -155,6 +155,16 @@ class User extends BaseModel
      * @JoinTable(name="right_group_users")
      */
     protected $rightGroups;
+
+	/**
+	 * Einmal-Passwort wurde gesetzt
+	 *
+	 * @var boolean
+	 *
+	 * @Column(type="boolean", name="otp")
+	 */
+	protected $otp = false;
+
     
 	/**
 	 * Sets new password.
