@@ -36,7 +36,7 @@ abstract class Controller
 	/**
 	 * View
 	 *
-	 * @var   View
+	 * @var   Core\View
 	 */
 	protected $view;
 
