@@ -8,7 +8,7 @@
  * @copyright  2009-2010 Eraffe Media GmbH, 2010 MediaWorld AG
  */
 
-namespace Core;
+namespace Core\Mail;
 
 /**
  * Mime
