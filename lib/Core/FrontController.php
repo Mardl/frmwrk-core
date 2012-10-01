@@ -22,7 +22,7 @@ use Exception,
  * Set up view, router, request and response.
  * Dispatch url and execute controller and action by defined routes in router.
  * Render view and return result.
- * 
+ *
  * @category Controller
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
@@ -82,7 +82,7 @@ class FrontController
 	/**
 	 * Constructor
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		$this->router = Registry::getInstance()->router;
 
@@ -103,40 +103,41 @@ class FrontController
 		{
 			$this->view = Registry::getInstance()->view;
 		}
-		
+
 	}
 
 	/**
 	 * Set router
 	 *
 	 * @param Core\Router $router Router
-	 * 
+	 *
 	 * @return void
 	 */
-	public function setRouter(Router $router) 
+	public function setRouter(Router $router)
 	{
 		$this->router = Registry::getInstance()->router;
 	}
 
 	/**
 	 * Fügt die Seiteninfos dem internen Stack hinzu
-	 * 
+	 *
 	 * @param string $action     Actionname
 	 * @param string $controller Controllername
 	 * @param string $module     Modulname
 	 * @param string $format     Format
-	 * 
+	 *
 	 * @return void
 	 */
-	public function addPageToStack($action, $controller = null, $module = null, $format = null) 
+	public function addPageToStack($action, $controller = null, $module = null, $format = null, $prefix = null)
 	{
-			
+
 		$page = array_filter(
 			array(
 				'action'     => $action,
 				'controller' => $controller,
 				'module'     => $module,
-				'format'     => $format
+				'format'     => $format,
+				'prefix'     => $prefix
 			)
 		);
 
@@ -157,27 +158,40 @@ class FrontController
 	 * @param string $controllerName Controller name
 	 * @param string $moduleName     Module name
 	 * @param string $actionFormat   Action format
-	 * 
+	 *
 	 * @return string
 	 *
 	 * @throws Exception
 	 */
-	public function render($actionName, $controllerName, $moduleName, $actionFormat = 'html') 
+	public function render($actionName, $controllerName, $moduleName, $actionFormat = 'html', $prefix = '')
 	{
 		// Because the validation argument is the same, we use an loop - saves us space
 		$parts = array(
 			'action' => $actionName,
 			'controller' => $controllerName,
 			'module' => $moduleName,
-			'format' => $actionFormat
+			'format' => $actionFormat,
+			'prefix' => $prefix
 		);
 
-		$controllerName = sprintf(
-			'App\Modules\%s\Controller\%s',
-			ucfirst(str_replace('/', '_', $parts['module'])),
-			ucfirst($controllerName)
-		);
-			
+		if ($prefix == '')
+		{
+			$controllerName = sprintf(
+				'App\Modules\%s\Controller\%s',
+				ucfirst(str_replace('/', '_', $parts['module'])),
+				ucfirst($controllerName)
+			);
+		}
+		else
+		{
+			$controllerName = sprintf(
+				'App\Modules\%s\%s\Controller\%s',
+				ucfirst(str_replace('/', '_', $parts['prefix'])),
+				ucfirst(str_replace('/', '_', $parts['module'])),
+				ucfirst($controllerName)
+			);
+		}
+
 		if (!class_exists($controllerName))
 		{
 			foreach ($parts as $key => $val)
@@ -200,23 +214,39 @@ class FrontController
 				$parts[$key] = str_replace('-', '_', $val);
 			}
 
-			// Define the controller file
-			$controllerFile = sprintf(
-				'%s/Modules/%s/Controllers/%s.php',
-				APPLICATION_PATH,
-				ucfirst($parts['module']),
-				ucfirst($parts['controller'])
-			);
-			
+
+			if ($prefix == '')
+			{
+				// Define the controller file
+				$controllerFile = sprintf(
+						'%s/Modules/%s/Controller/%s.php',
+						APPLICATION_PATH,
+						ucfirst($parts['module']),
+						ucfirst($parts['controller'])
+				);
+			}
+			else
+			{
+				// Define the controller file
+				$controllerFile = sprintf(
+					'%s/Modules/%s/%s/Controller/%s.php',
+					APPLICATION_PATH,
+					ucfirst($parts['prefix']),
+					ucfirst($parts['module']),
+					ucfirst($parts['controller'])
+				);
+			}
+
+
 			if (!file_exists($controllerFile))
 			{
 				throw new \Exception('Controller file '.$controllerFile.' not found', 404);
 			}
-			
+
 			try {
 				require $controllerFile;
-			} 
-			catch(Exception $e) 
+			}
+			catch(Exception $e)
 			{
 				throw new \Exception('Controller file '.$controllerFile.' not found', 404);
 			}
@@ -257,14 +287,29 @@ class FrontController
 			// When controller change templates, dont add default template
 			if ($templates == $this->view->getTemplates())
 			{
-				$template = sprintf(
-					'%s/Modules/%s/Views/%s/%s.%s.php',
-					APPLICATION_PATH,
-					ucfirst($parts['module']),
-					ucfirst($parts['controller']),
-					$parts['action'],
-					$parts['format']
-				);
+				if ($prefix == '')
+				{
+					$template = sprintf(
+						'%s/Modules/%s/Views/%s/%s.%s.php',
+						APPLICATION_PATH,
+						ucfirst($parts['module']),
+						ucfirst($parts['controller']),
+						$parts['action'],
+						$parts['format']
+					);
+				}
+				else
+				{
+					$template = sprintf(
+						'%s/Modules/%s/%s/Views/%s/%s.%s.php',
+						APPLICATION_PATH,
+						ucfirst($parts['prefix']),
+						ucfirst($parts['module']),
+						ucfirst($parts['controller']),
+						$parts['action'],
+						$parts['format']
+					);
+				}
 
 				$this->view->addTemplate($template);
 			}
@@ -275,41 +320,35 @@ class FrontController
 
 	/**
 	 * Führt den Aufruf aus
-	 * 
+	 *
 	 * @return string
 	 */
-	public function execute($url = null) 
+	public function execute($url = null)
 	{
 		if (is_null($url))
 		{
 			$url = $_SERVER['REQUEST_URI'];
 		}
-		
+
 		$route = $this->router->searchRoute($url);
 		$this->request->setParams($route->getParams());
-		
+
 		try {
-			
+
 			$action = $this->router->getParam('action');
 			$controller = $this->router->getParam('controller');
 			$format = $this->router->getParam('format');
-			
-			if ($this->router->getParam('prefix'))
-			{ 
-				$module = $this->router->getParam('prefix').$this->router->getParam('module');
-			}
-			else
-			{
-				$module = $this->router->getParam('module');
-			}
-			
+			$prefix = $this->router->getParam('prefix');
+			$module = $this->router->getParam('module');
+
 			$this->addPageToStack(
 				$action,
 				$controller,
 				$module,
-				$format
+				$format,
+				$prefix
 			);
-			
+
 			if (!Registry::getInstance()->getSession()->has('user'))
 			{
 				$this->view->login = null;
@@ -321,43 +360,14 @@ class FrontController
 				);
 				Registry::getInstance()->login = $this->view->login;
 			}
-			
-
-			/*
-			if(isset($_SESSION['user'])) {
-				$user = User::findOneById($_SESSION['user']);
-				
-				if($user) {
-					if(!$user->getLastOnline()) {
-						$user->setLastOnline('now');
-					}
-					if($user->getLastOnline() < DateTime::factory('now')->sub('PT1M')) {
-						$user->setLastOnline('now');
-					}
-					$user->save();
-					Registry::set('login', $user);
-					$this->view->login = $user;
-				} else {
-					if(defined('GUEST_ID')) {
-						$user = User::findOneById(GUEST_ID);
-						Registry::set('login', $user);
-						$this->view->login = $user;
-					}	
-				}
-			} else {
-				if(defined('GUEST_ID')) {
-					$user = User::findOneById(GUEST_ID);
-					Registry::set('login', $user);
-					$this->view->login = $user;
-				}	
-			}*/
 
 			$result = $this->dispatchLoop();
 		}
-		catch(Exception $e) 
+		catch(Exception $e)
 		{
+			$route = $this->router->getRoute('default');
 			$this->stack = array();
-			$this->addPageToStack('index', 'error', 'index', 'html');
+			$this->addPageToStack('index', 'error', 'index', 'html', $route->get('prefix'));
 			$this->view->setTemplate(APPLICATION_PATH.'/Layout/layout.html.php');
 			SystemMessages::addError($e->getMessage());
 			$this->view->exception = $e;
@@ -372,16 +382,18 @@ class FrontController
 	 *
 	 * @return string
 	 */
-	public function dispatchLoop() 
+	public function dispatchLoop()
 	{
-		for ($i=0; $i<count($this->stack); $i++) 
+		for ($i=0; $i<count($this->stack); $i++)
 		{
 			$this->currentPage = $this->stack[$i];
+
 			$result = $this->render(
 				$this->currentPage['action'],
 				$this->currentPage['controller'],
 				$this->currentPage['module'],
-				$this->currentPage['format']
+				isset($this->currentPage['format']) ? $this->currentPage['format'] : '',
+				isset($this->currentPage['prefix']) ? $this->currentPage['prefix'] : ''
 			);
 		}
 
@@ -397,16 +409,16 @@ class FrontController
 	 * postIndexAction()
 	 * IndexHtmlAction()
 	 * IndexAction()
-	 * 
+	 *
 	 * @param object $class  Instanz der Controller-Klasse
 	 * @param string $action Name der Action
 	 * @param string $format Ausgabeformat
-	 * 
+	 *
 	 * @throws \InvalidArgumentException Wenn die Action nicht gefunden wurde
-	 * 
+	 *
 	 * @return string
 	 */
-	public function searchAction($class, $action, $format = 'html') 
+	public function searchAction($class, $action, $format = 'html')
 	{
 		$method = strtolower($_SERVER['REQUEST_METHOD']);
 		$action = ucfirst($action);

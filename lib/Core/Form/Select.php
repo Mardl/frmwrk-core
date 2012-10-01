@@ -20,8 +20,6 @@ class Select extends Element{
 	}
 
 	public function addOptionGrouped($value, $tag, $optgroup, $selected = false){
-		$this->options = array();
-
 		if (!isset($this->optGroups[$optgroup]))
 		{
 			$this->optGroups[$optgroup] = array();
