@@ -26,7 +26,7 @@ class HTMLHelper
 
 	/**
 	 * Meta-Angaben
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_metas = array();
@@ -75,36 +75,36 @@ class HTMLHelper
 
 	/**
 	 * Verlinkungen auf JS,CSS
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_links = array();
-	
+
 	protected $parentView;
-	
+
 	public function __construct(\Core\View $view = null)
 	{
 		$this->parentView = $view;
 	}
-	
+
 	/**
 	 * Get url to app
 	 *
 	 * @param string $path Path
-	 * 
+	 *
 	 * @return string
 	 */
 	public function app($path)
 	{
 		return (defined('APP_URL')?APP_URL.$path:$path);
 	}
-	
+
     /**
      * Get system messages as HTML
      *
      * @return string
      */
-	public function getSystemMessages() 
+	public function getSystemMessages()
 	{
 		$messages = SystemMessages::getList();
 		if (count($messages) == 0)
@@ -122,10 +122,10 @@ class HTMLHelper
      *
      * @param string $filename   Pfad zur CSS-Datei
      * @param array  $attributes Zusätzliche Attribute
-     * 
+     *
      * @return void
      */
-	public function setCSSFile($filename, $attributes = array()) 
+	public function setCSSFile($filename, $attributes = array())
 	{
 		$this->_cssFiles = array();
 		$this->addCSSFile($filename, $attributes);
@@ -151,22 +151,22 @@ class HTMLHelper
 			}
 		}
 	}
-	
+
     /**
      * Add css file
      *
      * @param string $filename   Pfad zur CSS-Datei
      * @param array  $attributes Zusätzliche Attribute
-     * 
+     *
      * @return void
      */
-	public function addCSSFile($filename, $attributes = array()) 
+	public function addCSSFile($filename, $attributes = array())
 	{
 		$attributes += array(
 			'type' => 'text/css',
 			'rel'  => 'stylesheet'
 		);
-		
+
 		if (!\Core\String::startsWith($filename, 'http'))
 		{
 			$attributes['href'] = $this->app('css/'.$filename);
@@ -175,7 +175,7 @@ class HTMLHelper
 		{
 			$attributes['href'] = $filename;
 		}
-		
+
 		#$attributes['href'] = $this->app('css/'.$filename);
 		$this->_cssFiles[] = $attributes;
 	}
@@ -185,17 +185,17 @@ class HTMLHelper
      *
      * @return array
      */
-	public function getCSSFiles() 
+	public function getCSSFiles()
 	{
 		return $this->_cssFiles;
 	}
 
 	/**
 	 * Liefert die Link-Angaben zu CSS-Einbindungen
-	 * 
+	 *
 	 * @return string
 	 */
-	public function renderCSSFiles() 
+	public function renderCSSFiles()
 	{
 		$result = '';
 		foreach ($this->getCSSFiles() as $file)
@@ -218,7 +218,7 @@ class HTMLHelper
 	 *
 	 * @return void
 	 */
-	public function addJsAsset($name) 
+	public function addJsAsset($name)
 	{
 		$this->_jsAssets[] = $name;
 	}
@@ -227,10 +227,10 @@ class HTMLHelper
      * Set javascript asset and remove previous
 	 *
 	 * @param string $name Name of asset defined in config
-	 * 
+	 *
 	 * @return void
 	 */
-	public function setJsAsset($name) 
+	public function setJsAsset($name)
 	{
 		$this->_jsAssets = array($name);
 	}
@@ -239,10 +239,10 @@ class HTMLHelper
      * Add javascript filename
      *
      * @param string $filename Filename
-     * 
+     *
      * @return void
      */
-	public function addJsFile($filename) 
+	public function addJsFile($filename)
 	{
 		$this->_jsFiles[] = $filename;
 
@@ -253,7 +253,7 @@ class HTMLHelper
 	 *
 	 * @return array
 	 */
-	public function getJsAssets() 
+	public function getJsAssets()
 	{
 		return $this->_jsAssets;
 
@@ -264,7 +264,7 @@ class HTMLHelper
 	 *
 	 * @return array
 	 */
-	public function getJsAssetFiles() 
+	public function getJsAssetFiles()
 	{
 		$config = Registry::getInstance()->conf;
 
@@ -276,7 +276,7 @@ class HTMLHelper
 				$assetFiles = array_merge($assetFiles, $config->JS_ASSETS[$name]);
 				//throw new \Exception('Javascript asset '.$name.' not found', 404);
 			}
-			
+
 		}
 
 		$assetFiles = array_merge($assetFiles, $this->_jsFiles);
@@ -288,7 +288,7 @@ class HTMLHelper
 	 *
 	 * @return array
 	 */
-	public function getJsVariables() 
+	public function getJsVariables()
 	{
 		return $this->_jsVariables;
 
@@ -303,7 +303,7 @@ class HTMLHelper
 	 *
 	 * @return void
 	 */
-	public function setJsVariable($name, $value) 
+	public function setJsVariable($name, $value)
 	{
 		$this->_jsVariables = array($name => $value);
 	}
@@ -316,7 +316,7 @@ class HTMLHelper
 	 *
 	 * @return void
 	 */
-	public function addJsVariable($name, $value) 
+	public function addJsVariable($name, $value)
 	{
 		$this->_jsVariables[$name] = $value;
 
@@ -327,7 +327,7 @@ class HTMLHelper
 	 *
 	 * @param string $title Title of breadcrumb entry.
 	 * @param string $url   Url of breadcrumb (view->url()).
-	 * 
+	 *
 	 * @return void
 	 */
 	public function addBreadcrumb($title, $url = null)
@@ -353,7 +353,7 @@ class HTMLHelper
      * Set link from breadcrumb home (small house)
      *
      * @param string $url Url
-     * 
+     *
      * @return void
      */
 	public function setBreadcrumbHome($url)
@@ -392,10 +392,10 @@ class HTMLHelper
 	 * @param int    $length     when to cut the string
 	 * @param bool   $breakWords flag to indicate if a word should be preserved
 	 * @param string $etc        will be added at the of the line
-	 * 
+	 *
 	 * @return string
 	 */
-	public function truncate($text, $length, $breakWords = true, $etc = '...') 
+	public function truncate($text, $length, $breakWords = true, $etc = '...')
 	{
 		if ($length === 0)
 		{
@@ -420,9 +420,9 @@ class HTMLHelper
 
 	/**
 	 * Fügt eine Verlinkung hinzu
-	 * 
+	 *
 	 * @param string|array $attributes Array mit Attributen
-	 * 
+	 *
 	 * @return void
 	 */
 	public function addLink($attributes)
@@ -432,10 +432,10 @@ class HTMLHelper
 
 	/**
 	 * Liefert die Link-Angaben
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getRenderedLinks() 
+	public function getRenderedLinks()
 	{
 		return array_map(
 			function($link)
@@ -447,7 +447,7 @@ class HTMLHelper
 				}
 				$result .= ' />';
 				return $result;
-			}, 
+			},
 			$this->_links
 		);
 		// return $this->metas;
@@ -455,12 +455,12 @@ class HTMLHelper
 
 	/**
 	 * Fügt eine MetaInformation hinzu
-	 * 
+	 *
 	 * @param string $attributes Array mit Meta Informationen
-	 * 
+	 *
 	 * @return void
 	 */
-	public function addMeta($attributes) 
+	public function addMeta($attributes)
 	{
 		$attributes = preg_replace('#\s+#', ' ', $attributes);
 		$attributes = array_map('trim', $attributes);
@@ -469,20 +469,20 @@ class HTMLHelper
 
 	/**
 	 * Liefert die Meta-Angaben als Array
-	 * 
+	 *
 	 * @return array
 	 */
-	public function getMetas() 
+	public function getMetas()
 	{
 		return $this->_metas;
 	}
 
 	/**
 	 * Liefert die Meta-Angaben als String
-	 * 
+	 *
 	 * @return string
 	 */
-	public function renderMetas() 
+	public function renderMetas()
 	{
 		$result = '';
 		foreach ($this->getMetas() as $meta)
@@ -498,25 +498,25 @@ class HTMLHelper
 		return $result;
 
 	}
-	
+
 	/**
 	 * Liefert für ein SELECT-Feld die Optionsliste
 	 * Die Optionsliste wird mittels dem übergebenen Array zusammengebaut.
 	 * Wobei der Index als Wert und der Value als Anzeige verwendet wird.
 	 * Mit dem optionalem Parameter $current, wird definiert welcher Index ausgewählt
 	 * sein soll.
-	 * 
+	 *
 	 * @param array $array   Array mit den Optionwerten
-	 * @param mixed $current Optionaler Parameter für die Auswahl einer best. Option 
-	 * 
+	 * @param mixed $current Optionaler Parameter für die Auswahl einer best. Option
+	 *
 	 * @return string
 	 */
 	public function options(array $array, $current = null)
 	{
 		$sOption = '<option value="%s" %s>%s</option>';
-		
+
 		$options = array();
-		
+
 		foreach ($array as $key => $value)
 		{
 			$options[] = sprintf(
@@ -526,13 +526,13 @@ class HTMLHelper
 				$value
 			);
 		}
-		
+
 		return implode("\n", $options);
 	}
-	
+
 	/**
 	 * Liefert einen Standardlink verbunden mit Rechteprüfung
-	 * 
+	 *
 	 * @param string  $name       Name des Links
 	 * @param array   $data       Daten für den Linkaufbau
 	 * @param array   $css        Array mit den CSS-Klassen als Value
@@ -540,16 +540,16 @@ class HTMLHelper
 	 * @param string  $route      Name der zu verwendenden Route
 	 * @param string  $reset      Überschreiben fehlender Attribute mit den Standardwerten
 	 * @param boolean $absolute   http davor setzen oder nicht
-	 * 
+	 *
 	 * @return string|null
 	 */
 	public function anchor($name, array $data = array(), $css = array(), $attributes = array(), $route = null, $reset = null, $absolute = false){
-		
+
 		$url = $this->parentView->url($data, $route, $reset, $absolute);
 		$route = $this->parentView->getRoute()->matchUrl($url);
-		
+
 		$link = $url;
-		
+
 		if (class_exists('\App\Models\Right'))
 		{
 			$data = array(
@@ -558,31 +558,40 @@ class HTMLHelper
 				'action' => $route['action'],
 				'prefix' => $route['prefix']
 			);
-			
+
 			$right = new \App\Models\Right($data);
 			$allowed = \App\Manager\Right::isAllowed($right, Registry::getInstance()->login);
-			
+
 			if (!$allowed)
 			{
 				$link = null;
-				$controller = '\\App\Modules\\'.ucfirst($route['module']).'\\Controller\\'.ucfirst($route['controller']);
+
+				if ($data['prefix'] == '')
+				{
+					$controller = '\\App\Modules\\'.ucfirst($route['module']).'\\Controller\\'.ucfirst($route['controller']);
+				}
+				else
+				{
+					$controller = '\\App\Modules\\'.ucfirst($route['prefix']).'\\'.ucfirst($route['module']).'\\Controller\\'.ucfirst($route['controller']);
+				}
+
 				$reflection = new \ReflectionClass($controller);
 				$properties = $reflection->getDefaultProperties();
-				
+
 				if ($properties['checkPermissions'] == false)
 				{
 					$link = $url;
 				}
 			}
 		}
-		
+
 		if (!is_null($link))
 		{
 			$anchorString = "<a href='%s'%s%s>%s</a>";
-			
+
 			$classes = '';
 			$attr = '';
-			
+
 			if (!empty($css))
 			{
 				$classes = ' class="';
@@ -598,8 +607,8 @@ class HTMLHelper
 					$attr .= $attribt.'="'.$value.'" ';
 				}
 			}
-			
-			
+
+
 			return sprintf(
 				$anchorString,
 				$link,
@@ -608,7 +617,7 @@ class HTMLHelper
 				$name
 			);
 		}
-		
+
 		return $link;
 	}
 
