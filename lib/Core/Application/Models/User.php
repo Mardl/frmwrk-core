@@ -28,7 +28,7 @@ use Exception,
 class User extends BaseModel
 {
 
-	
+
     /**
      * Id
      *
@@ -72,7 +72,7 @@ class User extends BaseModel
      *
      * @var string
      *
-     * @Column(type="string", length=40)
+     * @Column(type="string", length=255)
      */
     protected $password;
 
@@ -138,7 +138,7 @@ class User extends BaseModel
      * @Column(type="integer")
      */
     protected $status = 1;
-    
+
     /**
      * Address
      *
@@ -147,7 +147,7 @@ class User extends BaseModel
      * @OneToOne(targetEntity="Core\Application\Models\Address", fetch="LAZY", mappedBy="user", cascade={"all"})
      */
     protected $address;
-    
+
     /**
      * Rights
      *
@@ -165,44 +165,56 @@ class User extends BaseModel
 	 */
 	protected $otp = false;
 
-    
+
 	/**
 	 * Sets new password.
 	 *
 	 * @param string $password String mit dem neuen Passwort
-	 * 
+	 *
 	 * @throws \InvalidArgumentException Wenn das Passwort leer ist
 	 * @throws \ErrorException Wenn das Passwort zu kurz ist
-	 * 
+	 *
 	 * @return string
 	 */
-    public function setPassword($password)
+    public function setPassword($password, $md5 = true)
     {
         if (empty($password))
         {
         	throw new \InvalidArgumentException('Das Passwort darf nicht leer sein');
         }
-    	
+
         if (strlen($password) < 5)
         {
         	throw new \ErrorException('Das Passwort muss mindestens 5 Zeichen lang sein');
         }
-        
-    	$this->password = md5($password);
+
+        if ($md5)
+        {
+        	$this->password = md5($password);
+        }
+    	else
+    	{
+    		$this->password = \Core\String::bcryptEncode(
+    			$password,
+    			md5($this->getId().$this->getBirthday()->format('Ymd').$this->getGender().$this->getCreated()->format("Ymd"))
+    		);
+    	}
     	return $this->password;
     }
-    
+
     /**
      * Das Passwort kann man nicht wiederherstellen, deswegen wird ein leerer String
      * zurückgegeben
-     * 
+     *
      * @return string
+     *
      */
     public function getPassword()
     {
     	return '';
     }
-    
+
+
     /**
      * Sorgt dafür, dass das Geburtsdatum immer ein DateTime-Objekt ist.
      *
@@ -214,7 +226,7 @@ class User extends BaseModel
     {
     	if (!($datetime instanceof \DateTime))
     	{
-    		try 
+    		try
     		{
     			$datetime = new \DateTime($datetime);
     		}
@@ -223,10 +235,10 @@ class User extends BaseModel
     			throw new \InvalidArgumentException('Ungültige Datumsangabe');
     		}
     	}
-    	
+
     	$this->birthday = $datetime;
     }
-    
+
     /**
      * Stellt das Geschlecht auf männlich
      *
@@ -236,7 +248,7 @@ class User extends BaseModel
     {
     	$this->setGender(self::GENDER_MALE);
     }
-    
+
     /**
      * Stellt das Geschlecht auf weiblich
      *
@@ -246,7 +258,7 @@ class User extends BaseModel
     {
     	$this->setGender(self::GENDER_FEMALE);
     }
-    
+
     /**
      * Prüft ob User männlich ist.
      *
@@ -260,7 +272,7 @@ class User extends BaseModel
     	}
     	return false;
     }
-    
+
     /**
      * Prüft ob User weiblich ist.
      *
@@ -274,20 +286,20 @@ class User extends BaseModel
     	}
     	return false;
     }
-    
+
     /**
      * Liefert den kompletten Namen
-     * 
+     *
      * @return string
      */
     public function getFullname()
     {
     	return $this->firstname.' '.$this->lastname;
     }
-    
+
     /**
      * Liefert das Profilbild des Benutzers bzw. abhängig vom Geschlecht ein Placeholder-Foto
-     * 
+     *
      * @return string
      */
     public function getAvatar()
@@ -304,7 +316,7 @@ class User extends BaseModel
     		return  $avatar.($this->isMale()?'male.png':'female.png');
     	}
     }
-    
+
     /**
      * Liefert das Profilbild Object
      *
@@ -336,7 +348,7 @@ class User extends BaseModel
 
     /**
      * Liefert das Alter des Mitglieds
-     * 
+     *
      * @return string
      */
     public function getAge()

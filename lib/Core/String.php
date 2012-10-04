@@ -13,7 +13,7 @@ namespace Core;
 
 /**
  * String
- * 
+ *
  * @category Controller
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
@@ -26,7 +26,7 @@ class String
      * Replace non ASCII chars from string
      *
 	 * @param string $string String to sluggify
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function slug($string)
@@ -56,7 +56,7 @@ class String
      *
      * @param string $haystack Zeichenkette die geprüft werden soll
      * @param string $needle   Zeichenkette auf die geprüft werden soll
-     * 
+     *
      * @return boolean
      */
 	public static function startsWith($haystack, $needle)
@@ -69,7 +69,7 @@ class String
      *
      * @param string $haystack Zeichenkette die geprüft werden soll
      * @param string $needle   Zeichenkette auf die geprüft werden soll
-     * 
+     *
      * @return boolean
      */
 	public static function endsWith($haystack, $needle)
@@ -77,4 +77,14 @@ class String
 		return substr($haystack, -strlen($needle)) == $needle;
 	}
 
+	public static function bcryptEncode($pwd, $salt)
+	{
+		$salt = '$6$rounds=6000$'.substr($salt,0,16).'$';
+		return crypt($pwd, $salt);
+	}
+
+	public static function bcryptCheckup($pwd, $stored)
+	{
+		return (crypt($pwd, $stored) == $stored);
+	}
 }
