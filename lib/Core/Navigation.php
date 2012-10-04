@@ -86,25 +86,40 @@ class Navigation
 			$sp = array();
 			foreach ($links as $action)
 			{
-				$right = new \App\Models\Right(
-					array(
-						'module' => lcfirst($action['module']),
-						'controller' => lcfirst($action['controller']),
-						'action' => lcfirst($action['action']),
-						'prefix' => lcfirst($action['prefix'])
-					)
-				);
-
-				if (\App\Manager\Right::isAllowed($right, $user)){
-					$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
-				}
-
-				$link = strtolower($action['prefix'].$action['module'].$action['controller'].$action['action'].'html');
-
-				if ($link == $current)
+				if ($action['permissions'])
 				{
-					$point = str_replace('{current}', 'current', $point);
+					$right = new \App\Models\Right(
+							array(
+									'module' => lcfirst($action['module']),
+									'controller' => lcfirst($action['controller']),
+									'action' => lcfirst($action['action']),
+									'prefix' => lcfirst($action['prefix'])
+							)
+					);
+
+					if (\App\Manager\Right::isAllowed($right, $user)){
+						$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+					}
+
+					$link = strtolower($action['prefix'].$action['module'].$action['controller'].$action['action'].'html');
+
+					if ($link == $current)
+					{
+						$point = str_replace('{current}', 'current', $point);
+					}
 				}
+				else
+				{
+					$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+
+					$link = strtolower($action['prefix'].$action['module'].$action['controller'].$action['action'].'html');
+
+					if ($link == $current)
+					{
+						$point = str_replace('{current}', 'current', $point);
+					}
+				}
+
 
 			}
 
@@ -209,6 +224,16 @@ class Navigation
 				$reflect = new \ReflectionClass($class);
 				//Methoden auslesen
 				$methods = $reflect->getMethods();
+				$properties = $reflect->getDefaultProperties();
+
+				if (isset($properties['checkPermissions']))
+				{
+					$checkPermission = $properties['checkPermissions'];
+				}
+				else
+				{
+					$checkPermission = CHECK_PERMISSIONS;
+				}
 
 				$classDoc = $reflect->getDocComment();
 				if ($classDoc !== false){
@@ -258,6 +283,7 @@ class Navigation
 								$conf['url'] = $view->url($conf, 'default');
 								$conf['prefix'] = $prefix;
 								$conf['title'] = $navigationName;
+								$conf['permissions'] = $checkPermission;
 
 								$this->links[$navigationGroup][$navigationSort.'-'.$navigationName] = $conf;
 							}
