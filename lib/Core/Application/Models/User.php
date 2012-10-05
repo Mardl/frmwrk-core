@@ -196,7 +196,10 @@ class User extends BaseModel
     	{
     		$this->password = \Core\String::bcryptEncode(
     			$password,
-    			md5($this->getId().$this->getBirthday()->format('Ymd').$this->getGender().$this->getCreated()->format("Ymd"))
+    			md5($this->getId().
+					$this->getBirthday()->format('Ymd').
+					$this->getGender().
+					$this->getCreated()->format("Ymd"))
     		);
     	}
     	return $this->password;
