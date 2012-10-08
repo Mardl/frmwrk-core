@@ -20,19 +20,16 @@ class Element{
 		$this->id = $id;
 		$this->addCssClasses($css);
 		$this->breakafter = $breakafter;
-		
 	}
 	
 	public function addElement(Element $element){
 		$this->elements[] = $element;
-	
 	}
 	
 	public function addElements(array $elements){
 		foreach ($elements as $element){
 			$this->addElement($element);
 		}
-	
 	}
 	
 	public function setRequired($required = true){
@@ -45,39 +42,32 @@ class Element{
 	
 	public function isRequired(){
 		return $this->required;
-		
 	}
 	
 	public function setCssClass($class){
 		$this->cssClasses = array($class);
-		
 	}
 	
 	public function addCssClass($class){
 		$this->cssClasses[] = $class; 
-		
 	}
 	
 	public function addCssClasses(array $classes){
 		foreach ($classes as $class){
 			$this->addCssClass($class);
 		}
-		
 	}
 	
 	public function hasCssClasses(){
 		return (count($this->cssClasses) >= 1);
-		
 	}
 	
 	public function getCssClasses(){
 		return implode(' ',$this->cssClasses);
-		
 	}
 	
 	public function setInlineStyle($style,$value){
 		$this->cssInline[$style] = $value;
-		
 	}
 	
 	public function getInlineCss(){
@@ -87,12 +77,10 @@ class Element{
 			
 		}
 		return $output;
-		
 	}
 	
 	public function hasInlineCss(){
 		return (count($this->cssInline) >= 1);
-		
 	}
 		
 	public function setLabel($label){
@@ -100,22 +88,18 @@ class Element{
 			$label = new Label($label, $this->getName());
 		}
 		$this->label = $label;
-		
 	}
 	
 	public function getLabel(){
 		return $this->label;
-		
 	}
 	
 	public function setId($id){
 		$this->id = $id;
-		
 	}
 	
 	public function getPlainId(){
 		return $this->id;
-	
 	}
 	
 	public function getId(){
@@ -131,12 +115,10 @@ class Element{
 			}
 			return " id='".$this->id."'";
 		}
-		
 	}
 	
 	public function setName($name){
 		$this->name = $name;
-	
 	}
 	
 	public function getName()
@@ -160,12 +142,10 @@ class Element{
 	
 	public function setValue($value){
 		$this->value = $value;
-	
 	}
 	
 	public function getValue(){
 		return $this->value;
-	
 	}
 	
 	public function validate()
@@ -197,7 +177,6 @@ class Element{
 		}
 	}
 	
-	
 	public function renderAttributes()
 	{
 		$output = '';
@@ -220,5 +199,3 @@ class Element{
 		return $this->readonly;
 	}
 }
-
-?>

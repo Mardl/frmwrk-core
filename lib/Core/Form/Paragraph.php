@@ -7,8 +7,7 @@ class Paragraph extends Element
 	public function __construct($breakafter=false){
 		$this->breakafter = $breakafter;
 	}
-	
-	
+
 	public function __toString(){
 		$elements = '';
 		foreach ($this->elements as $element){
@@ -30,10 +29,6 @@ class Paragraph extends Element
 			$output = str_replace('{breakafter}', null, $output);
 		}
 		
-		
 		return $output;
-		
 	}
-	
 }
-?>

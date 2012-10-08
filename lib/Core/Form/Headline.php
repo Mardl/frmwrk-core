@@ -23,7 +23,6 @@ class Headline extends Element{
 		$output = str_replace('{attr}', $this->renderAttributes(), $output);
 	
 		return $output;
-	
 	}
 	
 	public function setIndex($index)
@@ -35,7 +34,5 @@ class Headline extends Element{
 	{
 		return $this->index;
 	}
-	
-	
+
 }
-?>

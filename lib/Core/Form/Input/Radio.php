@@ -3,23 +3,25 @@ namespace Core\Form\Input;
 
 use Core\Form\Input;
 
-class Radio extends Input{
-
+class Radio extends Input
+{
 	private $options = array();
 	
-	public function addOption($value, $tag, $selected = false){
+	public function addOption($value, $tag, $selected = false)
+	{
 		$this->options[] = array($value,$tag,$selected);
-		
 	}
 	
-	public function __toString(){
+	public function __toString()
+	{
 		$output = '';
 		
 		$opt = file_get_contents(APPLICATION_PATH.'/Layout/Form/radio.html.php');
 		
-		foreach ($this->options as $option){
-			
-			if ($this->hasCssClasses()){
+		foreach ($this->options as $option)
+		{
+			if ($this->hasCssClasses())
+			{
 				$opt = str_replace('{class}', 'class="'.$this->getCssClasses().'"', $opt);
 			}
 			else
@@ -28,13 +30,10 @@ class Radio extends Input{
 			}
 			
 			$opt = str_replace('{style}', $this->getInlineCss(), $opt);
-			
 			$opt = str_replace('{id}', $this->getId(), $opt);
-			
 			$opt = str_replace('{name}', $this->getName(), $opt);
 			$opt = str_replace('{label}', $this->getLabel(), $opt);
 			$opt = str_replace('{attr}', $this->renderAttributes(), $opt);
-			
 			$opt = str_replace('{value}', htmlspecialchars($option[0]), $opt);
 			$opt = str_replace('{title}', htmlspecialchars($option[1]), $opt);
 			
@@ -61,6 +60,4 @@ class Radio extends Input{
 		
 		return $output;
 	}
-	
-	
 }

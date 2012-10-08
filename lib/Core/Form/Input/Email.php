@@ -3,8 +3,8 @@ namespace Core\Form\Input;
 
 use Core\Form\Input;
 
-class Email extends Input{
-
+class Email extends Input
+{
 	public function validate()
 	{
 		$val = $this->getValue();
@@ -23,11 +23,10 @@ class Email extends Input{
 		else if (!empty($val))
 		{
 			if (!filter_var($val, FILTER_VALIDATE_EMAIL)) {
-				return "Die Emailadresse wird als ungültig angesehen";
+				return "Die E-Mail-Adresse wird als ungültig angesehen";
 			}
 		}
 		
 		return true;
 	}
-	
 }

@@ -14,14 +14,12 @@ class Text extends Element{
 	
 	public function setText($text){
 		$this->text = $text;
-		
 	}
 	
 	public function addText($text){
 		$this->text .= $text;
 	}
-	
-	
+
 	public function __toString(){
 		$output = '';
 		
@@ -29,8 +27,5 @@ class Text extends Element{
 		if ($this->breakafter){$output .= '<br/>';}
 		
 		return $output;		
-		
 	}
-	
 }
-?>

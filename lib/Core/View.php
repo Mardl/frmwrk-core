@@ -110,8 +110,6 @@ class View extends ArrayObject
 		
 		$this->html = new \Core\HTMLHelper($this);
 		$this->html->addCssAsset('default');
-			
-		
 	}
 
 	/**

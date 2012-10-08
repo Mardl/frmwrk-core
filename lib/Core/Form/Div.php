@@ -1,10 +1,10 @@
 <?php
 namespace Core\Form;
 
-class Div extends Element{
-
-	
-	public function __construct($css = array(), $breakafter=false){
+class Div extends Element
+{
+	public function __construct($css = array(), $breakafter=false)
+	{
 		$this->breakafter = $breakafter;
 		$this->addCssClasses($css);
 	}
@@ -30,11 +30,7 @@ class Div extends Element{
 		{
 			$output = str_replace('{breakafter}', null, $output);
 		}
-		
-		
+
 		return $output;
-		
 	}
-	
 }
-?>

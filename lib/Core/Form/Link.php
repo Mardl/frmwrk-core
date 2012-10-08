@@ -8,14 +8,12 @@ class Link extends Element{
 	private $target = '_self';
 	private $title;
 
-
 	public function __construct($breakafter=false){
 		$this->breakafter = $breakafter;
 	}
 
 	public function setPath($path){
 		$this->path = $path;
-
 	}
 
 	public function setImageAsName(Img $img){
@@ -29,7 +27,6 @@ class Link extends Element{
 	public function setTarget($target){
 		$this->target = $target;
 	}
-
 
 	public function __toString(){
 		$output = '<a href="'.$this->path.'"';
@@ -59,11 +56,8 @@ class Link extends Element{
 
 		$output .= '</a>';
 
-		if ($this->breakafter){$output .= '<br/>';}
+		if ($this->breakafter){ $output .= '<br/>'; }
 
 		return $output;
-
 	}
-
 }
-?>

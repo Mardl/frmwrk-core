@@ -6,7 +6,6 @@ class Textarea extends Element{
 	public function __construct($id, $default, $css = array(), $breakafter = false){
 		parent::__construct($id, $css, $breakafter);
 		$this->setValue($default);
-		
 	}
 		
 	public function __toString(){
@@ -22,12 +21,9 @@ class Textarea extends Element{
 		}
 		
 		$output = str_replace('{style}', $this->getInlineCss(), $output);
-		
 		$output = str_replace('{id}', $this->getId(), $output);
-				
 		$output = str_replace('{name}', $this->getName(), $output);
 		$output = str_replace('{attr}', $this->renderAttributes(), $output);
-		
 		$output = str_replace('{value}', htmlspecialchars($this->getValue()), $output);
 		
 		if ($this->breakafter)
@@ -41,5 +37,4 @@ class Textarea extends Element{
 		
 		return $output;
 	}
-	
 }

@@ -3,13 +3,11 @@ namespace Core\Form;
 
 class Span extends Element{
 
-
-	
 	public function __construct()
 	{ 
 		
 	}
-		
+
 	public function __toString(){
 		$elements = '';
 		foreach ($this->elements as $element){
@@ -24,8 +22,5 @@ class Span extends Element{
 		$output = str_replace('{attr}', $this->renderAttributes(), $output);
 		
 		return $output;
-		
 	}
-	
 }
-?>

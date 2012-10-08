@@ -11,16 +11,14 @@ class Label extends Element{
 		$this->setValue($value);
 		$this->parent = $parent;
 		$this->breakafter = $breakafter;
-		
 	}
 	
 	public function setParent($parent){
 		$this->parent = $parent;
-		
 	}
 	
-	public function __toString(){
-		
+	public function __toString()
+	{
 		if (is_null($this->value)){
 			return "Label for '".$this->parent."' has no value";	
 		}
@@ -47,13 +45,9 @@ class Label extends Element{
 		{
 			$output .= '>'.$this->value.'</label>';
 		}
-		
-		
+
 		if ($this->breakafter){$output .= '<br/>';}
 		
 		return $output;		
-		
 	}
-	
 }
-?>

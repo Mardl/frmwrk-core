@@ -8,15 +8,12 @@ class Select extends Element{
 	private $size = 1;
 	private $multiselect = false;
 
-
 	public function setName($name){
 		$this->name = $name;
-
 	}
 
 	public function addOption($value, $tag, $selected = false){
 		$this->options[] = array($value,$tag,$selected);
-
 	}
 
 	public function addOptionGrouped($value, $tag, $optgroup, $selected = false){
@@ -28,17 +25,14 @@ class Select extends Element{
 		}
 
 		$this->optGroups[$optgroup][] = array($value,$tag,$selected);
-
 	}
 
 	public function setSize($size){
 		$this->size = $size;
-
 	}
 
 	public function setMultiSelect($boolean){
 		$this->multiselect = $boolean;
-
 	}
 
 	public function __toString(){
@@ -92,8 +86,6 @@ class Select extends Element{
 			}
 			$output .= "</optgroup>";
 		}
-
-
 
 		$output .= '</select>';
 

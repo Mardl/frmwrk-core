@@ -12,7 +12,6 @@ class Fieldset extends Element{
 	
 	public function setLegend($legend){
 		$this->legend = $legend;
-		
 	}
 	
 	public function __toString(){
@@ -46,8 +45,5 @@ class Fieldset extends Element{
 		}
 		
 		return $output;
-		
 	}
-	
 }
-?>

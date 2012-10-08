@@ -3,20 +3,22 @@ namespace Core\Form\Input;
 
 use Core\Form\Input;
 
-class Checkbox extends Input{
-	
+class Checkbox extends Input
+{
 	private $title = null;
 	
-	public function setTitle($title){
+	public function setTitle($title)
+	{
 		$this->title = $title;
 	}
 	
-	private function getTitle(){
+	private function getTitle()
+	{
 		return $this->title;
 	}
 	
-	public function __toString(){
-		
+	public function __toString()
+	{
 		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/checkbox.html.php');
 		$output = str_replace('{class}', $this->getCssClasses(), $output);
 		$output = str_replace('{type}', $this->type, $output);
@@ -32,5 +34,4 @@ class Checkbox extends Input{
 		
 		return $output;
 	}
-	
 }
