@@ -1,14 +1,13 @@
 <?php
-namespace Core\Form;
+namespace Core\Html;
 
-class Span extends \Core\Html\Span{
+class Paragraph extends Element
+{
 
-
-
-	public function __construct()
-	{
-
+	public function __construct($breakafter=false){
+		$this->breakafter = $breakafter;
 	}
+
 
 	public function __toString(){
 		$elements = '';
@@ -16,12 +15,21 @@ class Span extends \Core\Html\Span{
 			$elements .= $element;
 		}
 
-		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/span.html.php');
+		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/paragraph.html.php');
 		$output = str_replace('{class}', $this->getCssClasses(), $output);
 		$output = str_replace('{style}', $this->getInlineCss(), $output);
 		$output = str_replace('{id}', $this->getId(), $output);
 		$output = str_replace('{elements}',$elements, $output);
-		$output = str_replace('{attr}', $this->renderAttributes(), $output);
+
+		if ($this->breakafter)
+		{
+			$output = str_replace('{breakafter}', '<br/>', $output);
+		}
+		else
+		{
+			$output = str_replace('{breakafter}', null, $output);
+		}
+
 
 		return $output;
 

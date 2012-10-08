@@ -1,7 +1,7 @@
 <?php
-namespace Core\Form;
+namespace Core\Html;
 
-class Span extends \Core\Html\Span{
+class Span extends Element{
 
 
 

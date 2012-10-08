@@ -26,63 +26,63 @@ class Model
 	 * @var integer
 	 */
 	const GENDER_MALE = 1;
-	
+
 	/**
 	 * Integer value of gender female
 	 * @var integer
 	 */
 	const GENDER_FEMALE = 2;
-	
+
 	/**
 	 * Integer value of gender unknown
 	 * @var integer
 	 */
 	const GENDER_BOTH = 3;
-	
+
 	/**
 	 * Haben sich Daten im Model geändert oder nicht
-	 * 
+	 *
 	 * @var boolean
 	 */
 	protected $changed = false;
-	
+
 	/**
 	 * Handelt es sich um ein der Datenbank unbekanntes Objekt
-	 * 
+	 *
 	 * @var boolean
 	 */
 	protected $new = true;
-	
+
 	/**
 	 * Abfangen von unbekannten Funktionen
 	 * Derzeit werden folgende Methode auf Attribute angehandelt
-	 * "set..." Wert für das Attribut setzten  
-	 * "get..." Liefere den Wert 
+	 * "set..." Wert für das Attribut setzten
+	 * "get..." Liefere den Wert
 	 * "is..." Vergleiche Wert (Beispiel: $user->isName('John'))
 	 * "has..." Prüft ob ein Attribut einen Wert hat (also nicht: null, 0 oder false)
-	 * 
+	 *
 	 * @param string $name   Name der Methode
 	 * @param array  $params Array mit Parametern
-	 * 
+	 *
 	 * @throws \InvalidArgumentException Wenn das Attribut nicht vorhanden ist
 	 * @throws \InvalidArgumentException Wenn die Methode unbekannt ist
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function __call($name, $params)
 	{
 		$parts = preg_split('/^([a-z]+)/', $name, -1, PREG_SPLIT_DELIM_CAPTURE);
-		
+
 		$method = $parts[1];
 		$attribute = lcfirst($parts[2]);
-		
+
 		if (!property_exists($this, $attribute))
 		{
 			throw new \InvalidArgumentException(
 				'Die Klasse '.__CLASS__.' hat das Attribut "'.$attribute.'" nicht'
-			);			
+			);
 		}
-		
+
 		switch ($method)
 		{
 		case 'set':
@@ -108,7 +108,7 @@ class Model
 			break;
 		}
 	}
-	
+
 	/**
 	 * Konstruktor
 	 *
@@ -120,11 +120,12 @@ class Model
 		$this->changed = false;
 	}
 
+	/*
 	public function getIdField()
 	{
 		return 'id';
 	}
-
+	*/
 	public function getId()
 	{
 		return $this->id;
@@ -135,8 +136,9 @@ class Model
 		$this->id = $id;
 	}
 
+
 	public function setDataRow($data = array()){
-		
+
 		if (!empty($data))
 		{
 			foreach ($data as $key => $value)
@@ -145,9 +147,9 @@ class Model
 				$this->$setter($value);
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
@@ -159,7 +161,7 @@ class Model
 	{
 		if (!($datetime instanceof \DateTime))
 		{
-			try 
+			try
     		{
     			$datetime = new \DateTime($datetime);
     		}
@@ -168,10 +170,10 @@ class Model
     			throw new \InvalidArgumentException('Ungültige Datumsangabe');
     		}
 		}
-	
+
 		$this->created = $datetime;
 	}
-	
+
 	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
@@ -183,7 +185,7 @@ class Model
 	{
 		if (!($datetime instanceof \DateTime))
 		{
-			try 
+			try
     		{
     			$datetime = new \DateTime($datetime);
     		}
@@ -192,7 +194,7 @@ class Model
     			throw new \InvalidArgumentException('Ungültige Datumsangabe');
     		}
 		}
-	
+
 		$this->modified = $datetime;
 	}
 
@@ -212,5 +214,45 @@ class Model
 		return $this->new;
 	}
 
+
+	/**
+	 * Liefert den Tabellenname des Objekts anhand des Klassenkommentars @Table
+	 *
+	 * @return string|NULL
+	 */
+	public function getTableName()
+	{
+		$reflect = new \ReflectionClass($this);
+		$doc = $reflect->getDocComment();
+
+		if (preg_match('/\@Table\((.*)\)/s', $doc, $matches))
+		{
+			$tmp = substr($matches[1], strpos($matches[1], 'name="'));
+			$tmp = substr($tmp, strpos($tmp, '"')+1);
+			return substr($tmp, 0, strpos($tmp, '"'));
+		}
+
+		return null;
+	}
+
+
+	public function getIdField()
+	{
+		$reflect = new \ReflectionClass($this);
+		$properties = $reflect->getProperties();
+
+		foreach ($properties as $prop)
+		{
+			$doc = $prop->getDocComment();
+
+			if (preg_match('/\@Id/s', $doc, $matches))
+			{
+				return $prop->getName();
+			}
+
+		}
+
+		throw new \ErrorException("Kein ID-Feld über @Id definiert");
+	}
 
 }

@@ -26,7 +26,7 @@ use ArrayObject,
  * Also a search stack has been added for version 2. The first Core Framework always
  * required the full path to the template. With the stack its possible to define
  * places to look for the template in case it hasn't been found with the name provided.
- * 
+ *
  * @category View
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
@@ -63,7 +63,7 @@ class View extends ArrayObject
 	protected $searchStack = array();
 
 	protected $placeholder = array();
-	
+
 	/**
 	 * Holds the HTMLHelper
 	 *
@@ -73,25 +73,25 @@ class View extends ArrayObject
 
 	/**
 	 * Holds title information
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $pageTitle = array();
-	
+
 	/**
 	 * Holds page description
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $pageDescription = '';
-	
+
 	/**
 	 * Holds keywords
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $pageKeywords = array();
-	
+
 	/**
 	 * Constructor
 	 *
@@ -107,11 +107,11 @@ class View extends ArrayObject
 		}
 
 		$this->setRouter(Registry::getInstance()->router);
-		
+
 		$this->html = new \Core\HTMLHelper($this);
 		$this->html->addCssAsset('default');
-			
-		
+
+
 	}
 
 	/**
@@ -138,7 +138,7 @@ class View extends ArrayObject
 	 * Returns NULL if variable has not been found
 	 *
 	 * @param string $key Key
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function offsetGet($key)
@@ -151,7 +151,7 @@ class View extends ArrayObject
 	 * Required to build urls in view via the url method
 	 *
 	 * @param Core\Router $router Router
-	 * 
+	 *
 	 * @return Core\Router
 	 */
 	public function setRouter(Router $router)
@@ -170,7 +170,7 @@ class View extends ArrayObject
 		$route = $this->router->getCurrent() ?: 'default';
 		try {
 			return $this->router[$route];
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new \ErrorException("Specified route $route not found");
@@ -201,7 +201,7 @@ class View extends ArrayObject
 	 * Set title for page
 	 *
 	 * @param string $title Title
-	 * 
+	 *
 	 * @return array
 	 */
 	public function setTitle($title)
@@ -214,7 +214,7 @@ class View extends ArrayObject
 	 * Add part to title for page
 	 *
 	 * @param string $title Title
-	 * 
+	 *
 	 * @return array
 	 */
 	public function addTitle($title)
@@ -228,7 +228,7 @@ class View extends ArrayObject
 	 * Parts of title returned in reverse order and separated with $separator
 	 *
 	 * @param string $separator Seperator between parts of title
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTitle($separator=' - ')
@@ -245,7 +245,7 @@ class View extends ArrayObject
 	 * Add keyword for HTML meta tags
 	 *
 	 * @param string $keyword Keyword
-	 * 
+	 *
 	 * @return array Keywords
 	 */
 	public function addKeyword($keyword)
@@ -259,7 +259,7 @@ class View extends ArrayObject
 	 * Add keywords for HTML meta tags
 	 *
 	 * @param string $keyword[,...] Keywords
-	 * 
+	 *
 	 * @return array
 	 */
 	public function addKeywords()
@@ -273,7 +273,7 @@ class View extends ArrayObject
 	 * Keywords are sorted and escaped with htmlspecialchars
 	 *
 	 * @param string $separator Seperator
-	 * 
+	 *
 	 * @return string Keywords
 	 */
 	public function getKeywords($separator=', ')
@@ -291,7 +291,7 @@ class View extends ArrayObject
 	 * Set description for HTML meta tags
 	 *
 	 * @param string $description Description
-	 * 
+	 *
 	 * @return string
 	 */
 	public function setDescription($description)
@@ -304,7 +304,7 @@ class View extends ArrayObject
 
 	/**
 	 * Get description
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getDescription()
@@ -320,7 +320,7 @@ class View extends ArrayObject
 	 * Set template and remove all previous
 	 *
 	 * @param string $template Template filename
-	 * 
+	 *
 	 * @return array
 	 */
 	public function setTemplate($template)
@@ -333,7 +333,7 @@ class View extends ArrayObject
 	 * Add template to stack
 	 *
 	 * @param string $template Template filename
-	 * 
+	 *
 	 * @return array
 	 */
 	public function addTemplate($template)
@@ -346,12 +346,28 @@ class View extends ArrayObject
 	{
 		$this->placeholder[$key] = $value;
 	}
-	
+
+	/**
+	 * Fügt mehrere Inhalte zu einem Placeholder hinzu
+	 *
+	 * @param string $key   Placeholdername
+	 * @param mixed  $value Content
+	 */
+	public function addMultiPlaceholder($key, $value)
+	{
+		if (!array_key_exists($key, $this->placeholder))
+		{
+			$this->placeholder[$key] = array();
+		}
+
+		$this->placeholder[$key][] = $value;
+	}
+
 	public function getPlaceholder($key)
 	{
 		return $this->placeholder[$key];
 	}
-	
+
 	/**
 	 * Remove templates from stack
 	 *
@@ -377,7 +393,7 @@ class View extends ArrayObject
 	 * Render templates
 	 *
 	 * @param string|null $template Template filename
-	 * 
+	 *
 	 * @return string
 	 */
 	public function render($template = null)
@@ -394,24 +410,35 @@ class View extends ArrayObject
 
 		foreach (array_reverse($this->templates) as $template)
 		{
-			try 
+			try
 			{
 				ob_start();
 				include $template;
 				$this->content = ob_get_clean();
-				
+
 				foreach ($this->placeholder as $key => $value){
-					$this->content = str_replace('{'.$key.'}', $value, $this->content);
+					$c = $value;
+
+					if (is_array($value))
+					{
+						$c = '';
+						foreach ($value as $val)
+						{
+							$c .= $val;
+						}
+					}
+
+					$this->content = str_replace('{'.$key.'}', $c, $this->content);
 				}
 			}
-			catch(Exception $e) 
+			catch(Exception $e)
 			{
 				ob_end_clean();
 
 				$this->content = '<div style="background: #f99; padding: 0.5em; margin: 0.5em;';
 				$this->content .= ' border: 1px solid #f00;">'.$e->getMessage();
 				$this->content .= '<br />File: '.$e->getFile().':'.$e->getLine().'</div>';
-				
+
 				throw $e;
 			}
         }
