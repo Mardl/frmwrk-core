@@ -27,7 +27,6 @@ class BaseGenerator
 	{
 		$this->form = new Form($data);
 		$this->form->setAction($action);
-
 	}
 
 	/**
@@ -38,7 +37,6 @@ class BaseGenerator
 	public function getForm()
 	{
 		return $this->form;
-
 	}
 
 	/**
@@ -49,7 +47,6 @@ class BaseGenerator
 	public function asString()
 	{
 		return $this->form;
-
 	}
 
 	/**
@@ -65,7 +62,6 @@ class BaseGenerator
 
 		foreach ($elementContainer->getElements() as $el)
 		{
-
 			$check = $el->validate();
 
 			if ($check !== true)
@@ -84,9 +80,4 @@ class BaseGenerator
 
 		return $checkup;
 	}
-
 }
-
-
-
-?>

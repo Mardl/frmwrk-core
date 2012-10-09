@@ -608,7 +608,6 @@ class HTMLHelper
 				}
 			}
 
-
 			return sprintf(
 				$anchorString,
 				$link,
@@ -620,11 +619,4 @@ class HTMLHelper
 
 		return $link;
 	}
-
 }
-
-
-
-
-
-

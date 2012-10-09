@@ -111,7 +111,6 @@ class View extends ArrayObject
 		$this->html = new \Core\HTMLHelper($this);
 		$this->html->addCssAsset('default');
 
-
 	}
 
 	/**
@@ -443,6 +442,39 @@ class View extends ArrayObject
 			}
         }
 		return $this->content;
+	}
+
+	/**
+	 * @param $date Formatiert das Datum in d.m.Y (z.B. 01.01.1970)
+	 * @return string
+	 */
+	public function formatDate($date)
+	{
+		return $date->format('d.m.Y');
+	}
+
+	/**
+	 * @param $value
+	 * @param string $currency
+	 * @return string
+	 */
+	public function convertToCurrency($value,$currency='€')
+	{
+		$number = number_format($value, 2, ',', '.');
+		return $number . " $currency";
+	}
+
+	/**
+	 * @param $value
+	 * @return string
+	 */
+	public function formatNumberStyle($value)
+	{
+		if(!empty($value))
+		{
+			return $this->convertToCurrency($value);
+		}
+		return '-';
 	}
 
 }
