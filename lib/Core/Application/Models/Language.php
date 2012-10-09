@@ -22,7 +22,7 @@ use Core\Model as BaseModel;
  * @Entity
  * @Table(name="languages")
  */
-class Language extends BaseModel
+class Language extends BaseModel implements \Core\Application\Interfaces\ModelsInterface
 {
 
     /**
@@ -64,5 +64,16 @@ class Language extends BaseModel
     protected $country;
 
 
+    public function getDataRow()
+    {
+    	$data = array(
+    		'id'		=> $this->getId(),
+    		'volltext'	=> $this->getVolltext(),
+    		'isocode' 	=> $this->getIsocode(),
+    		'country' 	=> $this->getCountry()
+    	);
+
+    	return $data;
+    }
 
 }

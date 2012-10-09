@@ -22,20 +22,9 @@ use jamwork\common\Registry,
  * @package  Manager
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-class Language extends \Core\Application\Manager\Base implements \Core\Application\Interfaces\ModelsInterface
+class Language extends \Core\Application\Manager\Base
 {
 
-	public function getDataRow()
-	{
-		$data = array(
-			'id'		=> $this->getId(),
-			'volltext'	=> $this->getVolltext(),
-			'isocode' 	=> $this->getIsocode(),
-			'country' 	=> $this->getCountry()
-		);
-
-		return $data;
-	}
 
 }
 
