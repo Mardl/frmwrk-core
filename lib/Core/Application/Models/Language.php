@@ -8,7 +8,7 @@
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace Core\Application\Models;
+namespace App\Models;
 
 use Core\Model as BaseModel;
 
@@ -20,7 +20,7 @@ use Core\Model as BaseModel;
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @Entity
- * @Table(name="languages")
+ * @Table(name="languages", prefix="lng_")
  */
 class Language extends BaseModel implements \Core\Application\Interfaces\ModelsInterface
 {
