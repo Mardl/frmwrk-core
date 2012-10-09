@@ -18,7 +18,7 @@ use App\Models\Right,
 /**
  * PublicController Class
  * PublicController inkl. Rechteabfrage
- * 
+ *
  * @category Controller
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
@@ -26,19 +26,19 @@ use App\Models\Right,
 class PublicController extends Controller
 {
 	protected $checkPermissions = true;
-	
+
 	/**
 	 * Construct
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		parent::__construct();
-		
+
 		$module 	= $this->request->getParam('module');
 		$controller = $this->request->getParam('controller');
 		$action		= $this->request->getParam('action');
 		$prefix		= $this->request->getParam('prefix');
-		
+
 		$right = new Right(
 			array(
 				'module' => $module,
@@ -47,7 +47,7 @@ class PublicController extends Controller
 				'prefix' => $prefix
 			)
 		);
-		
+
 		if ($this->checkPermissions)
 		{
 			try {
@@ -57,18 +57,18 @@ class PublicController extends Controller
 			{
 				$this->response->redirect($this->view->url(array(), 'login', true));
 			}
-				
-			if (!RightManager::isAllowed($right, $login))
+
+			if (($login->getAdmin() == false) && !RightManager::isAllowed($right, $login))
 			{
 				throw new \Exception('Zugriff auf nicht erlaubte Aktion');
 			}
 		}
-		
+
 		if ($this->view->login)
 		{
 			$this->view->html->addJsAsset('loggedin');
 		}
-		
+
 	}
 
 

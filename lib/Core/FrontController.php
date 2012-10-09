@@ -267,6 +267,7 @@ class FrontController
 		// Controller allow us to use Action-Method depending on the formatm e.g. indexHTMLAction
 		$class = new $controllerName();
 		$method = $this->searchAction($class, $parts['action'], $parts['format']);
+
 		$class->setFrontController($this);
 		$class->setRouter($this->router);
 		$class->init();

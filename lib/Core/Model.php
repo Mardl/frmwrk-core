@@ -120,12 +120,6 @@ class Model
 		$this->changed = false;
 	}
 
-	/*
-	public function getIdField()
-	{
-		return 'id';
-	}
-	*/
 	public function getId()
 	{
 		return $this->id;
@@ -135,7 +129,6 @@ class Model
 	{
 		$this->id = $id;
 	}
-
 
 	public function setDataRow($data = array()){
 

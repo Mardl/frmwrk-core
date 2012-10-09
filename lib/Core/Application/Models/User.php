@@ -165,6 +165,22 @@ class User extends BaseModel
 	 */
 	protected $otp = false;
 
+	/**
+	 * Administrator
+	 *
+	 * @var boolean
+	 *
+	 * @Column(type="boolean")
+	 */
+	protected $admin = false;
+
+	/**
+	 * Language
+	 *
+	 * @ManyToOne(targetEntity="Core\Application\Models\Language")
+	 * @JoinColumn(name="language_id", referencedColumnName="id")
+	 */
+	protected $language;
 
 	/**
 	 * Sets new password.
@@ -357,5 +373,16 @@ class User extends BaseModel
     	$birthdate = $this->getBirthday();
     	$interval = $today->diff($birthdate);
     	return $interval->format('%y');
+    }
+
+    public function setLanguage($language)
+    {
+    	if (!($language instanceof \Core\Application\Models\Language))
+    	{
+    		$manager = new \Core\Application\Manager\Language();
+    		$language = $manager->getModelById(new \Core\Application\Models\Language(), $language);
+    	}
+
+    	$this->language = $language;
     }
 }
