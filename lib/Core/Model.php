@@ -54,6 +54,13 @@ class Model
 	protected $new = true;
 
 	/**
+	 * Handelt es sich um ein der Datenbank unbekanntes Objekt
+	 *
+	 * @var ReflectionClass
+	 */
+	protected $reflectionClass;
+
+	/**
 	 * Abfangen von unbekannten Funktionen
 	 * Derzeit werden folgende Methode auf Attribute angehandelt
 	 * "set..." Wert für das Attribut setzten
@@ -72,9 +79,16 @@ class Model
 	public function __call($name, $params)
 	{
 		$parts = preg_split('/^([a-z]+)/', $name, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$prefix = $this->getTablePrefix();
+		if (!empty($prefix))
+		{
+			$parts[2] = str_replace($prefix, '', $parts[2]);
+		}
 
 		$method = $parts[1];
 		$attribute = lcfirst($parts[2]);
+
+
 
 		if (!property_exists($this, $attribute))
 		{
@@ -215,8 +229,11 @@ class Model
 	 */
 	public function getTableName()
 	{
-		$reflect = new \ReflectionClass($this);
-		$doc = $reflect->getDocComment();
+		if (!$this->reflectionClass)
+		{
+			$this->reflectionClass = new \ReflectionClass($this);
+		}
+		$doc = $this->reflectionClass->getDocComment();
 
 		if (preg_match('/\@Table\((.*)\)/s', $doc, $matches))
 		{
@@ -228,11 +245,36 @@ class Model
 		return null;
 	}
 
+	/**
+	 * Liefert den Tabellenname des Objekts anhand des Klassenkommentars @Table
+	 *
+	 * @return string|NULL
+	 */
+	public function getTablePrefix()
+	{
+		if (!$this->reflectionClass)
+		{
+			$this->reflectionClass = new \ReflectionClass($this);
+		}
+		$doc = $this->reflectionClass->getDocComment();
+
+		if (preg_match('/\@Prefix\((.*)\)/s', $doc, $matches))
+		{
+			$tmp = substr($matches[1], strpos($matches[1], 'name="'));
+			$tmp = substr($tmp, strpos($tmp, '"')+1);
+			return substr($tmp, 0, strpos($tmp, '"'));
+		}
+
+		return null;
+	}
 
 	public function getIdField()
 	{
-		$reflect = new \ReflectionClass($this);
-		$properties = $reflect->getProperties();
+		if (!$this->reflectionClass)
+		{
+			$this->reflectionClass = new \ReflectionClass($this);
+		}
+		$properties = $this->reflectionClass->getProperties();
 
 		foreach ($properties as $prop)
 		{
