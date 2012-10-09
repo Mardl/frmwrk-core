@@ -8,7 +8,7 @@
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace App\Models;
+namespace Core\Application\Models;
 
 use Core\Model as BaseModel;
 

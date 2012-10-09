@@ -11,7 +11,7 @@
 namespace Core\Application\Models;
 
 use Exception,
-	App\Manager\Directory\Files as FilesManager,
+	Core\Application\Manager\Directory\Files as FilesManager,
 	Core\Model as BaseModel;
 
 /**
