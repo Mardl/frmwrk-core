@@ -8,7 +8,7 @@
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace App\Models;
+namespace Core\Application\Models;
 
 use Core\Model as BaseModel;
 
@@ -19,8 +19,7 @@ use Core\Model as BaseModel;
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @Entity
- * @Table(name="addresses")
+ * @MappedSuperclass
  */
 class Address extends BaseModel
 {
@@ -71,7 +70,7 @@ class Address extends BaseModel
      * @Column(type="string", length=32, nullable=true)
      */
     protected $province;
-	
+
     /**
      * User
      *
@@ -80,5 +79,5 @@ class Address extends BaseModel
      * @OneToOne(targetEntity="App\Models\User", fetch="LAZY", inversedBy="address")
      */
     protected $user;
-    
+
 }

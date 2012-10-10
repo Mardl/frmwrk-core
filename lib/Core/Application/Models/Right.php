@@ -20,11 +20,7 @@ use Core\Model as BaseModel,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @Entity
- * @Table(
- * 	name="rights",
- * 	uniqueConstraints={@UniqueConstraint(columns={"module", "controller", "action", "prefix"})}
- * )
+ * @MappedSuperclass
  */
 class Right extends BaseModel
 {
@@ -97,7 +93,7 @@ class Right extends BaseModel
     /**
      * Rights
      *
-     * @ManyToMany(targetEntity="Core\Application\Models\Right\Group", mappedBy="rights", cascade={"persist"})
+     * @ManyToMany(targetEntity="App\Models\Right\Group")
      * @JoinTable(name="right_group_rights")
      */
     protected $groups;

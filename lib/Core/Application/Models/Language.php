@@ -19,8 +19,7 @@ use Core\Model as BaseModel;
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @Entity
- * @Table(name="languages", prefix="lng_")
+ * @MappedSuperclass
  */
 class Language extends BaseModel implements \Core\Application\Interfaces\ModelsInterface
 {

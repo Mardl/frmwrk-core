@@ -21,8 +21,7 @@ use Core\Model as BaseModel,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @Entity
- * @Table(name="right_groups")
+ * @MappedSuperclass
  */
 class Group extends BaseModel
 {
@@ -57,17 +56,14 @@ class Group extends BaseModel
     protected $modified;
 
     /**
-     * Rights
-     *
-     * @ManyToMany(targetEntity="Core\Application\Models\Right", inversedBy="groups", cascade={"persist"})
-     * @JoinTable(name="right_group_rights")
+     * @var array
      */
-	protected $rights;
+    protected $rights;
 
 	/**
 	 * Users
 	 *
-	 * @ManyToMany(targetEntity="Core\Application\Models\User", inversedBy="rightGroups", cascade={"persist"})
+	 * @ManyToMany(targetEntity="App\Models\User")
 	 * @JoinTable(name="right_group_users")
 	 */
 	protected $users;

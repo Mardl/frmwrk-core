@@ -63,7 +63,6 @@ class Right
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
-	//var_dump($query->get());die();
 		return $rsExecution->get();
 	}
 

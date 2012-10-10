@@ -21,8 +21,7 @@ use Core\Model as BaseModel,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @Entity
- * @Table(name="files")
+ * @MappedSuperclass
  */
 class Files extends BaseModel
 {

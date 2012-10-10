@@ -22,8 +22,7 @@ use Core\Model as BaseModel,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @Entity
- * @Table(name="directories")
+ * @MappedSuperclass
  */
 class Directory extends BaseModel
 {

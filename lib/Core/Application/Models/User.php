@@ -21,9 +21,7 @@ use Exception,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @Entity
- * @Table(name="users")
- * @HasLifecycleCallbacks
+ * @MappedSuperclass
  */
 class User extends BaseModel
 {
@@ -144,17 +142,9 @@ class User extends BaseModel
      *
      * @var Core\Application\Models\Address
      *
-     * @OneToOne(targetEntity="Core\Application\Models\Address", fetch="LAZY", mappedBy="user", cascade={"all"})
+     * @OneToOne(targetEntity="\Core\Application\Models\Address", fetch="LAZY", mappedBy="user", cascade={"all"})
      */
     protected $address;
-
-    /**
-     * Rights
-     *
-     * @ManyToMany(targetEntity="App\Models\Right\Group", mappedBy="users", cascade={"persist"})
-     * @JoinTable(name="right_group_users")
-     */
-    protected $rightGroups;
 
 	/**
 	 * Einmal-Passwort wurde gesetzt
@@ -174,13 +164,15 @@ class User extends BaseModel
 	 */
 	protected $admin = false;
 
+
 	/**
 	 * Language
 	 *
 	 * @ManyToOne(targetEntity="Core\Application\Models\Language")
-	 * @JoinColumn(name="language_id", referencedColumnName="id")
+	 *
+	 * @todo WENN DIE SPRACHE NOTWENDIG IST, DANN MUSS DIESE IM PROJEKT IMPLEMENTIERT WERDEN
 	 */
-	protected $language;
+	//protected $language;
 
 	/**
 	 * Sets new password.

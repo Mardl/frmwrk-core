@@ -7,4 +7,3 @@ class Link extends \Core\Html\Link
 
 }
 ?>
-

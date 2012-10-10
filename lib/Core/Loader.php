@@ -13,7 +13,7 @@ namespace Core;
 
 /**
  * Loader
- * 
+ *
  * @category Helper
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
@@ -34,7 +34,7 @@ class Loader
 	 * @var string
 	 */
 	protected $path;
-	
+
 	/**
 	 * Legt fest ob beim Nichtauffinden einer Klasse eine Exception geworfen werden soll
 	 * oder nicht
@@ -70,7 +70,7 @@ class Loader
 	 *
 	 * @return boolean
 	 */
-	public function register() 
+	public function register()
 	{
 		return spl_autoload_register(array($this, '_autoload'));
 
@@ -80,32 +80,32 @@ class Loader
 	 * Load a class
 	 *
 	 * @param string $className Class name.
-	 * 
+	 *
 	 * @throws Exception wenn die PHP-Datei nicht gefunden wird.
-	 * 
+	 *
 	 * @return void
 	 */
-	private function _autoload($className)
+	public function _autoload($className)
 	{
 
 		if (substr($className, 0, strlen($this->namespace)) != $this->namespace)
-		{ 
+		{
 			return false;
 		}
-		
+
 		$file = $this->path.'/'.trim(strtr($className, $this->replace), '_\\');
 		$php = false;
 		$inc = false;
-		
+
 		if (file_exists($file.'.php'))
 		{
 			$php = true;
-		} 
+		}
 		else if (file_exists($file.'.inc'))
 		{
 			$inc = true;
 		}
-		
+
 		if ($php == true)
 		{
 			require_once $file.'.php';
@@ -120,13 +120,13 @@ class Loader
 			if ($this->exception)
 			{
 				throw new \ErrorException(
-					"Klasse $className (Pfad: $file) wurde nicht gefunden", 
+					"Klasse $className (Pfad: $file) wurde nicht gefunden",
 					404
 				);
-			}		
+			}
 		}
-		
-		
+
+
 	}
 
 }
