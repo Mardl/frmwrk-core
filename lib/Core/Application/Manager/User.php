@@ -69,8 +69,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.otp,
-				u.language'
+				u.otp'
 			)
 			->from('users as u')
 			->addWhere('id', $userid)
@@ -121,8 +120,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.otp,
-				u.language'
+				u.otp'
 			)
 			->from('users as u')
 			->addWhere('id', $userids);
@@ -173,8 +171,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.otp,
-				u.language'
+				u.otp'
 			)
 			->from('users as u')
 			->addWhere('username', $username)
@@ -225,8 +222,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.otp,
-				u.language'
+				u.otp'
 		)
 			->from('users as u')
 			->addWhere('email', $email)
@@ -391,8 +387,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.otp,
-				u.language'
+				u.otp'
 			)
 			->from('users as u')
 			->addWhere('status', $status, '<=')
@@ -442,8 +437,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.otp,
-				u.language'
+				u.otp'
 			)
 			->from('users as u')
 			->innerJoin('right_group_users AS rgu')
@@ -499,8 +493,7 @@ class User
 				'gender' 	=> $user->getGender(),
 				'created' 	=> $datetime->format('Y-m-d H:i:s'),
 				'status' 	=> STATUS_ACTIVE,
-				'admin' 	=> $user->getAdmin(),
-				'language' 	=> ($user->getLanguage())?$user->getLanguage()->getId():''
+				'admin' 	=> $user->getAdmin()
 			)
 		);
 
@@ -549,8 +542,7 @@ class User
 				'status' 	=> $user->getStatus(),
 				'admin' 	=> $user->getAdmin(),
 				'otp'	 	=> $user->getOtp(),
-				'id' 		=> $user->getId(),
-				'language'	=> ($user->getLanguage())?$user->getLanguage()->getId():''
+				'id' 		=> $user->getId()
 			);
 		} else {
 			$data = array(
@@ -565,8 +557,7 @@ class User
 				'password' 	=> $user->setPassword($password, false),
 				'admin' 	=> $user->getAdmin(),
 				'otp'	 	=> $user->getOtp(),
-				'id' 		=> $user->getId(),
-				'language'	=> ($user->getLanguage())?$user->getLanguage()->getId():''
+				'id' 		=> $user->getId()
 			);
 		}
 
@@ -607,8 +598,7 @@ class User
 				u.gender,
 				u.created,
 				u.status,
-				u.admin,
-				u.language'
+				u.admin'
 			)
 			->from('users as u')
 			->addWhere('status', $status, '<=')
