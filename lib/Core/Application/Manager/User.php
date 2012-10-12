@@ -294,7 +294,7 @@ class User
 	{
 		$con = Registry::getInstance()->getDatabase();
 		$query = $con->newQuery()
-			->select('id, password, otp, language')
+			->select('id, password, otp, language_id as language')
 			->from('users')
 			->addWhere('username', $username)
 			->addWhere('status', STATUS_ACTIVE);
@@ -305,7 +305,6 @@ class User
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
 		{
 			$rs = $rsExecution->get();
-			$checkup = false;
 
 			if (strlen($rs['password']) <= 32){
 				$checkup = (md5($password) == $rs['password']);

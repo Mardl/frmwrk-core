@@ -82,13 +82,11 @@ class Model
 		$prefix = $this->getTablePrefix();
 		if (!empty($prefix))
 		{
-			$parts[2] = str_replace($prefix, '', $parts[2]);
+			$parts[2] = str_replace($prefix, '', lcfirst($parts[2]));
 		}
 
 		$method = $parts[1];
 		$attribute = lcfirst($parts[2]);
-
-
 
 		if (!property_exists($this, $attribute))
 		{
