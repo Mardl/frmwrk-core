@@ -11,8 +11,7 @@
 namespace Core\Application\Manager;
 
 use Core\Application\Models\User as UserModel,
-	jamwork\common\Registry,
-	jamwork\database\MysqlRecordset as Recordset;
+	jamwork\common\Registry;
 
 /**
  * User
@@ -55,6 +54,9 @@ class User
 
 		$con = Registry::getInstance()->getDatabase();
 
+		/**
+		 * @var $query \jamwork\database\MysqlQuery
+		 */
 		$query = $con->newQuery()
 			->select(
 				'u.id,
@@ -75,7 +77,7 @@ class User
 			->addWhere('id', $userid)
 			->limit(0, 1);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -125,7 +127,7 @@ class User
 			->from('users as u')
 			->addWhere('id', $userids);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$users = array();
@@ -177,7 +179,7 @@ class User
 			->addWhere('username', $username)
 			->limit(0, 1);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -228,7 +230,7 @@ class User
 			->addWhere('email', $email)
 			->limit(0, 1);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -250,7 +252,7 @@ class User
 			->addWhere('id', $userid)
 			->addWhere('status', STATUS_ACTIVE);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -293,7 +295,7 @@ class User
 			->addWhere('username', $username)
 			->addWhere('status', STATUS_ACTIVE);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -346,7 +348,7 @@ class User
 			->from('users as u')
 			->addWhere('status', $status, '<=');
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$count = 0;
@@ -396,7 +398,7 @@ class User
 
 		$query->distinct();
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$models = array();
@@ -445,7 +447,7 @@ class User
 			->addWhere('rgu.group_id', $groupId);
 
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$users = array();
@@ -611,7 +613,7 @@ class User
 
 		$query->distinct();
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$models = array();
@@ -636,7 +638,7 @@ class User
 			->addWhere('username', $model->getUsername());
 
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))

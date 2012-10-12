@@ -5,9 +5,9 @@ class Fieldset extends Element{
 
 	private $legend = null;
 
-	public function __construct($legend = null, $breakafter=false){
+	public function __construct($legend = null, $id='', $css = array(), $breakafter = false){
+		parent::__construct($id, $css, $breakafter);
 		$this->setLegend($legend);
-		$this->breakafter = $breakafter;
 	}
 
 	public function setLegend($legend){

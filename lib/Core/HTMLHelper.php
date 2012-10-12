@@ -364,7 +364,7 @@ class HTMLHelper
     /**
      * Get link from breadcrumb home (small house)
      *
-     * @return Core\Url
+     * @return \Core\Url
      */
 	public function getBreadcrumbHome()
 	{
@@ -374,7 +374,7 @@ class HTMLHelper
     /**
      * Render breadcrumbs
      *
-     * @return Core\View
+     * @return \Core\View
      */
 	public function viewBreadcrumbs()
 	{
@@ -558,9 +558,16 @@ class HTMLHelper
 				'action' => $route['action'],
 				'prefix' => $route['prefix']
 			);
-
 			$right = new \App\Models\Right($data);
-			$allowed = \App\Manager\Right::isAllowed($right, Registry::getInstance()->login);
+
+			if (class_exists('\App\Manager\Right'))
+			{
+				$allowed = \App\Manager\Right::isAllowed($right, Registry::getInstance()->login);
+			}
+			else
+			{
+				$allowed = \Core\Application\Manager\Right::isAllowed($right, Registry::getInstance()->login);
+			}
 
 			if (!$allowed)
 			{

@@ -16,8 +16,7 @@ use Core\Application\Models\Right as RightModel,
 	Core\Application\Manager\Right as RightManager,
 	Core\Application\Manager\User as UserManager,
 	Core\SystemMessages,
-	jamwork\common\Registry,
-	jamwork\database\MysqlRecordset as Recordset;
+	jamwork\common\Registry;
 
 /**
  * Group
@@ -46,7 +45,7 @@ class Group
 			->from('right_groups')
 			->orderBy('name');
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$groups = array();
@@ -87,7 +86,7 @@ class Group
 			->addWhere('id', $id)
 			->limit(0, 1);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && $rsExecution->count() == 1)
@@ -137,7 +136,7 @@ class Group
 			->addWhere('id', $ids);
 
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$groups = array();
@@ -195,7 +194,7 @@ class Group
 			->addWhere('name', $name)
 			->limit(0, 1);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 
@@ -247,7 +246,7 @@ class Group
 			->on('rgu.group_id = rg.id')
 			->addWhere('rgu.user_id', $user->getId());
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$groups = array();
@@ -416,7 +415,7 @@ class Group
 		$insertQuery = sprintf($insert, implode(',', $values));
 
 		$con = Registry::getInstance()->getDatabase();
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 
 		//Starte Transaktion
 		$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
@@ -496,7 +495,7 @@ class Group
 		$insertQuery = sprintf($insert, implode(',', $values));
 
 		$con = Registry::getInstance()->getDatabase();
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 
 		//Starte Transaktion
 		$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
