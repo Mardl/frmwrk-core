@@ -168,11 +168,10 @@ class User extends BaseModel
 	/**
 	 * Language
 	 *
-	 * @ManyToOne(targetEntity="Core\Application\Models\Language")
+	 * @ManyToOne(targetEntity="App\Models\Language")
 	 *
-	 * @todo WENN DIE SPRACHE NOTWENDIG IST, DANN MUSS DIESE IM PROJEKT IMPLEMENTIERT WERDEN
 	 */
-	//protected $language;
+	protected $language;
 
 	/**
 	 * Sets new password.

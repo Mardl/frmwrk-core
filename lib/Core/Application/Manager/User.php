@@ -71,6 +71,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language,
 				u.otp'
 			)
 			->from('users as u')
@@ -122,6 +123,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language,
 				u.otp'
 			)
 			->from('users as u')
@@ -173,6 +175,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language,
 				u.otp'
 			)
 			->from('users as u')
@@ -224,6 +227,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language,
 				u.otp'
 		)
 			->from('users as u')
@@ -290,7 +294,7 @@ class User
 	{
 		$con = Registry::getInstance()->getDatabase();
 		$query = $con->newQuery()
-			->select('id, password, otp')
+			->select('id, password, otp, language')
 			->from('users')
 			->addWhere('username', $username)
 			->addWhere('status', STATUS_ACTIVE);
@@ -316,6 +320,7 @@ class User
 				$session = Registry::getInstance()->getSession();
 				$session->set('user', $rs['id']);
 				$session->set('otp', $rs['otp']);
+				$session->set('language', $rs['language']);
 				return $rs['id'];
 			}
 		}
@@ -389,6 +394,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language,
 				u.otp'
 			)
 			->from('users as u')
@@ -439,6 +445,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language,
 				u.otp'
 			)
 			->from('users as u')
@@ -544,6 +551,7 @@ class User
 				'status' 	=> $user->getStatus(),
 				'admin' 	=> $user->getAdmin(),
 				'otp'	 	=> $user->getOtp(),
+				'language'	=> $user->getLanguage(),
 				'id' 		=> $user->getId()
 			);
 		} else {
@@ -559,6 +567,7 @@ class User
 				'password' 	=> $user->setPassword($password, false),
 				'admin' 	=> $user->getAdmin(),
 				'otp'	 	=> $user->getOtp(),
+				'language' 	=> $user->getLanguage(),
 				'id' 		=> $user->getId()
 			);
 		}
