@@ -371,10 +371,10 @@ class User extends BaseModel
 
     public function setLanguage($language)
     {
-    	if (!($language instanceof \Core\Application\Models\Language))
+    	if (!($language instanceof \Core\Application\Models\Language) && $language !== null)
     	{
     		$manager = new \Core\Application\Manager\Language();
-    		$language = $manager->getModelById(new \Core\Application\Models\Language(), $language);
+    		$language = $manager->getModelById(new \App\Models\Language(), $language);
     	}
 
     	$this->language = $language;

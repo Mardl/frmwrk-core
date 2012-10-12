@@ -51,7 +51,7 @@ class Directory extends BaseModel
 	 *
 	 * @var App\Models\Directory
 	 *
-	 * @ManyToOne(targetEntity="Core\Application\Models\Directory")
+	 * @ManyToOne(targetEntity="App\Models\Directory")
 	 */
 	protected $parent;
 

@@ -68,7 +68,7 @@ class Files extends BaseModel
 	 *
 	 * @var App\Models\Directory
 	 *
-	 * @ManyToOne(targetEntity="Core\Application\Models\Directory")
+	 * @ManyToOne(targetEntity="App\Models\Directory")
 	 * @JoinColumn(name="directory_id", referencedColumnName="id", nullable=false)
 	 */
 	protected $directory;
@@ -78,7 +78,7 @@ class Files extends BaseModel
 	 *
 	 * @var App\Models\Directory\Files
 	 *
-	 * @ManyToOne(targetEntity="Core\Application\Models\Directory\Files")
+	 * @ManyToOne(targetEntity="App\Models\Directory\Files")
 	 * @JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
 	 */
 	protected $parent;

@@ -71,7 +71,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.language,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
@@ -123,7 +123,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.language,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
@@ -175,7 +175,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.language,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
@@ -227,7 +227,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.language,
+				u.language_id as language,
 				u.otp'
 		)
 			->from('users as u')
@@ -394,7 +394,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.language,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
@@ -445,7 +445,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
-				u.language,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
