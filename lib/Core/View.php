@@ -415,6 +415,7 @@ class View extends ArrayObject
 				include $template;
 				$this->content = ob_get_clean();
 
+
 				foreach ($this->placeholder as $key => $value){
 					$c = $value;
 
@@ -423,8 +424,13 @@ class View extends ArrayObject
 						$c = '';
 						foreach ($value as $val)
 						{
-							$c .= $val;
+							if (!empty($val))
+							{
+								$c .= $val;
+							}
+
 						}
+
 					}
 
 					$this->content = str_replace('{'.$key.'}', $c, $this->content);
