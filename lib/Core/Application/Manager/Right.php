@@ -38,7 +38,7 @@ class Right
 	{
 		self::createRight($right);
 
-		if (!defined('CHECK_PERMISSIONS') || (APPLICATION_ENV < ENV_PROD && CHECK_PERMISSIONS == false))
+		if ($user->getAdmin() || !defined('CHECK_PERMISSIONS') || (APPLICATION_ENV < ENV_PROD && CHECK_PERMISSIONS == false))
 		{
 			return true;
 		}

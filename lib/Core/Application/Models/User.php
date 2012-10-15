@@ -369,14 +369,34 @@ class User extends BaseModel
     	return $interval->format('%y');
     }
 
-    public function setLanguage($language)
-    {
-    	if (!($language instanceof \Core\Application\Models\Language) && $language !== null)
-    	{
-    		$manager = new \Core\Application\Manager\Language();
-    		$language = $manager->getModelById(new \App\Models\Language(), $language);
-    	}
+	/**
+	 * Set die Sprache
+	 *
+	 * @param $language int|\Core\Application\Models\Language
+	 */
+	public function setLanguage($language)
+	{
+		if (!($language instanceof \Core\Application\Models\Language) && $language !== null)
+		{
+			$manager = new \Core\Application\Manager\Language();
+			$language = $manager->getModelById(new \App\Models\Language(), $language);
+		}
 
-    	$this->language = $language;
-    }
+		$this->language = $language;
+	}
+
+	/**
+	 * liefert die ID der Sprache
+	 *
+	 * @return int
+	 */
+	public function getLanguageId()
+	{
+		if ( $this->language instanceof \Core\Application\Models\Language )
+		{
+			return $this->language->getId();
+		}
+
+		return $this->language;
+	}
 }
