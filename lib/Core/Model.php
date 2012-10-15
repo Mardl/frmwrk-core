@@ -79,7 +79,7 @@ class Model
 	public function __call($name, $params)
 	{
 		$parts = preg_split('/^([a-z]+)/', $name, -1, PREG_SPLIT_DELIM_CAPTURE);
-		$parts[2] = strtolower($parts[2]);
+		$parts[2] = lcfirst($parts[2]);
 		$prefix = $this->getTablePrefix();
 		if (!empty($prefix))
 		{
