@@ -86,19 +86,28 @@ class Navigation
 			$sp = array();
 			foreach ($links as $action)
 			{
-				if ($action['permissions'])
+				if ($action['permissions'] && class_exists('\App\Models\Right'))
 				{
-					$right = new \App\Models\Right(
-							array(
-									'module' => lcfirst($action['module']),
-									'controller' => lcfirst($action['controller']),
-									'action' => lcfirst($action['action']),
-									'prefix' => lcfirst($action['prefix'])
-							)
+					$data = array(
+						'module' => lcfirst($action['module']),
+						'controller' => lcfirst($action['controller']),
+						'action' => lcfirst($action['action']),
+						'prefix' => lcfirst($action['prefix'])
 					);
 
-					if (\App\Manager\Right::isAllowed($right, $user)){
-						$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+					$right = new \App\Models\Right($data);
+
+					if (class_exists('\App\Manager\Right'))
+					{
+						if (\App\Manager\Right::isAllowed($right, $user)){
+							$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+						}
+					}
+					else
+					{
+						if (\Core\Application\Manager\Right::isAllowed($right, $user)){
+							$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+						}
 					}
 
 					$link = strtolower($action['prefix'].$action['module'].$action['controller'].$action['action'].'html');

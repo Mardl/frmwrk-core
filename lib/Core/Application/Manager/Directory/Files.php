@@ -17,7 +17,6 @@ use Core\Application\Models\Directory\Files as FilesModel,
 	Core\Application\Manager\Directory as DirectoryManager,
 	jamwork\common\Registry,
 	Core\SystemMessages,
-	jamwork\database\MysqlRecordset as Recordset,
 	Core\Application\Manager\User as UserManager;
 
 /**
@@ -443,7 +442,7 @@ class Files
 			mysql_real_escape_string($filemodel->getMimetype())
 		);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		if (!$rsExecution->isSuccessfull())
@@ -475,36 +474,36 @@ class Files
 			WHERE parent_id = %d;",
 			mysql_real_escape_string($filesId)
 		);
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		//Verknpüfungen löschen
 		$query = sprintf("UPDATE nutritioncategory SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		$query = sprintf("UPDATE object_nutritions SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		$query = sprintf("UPDATE object_questionaries SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		$query = sprintf("UPDATE object_questions SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		$query = sprintf("UPDATE object_nutritions SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		$query = sprintf("UPDATE object_rezept SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		$query = sprintf("UPDATE object_textelements SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 
@@ -516,7 +515,7 @@ class Files
 			WHERE id = %d;",
 			mysql_real_escape_string($filesId)
 		);
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 
@@ -565,7 +564,7 @@ class Files
 			mysql_real_escape_string($fileModel->getId())
 		);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		if (!$rsExecution->isSuccessfull())
@@ -756,7 +755,7 @@ class Files
 		->addWhere('parent_id', $filemodel->getId());
 
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -781,7 +780,7 @@ class Files
 			->from('files')
 			->addWhereLike('orgname', $searchTerm);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 		$dataArray = array();
 

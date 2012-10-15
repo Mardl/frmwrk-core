@@ -58,7 +58,7 @@ class PublicController extends Controller
 				$this->response->redirect($this->view->url(array(), 'login', true));
 			}
 
-			if (($login->getAdmin() == false) && !RightManager::isAllowed($right, $login))
+			if (!RightManager::isAllowed($right, $login))
 			{
 				throw new \Exception('Zugriff auf nicht erlaubte Aktion');
 			}

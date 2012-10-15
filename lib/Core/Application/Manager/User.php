@@ -11,8 +11,7 @@
 namespace Core\Application\Manager;
 
 use Core\Application\Models\User as UserModel,
-	jamwork\common\Registry,
-	jamwork\database\MysqlRecordset as Recordset;
+	jamwork\common\Registry;
 
 /**
  * User
@@ -55,6 +54,9 @@ class User
 
 		$con = Registry::getInstance()->getDatabase();
 
+		/**
+		 * @var $query \jamwork\database\MysqlQuery
+		 */
 		$query = $con->newQuery()
 			->select(
 				'u.id,
@@ -69,13 +71,14 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
 			->addWhere('id', $userid)
 			->limit(0, 1);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -120,12 +123,13 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
 			->addWhere('id', $userids);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$users = array();
@@ -171,13 +175,14 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
 			->addWhere('username', $username)
 			->limit(0, 1);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -222,13 +227,14 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language_id as language,
 				u.otp'
 		)
 			->from('users as u')
 			->addWhere('email', $email)
 			->limit(0, 1);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -250,7 +256,7 @@ class User
 			->addWhere('id', $userid)
 			->addWhere('status', STATUS_ACTIVE);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
@@ -288,18 +294,17 @@ class User
 	{
 		$con = Registry::getInstance()->getDatabase();
 		$query = $con->newQuery()
-			->select('id, password, otp')
+			->select('id, password, otp, language_id as language')
 			->from('users')
 			->addWhere('username', $username)
 			->addWhere('status', STATUS_ACTIVE);
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
 		{
 			$rs = $rsExecution->get();
-			$checkup = false;
 
 			if (strlen($rs['password']) <= 32){
 				$checkup = (md5($password) == $rs['password']);
@@ -314,6 +319,7 @@ class User
 				$session = Registry::getInstance()->getSession();
 				$session->set('user', $rs['id']);
 				$session->set('otp', $rs['otp']);
+				$session->set('language', $rs['language']);
 				return $rs['id'];
 			}
 		}
@@ -346,7 +352,7 @@ class User
 			->from('users as u')
 			->addWhere('status', $status, '<=');
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$count = 0;
@@ -387,6 +393,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
@@ -396,7 +403,7 @@ class User
 
 		$query->distinct();
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$models = array();
@@ -437,6 +444,7 @@ class User
 				u.created,
 				u.status,
 				u.admin,
+				u.language_id as language,
 				u.otp'
 			)
 			->from('users as u')
@@ -445,7 +453,7 @@ class User
 			->addWhere('rgu.group_id', $groupId);
 
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$users = array();
@@ -542,6 +550,7 @@ class User
 				'status' 	=> $user->getStatus(),
 				'admin' 	=> $user->getAdmin(),
 				'otp'	 	=> $user->getOtp(),
+				'language'	=> $user->getLanguage(),
 				'id' 		=> $user->getId()
 			);
 		} else {
@@ -557,6 +566,7 @@ class User
 				'password' 	=> $user->setPassword($password, false),
 				'admin' 	=> $user->getAdmin(),
 				'otp'	 	=> $user->getOtp(),
+				'language' 	=> $user->getLanguage(),
 				'id' 		=> $user->getId()
 			);
 		}
@@ -611,7 +621,7 @@ class User
 
 		$query->distinct();
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$models = array();
@@ -636,7 +646,7 @@ class User
 			->addWhere('username', $model->getUsername());
 
 
-		$rs = new RecordSet();
+		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		if($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))

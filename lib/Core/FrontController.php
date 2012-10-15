@@ -54,7 +54,7 @@ class FrontController
 	/**
 	 * Response
 	 *
-	 * @var   Core\Response
+	 * @var   \Core\Response
 	 */
 	protected $response;
 
@@ -93,9 +93,7 @@ class FrontController
 		// View
 		if (!isset(Registry::getInstance()->view))
 		{
-			$view = new View();
-			$view->html = new HTMLHelper();
-			$view->setTemplate(APPLICATION_PATH.'/Layout/layout.html.php');
+			$view = new View(APPLICATION_PATH.'/Layout/layout.html.php');
 			$this->view = $view;
 			Registry::getInstance()->view = $view;
 		}
@@ -356,9 +354,19 @@ class FrontController
 			}
 			else
 			{
-				$this->view->login = \App\Manager\User::getUserById(
-					Registry::getInstance()->getSession()->get('user')
-				);
+				if (class_exists('\App\Manager\User'))
+				{
+					$this->view->login = \App\Manager\User::getUserById(
+						Registry::getInstance()->getSession()->get('user')
+					);
+				}
+				else
+				{
+					$this->view->login = \Core\Application\Manager\User::getUserById(
+						Registry::getInstance()->getSession()->get('user')
+					);
+				}
+
 				Registry::getInstance()->login = $this->view->login;
 			}
 
