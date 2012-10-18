@@ -14,6 +14,7 @@ class Form{
 
 	public function __construct($data = array())
 	{
+
 		$this->values = $data;
 	}
 
@@ -95,8 +96,23 @@ class Form{
 		$output = str_replace('{attributes}', $attributes, $output);
 		$output = str_replace('{elements}', $elements, $output);
 
+		$output = $this->clearUp($output);
+
+
 		return $output;
 
+	}
+
+	private function clearUp($data)
+	{
+		$output = str_replace('class=""', '', $data);
+		$output = str_replace("class=''", '', $output);
+		$output = str_replace('id=""', '', $output);
+		$output = str_replace("id=''", '', $output);
+		$output = str_replace('style=""', '', $output);
+		$output = str_replace("style=''", '', $output);
+
+		return $output;
 	}
 
 	public function updateElement($elementId, $value, $updateType, $container = null)
