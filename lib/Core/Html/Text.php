@@ -3,11 +3,11 @@ namespace Core\Html;
 
 class Text extends Element
 {
-	private $text;
+	private $text = '';
 
-	public function __construct($id, $text, $breakafter = false)
+	public function __construct($id, $text = '', $breakafter = false)
 	{
-		parent::__construct($id,  array(), $breakafter);
+		parent::__construct($id, array(), $breakafter);
 
 		$this->breakafter = $breakafter;
 		$this->text = $text;
@@ -24,16 +24,12 @@ class Text extends Element
 
 
 	public function __toString(){
-		$output = '';
-
-		$output .= $this->text;
-
 		if ($this->breakafter)
 		{
-			$output .= '<br/>';
+			$this->text .= '<br/>';
 		}
 
-		return $output;
+		return $this->text;
 
 	}
 

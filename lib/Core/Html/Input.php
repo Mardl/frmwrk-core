@@ -31,6 +31,8 @@ class Input extends Element{
 
 	public function __toString(){
 
+
+
 		$output = $this->renderStandard($this->renderOutput);
 
 		$output = str_replace('{placeholder}', empty($this->placeholder) ? '' : 'placeholder="'.$this->placeholder.'"', $output);
@@ -41,6 +43,16 @@ class Input extends Element{
 		$output = str_replace('{readonly}', $this->getReadonly() ? 'readonly' : '', $output);
 
 		return $output;
+	}
+
+	public function setValue($value){
+		$this->value = $value;
+
+	}
+
+	public function getValue(){
+		return $this->value;
+
 	}
 
 }

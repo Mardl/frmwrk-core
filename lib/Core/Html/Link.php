@@ -1,21 +1,34 @@
 <?php
 namespace Core\Html;
 
-class Link extends Element{
+class Link extends Element
+{
 
 	private $path;
 	private $nameenabled = true;
 	private $target = '_self';
 	private $title;
 
+	private $renderOutput = '<a href="{href}" class="{class}" style="{style}" {id} {attr}>{name}</a>{breakafter}';
 
-	public function __construct($breakafter=false){
-		$this->breakafter = $breakafter;
+	public function __construct($id, $css = array(), $breakafter = false)
+	{
+		parent::__construct($id, $css, $breakafter);
+		if (file_exists(APPLICATION_PATH.'/Layout/Form/anchor.html.php'))
+		{
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/anchor.html.php');
+		}
+
 	}
 
 	public function setPath($path){
 		$this->path = $path;
 
+	}
+
+	public function setHref($href)
+	{
+		$this->setPath($href);
 	}
 
 	public function setImageAsName(Img $img){
@@ -32,34 +45,10 @@ class Link extends Element{
 
 
 	public function __toString(){
-		$output = '<a href="'.$this->path.'"';
+		$output = $this->renderStandard($this->renderOutput);
 
-		if ($this->hasCssClasses()){
-			$output .= ' class="'.$this->getCssClasses().'"';
-		}
-
-		if ($this->hasInlineCss()){
-			$output .= ' style="'.$this->getInlineCss().'"';
-		}
-		/*
-		if (!is_null($this->jscript)){
-			$output .= ' '.$this->jscript[0].'="'.$this->jscript[1].'"';
-		}
-		*/
-		if (!is_null($this->getId())){
-			#$output .= $this->getId();
-		}
-
-		$output .= ' '.$this->renderAttributes();
-
-		//$output .= ' title="'.$this->title.'" target="'.$this->target.'" >';
-		$output .= ' >';
-
-		$output .= $this->name;
-
-		$output .= '</a>';
-
-		if ($this->breakafter){$output .= '<br/>';}
+		$output = str_replace('{href}', $this->path, $output);
+		$output = str_replace('{name}', $this->getName(), $output);
 
 		return $output;
 

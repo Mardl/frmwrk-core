@@ -5,7 +5,7 @@ class Div extends Element{
 
 	private $renderOutput = '<div class="{class}" style="{style}" {id} {attr} >{elements}</div>{breakafter}';
 
-	public function __construct($id='',$css = array(), $breakafter=false)
+	public function __construct($id='', $css = array(), $breakafter=false)
 	{
 		parent::__construct($id , $css, $breakafter);
 

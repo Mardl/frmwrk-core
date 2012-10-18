@@ -5,11 +5,17 @@ class Label extends Element{
 
 	private $parent = null;
 
+	private $renderOutput = '<label for="{parent}" class="{class}" style="{style}" {id} {attr}>{value}</label>{breakafter}';
+
 	public function __construct($value=null, $parent=null, $breakafter=false){
 		$this->setValue($value);
 		$this->parent = $parent;
 		$this->breakafter = $breakafter;
 
+		if (file_exists(APPLICATION_PATH.'/Layout/Form/anchor.html.php'))
+		{
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/anchor.html.php');
+		}
 	}
 
 	public function setParent($parent){
@@ -17,40 +23,38 @@ class Label extends Element{
 
 	}
 
-	public function __toString(){
+	public function setValue($value){
+		$this->value = $value;
 
+	}
+
+	public function getValue(){
+		return $this->value;
+
+	}
+
+	public function __toString(){
 		if (is_null($this->value)){
 			return "Label for '".$this->parent."' has no value";
 		}
 
-		$output = '<label';
-
-		if (!is_null($this->parent)){
-			$output .= ' for="'.$this->parent.'"';
-		}
-
-		if ($this->hasCssClasses()){
-			$output .= ' class="'.$this->getCssClasses().'"';
-		}
-
-		if ($this->hasInlineCss()){
-			$output .= ' style="'.$this->getInlineCss().'"';
-		}
-
-		if ($this->isRequired())
-		{
-			$output .= '>'.$this->value.' *</label>';
-		}
-		else
-		{
-			$output .= '>'.$this->value.'</label>';
-		}
-
-
-		if ($this->breakafter){$output .= '<br/>';}
+		$output = $this->renderStandard($this->renderOutput);
+		$output = str_replace('{parent}', $this->parent, $output);
+		$output = str_replace('{value}', $this->renderValue(), $output);
 
 		return $output;
 
+	}
+
+	private function renderValue()
+	{
+		$val = $this->value;
+
+		if ($this->isRequired())
+		{
+			$val .= ' *';
+		}
+		return $val;
 	}
 
 }

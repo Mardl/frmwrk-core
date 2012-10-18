@@ -161,16 +161,6 @@ class Element
 		return (count($this->elements) > 0);
 	}
 
-	public function setValue($value){
-		$this->value = $value;
-
-	}
-
-	public function getValue(){
-		return $this->value;
-
-	}
-
 	public function validate()
 	{
 		if ($this->isRequired() && empty($this->value))

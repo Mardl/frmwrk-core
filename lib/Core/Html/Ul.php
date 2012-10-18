@@ -5,43 +5,39 @@ class Ul extends Element{
 
 	private $listItems = array();
 
+	private $renderOutput = '{label}<ul class="{class}" style="{style}" {id}>{items}</ul>{breakafter}';
+
+	public function __construct($id = null, $css = array(), $breakafter = false){
+		parent::__construct($id, $css, $breakafter);
+
+		if (file_exists(APPLICATION_PATH.'/Layout/Form/ul.html.php'))
+		{
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/ul.html.php');
+		}
+	}
+
+
 	public function addItem(ListItem $item){
 		$this->listItems[] = $item;
 
 	}
 
 	public function __toString(){
-		$output = '';
 
 		if (empty($this->listItems)){
 			return "Liste ohne Listenpunkte.";
 		}
 
-		if (!is_null($this->getLabel())){
-			$output .= $this->getLabel();
-		}
+		$output = $this->renderStandard($this->renderOutput);
 
-		$output .= '<ul '.$this->getId();
-
-		if ($this->hasCssClasses()){
-			$output .= ' class="'.$this->getCssClasses().'"';
-		}
-
-		if ($this->hasInlineCss()){
-			$output .= ' style="'.$this->getInlineCss().'"';
-		}
-
-		$output .= ' >';
-
+		$items = '';
 		foreach ($this->listItems as $item){
-			$output .= $item;
+			$items .= $item;
 		}
 
+		$output = str_replace('{items}', $items, $output);
+		$output = str_replace('{label}', $this->getLabel(), $output);
 
-
-		$output .= '</ul>';
-
-		if ($this->breakafter){$output .= '<br/>';}
 
 		return $output;
 	}
