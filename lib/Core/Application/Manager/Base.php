@@ -17,6 +17,9 @@ class Base
 	protected $con = null;
 
 
+	/**
+	 * @return void
+	 */
 	public function __construct()
 	{
 		$this->con = Registry::getInstance()->getDatabase();
