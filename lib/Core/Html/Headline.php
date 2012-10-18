@@ -4,9 +4,16 @@ namespace Core\Html;
 class Headline extends Element{
 
 	protected $index = 1;
+	private $renderOutput = '<h{index} {id} class="{class}" style="{style}" {attr}>{elements}</h{index}>';
 
-	public function __construct($index = null)
-	{
+	public function __construct($index = null, $id='', $css = array(), $breakafter = false){
+		parent::__construct($id, $css, $breakafter);
+
+		if (file_exists(APPLICATION_PATH.'/Layout/Form/headline.html.php'))
+		{
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/headline.html.php');
+		}
+
 		if (!is_null($index))
 		{
 			$this->index = $index;
@@ -24,16 +31,9 @@ class Headline extends Element{
 	}
 
 	public function __toString(){
-		$elements = '';
-		foreach ($this->elements as $element){
-			$elements .= $element;
-		}
 
-		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/headline.html.php');
-		$output = str_replace('{id}', $this->getId(), $output);
+		$output = $this->renderStandard($this->renderOutput);
 		$output = str_replace('{index}', $this->getIndex(), $output);
-		$output = str_replace('{elements}',$elements, $output);
-		$output = str_replace('{attr}', $this->renderAttributes(), $output);
 
 		return $output;
 

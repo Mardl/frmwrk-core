@@ -62,7 +62,10 @@ class BaseGenerator
 
 		foreach ($elementContainer->getElements() as $el)
 		{
-			$check = $el->validate();
+			if ($el instanceof \Core\Html\Input)
+			{
+				$check = $el->validate();
+			}
 
 			if ($check !== true)
 			{

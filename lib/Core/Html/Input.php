@@ -4,9 +4,17 @@ namespace Core\Html;
 class Input extends Element{
 
 	protected $type = 'text';
+	protected $placeholder = '';
+	private $renderOutput = '{label}<input type="{type}" class="{class}" style="{style}" {id} name="{name}" value="{value}" {placeholder} {readonly} {attr}/>{breakafter}';
 
 	public function __construct($id, $default, $css = array(), $breakafter = false){
 		parent::__construct($id, $css, $breakafter);
+
+		if (file_exists(APPLICATION_PATH.'/Layout/Form/input.html.php'))
+		{
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/input.html.php');
+		}
+
 		$this->setValue($default);
 
 	}
@@ -16,37 +24,21 @@ class Input extends Element{
 
 	}
 
+	public function setPlaceholder($placeholder){
+		$this->placeholder = $placeholder;
+
+	}
+
 	public function __toString(){
 
-		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/input.html.php');
+		$output = $this->renderStandard($this->renderOutput);
 
-		if ($this->hasCssClasses()){
-			$output = str_replace('{class}', 'class="'.$this->getCssClasses().'"', $output);
-		}
-		else
-		{
-			$output = str_replace('{class}', '', $output);
-		}
-
+		$output = str_replace('{placeholder}', empty($this->placeholder) ? '' : 'placeholder="'.$this->placeholder.'"', $output);
 		$output = str_replace('{type}', $this->type, $output);
-		$output = str_replace('{style}', $this->getInlineCss(), $output);
-
-		$output = str_replace('{id}', $this->getId(), $output);
-
 		$output = str_replace('{name}', $this->getName(), $output);
 		$output = str_replace('{label}', $this->getLabel(), $output);
-		$output = str_replace('{attr}', $this->renderAttributes(), $output);
 		$output = str_replace('{value}', htmlspecialchars($this->getValue()), $output);
 		$output = str_replace('{readonly}', $this->getReadonly() ? 'readonly' : '', $output);
-
-		if ($this->breakafter)
-		{
-			$output = str_replace('{breakafter}', '<br/>', $output);
-		}
-		else
-		{
-			$output = str_replace('{breakafter}', null, $output);
-		}
 
 		return $output;
 	}

@@ -3,11 +3,11 @@ namespace Core\Html;
 
 class Text extends Element
 {
-
 	private $text;
 
-	public function __construct($id, $text = null, $css = array(), $breakafter = false){
-		parent::__construct($id, $css, $breakafter);
+	public function __construct($id, $text, $breakafter = false)
+	{
+		parent::__construct($id,  array(), $breakafter);
 
 		$this->breakafter = $breakafter;
 		$this->text = $text;

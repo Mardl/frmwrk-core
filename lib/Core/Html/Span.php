@@ -3,28 +3,21 @@ namespace Core\Html;
 
 class Span extends Element{
 
+	private $renderOutput = '<span class="{class}" style="{style}" {id} {attr} >{elements}</span>{breakafter}';
 
-
-	public function __construct()
+	public function __construct($id = '', $css = array(), $breakafter = false)
 	{
-
+		parent::__construct($id, $css, $breakafter);
+		if (file_exists(APPLICATION_PATH.'/Layout/Form/span.html.php'))
+		{
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/span.html.php');
+		}
 	}
 
-	public function __toString(){
-		$elements = '';
-		foreach ($this->elements as $element){
-			$elements .= $element;
-		}
-
-		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/span.html.php');
-		$output = str_replace('{class}', $this->getCssClasses(), $output);
-		$output = str_replace('{style}', $this->getInlineCss(), $output);
-		$output = str_replace('{id}', $this->getId(), $output);
-		$output = str_replace('{elements}',$elements, $output);
-		$output = str_replace('{attr}', $this->renderAttributes(), $output);
-
+	public function __toString()
+	{
+		$output = $this->renderStandard($this->renderOutput);
 		return $output;
-
 	}
 
 }

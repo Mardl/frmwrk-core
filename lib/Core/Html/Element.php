@@ -71,8 +71,10 @@ class Element
 
 	}
 
-	public function getCssClasses(){
-		return implode(' ',$this->cssClasses);
+	public function getCssClasses()
+	{
+		$output = implode(' ',$this->cssClasses);
+		return $output;
 
 	}
 
@@ -119,7 +121,7 @@ class Element
 
 	}
 
-	public function getId(){
+	public function getId($count=''){
 		if (empty($this->id) && empty($this->name))
 		{
 			return null;
@@ -128,9 +130,9 @@ class Element
 		{
 			if (empty($this->id))
 			{
-				return " id='".$this->name."'";
+				return ' id="'.$this->name.(!empty($count) ? '-'.$count : '').'"';
 			}
-			return " id='".$this->id."'";
+			return ' id="'.$this->id.(!empty($count) ? '-'.$count : '').'"';
 		}
 
 	}
@@ -198,6 +200,10 @@ class Element
 		}
 	}
 
+	public function hasAttribute($name)
+	{
+		return array_key_exists($name, $this->attributes);
+	}
 
 	public function renderAttributes()
 	{
@@ -219,6 +225,48 @@ class Element
 	public function getReadonly()
 	{
 		return $this->readonly;
+	}
+
+	protected function renderCssClasses($output)
+	{
+		return $this->getCssClasses();
+	}
+
+	protected function renderInlineStyles($output)
+	{
+		return $this->getInlineCss();
+	}
+
+	protected function renderStandard($output)
+	{
+		$elements = '';
+		foreach ($this->elements as $element){
+			$elements .= $element;
+		}
+
+		$output = str_replace('{class}', $this->renderCssClasses($output), $output);
+		$output = str_replace('{style}', $this->renderInlineStyles($output), $output);
+		$output = str_replace('{id}', $this->getId(), $output);
+		$output = str_replace('{attr}', $this->renderAttributes(), $output);
+		$output = str_replace('{elements}',$elements, $output);
+		$output = $this->breakafter ? str_replace('{breakafter}', '<br class="clear"/>', $output) : str_replace('{breakafter}', '', $output);
+
+		$output = $this->clearUp($output);
+
+		return $output;
+	}
+
+
+	private function clearUp($data)
+	{
+		$output = str_replace('class=""', '', $data);
+		$output = str_replace("class=''", '', $output);
+		$output = str_replace('id=""', '', $output);
+		$output = str_replace("id=''", '', $output);
+		$output = str_replace('style=""', '', $output);
+		$output = str_replace("style=''", '', $output);
+
+		return $output;
 	}
 }
 
