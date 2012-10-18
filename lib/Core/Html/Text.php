@@ -24,12 +24,15 @@ class Text extends Element
 
 
 	public function __toString(){
+		$t = '';
+		$t .= $this->text;
+
 		if ($this->breakafter)
 		{
 			$this->text .= '<br/>';
 		}
 
-		return $this->text;
+		return $t;
 
 	}
 
