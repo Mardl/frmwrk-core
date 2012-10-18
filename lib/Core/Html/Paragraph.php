@@ -8,9 +8,9 @@ class Paragraph extends Element
 
 	public function __construct($breakafter=false){
 		$this->breakafter = $breakafter;
-		if (file_exists(APPLICATION_PATH.'/Layout/Form/paragraph.html.php'))
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/paragraph.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/paragraph.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/paragraph.html.php');
 		}
 
 	}

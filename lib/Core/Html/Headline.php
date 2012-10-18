@@ -9,9 +9,9 @@ class Headline extends Element{
 	public function __construct($index = null, $id='', $css = array(), $breakafter = false){
 		parent::__construct($id, $css, $breakafter);
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Form/headline.html.php'))
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/headline.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/headline.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/headline.html.php');
 		}
 
 		if (!is_null($index))

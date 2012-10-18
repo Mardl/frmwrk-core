@@ -12,9 +12,9 @@ class Img extends Element{
 
 	public function __construct($breakafter=false){
 		$this->breakafter = $breakafter;
-		if (file_exists(APPLICATION_PATH.'/Layout/Form/image.html.php'))
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/image.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/image.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/image.html.php');
 		}
 
 	}

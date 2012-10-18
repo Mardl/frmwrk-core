@@ -8,9 +8,9 @@ class ListItem extends Element{
 	public function __construct($id, $css = array(), $breakafter = false)
 	{
 		parent::__construct($id, $css, $breakafter);
-		if (file_exists(APPLICATION_PATH.'/Layout/Form/li.html.php'))
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/li.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/li.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/li.html.php');
 		}
 	}
 

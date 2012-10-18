@@ -8,9 +8,9 @@ class Span extends Element{
 	public function __construct($id = '', $css = array(), $breakafter = false)
 	{
 		parent::__construct($id, $css, $breakafter);
-		if (file_exists(APPLICATION_PATH.'/Layout/Form/span.html.php'))
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/span.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/span.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/span.html.php');
 		}
 	}
 

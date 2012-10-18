@@ -9,9 +9,9 @@ class Textarea extends \Core\Html\Input
 	public function __construct($id, $default, $css = array(), $breakafter = false){
 		parent::__construct($id, $default, $css, $breakafter);
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Form/textarea.html.php'))
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/textarea.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/textarea.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/textarea.html.php');
 		}
 
 		$this->setValue($default);

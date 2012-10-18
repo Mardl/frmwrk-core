@@ -10,9 +10,9 @@ class Input extends Element{
 	public function __construct($id, $default, $css = array(), $breakafter = false){
 		parent::__construct($id, $css, $breakafter);
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Form/input.html.php'))
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/input.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/input.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/input.html.php');
 		}
 
 		$this->setValue($default);

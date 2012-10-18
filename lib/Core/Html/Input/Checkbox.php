@@ -11,9 +11,9 @@ class Checkbox extends Input{
 	public function __construct($id, $default, $css = array(), $breakafter = false){
 		parent::__construct($id, $default, $css, $breakafter);
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Form/checkbox.html.php'))
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/checkbox.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Form/checkbox.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/checkbox.html.php');
 		}
 	}
 
