@@ -6,10 +6,10 @@ use Core\Html\Input;
 class Radio extends Input{
 
 	private $options = array();
-	private $renderOutput = '<input type="radio" class="{class}" style="{style}" {id} name="{name}" value="{value}" {attr} {checked}/> {title}';
+	private $renderOutput = '<label class="checkbox {class}"><input type="radio" class="{class}" style="{style}" {id} name="{name}" value="{value}" {attr} {checked}/> {title}</label>';
 
 	public function __construct($id, $css = array(), $breakafter = false){
-		parent::__construct($id, $css, $breakafter);
+		parent::__construct($id, '', $css, $breakafter);
 
 		if (file_exists(APPLICATION_PATH.'/Layout/Html/radio.html.php'))
 		{
@@ -20,6 +20,25 @@ class Radio extends Input{
 	public function addOption($value, $tag, $selected = false){
 		$this->options[] = array($value,$tag,$selected);
 
+	}
+
+	public function validate()
+	{
+
+		if ($this->isRequired())
+		{
+			$found = false;
+			foreach($this->options as $option)
+			{
+				  $found = $found || $option[2];
+			}
+			if (!$found)
+			{
+				return "Fehlende Eingabe für ".$this->getId();
+			}
+		}
+
+		return true;
 	}
 
 	public function __toString(){

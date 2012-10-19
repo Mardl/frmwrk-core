@@ -11,7 +11,7 @@ class Link extends Element
 
 	private $renderOutput = '<a href="{href}" class="{class}" style="{style}" {id} {attr}>{name}</a>{breakafter}';
 
-	public function __construct($id, $css = array(), $breakafter = false)
+	public function __construct($id=null, $css = array(), $breakafter = false)
 	{
 		parent::__construct($id, $css, $breakafter);
 		if (file_exists(APPLICATION_PATH.'/Layout/Html/anchor.html.php'))
