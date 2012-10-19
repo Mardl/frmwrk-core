@@ -395,6 +395,7 @@ class Group
 		$insert = "
 			INSERT INTO
 				right_group_rights
+				(`group_id`, `right_id`)
 			VALUES
 				%s;
 		";
