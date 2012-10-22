@@ -455,7 +455,85 @@ class Group
 
 	}
 
-	/**
+	public static function updateUsersGroups(UserModel $user, array $groups)
+	{
+		$delete = "
+			DELETE FROM
+				right_group_users
+			WHERE
+				user_id = %d;
+		";
+		$insert = "
+			INSERT INTO
+				right_group_users
+				(`group_id`, `user_id`)
+			VALUES
+				%s;
+		";
+
+		$values = array();
+		$value = "(%d, %d)";
+
+		foreach ($groups as $group)
+		{
+			$values[] = sprintf(
+				$value,
+				mysql_real_escape_string($group->getId()),
+				mysql_real_escape_string($user->getId())
+			);
+		}
+
+		$insertQuery = '';
+		$deleteQuery = sprintf($delete, mysql_real_escape_string($user->getId()));
+		if (!empty($values))
+		{
+			$insertQuery = sprintf($insert, implode(',', $values));
+		}
+
+		$con = Registry::getInstance()->getDatabase();
+		$rs = $con->newRecordSet();
+
+		//Starte Transaktion
+		$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
+		$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
+
+		//Lösche die bestehenden Mitglieder
+		$execDelete = $rs->execute($con->newQuery()->setQueryOnce($deleteQuery));
+
+		//Verbinde Mitglieder und Gruppe neu
+		if ($execDelete->isSuccessfull())
+		{
+			if (!empty($values))
+			{
+				$execInsert = $rs->execute($con->newQuery()->setQueryOnce($insertQuery));
+			}
+			if (empty($values) || $execInsert->isSuccessfull())
+			{
+				//Schließe Transaktion erfolgreich ab
+				$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
+				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				return true;
+			}
+			else
+			{
+				//Führe Rollback durch
+				$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				return false;
+			}
+		}
+		else
+		{
+			//Führe Rollback durch
+			$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+			$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+			return false;
+		}
+
+
+	}
+
+		/**
 	 * Aktualisiert die Mitglieder einer Gruppe
 	 *
 	 * @param GroupModel $group zu aktualisierende Gruppe
@@ -476,6 +554,7 @@ class Group
 		$insert = "
 			INSERT INTO
 				right_group_users
+				(`group_id`, `user_id`)
 			VALUES
 				%s;
 		";

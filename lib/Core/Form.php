@@ -18,13 +18,13 @@ class Form{
 		$this->values = $data;
 	}
 
-	public function getValue($key)
+	public function getValue($key,$default=null)
 	{
 		if (array_key_exists($key, $this->values))
 		{
 			return $this->values[$key];
 		}
-		return null;
+		return $default;
 	}
 
 	public function setMethod($method){
