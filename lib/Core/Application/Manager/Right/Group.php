@@ -329,7 +329,7 @@ class Group
 	 *
 	 * @return boolean
 	 */
-	public static function updateGroup(GroupModel $group)
+	public static function updateGroup(GroupModel $group, $forceRights=false, $forceUser=false)
 	{
 		$con = Registry::getInstance()->getDatabase();
 		$datetime = new \DateTime();
@@ -351,7 +351,7 @@ class Group
 
 		$rights = $group->getRights();
 
-		if (!empty($rights))
+		if (!empty($rights) || $forceRights)
 		{
 			if (!self::updateGroupRights($group))
 			{
@@ -362,7 +362,7 @@ class Group
 
 		$users = $group->getUsers();
 
-		if (!empty($users))
+		if (!empty($users) || $forceUser)
 		{
 			if (!self::updateGroupUsers($group))
 			{
@@ -411,9 +411,12 @@ class Group
 				mysql_real_escape_string($right->getId())
 			);
 		}
-
+		$insertQuery = '';
 		$deleteQuery = sprintf($delete, mysql_real_escape_string($group->getId()));
-		$insertQuery = sprintf($insert, implode(',', $values));
+		if (!empty($values))
+		{
+			$insertQuery = sprintf($insert, implode(',', $values));
+		}
 
 		$con = Registry::getInstance()->getDatabase();
 		$rs = $con->newRecordSet();
@@ -428,8 +431,11 @@ class Group
 		//Verbinde Rechte und Gruppe neu
 		if ($execDelete->isSuccessfull())
 		{
-			$execInsert = $rs->execute($con->newQuery()->setQueryOnce($insertQuery));
-			if ($execInsert->isSuccessfull())
+			if (!empty($values))
+			{
+				$execInsert = $rs->execute($con->newQuery()->setQueryOnce($insertQuery));
+			}
+			if (empty($values) || $execInsert->isSuccessfull())
 			{
 				//Schließe Transaktion erfolgreich ab
 				$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
@@ -571,8 +577,12 @@ class Group
 			);
 		}
 
+		$insertQuery = '';
 		$deleteQuery = sprintf($delete, mysql_real_escape_string($group->getId()));
-		$insertQuery = sprintf($insert, implode(',', $values));
+		if (!empty($values))
+		{
+			$insertQuery = sprintf($insert, implode(',', $values));
+		}
 
 		$con = Registry::getInstance()->getDatabase();
 		$rs = $con->newRecordSet();
@@ -587,8 +597,11 @@ class Group
 		//Verbinde Mitglieder und Gruppe neu
 		if ($execDelete->isSuccessfull())
 		{
-			$execInsert = $rs->execute($con->newQuery()->setQueryOnce($insertQuery));
-			if ($execInsert->isSuccessfull())
+			if (!empty($values))
+			{
+				$execInsert = $rs->execute($con->newQuery()->setQueryOnce($insertQuery));
+			}
+			if (empty($values) || $execInsert->isSuccessfull())
 			{
 				//Schließe Transaktion erfolgreich ab
 				$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
