@@ -89,7 +89,7 @@ class Form{
 			$attributes = $attr[0].'="'.$attr[1].'" ';
 		}
 
-		$output = file_get_contents(APPLICATION_PATH.'/Layout/Form/form.html.php');
+		$output = file_get_contents(APPLICATION_PATH.'/Layout/Html/form.html.php');
 		$output = str_replace('{method}', $this->method, $output);
 		$output = str_replace('{action}', $this->action, $output);
 		$output = str_replace('{id}', $this->getId(), $output);
