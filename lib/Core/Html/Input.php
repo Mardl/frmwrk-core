@@ -7,7 +7,8 @@ class Input extends Element{
 	protected $placeholder = '';
 	private $renderOutput = '{label}<input type="{type}" class="{class}" style="{style}" {id} name="{name}" value="{value}" {placeholder} {readonly} {attr}/>{breakafter}';
 
-	public function __construct($id, $default, $css = array(), $breakafter = false){
+	public function __construct($id, $default, $css = array(), $breakafter = false, $required=false)
+	{
 		parent::__construct($id, $css, $breakafter);
 
 		if (file_exists(APPLICATION_PATH.'/Layout/Html/input.html.php'))
@@ -16,6 +17,8 @@ class Input extends Element{
 		}
 
 		$this->setValue($default);
+
+		$this->setRequired($required);
 
 	}
 

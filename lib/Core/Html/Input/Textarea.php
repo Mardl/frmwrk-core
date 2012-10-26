@@ -6,8 +6,8 @@ class Textarea extends \Core\Html\Input
 
 	private $renderOutput = '{label}<textarea class="{class}" style="{style}" {id} name="{name}" {attr} />{value}</textarea>';
 
-	public function __construct($id, $default, $css = array(), $breakafter = false){
-		parent::__construct($id, $default, $css, $breakafter);
+	public function __construct($id, $default, $css = array(), $breakafter = false, $required=false){
+		parent::__construct($id, $default, $css, $breakafter, $required);
 
 		if (file_exists(APPLICATION_PATH.'/Layout/Html/textarea.html.php'))
 		{

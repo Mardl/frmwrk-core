@@ -4,6 +4,7 @@ namespace Core;
 class Form{
 
 	private $method = 'post';
+	private $class = '';
 	private $action = null;
 	private $id = 'formular';
 	private $captcha = false;
@@ -40,6 +41,16 @@ class Form{
 	public function setId($id){
 		$this->id = $id;
 
+	}
+
+	public function setClass($class)
+	{
+		$this->class = $class;
+	}
+
+	public function getClass()
+	{
+		return $this->class;
 	}
 
 	public function getId(){
@@ -91,6 +102,7 @@ class Form{
 
 		$output = file_get_contents(APPLICATION_PATH.'/Layout/Html/form.html.php');
 		$output = str_replace('{method}', $this->method, $output);
+		$output = str_replace('{class}', $this->class, $output);
 		$output = str_replace('{action}', $this->action, $output);
 		$output = str_replace('{id}', $this->getId(), $output);
 		$output = str_replace('{attributes}', $attributes, $output);
