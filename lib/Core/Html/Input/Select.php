@@ -9,7 +9,7 @@ class Select extends \Core\Html\Input
 	private $size = 1;
 	private $multiselect = false;
 
-	private $renderOutput = '{label}<select class="{class}" style="{style}" {id} {name} {multiple} {size}>{options}</select>{breakafter}';
+	private $renderOutput = '{label}<select class="{class}" style="{style}" {id} name="{name}" {multiple} {size}>{options}</select>{breakafter}';
 
 	public function __construct($id='', $css = array(), $breakafter = false){
 		parent::__construct($id, '', $css, $breakafter);
@@ -18,6 +18,30 @@ class Select extends \Core\Html\Input
 		{
 			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/select.html.php');
 		}
+	}
+
+	public function validate()
+	{
+		if ($this->isRequired())
+		{
+			$found = false;
+			$count = 0;
+			foreach($this->options as $option)
+			{
+				$count++;
+				if ($count == 1)
+				{
+					continue;
+				}
+				$found = $found || $option[2];
+			}
+			if (!$found)
+			{
+				return "Fehlende Eingabe für ".$this->getId();
+			}
+		}
+
+		return true;
 	}
 
 	public function setName($name){

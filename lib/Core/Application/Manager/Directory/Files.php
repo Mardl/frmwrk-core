@@ -186,7 +186,7 @@ class Files
 		{
 			$info = exif_read_data($newName);
 
-			if ($info["Orientation"] != "1")
+			if (isset($info["Orientation"]) && $info["Orientation"] != "1")
 			{
 				/**
 				 *
@@ -264,17 +264,19 @@ class Files
 
 			if ($watermark != 0)
 			{
-				$pWatermark = __DIR__."/../../../html/static/images/watermark.png";
-				$pFiles = __DIR__."/../../../html/".$newName;
-				$sizesF = getimagesize($pFiles);
-				$sizesW = getimagesize($pWatermark);
+				$pWatermark = ROOT_PATH."/html/static/images/watermark.png";
+				if (file_exists($pWatermark))
+				{
+					$pFiles = ROOT_PATH."/html/".$newName;
+					$sizesF = getimagesize($pFiles);
+					$sizesW = getimagesize($pWatermark);
 
-				$x = ($sizesF[0]/2) - ($sizesW[0]/2);
-				$y = ($sizesF[1]/2) - ($sizesW[1]/2);
+					$x = ($sizesF[0]/2) - ($sizesW[0]/2);
+					$y = ($sizesF[1]/2) - ($sizesW[1]/2);
 
-				$watermarking = "composite -geometry +".$x."+".$y." ".$pWatermark." ".$pFiles." ".$pFiles;
-
-				system($watermarking);
+					$watermarking = "composite -geometry +".$x."+".$y." ".$pWatermark." ".$pFiles." ".$pFiles;
+					system($watermarking);
+				}
 
 			}
 
