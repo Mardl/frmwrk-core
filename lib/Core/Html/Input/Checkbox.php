@@ -8,13 +8,21 @@ class Checkbox extends Input{
 	private $title = null;
 	private $renderOutput = '<label class="checkbox {class}"><input type="checkbox" class="{class}" style="{style}" {id} name="{name}" value="{value}" {attr} /> {title} </label> ';
 
-	public function __construct($id, $default, $css = array(), $breakafter = false){
-		parent::__construct($id, $default, $css, $breakafter);
+	public function __construct($id, $default, $css = array(), $breakafter = false, $postValue='', $required=false)
+	{
+		parent::__construct($id, $default, $css, $breakafter, $required);
 
 		if (file_exists(APPLICATION_PATH.'/Layout/Html/checkbox.html.php'))
 		{
 			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/checkbox.html.php');
 		}
+
+		if ($default == $postValue)
+		{
+			$this->addAttribute('checked','checked');
+		}
+
+
 	}
 
 	public function setTitle($title)
@@ -51,7 +59,8 @@ class Checkbox extends Input{
 		return true;
 	}
 
-	public function __toString(){
+	public function __toString()
+	{
 
 		$output = $this->renderStandard($this->renderOutput);
 

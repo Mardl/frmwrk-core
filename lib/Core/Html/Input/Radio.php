@@ -8,12 +8,21 @@ class Radio extends Input{
 	private $options = array();
 	private $renderOutput = '<label class="checkbox {class}"><input type="radio" class="{class}" style="{style}" {id} name="{name}" value="{value}" {attr} {checked}/> {title}</label>';
 
-	public function __construct($id, $css = array(), $breakafter = false){
-		parent::__construct($id, '', $css, $breakafter);
+	public function __construct($id, $default, $css = array(), $breakafter = false, $opt = array(), $required=false )
+	{
+		parent::__construct($id, $default, $css, $breakafter, $required);
 
 		if (file_exists(APPLICATION_PATH.'/Layout/Html/radio.html.php'))
 		{
 			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/radio.html.php');
+		}
+
+		if (!empty($opt))
+		{
+			foreach($opt as $key => $value)
+			{
+				$this->addOption($key, $value, $key == $default);
+			}
 		}
 	}
 

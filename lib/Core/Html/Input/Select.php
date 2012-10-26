@@ -11,8 +11,9 @@ class Select extends \Core\Html\Input
 
 	private $renderOutput = '{label}<select class="{class}" style="{style}" {id} name="{name}" {multiple} {size}>{options}</select>{breakafter}';
 
-	public function __construct($id='', $css = array(), $breakafter = false){
-		parent::__construct($id, '', $css, $breakafter);
+	public function __construct($id='', $css = array(), $breakafter = false, $required=false)
+	{
+		parent::__construct($id, '', $css, $breakafter, $required);
 
 		if (file_exists(APPLICATION_PATH.'/Layout/Html/select.html.php'))
 		{
@@ -44,17 +45,20 @@ class Select extends \Core\Html\Input
 		return true;
 	}
 
-	public function setName($name){
+	public function setName($name)
+	{
 		$this->name = $name;
 
 	}
 
-	public function addOption($value, $tag, $selected = false){
+	public function addOption($value, $tag, $selected = false)
+	{
 		$this->options[] = array($value,$tag,$selected);
 
 	}
 
-	public function addOptionGrouped($value, $tag, $optgroup, $selected = false){
+	public function addOptionGrouped($value, $tag, $optgroup, $selected = false)
+	{
 		if (!isset($this->optGroups[$optgroup]))
 		{
 			$this->optGroups[$optgroup] = array();
@@ -64,17 +68,20 @@ class Select extends \Core\Html\Input
 
 	}
 
-	public function setSize($size){
+	public function setSize($size)
+	{
 		$this->size = $size;
 
 	}
 
-	public function setMultiSelect($boolean){
+	public function setMultiSelect($boolean)
+	{
 		$this->multiselect = $boolean;
 
 	}
 
-	public function __toString(){
+	public function __toString()
+	{
 
 		if (empty($this->options) && empty($this->optGroups))
 		{
