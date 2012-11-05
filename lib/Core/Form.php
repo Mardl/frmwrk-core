@@ -88,6 +88,22 @@ class Form{
 
 	}
 
+	public function addElementsAllTypes($elements)
+	{
+		if (is_array($elements))
+		{
+			$this->addElements($elements);
+		}
+		elseif( $elements instanceof \Core\Html\Element )
+		{
+			$this->addElement($elements);
+		}
+		else{
+			$text = new \Core\Html\Text('',$elements);
+			$this->addElement($text);
+		}
+	}
+
 	public function __toString(){
 		$elements = '';
 		foreach ($this->elements as $element){

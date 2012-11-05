@@ -102,6 +102,10 @@ class Route
 		return $this->getRouter()->getParams();
 	}
 
+	public function getDefaults(){
+		return $this->defaults;
+	}
+
 	/**
 	 * Match $url to route
 	 *
@@ -130,7 +134,7 @@ class Route
 
 		$parts = explode('/', $this->pattern);
 		$parts = array_values(array_filter($parts));
-		
+
 		$urlparts = explode('/', $url['path']);
 		$urlparts = array_values(array_filter($urlparts));
 	

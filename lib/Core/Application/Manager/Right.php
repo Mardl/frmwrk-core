@@ -14,6 +14,7 @@ use Core\Application\Models\Right as RightModel,
 	Core\Application\Models\User as UserModel,
 	jamwork\common\Registry,
 	jamwork\database\MysqlRecordset as Recordset;
+use Core\SystemMessages;
 
 /**
  * Right
@@ -67,6 +68,76 @@ class Right
 	}
 
 	/**
+	 * @param string $module
+	 * @param string $controller
+	 * @param string $action
+	 * @param string $prefix
+	 */
+	protected static function getActionName($module,$controller,$action,$prefix='')
+	{
+		$registry = Registry::getInstance();
+
+		/**
+		 * @var $request \jamwork\common\HttpRequest
+		 */
+		$request = $registry->getRequest();
+
+
+		$actionName = $request->getParamIfExist("$module:$controller:$action:$prefix",'');
+		if (!empty($actionName))
+		{
+			//SystemMessages::addNotice($actionName);
+			return $actionName;
+		}
+
+		$prefixSlash = '';
+		if (!empty($prefix))
+		{
+			$prefixSlash .= "\\";
+		}
+
+		$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($module)."\\Controller\\".ucfirst($controller);
+//		SystemMessages::addNotice('Single-> '."$module,$controller,$action,$prefix");
+//		SystemMessages::addNotice('INIT -> '."#$class#");
+		$reflect = new \ReflectionClass($class);
+
+		//Methoden auslesen
+		$methods = $reflect->getMethods();
+		foreach ($methods as $method)
+		{
+			//Prüfe ob eine Methode eine HTML-Action ist
+			preg_match("/(.+)(HTML|Html)Action/", $method->getName(), $matches);
+			if (!empty($matches))
+			{
+				//SystemMessages::addError(print_r($matches,true));
+				//SystemMessages::addError($method->getName(). " -> $module,$controller,".$matches[1].",$prefix");
+
+				// Initialisieren
+				$request->setParameter("$module:$controller:".$matches[1].":$prefix",'');
+
+				//Lade den Kommentar
+				$docComment = $method->getDocComment();
+
+				if ($docComment !== false)
+				{
+					//Prüfe ob im Kommentare der Tag showInNavigation vorhanden is und ob der Wert dann auch true ist
+					preg_match('/.*\@actionName ([A-Za-z0-9äöüÄÖÜ -\/]+).*$/s', $docComment, $matchDoc);
+
+					if (!empty($matchDoc)){
+						//Name des Aktion ermitteln
+
+						$request->setParameter("$module:$controller:".$matches[1].":$prefix",$matchDoc[1]);
+					}
+				}
+			}
+		}
+
+		$ret = $request->getParamIfExist("$module:$controller:$action:$prefix",'');
+		return $ret;
+
+	}
+
+	/**
 	 * Erstellt ein neues Recht. Falls es schon existiert wird die "Modified"-Eigenschaft
 	 * aktualisiert
 	 *
@@ -79,6 +150,20 @@ class Right
 	 */
 	public static function createRight($right)
 	{
+		try
+		{
+			self::createRightEx($right);
+		}
+		catch (\Exception $e)
+		{
+			SystemMessages::addError($e->getMessage());
+		}
+	}
+
+	protected static function createRightEx($right)
+	{
+		/*
+		 * Oldschool !!!
 		$sql = "
 			INSERT INTO
 				rights
@@ -88,31 +173,50 @@ class Right
 			ON DUPLICATE KEY UPDATE
 				`modified` = NOW()
 		";
+		*/
+		$sql = "
+			INSERT INTO
+				rights
+				set `module` = '%s',`controller` = '%s',`action` = '%s',`prefix` = '%s',`modified`= NOW() %s
+			ON DUPLICATE KEY UPDATE
+				`modified` = NOW() %s
+		";
+
+		if (is_array($right) && !empty($right))
+		{
+			$right = new RightModel($right);
+		}
 
 		if ($right instanceof RightModel)
 		{
+			$actionName = self::getActionName($right->getModule(),$right->getController(),$right->getAction(),$right->getPrefix());
+			if (empty($actionName))
+			{
+				if (APPLICATION_ENV < ENV_PROD)
+				{
+					throw new \Exception('@actionName in der Doc der Aktion "'.$right->getAction().'" im Controller "'.$right->getController().'" vom Modul "'.$right->getModule().'" nicht gesetzt.');
+				}
+			}
+			$title="";
+			if (!empty($actionName))
+			{
+				$title = ", `title` = '$actionName'";
+			}
 			$queryString = sprintf(
 				$sql,
 				mysql_real_escape_string($right->getModule()),
 				mysql_real_escape_string($right->getController()),
 				mysql_real_escape_string($right->getAction()),
-				mysql_real_escape_string($right->getPrefix())
-			);
-		}
-		else if (is_array($right) && !empty($right))
-		{
-			$queryString = sprintf(
-				$sql,
-				mysql_real_escape_string($right['module']),
-				mysql_real_escape_string($right['controller']),
-				mysql_real_escape_string($right['action']),
-				mysql_real_escape_string($right['prefix'])
+				mysql_real_escape_string($right->getPrefix()),
+				$title,$title
 			);
 		}
 		else
 		{
 			throw new \InvalidArgumentException('Invalid right definition');
 		}
+
+		//SystemMessages::addError($queryString.'<br>'.$actionName);
 
 		$con = Registry::getInstance()->getDatabase();
 		$rs = $con->newRecordSet();
