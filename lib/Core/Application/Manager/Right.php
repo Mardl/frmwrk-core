@@ -106,7 +106,7 @@ class Right
 		foreach ($methods as $method)
 		{
 			//Prüfe ob eine Methode eine HTML-Action ist
-			preg_match("/(.+)(HTML|Html)Action/", $method->getName(), $matches);
+			preg_match("/(.+)(HTML|Html|JSON|Json)Action/", $method->getName(), $matches);
 			if (!empty($matches))
 			{
 				//SystemMessages::addError(print_r($matches,true));
