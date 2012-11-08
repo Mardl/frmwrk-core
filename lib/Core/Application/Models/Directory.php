@@ -88,7 +88,7 @@ class Directory extends BaseModel
 	 * @param Directory $parentDirectory
 	 * @deprecated
 	 */
-	public function setParent(DirectoryModel $parentDirectory)
+	public function setParent($parentDirectory)
 	{
 		$this->setParentDirectory($parentDirectory);
 	}
