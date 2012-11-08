@@ -20,6 +20,20 @@ use Core\Model as BaseModel,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
+ * @method string getTitle()
+ * @method string getModule()
+ * @method string getController()
+ * @method string getAction()
+ * @method string getPrefix()
+ * @method string getModified()
+ * @method Core\Application\Models\Right\Group getGroups()
+ *
+ * @method setTitle($value)
+ * @method setModule($value)
+ * @method setController($value)
+ * @method setAction($value)
+ * @method setPrefix($value)
+ *
  * @MappedSuperclass
  */
 class Right extends BaseModel

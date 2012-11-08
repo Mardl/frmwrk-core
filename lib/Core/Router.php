@@ -133,18 +133,78 @@ class Router extends ArrayObject
 	 *
 	 * @return Core\Route|boolean
 	 */
-	public function findRoute($url)
+	public function findRoute($url, $instance = false)
 	{
 		foreach ($this as $key => $route)
 		{
 			$routeData = $route->matchUrl($url);
 			if ($routeData)
 			{
-				return $routeData;
+				if (!$instance)
+				{
+					return $routeData;
+				}
+				else
+				{
+					return $route;
+				}
 			}
 		}
 		return false;
 
+	}
+
+	public function getRouteByArray($data){
+		$matching = array();
+		foreach($this as $routeName => $value)
+		{
+			if ($value instanceof \Core\Route && $routeName != 'default'){
+				$temp = $value->getDefaults();
+				$matching[$routeName] = 0;
+				foreach ($data as $key => $val){
+					if (array_key_exists($key, $temp)){
+						if ($key == 'module' && $val == $temp['module'])
+						{
+							$matching[$routeName] += 3;
+						}
+						else if ($key == 'controller' && $val == $temp['controller'])
+						{
+							$matching[$routeName] += 2;
+						}
+						else if ($key == 'action' && $val == $temp['action'])
+						{
+							$matching[$routeName] += 1;
+						} else if ($key == 'module' && $val != $temp['module'])
+						{
+							$matching[$routeName] -= 3;
+						}
+						else if ($key == 'controller' && $val != $temp['controller'])
+						{
+							$matching[$routeName] -= 2;
+						}
+						else if ($key == 'action' && $val != $temp['action'])
+						{
+							$matching[$routeName] -= 1;
+						}
+					}
+				}
+			}
+		}
+		$max = 0;
+		$winnerRoute = null;
+
+		foreach ($matching as $route => $count){
+			if ($count > $max){
+				$max = $count;
+				$winnerRoute = $route;
+			}
+		}
+
+		if (is_null($winnerRoute)){
+			$winnerRoute = 'default';
+		}
+
+		return $this[$winnerRoute];
 	}
 
 	/**

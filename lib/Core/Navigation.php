@@ -222,11 +222,11 @@ class Navigation
 
 				if ($prefix != '')
 				{
-					$class = "\\App\\Modules\\".$prefix."\\".$module."\\Controller\\".$controller;
+					$class = "\\App\\Modules\\".ucfirst($prefix)."\\".ucfirst($module)."\\Controller\\".ucfirst($controller);
 				}
 				else
 				{
-					$class = "\\App\\Modules\\".$module."\\Controller\\".$controller;
+					$class = "\\App\\Modules\\".ucfirst($module)."\\Controller\\".ucfirst($controller);
 				}
 
 				//Neue Reflectionklasse instanzieren
