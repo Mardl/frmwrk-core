@@ -21,6 +21,14 @@ use Core\Model as BaseModel,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
+ * @method string getName()
+ * @method string getModified()
+ * @method array getRights()
+ * @method array getUsers()
+ *
+ * @method setName($value)
+ * @method setModified($value)
+ *
  * @MappedSuperclass
  */
 class Group extends BaseModel

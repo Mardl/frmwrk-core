@@ -22,6 +22,14 @@ use Core\Model as BaseModel,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
+ * @method string getName()
+ * @method DirectoryModel getParent()
+ * @method int getSort()
+ *
+ * @method setName($value)
+ * @method setParent(DirectoryModel $value)
+ * @method setSort($value)
+ *
  * @MappedSuperclass
  */
 class Directory extends BaseModel
@@ -77,6 +85,15 @@ class Directory extends BaseModel
 	}
 
 	/**
+	 * @param Directory $parentDirectory
+	 * @deprecated
+	 */
+	public function setParent(DirectoryModel $parentDirectory)
+	{
+		$this->setParentDirectory($parentDirectory);
+	}
+
+	/**
 	 * Liefert das Parent Directory
 	 *
 	 * @return Core\Application\Models\Directory
@@ -84,6 +101,15 @@ class Directory extends BaseModel
 	public function getParentDirectory()
 	{
 		return $this->parent;
+	}
+
+	/**
+	 * @return App\Models\Directory
+	 * @deprecated
+	 */
+	public function getParent()
+	{
+		return $this->getParentDirectory();
 	}
 
 	/**

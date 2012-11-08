@@ -19,6 +19,16 @@ use Core\Model as BaseModel;
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
+ * @method string getInternational()
+ * @method string getVolltext()
+ * @method string getIsocode()
+ * @method string getCountry()
+ *
+ * @method setInternational($value)
+ * @method setVolltext($value)
+ * @method setIsocode($value)
+ * @method setCountry($value)
+ *
  * @MappedSuperclass
  */
 class Language extends BaseModel implements \Core\Application\Interfaces\ModelsInterface
@@ -36,7 +46,7 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
     protected $id;
 
     /**
-     * Volltext
+     * Landesspezifischer Name
      *
      * @var string
      *
@@ -62,15 +72,25 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
      */
     protected $country;
 
+	/**
+	 * Internationaler Name
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=16, nullable=true)
+	 */
+	protected $international;
 
-    public function getDataRow()
+
+	public function getDataRow()
     {
     	$data = array(
     		'id'		=> $this->getId(),
     		'volltext'	=> $this->getVolltext(),
     		'isocode' 	=> $this->getIsocode(),
-    		'country' 	=> $this->getCountry()
-    	);
+			'country' 	=> $this->getCountry(),
+    		'international'	=> $this->getInternational()
+		);
 
     	return $data;
     }

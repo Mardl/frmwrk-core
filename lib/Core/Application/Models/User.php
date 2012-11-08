@@ -21,6 +21,29 @@ use Exception,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
+ * @method string getUsername()
+ * @method string getFirstname()
+ * @method string getLastname()
+ * @method string getEmail()
+ * @method bool getEmailCorrupted()
+ * @method string getBirthday()
+ * @method string getCreated()
+ * @method int getStatus()
+ * @method bool getOtp()
+ * @method bool getAdmin()
+ * @method \App\Models\Language getLanguage()
+ *
+ * @method setUsername($value)
+ * @method setFirstname($value)
+ * @method setLastname($value)
+ * @method setEmail($value)
+ * @method setEmailCorrupted(\bool $value)
+ * @method setCreated($value)
+ * @method setStatus(\int $value)
+ * @method setOtp(\bool $value)
+ * @method setAdmin($value)
+ *
+ *
  * @MappedSuperclass
  */
 class User extends BaseModel

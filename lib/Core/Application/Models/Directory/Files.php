@@ -21,6 +21,23 @@ use Core\Model as BaseModel,
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
+ * @method string getOrgname()
+ * @method string getName()
+ * @method string getBasename()
+ * @method Directory getDirectory()
+ * @method Files getParent()
+ * @method string getMimetype()
+ * @method float getSize()
+ *
+ * @method setOrgname($value)
+ * @method setName($value)
+ * @method setBasename($value)
+ * @method setDirectory(Directory $value)
+ * @method setParent(Files $value)
+ * @method setMimetype($value)
+ * @method setSize(\float $value)
+ *
+ *
  * @MappedSuperclass
  */
 class Files extends BaseModel
