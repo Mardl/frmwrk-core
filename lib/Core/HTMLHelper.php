@@ -550,42 +550,56 @@ class HTMLHelper
 
 		$link = $url;
 
-		if (class_exists('\App\Models\Right'))
+		if (substr($link,0,4) != 'http' && class_exists('\App\Models\Right'))
 		{
-			$data = array(
-				'module' => $route['module'],
-				'controller' => $route['controller'],
-				'action' => $route['action'],
-				'prefix' => $route['prefix']
-			);
-			$right = new \App\Models\Right($data);
+			$link = null;
 
-			if (class_exists('\App\Manager\Right'))
+			if ($route['prefix'] == '')
 			{
-				$allowed = \App\Manager\Right::isAllowed($right, Registry::getInstance()->login);
+				$controller = '\\App\Modules\\'.ucfirst($route['module']).'\\Controller\\'.ucfirst($route['controller']);
 			}
 			else
 			{
-				$allowed = \Core\Application\Manager\Right::isAllowed($right, Registry::getInstance()->login);
+				$controller = '\\App\Modules\\'.ucfirst($route['prefix']).'\\'.ucfirst($route['module']).'\\Controller\\'.ucfirst($route['controller']);
 			}
 
-			if (!$allowed)
+			try
 			{
-				$link = null;
+				$reflection = new \ReflectionClass($controller);
+			}
+			catch (\Exception $e)
+			{
+				\Core\SystemMessages::addError($e->getMessage());
+				return '';
+			}
 
-				if ($data['prefix'] == '')
+			$properties = $reflection->getDefaultProperties();
+
+			if ($properties['checkPermissions'] == false)
+			{
+				$link = $url;
+			}
+
+			if (is_null($link))
+			{
+				$data = array(
+					'module' => $route['module'],
+					'controller' => $route['controller'],
+					'action' => $route['action'],
+					'prefix' => $route['prefix']
+				);
+				$right = new \App\Models\Right($data);
+
+				if (class_exists('\App\Manager\Right'))
 				{
-					$controller = '\\App\Modules\\'.ucfirst($route['module']).'\\Controller\\'.ucfirst($route['controller']);
+					$allowed = \App\Manager\Right::isAllowed($right, Registry::getInstance()->login);
 				}
 				else
 				{
-					$controller = '\\App\Modules\\'.ucfirst($route['prefix']).'\\'.ucfirst($route['module']).'\\Controller\\'.ucfirst($route['controller']);
+					$allowed = \Core\Application\Manager\Right::isAllowed($right, Registry::getInstance()->login);
 				}
 
-				$reflection = new \ReflectionClass($controller);
-				$properties = $reflection->getDefaultProperties();
-
-				if ($properties['checkPermissions'] == false)
+				if ($allowed)
 				{
 					$link = $url;
 				}

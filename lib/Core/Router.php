@@ -15,7 +15,7 @@ use ArrayObject;
 
 /**
  * Router
- * 
+ *
  * @category Routing
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
@@ -48,10 +48,10 @@ class Router extends ArrayObject
 	 * Get route by name
 	 *
 	 * @param string $route Name of route
-	 * 
+	 *
 	 * @return Core\Route
 	 */
-	public function offsetGet($route) 
+	public function offsetGet($route)
 	{
 		if (!isset($this[$route]))
 		{
@@ -62,9 +62,9 @@ class Router extends ArrayObject
 
 	/**
 	 * Liefert eine bestimmte Route anhand ihres Namens
-	 * 
+	 *
 	 * @param string $routeName Routenname
-	 * 
+	 *
 	 * @return Core\Route
 	 */
     public function getRoute($routeName)
@@ -93,7 +93,7 @@ class Router extends ArrayObject
      * Add routes
      *
      * @param array $routes Routeninformationen
-     * 
+     *
      * @return void
      */
 	public function addRoutes(array $routes)
@@ -108,7 +108,7 @@ class Router extends ArrayObject
 	 * Search route matching $url
 	 *
 	 * @param string $url URL
-	 * 
+	 *
 	 * @return Core\Route|boolean
 	 */
 	public function searchRoute($url)
@@ -124,6 +124,87 @@ class Router extends ArrayObject
 		}
 		return false;
 
+	}
+
+	/**
+	 * Find route matching $url
+	 *
+	 * @param string $url URL
+	 *
+	 * @return Core\Route|boolean
+	 */
+	public function findRoute($url, $instance = false)
+	{
+		foreach ($this as $key => $route)
+		{
+			$routeData = $route->matchUrl($url);
+			if ($routeData)
+			{
+				if (!$instance)
+				{
+					return $routeData;
+				}
+				else
+				{
+					return $route;
+				}
+			}
+		}
+		return false;
+
+	}
+
+	public function getRouteByArray($data){
+		$matching = array();
+		foreach($this as $routeName => $value)
+		{
+			if ($value instanceof \Core\Route && $routeName != 'default'){
+				$temp = $value->getDefaults();
+				$matching[$routeName] = 0;
+				foreach ($data as $key => $val){
+					if (array_key_exists($key, $temp)){
+						if ($key == 'module' && $val == $temp['module'])
+						{
+							$matching[$routeName] += 3;
+						}
+						else if ($key == 'controller' && $val == $temp['controller'])
+						{
+							$matching[$routeName] += 2;
+						}
+						else if ($key == 'action' && $val == $temp['action'])
+						{
+							$matching[$routeName] += 1;
+						} else if ($key == 'module' && $val != $temp['module'])
+						{
+							$matching[$routeName] -= 3;
+						}
+						else if ($key == 'controller' && $val != $temp['controller'])
+						{
+							$matching[$routeName] -= 2;
+						}
+						else if ($key == 'action' && $val != $temp['action'])
+						{
+							$matching[$routeName] -= 1;
+						}
+					}
+				}
+			}
+		}
+		$max = 0;
+		$winnerRoute = null;
+
+		foreach ($matching as $route => $count){
+			if ($count > $max){
+				$max = $count;
+				$winnerRoute = $route;
+			}
+		}
+
+		if (is_null($winnerRoute)){
+			$winnerRoute = 'default';
+		}
+
+		return $this[$winnerRoute];
 	}
 
 	/**
@@ -148,13 +229,13 @@ class Router extends ArrayObject
 
 	/**
 	 * Speichert einen Parameter ab und gibt true zurück wenn dies erfolgreich war
-	 * 
+	 *
 	 * @param string $key   Parametername
 	 * @param mixed  $value Wert
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function setParam($key, $value) 
+	public function setParam($key, $value)
 	{
 		return $this->params[$key] = $value;
 	}
@@ -165,7 +246,7 @@ class Router extends ArrayObject
      *
      * @return array
      */
-	public function getParams() 
+	public function getParams()
 	{
 		return $this->params;
 	}
@@ -174,7 +255,7 @@ class Router extends ArrayObject
      * Get param from route by name
      *
      * @param string $key Parametername
-     * 
+     *
      * @return string
      */
 	public function getParam($key)
@@ -191,10 +272,10 @@ class Router extends ArrayObject
      * Set params
      *
      * @param array $params Array mit Parametern
-     * 
+     *
      * @return void
      */
-	public function setParams($params) 
+	public function setParams($params)
 	{
 		$this->params = $params;
 	}

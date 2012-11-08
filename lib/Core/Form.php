@@ -88,6 +88,22 @@ class Form{
 
 	}
 
+	public function addElementsAllTypes($elements)
+	{
+		if (is_array($elements))
+		{
+			$this->addElements($elements);
+		}
+		elseif( $elements instanceof \Core\Html\Element )
+		{
+			$this->addElement($elements);
+		}
+		else{
+			$text = new \Core\Html\Text('',$elements);
+			$this->addElement($text);
+		}
+	}
+
 	public function __toString(){
 		$elements = '';
 		foreach ($this->elements as $element){
@@ -100,7 +116,12 @@ class Form{
 			$attributes = $attr[0].'="'.$attr[1].'" ';
 		}
 
-		$output = file_get_contents(APPLICATION_PATH.'/Layout/Html/form.html.php');
+		$output = '<form method="{method}" action="{action}" {id} {attributes}>{elements}</form>';
+
+		if (file_exists(APPLICATION_PATH.'/Layout/Html/form.html.php'))
+		{
+			$output = file_get_contents(APPLICATION_PATH.'/Layout/Html/form.html.php');
+		}
 		$output = str_replace('{method}', $this->method, $output);
 		$output = str_replace('{class}', $this->class, $output);
 		$output = str_replace('{action}', $this->action, $output);
