@@ -19,15 +19,15 @@ use Core\Model as BaseModel;
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @method string getInternational()
- * @method string getNational()
  * @method string getIsocode()
  * @method string getCountryCode()
+ * @method string getInternational()
+ * @method string getNational()
  *
- * @method setInternational($value)
- * @method setNational($value)
  * @method setIsocode($value)
  * @method setCountryCode($value)
+ * @method setInternational($value)
+ * @method setNational($value)
  *
  * @MappedSuperclass
  */
@@ -89,10 +89,10 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
     {
     	$data = array(
     		'id'			=> $this->getId(),
+			'isocode' 		=> $this->getIsocode(),
+			'countryCode'	=> $this->getCountryCode(),
 			'international' => $this->getInternational(),
-			'national'		=> $this->getNational(),
-			'countrycode'	=> $this->getCountryCode(),
-			'isocode' 		=> $this->getIsocode()
+			'national'		=> $this->getNational()
 		);
 
     	return $data;
