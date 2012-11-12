@@ -93,8 +93,10 @@ class Right
 		$prefixSlash = '';
 		if (!empty($prefix))
 		{
-			$prefixSlash .= "\\";
+			$prefixSlash .= $prefix."\\";
 		}
+
+
 
 		$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($module)."\\Controller\\".ucfirst($controller);
 //		SystemMessages::addNotice('Single-> '."$module,$controller,$action,$prefix");
