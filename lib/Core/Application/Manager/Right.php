@@ -194,7 +194,7 @@ class Right
 			{
 				if (APPLICATION_ENV < ENV_PROD)
 				{
-					throw new \Exception('@actionName in der Doc der Aktion "'.$right->getAction().'" im Controller "'.$right->getController().'" vom Modul "'.$right->getModule().'" nicht gesetzt.');
+					throw new \Exception('@actionName in der Doc der Aktion "'.$right->getAction().'" im Controller "'.$right->getController().'" vom Modul "'.$right->getModule().'" nicht gesetzt. ('.ucfirst($right->getModule()).'/'.ucfirst($right->getController()).'/'.ucfirst($right->getAction()).')');
 				}
 			}
 			$title="";
