@@ -113,7 +113,7 @@ class Right
 				//SystemMessages::addError($method->getName(). " -> $module,$controller,".$matches[1].",$prefix");
 
 				// Initialisieren
-				$request->setParameter("$module:$controller:".$matches[1].":$prefix",'');
+				$request->setParameter("$module:$controller:".strtolower($matches[1]).":$prefix",'');
 
 				//Lade den Kommentar
 				$docComment = $method->getDocComment();
@@ -126,7 +126,7 @@ class Right
 					if (!empty($matchDoc)){
 						//Name des Aktion ermitteln
 
-						$request->setParameter("$module:$controller:".$matches[1].":$prefix",$matchDoc[1]);
+						$request->setParameter("$module:$controller:".strtolower($matches[1]).":$prefix",$matchDoc[1]);
 					}
 				}
 			}
@@ -152,7 +152,7 @@ class Right
 	{
 		try
 		{
-			self::createRightEx($right);
+			return self::createRightEx($right);
 		}
 		catch (\Exception $e)
 		{
@@ -194,7 +194,16 @@ class Right
 			{
 				if (APPLICATION_ENV < ENV_PROD)
 				{
-					throw new \Exception('@actionName in der Doc der Aktion "'.$right->getAction().'" im Controller "'.$right->getController().'" vom Modul "'.$right->getModule().'" nicht gesetzt.');
+					$prefixSlash = '';
+					$pre = $right->getPrefix();
+					if (!empty($pre))
+					{
+						$prefixSlash .= "\\";
+					}
+
+					$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($right->getModule())."\\Controller\\".ucfirst($right->getController());
+
+					throw new \Exception('@actionName in der Action des Controllers "'.$class.'" -> "'.$right->getAction().'" nicht gesetzt!');
 				}
 			}
 			$title="";
