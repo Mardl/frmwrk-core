@@ -62,9 +62,16 @@ class Right
 			->addWhere('r.prefix', $right->getPrefix())
 			->limit(0, 1);
 
+		/**
+		 * @todo Return wert in Session besser über request->param halten für query, damit nicht jedesmal abgefragt wird.
+		 */
+
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
-		return $rsExecution->get();
+		return $rsExecution->isSuccessful() && $rsExecution->count() > 0;
+
+		// alte version, wer fragt den returnwert ab ?? @mardl
+		//return $rsExecution->get();
 	}
 
 	/**
@@ -76,24 +83,23 @@ class Right
 	protected static function getActionName($module,$controller,$action,$prefix='')
 	{
 		$registry = Registry::getInstance();
-
 		/**
 		 * @var $request \jamwork\common\HttpRequest
+		 * @var $sess \jamwork\common\Session
 		 */
 		$request = $registry->getRequest();
 
-
-		$actionName = $request->getParamIfExist("$module:$controller:$action:$prefix",'');
-		if (!empty($actionName))
+		$toCheck = strtolower('getActionName:'."$module:$controller:$action:$prefix");
+		$sess = $registry->getSession();
+		if ($sess->has($toCheck))
 		{
-			//SystemMessages::addNotice($actionName);
-			return $actionName;
+			return $sess->get($toCheck);
 		}
 
 		$prefixSlash = '';
 		if (!empty($prefix))
 		{
-			$prefixSlash .= "\\";
+			$prefixSlash .= $prefix."\\";
 		}
 
 		$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($module)."\\Controller\\".ucfirst($controller);
@@ -126,15 +132,20 @@ class Right
 					if (!empty($matchDoc)){
 						//Name des Aktion ermitteln
 
-						$request->setParameter("$module:$controller:".strtolower($matches[1]).":$prefix",$matchDoc[1]);
+						$toCheck = strtolower('getActionName:'."$module:$controller:".$matches[1].":$prefix");
+						$sess->set($toCheck,$matchDoc[1]);
+
 					}
 				}
 			}
 		}
 
-		$ret = $request->getParamIfExist("$module:$controller:$action:$prefix",'');
-		return $ret;
-
+		$toCheck = strtolower('getActionName:'."$module:$controller:$action:$prefix");
+		if ($sess->has($toCheck))
+		{
+			return $sess->get($toCheck);
+		}
+		return '';
 	}
 
 	/**
@@ -189,6 +200,22 @@ class Right
 
 		if ($right instanceof RightModel)
 		{
+
+			/**
+			 * prüfen ob bereits geprüft :-)
+			 * @var $sess \jamwork\common\Session
+			 */
+			$toCheck = strtolower('setright'.$right->getModule().':'.$right->getController().':'.$right->getAction().':'.$right->getPrefix());
+			$reg = Registry::getInstance();
+			$sess = $reg->getSession();
+			if ($sess->has($toCheck))
+			{
+				return true;
+			}
+			$sess->set($toCheck,1);
+
+			// und weiter gehts
+
 			$actionName = self::getActionName($right->getModule(),$right->getController(),$right->getAction(),$right->getPrefix());
 			if (empty($actionName))
 			{
@@ -198,7 +225,7 @@ class Right
 					$pre = $right->getPrefix();
 					if (!empty($pre))
 					{
-						$prefixSlash .= "\\";
+						$prefixSlash .= $pre."\\";
 					}
 
 					$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($right->getModule())."\\Controller\\".ucfirst($right->getController());
@@ -224,8 +251,6 @@ class Right
 		{
 			throw new \InvalidArgumentException('Invalid right definition');
 		}
-
-		//SystemMessages::addError($queryString.'<br>'.$actionName);
 
 		$con = Registry::getInstance()->getDatabase();
 		$rs = $con->newRecordSet();
