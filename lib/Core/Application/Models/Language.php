@@ -45,7 +45,19 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
      */
     protected $id;
 
-    /**
+	/**
+	 *
+	 * Kurzversion D, I, NL ... however
+	 *
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=8)
+	 */
+	protected $short;
+
+
+	/**
      * Landesspezifischer Name
      *
      * @var string
@@ -82,7 +94,6 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
      * @Column(type="string", length=10)
      */
     protected $countryCode;
-
 
 
 	public function getDataRow()
