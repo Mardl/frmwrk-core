@@ -102,6 +102,8 @@ class Right
 			$prefixSlash .= $prefix."\\";
 		}
 
+
+
 		$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($module)."\\Controller\\".ucfirst($controller);
 //		SystemMessages::addNotice('Single-> '."$module,$controller,$action,$prefix");
 //		SystemMessages::addNotice('INIT -> '."#$class#");
