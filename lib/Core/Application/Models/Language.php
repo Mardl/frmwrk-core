@@ -19,15 +19,15 @@ use Core\Model as BaseModel;
  * @package  Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @method string getInternational()
- * @method string getVolltext()
  * @method string getIsocode()
- * @method string getCountry()
+ * @method string getCountryCode()
+ * @method string getInternational()
+ * @method string getNational()
  *
- * @method setInternational($value)
- * @method setVolltext($value)
  * @method setIsocode($value)
- * @method setCountry($value)
+ * @method setCountryCode($value)
+ * @method setInternational($value)
+ * @method setNational($value)
  *
  * @MappedSuperclass
  */
@@ -45,54 +45,79 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
      */
     protected $id;
 
-    /**
+	/**
+	 *
+	 * Kurzversion D, I, NL ... however
+	 *
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=8)
+	 */
+	protected $short;
+
+
+	/**
      * Landesspezifischer Name
      *
      * @var string
      *
-     * @Column(type="string", length=32, nullable=false)
+     * @Column(type="string", length=50, nullable=true)
      */
-    protected $volltext;
-
-    /**
-     * Isocode
-     *
-     * @var string
-     *
-     * @Column(type="string", length=32, nullable=true)
-     */
-    protected $isocode;
-
-    /**
-     * Länderkürzel
-     *
-     * @var string
-     *
-     * @Column(type="string", length=16, nullable=true)
-     */
-    protected $country;
+    protected $national;
 
 	/**
 	 * Internationaler Name
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string", length=16, nullable=true)
+	 * @Column(type="string", length=50)
 	 */
 	protected $international;
+
+	/**
+	 * Iso-Code from ISO-639-1
+	 *
+     * @var string
+     *
+     * @Column(type="string", length=10)
+     */
+    protected $isocode;
+
+	/**
+	 *
+	 * Iso-Code from ISO-3166-1
+	 *
+     *
+     * @var string
+     *
+     * @Column(type="string", length=10)
+     */
+    protected $countryCode;
 
 
 	public function getDataRow()
     {
     	$data = array(
-    		'id'		=> $this->getId(),
-    		'volltext'	=> $this->getVolltext(),
-    		'isocode' 	=> $this->getIsocode(),
-			'country' 	=> $this->getCountry(),
-    		'international'	=> $this->getInternational()
+    		'id'			=> $this->getId(),
+			'isocode' 		=> $this->getIsocode(),
+			'countryCode'	=> $this->getCountryCode(),
+			'international' => $this->getInternational(),
+			'national'		=> $this->getNational()
 		);
 
     	return $data;
     }
 
+	/**
+	 *
+	 * Liefert Länder-Sprachkennzeichen
+	 * Beispiel de-de oder de-AT
+	 *
+	 * @return string
+	 */
+	public function getHtmlLanguage()
+	{
+		return $this->getIsocode().'-'.$this->getCountryCode();
+	}
 }

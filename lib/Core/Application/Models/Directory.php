@@ -84,14 +84,6 @@ class Directory extends BaseModel
 		$this->parent = $parentDirectory;
 	}
 
-	/**
-	 * @param Directory $parentDirectory
-	 * @deprecated
-	 */
-	public function setParent(DirectoryModel $parentDirectory)
-	{
-		$this->setParentDirectory($parentDirectory);
-	}
 
 	/**
 	 * Liefert das Parent Directory
@@ -101,15 +93,6 @@ class Directory extends BaseModel
 	public function getParentDirectory()
 	{
 		return $this->parent;
-	}
-
-	/**
-	 * @return App\Models\Directory
-	 * @deprecated
-	 */
-	public function getParent()
-	{
-		return $this->getParentDirectory();
 	}
 
 	/**

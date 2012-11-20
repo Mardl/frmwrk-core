@@ -422,8 +422,9 @@ class Group
 		$rs = $con->newRecordSet();
 
 		//Starte Transaktion
-		$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
-		$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
+		$con->startTransaction();
+		//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
+		//$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
 
 		//Lösche die bestehenden Rechte
 		$execDelete = $rs->execute($con->newQuery()->setQueryOnce($deleteQuery));
@@ -438,23 +439,26 @@ class Group
 			if (empty($values) || $execInsert->isSuccessfull())
 			{
 				//Schließe Transaktion erfolgreich ab
-				$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
-				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				$con->commit();
+//				$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
+//				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
-				$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				$con->rollback();
+//				$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+//				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return false;
 			}
 		}
 		else
 		{
 			//Führe Rollback durch
-			$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-			$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+			$con->rollback();
+//			$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+//			$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
 
@@ -500,8 +504,9 @@ class Group
 		$rs = $con->newRecordSet();
 
 		//Starte Transaktion
-		$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
-		$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
+		$con->startTransaction();
+		//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
+		//$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
 
 		//Lösche die bestehenden Mitglieder
 		$execDelete = $rs->execute($con->newQuery()->setQueryOnce($deleteQuery));
@@ -516,23 +521,26 @@ class Group
 			if (empty($values) || $execInsert->isSuccessfull())
 			{
 				//Schließe Transaktion erfolgreich ab
-				$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
-				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				$con->commit();
+				//$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
+				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
-				$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				$con->rollback();
+				//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return false;
 			}
 		}
 		else
 		{
 			//Führe Rollback durch
-			$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-			$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+			$con->rollback();
+			//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+			//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
 
@@ -588,8 +596,9 @@ class Group
 		$rs = $con->newRecordSet();
 
 		//Starte Transaktion
-		$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
-		$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
+		$con->startTransaction();
+		//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
+		//$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
 
 		//Lösche die bestehenden Mitglieder
 		$execDelete = $rs->execute($con->newQuery()->setQueryOnce($deleteQuery));
@@ -604,23 +613,26 @@ class Group
 			if (empty($values) || $execInsert->isSuccessfull())
 			{
 				//Schließe Transaktion erfolgreich ab
-				$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
-				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				$con->commit();
+				//$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
+				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
-				$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				$con->rollback();
+				//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return false;
 			}
 		}
 		else
 		{
 			//Führe Rollback durch
-			$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-			$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+			$con->rollback();
+			//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+			//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
 
