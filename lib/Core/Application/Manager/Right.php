@@ -62,9 +62,16 @@ class Right
 			->addWhere('r.prefix', $right->getPrefix())
 			->limit(0, 1);
 
+		/**
+		 * @todo Return wert in Session besser über request->param halten für query, damit nicht jedesmal abgefragt wird.
+		 */
+
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
-		return $rsExecution->get();
+		return $rsExecution->isSuccessful() && $rsExecution->count() > 0;
+
+		// alte version, wer fragt den returnwert ab ?? @mardl
+		//return $rsExecution->get();
 	}
 
 	/**
@@ -76,18 +83,17 @@ class Right
 	protected static function getActionName($module,$controller,$action,$prefix='')
 	{
 		$registry = Registry::getInstance();
-
 		/**
 		 * @var $request \jamwork\common\HttpRequest
+		 * @var $sess \jamwork\common\Session
 		 */
 		$request = $registry->getRequest();
 
-
-		$actionName = $request->getParamIfExist("$module:$controller:$action:$prefix",'');
-		if (!empty($actionName))
+		$toCheck = strtolower('getActionName:'."$module:$controller:$action:$prefix");
+		$sess = $registry->getSession();
+		if ($sess->has($toCheck))
 		{
-			//SystemMessages::addNotice($actionName);
-			return $actionName;
+			return $sess->get($toCheck);
 		}
 
 		$prefixSlash = '';
@@ -115,7 +121,7 @@ class Right
 				//SystemMessages::addError($method->getName(). " -> $module,$controller,".$matches[1].",$prefix");
 
 				// Initialisieren
-				$request->setParameter("$module:$controller:".$matches[1].":$prefix",'');
+				$request->setParameter("$module:$controller:".strtolower($matches[1]).":$prefix",'');
 
 				//Lade den Kommentar
 				$docComment = $method->getDocComment();
@@ -128,15 +134,20 @@ class Right
 					if (!empty($matchDoc)){
 						//Name des Aktion ermitteln
 
-						$request->setParameter("$module:$controller:".$matches[1].":$prefix",$matchDoc[1]);
+						$toCheck = strtolower('getActionName:'."$module:$controller:".$matches[1].":$prefix");
+						$sess->set($toCheck,$matchDoc[1]);
+
 					}
 				}
 			}
 		}
 
-		$ret = $request->getParamIfExist("$module:$controller:$action:$prefix",'');
-		return $ret;
-
+		$toCheck = strtolower('getActionName:'."$module:$controller:$action:$prefix");
+		if ($sess->has($toCheck))
+		{
+			return $sess->get($toCheck);
+		}
+		return '';
 	}
 
 	/**
@@ -154,7 +165,7 @@ class Right
 	{
 		try
 		{
-			self::createRightEx($right);
+			return self::createRightEx($right);
 		}
 		catch (\Exception $e)
 		{
@@ -191,12 +202,37 @@ class Right
 
 		if ($right instanceof RightModel)
 		{
+
+			/**
+			 * prüfen ob bereits geprüft :-)
+			 * @var $sess \jamwork\common\Session
+			 */
+			$toCheck = strtolower('setright'.$right->getModule().':'.$right->getController().':'.$right->getAction().':'.$right->getPrefix());
+			$reg = Registry::getInstance();
+			$sess = $reg->getSession();
+			if ($sess->has($toCheck))
+			{
+				return true;
+			}
+			$sess->set($toCheck,1);
+
+			// und weiter gehts
+
 			$actionName = self::getActionName($right->getModule(),$right->getController(),$right->getAction(),$right->getPrefix());
 			if (empty($actionName))
 			{
 				if (APPLICATION_ENV < ENV_PROD)
 				{
-					throw new \Exception('@actionName in der Doc der Aktion "'.$right->getAction().'" im Controller "'.$right->getController().'" vom Modul "'.$right->getModule().'" nicht gesetzt.');
+					$prefixSlash = '';
+					$pre = $right->getPrefix();
+					if (!empty($pre))
+					{
+						$prefixSlash .= $pre."\\";
+					}
+
+					$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($right->getModule())."\\Controller\\".ucfirst($right->getController());
+
+					throw new \Exception('@actionName in der Action des Controllers "'.$class.'" -> "'.$right->getAction().'" nicht gesetzt!');
 				}
 			}
 			$title="";
@@ -217,8 +253,6 @@ class Right
 		{
 			throw new \InvalidArgumentException('Invalid right definition');
 		}
-
-		//SystemMessages::addError($queryString.'<br>'.$actionName);
 
 		$con = Registry::getInstance()->getDatabase();
 		$rs = $con->newRecordSet();

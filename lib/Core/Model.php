@@ -281,7 +281,7 @@ class Model
 
 			if (preg_match('/\@Id/s', $doc, $matches))
 			{
-				return $prop->getName();
+				return $this->getTablePrefix().$prop->getName();
 			}
 
 		}
