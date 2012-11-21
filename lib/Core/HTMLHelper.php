@@ -543,10 +543,21 @@ class HTMLHelper
 	 *
 	 * @return string|null
 	 */
-	public function anchor($name, array $data = array(), $css = array(), $attributes = array(), $route = null, $reset = null, $absolute = false){
+	public function anchor($name, array $data = array(), $css = array(), $attributes = array(), $route = null, $reset = null, $absolute = false)
+	{
 
+		//var_dump($data);
 		$url = $this->parentView->url($data, $route, $reset, $absolute);
-		$route = $this->parentView->getRoute()->matchUrl($url);
+		//var_dump($url);
+		if (is_null($route))
+		{
+			$route = $this->parentView->getRoute()->matchUrl($url);
+		}
+		else
+		{
+			$route = \jamwork\common\Registry::getInstance()->router->offsetGet($route)->matchUrl($url);
+		}
+		//var_dump($route);
 
 		$link = $url;
 
