@@ -134,6 +134,7 @@ class Base
 		$name = $reflection->getName();
 
 		throw new \ErrorException('Datensatz nicht gefunden mit ID "'.$id.'" in Model "'.$name.'"');
+
 	}
 
 	/**
