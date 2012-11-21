@@ -140,16 +140,25 @@ class Model
 		$this->changed = false;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getId()
 	{
 		return $this->id;
 	}
 
+	/**
+	 * @param int $id
+	 */
 	public function setId($id)
 	{
 		$this->id = $id;
 	}
 
+	/**
+	 * @param array $data
+	 */
 	public function setDataRow($data = array()){
 
 		if (!empty($data))
@@ -167,8 +176,7 @@ class Model
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
 	 * @param DateTime|string $datetime Datetime-Objekt oder String
-	 *
-	 * @return void
+	 * @throws \InvalidArgumentException
 	 */
 	public function setCreated($datetime = 'now')
 	{
@@ -191,8 +199,7 @@ class Model
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
 	 * @param DateTime|string $datetime Datetime-Objekt oder String
-	 *
-	 * @return void
+	 * @throws \InvalidArgumentException
 	 */
 	public function setModified($datetime = 'now')
 	{
@@ -211,8 +218,12 @@ class Model
 		$this->modified = $datetime;
 	}
 
+
 	/**
-	 * @return mixed
+	 *
+	 * Liefert Modified Datetime als mysql Format zurück
+	 *
+	 * @return string
 	 */
 	public function getModifiedAsString()
 	{
@@ -224,7 +235,9 @@ class Model
 	}
 
 	/**
-	 * @return mixed
+	 * Liefert Create Datetime als mysql Format zurück
+	 *
+	 * @return string
 	 */
 	public function getCreatedAsString()
 	{
