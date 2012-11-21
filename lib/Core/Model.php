@@ -84,7 +84,14 @@ class Model
 		if (!empty($prefix))
 		{
 			$parts[2] = str_replace($prefix, '', $parts[2]);
+
+			$newMethod = $parts[1].ucfirst($parts[2]);
+			if (method_exists($this, $newMethod))
+			{
+				return $this->$newMethod($params[0]);
+			}
 		}
+
 
 		$method = $parts[1];
 		$attribute = $parts[2];
@@ -163,7 +170,7 @@ class Model
 	 *
 	 * @return void
 	 */
-	public function setCreated($datetime)
+	public function setCreated($datetime = 'now')
 	{
 		if (!($datetime instanceof \DateTime))
 		{
@@ -187,7 +194,7 @@ class Model
 	 *
 	 * @return void
 	 */
-	public function setModified($datetime)
+	public function setModified($datetime = 'now')
 	{
 		if (!($datetime instanceof \DateTime))
 		{
@@ -202,6 +209,30 @@ class Model
 		}
 
 		$this->modified = $datetime;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getModifiedAsString()
+	{
+		if ($this->modified instanceof \DateTime)
+		{
+			return $this->modified->format('Y-m-d H:i:s');
+		}
+		return $this->modified;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCreatedAsString()
+	{
+		if ($this->created instanceof \DateTime)
+		{
+			return $this->created->format('Y-m-d H:i:s');
+		}
+		return $this->created;
 	}
 
 	/**
