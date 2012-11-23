@@ -78,7 +78,7 @@ class PublicController extends Controller
 	 *
 	 * @param array $json
 	 */
-	protected function flushJSON(array $json)
+	protected function flushJSON(array $json = array())
 	{
 		$registry = Registry::getInstance();
 		$response = $registry->getResponse();

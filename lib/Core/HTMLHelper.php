@@ -104,14 +104,21 @@ class HTMLHelper
      *
      * @return string
      */
-	public function getSystemMessages()
+	public function getSystemMessages($alternativ='')
 	{
 		$messages = SystemMessages::getList();
 		if (count($messages) == 0)
 		{
 			return '';
 		}
-		$view = new View(APPLICATION_PATH.'/Layout/Helpers/systemmessages.html.php');
+		if (!empty($alternativ))
+		{
+			$view = new View(APPLICATION_PATH.$alternativ);
+		}
+		else
+		{
+			$view = new View(APPLICATION_PATH.'/Layout/Helpers/systemmessages.html.php');
+		}
 		$view->messages = $messages;
 		SystemMessages::clear();
 		return $view->render();
