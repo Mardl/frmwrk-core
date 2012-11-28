@@ -29,7 +29,7 @@ class Text extends Element
 
 		if ($this->breakafter)
 		{
-			$this->text .= '<br/>';
+			$t .= '<br/>';
 		}
 
 		return $t;
