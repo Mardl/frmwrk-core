@@ -71,5 +71,28 @@ class PublicController extends Controller
 
 	}
 
+	/**
+	 *
+	 * Übergebene Array wird json encodiert und ausgegeben
+	 * Header wird sauber angepasst
+	 *
+	 * @param array $json
+	 */
+	protected function flushJSON(array $json = array())
+	{
+		$registry = Registry::getInstance();
+		$response = $registry->getResponse();
+		$response->addHeader('Content-Type', 'application/json; charset=utf-8');
+
+		if (!isset($json['systemMessage']))
+		{
+			$json['systemMessage'] = $this->view->html->getSystemMessages();
+		}
+
+		$response->setBody( json_encode($json) );
+		$response->flush();
+		die();
+	}
+
 
 }

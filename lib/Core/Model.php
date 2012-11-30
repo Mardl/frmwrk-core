@@ -84,7 +84,14 @@ class Model
 		if (!empty($prefix))
 		{
 			$parts[2] = str_replace($prefix, '', $parts[2]);
+
+			$newMethod = $parts[1].ucfirst($parts[2]);
+			if (method_exists($this, $newMethod))
+			{
+				return $this->$newMethod($params[0]);
+			}
 		}
+
 
 		$method = $parts[1];
 		$attribute = $parts[2];
@@ -133,16 +140,25 @@ class Model
 		$this->changed = false;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getId()
 	{
 		return $this->id;
 	}
 
+	/**
+	 * @param int $id
+	 */
 	public function setId($id)
 	{
 		$this->id = $id;
 	}
 
+	/**
+	 * @param array $data
+	 */
 	public function setDataRow($data = array()){
 
 		if (!empty($data))
@@ -160,10 +176,9 @@ class Model
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
 	 * @param DateTime|string $datetime Datetime-Objekt oder String
-	 *
-	 * @return void
+	 * @throws \InvalidArgumentException
 	 */
-	public function setCreated($datetime)
+	public function setCreated($datetime = 'now')
 	{
 		if (!($datetime instanceof \DateTime))
 		{
@@ -184,10 +199,9 @@ class Model
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
 	 * @param DateTime|string $datetime Datetime-Objekt oder String
-	 *
-	 * @return void
+	 * @throws \InvalidArgumentException
 	 */
-	public function setModified($datetime)
+	public function setModified($datetime = 'now')
 	{
 		if (!($datetime instanceof \DateTime))
 		{
@@ -202,6 +216,36 @@ class Model
 		}
 
 		$this->modified = $datetime;
+	}
+
+
+	/**
+	 *
+	 * Liefert Modified Datetime als mysql Format zurück
+	 *
+	 * @return string
+	 */
+	public function getModifiedAsString()
+	{
+		if ($this->modified instanceof \DateTime)
+		{
+			return $this->modified->format('Y-m-d H:i:s');
+		}
+		return $this->modified;
+	}
+
+	/**
+	 * Liefert Create Datetime als mysql Format zurück
+	 *
+	 * @return string
+	 */
+	public function getCreatedAsString()
+	{
+		if ($this->created instanceof \DateTime)
+		{
+			return $this->created->format('Y-m-d H:i:s');
+		}
+		return $this->created;
 	}
 
 	/**
