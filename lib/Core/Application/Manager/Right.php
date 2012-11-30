@@ -170,7 +170,6 @@ class Right
 		catch (\Exception $e)
 		{
 			SystemMessages::addError($e->getMessage());
-			throw $e;
 		}
 	}
 
