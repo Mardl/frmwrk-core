@@ -12,7 +12,7 @@ Core\Application\Interfaces\ModelsInterface;
 class Base
 {
 	/**
-	 * @var \jamwork\database\Database
+	 * @var \jamwork\database\MysqlDatabase
 	 */
 	protected $con = null;
 
@@ -91,16 +91,15 @@ class Base
 			return false;
 		}
 
-		$deleted = $this->con->delete($model->getTableName(), $model->getDataRow());
-
-		if (!$deleted)
+		if (!$this->con->delete($model->getTableName(), $model->getDataRow()))
 		{
 			SystemMessages::addError('Beim Entfernen ist ein Fehler aufgetreten');
+			return false;
 		}
 
 		$model->setId(0);
 
-		return $deleted;
+		return true;
 	}
 
 
