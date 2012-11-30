@@ -170,6 +170,7 @@ class Right
 		catch (\Exception $e)
 		{
 			SystemMessages::addError($e->getMessage());
+			throw $e;
 		}
 	}
 
@@ -200,6 +201,8 @@ class Right
 			$right = new RightModel($right);
 		}
 
+
+
 		if ($right instanceof RightModel)
 		{
 
@@ -218,10 +221,17 @@ class Right
 
 			// und weiter gehts
 
-			$actionName = self::getActionName($right->getModule(),$right->getController(),$right->getAction(),$right->getPrefix());
+			try {
+				$actionName = self::getActionName($right->getModule(),$right->getController(),$right->getAction(),$right->getPrefix());
+			}
+			catch (\Exception $e)
+			{
+				$actionName = null;
+			}
+
 			if (empty($actionName))
 			{
-				if (APPLICATION_ENV < ENV_PROD)
+				if (APPLICATION_ENV < ENV_PROD && !defined("UNITTEST"))
 				{
 					$prefixSlash = '';
 					$pre = $right->getPrefix();
@@ -248,6 +258,7 @@ class Right
 				mysql_real_escape_string($right->getPrefix()),
 				$title,$title
 			);
+
 		}
 		else
 		{
