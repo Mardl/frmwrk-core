@@ -87,4 +87,18 @@ class String
 	{
 		return (crypt($pwd, $stored) == $stored);
 	}
+
+	public static function reduce($string, $limit = 144, $end = true){
+
+		if (strlen($string) > $limit + 3){
+			$string = substr($string, 0, $limit);
+
+			if ($end){
+				$string .= '...';
+			}
+		}
+
+		return $string;
+	}
+
 }
