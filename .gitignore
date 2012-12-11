@@ -1,4 +1,7 @@
-.buildpath
+.DS_*
+.settings
 .project
-.settings/org.eclipse.php.core.prefs
+Thumbs.db
+.buildpath
 .idea/
+._*
