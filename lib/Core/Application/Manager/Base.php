@@ -17,9 +17,6 @@ class Base
 	protected $con = null;
 
 
-	/**
-	 * @return void
-	 */
 	public function __construct()
 	{
 		$this->con = Registry::getInstance()->getDatabase();
@@ -102,13 +99,12 @@ class Base
 		return true;
 	}
 
-
 	/**
 	 * Liefert ein Model von ModelsInterface aus dem Query-Select
 	 *
-	 * @param \App\Models\ModelsInterface $model
+	 * @param \Core\Application\Interfaces\ModelsInterface $model
 	 * @param $id
-	 * @return \App\Models\ModelsInterface
+	 * @return \Core\Application\Interfaces\ModelsInterface
 	 * @throws \ErrorException
 	 */
 	public function getModelById(ModelsInterface $model, $id)

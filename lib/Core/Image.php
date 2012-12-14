@@ -90,8 +90,6 @@ class Image extends ImageMagick
 	 *
 	 * @param integer $width
 	 * @param integer $height
-	 * 
-	 * @return void
 	 */
 	public function thumbnailWithCanvas($width, $height) 
 	{
@@ -110,8 +108,6 @@ class Image extends ImageMagick
 	 * Resize width to $width
 	 *
 	 * @param integer $width
-	 * 
-	 * @return void
 	 */
 	public function resizeWidthTo($width) 
 	{
@@ -122,8 +118,6 @@ class Image extends ImageMagick
 	 * Resize height to $height
 	 *
 	 * @param integer $height
-	 * 
-	 * @return void
 	 */
 	public function resizeHeightTo($height) 
 	{
@@ -134,8 +128,6 @@ class Image extends ImageMagick
 	 * Resize longer side to $length
 	 *
 	 * @param integer $length
-	 * 
-	 * @return void
 	 */
 	public function resizeLongerSideTo($length) 
 	{
@@ -145,19 +137,16 @@ class Image extends ImageMagick
 	/**
 	 * Brand image
 	 * 
-	 * @param Core\Imagick $watermark Watermark
+	 * @param ImageMagick $watermark Watermark
 	 * 
 	 * @return object
 	 */
-	public function brandImage(Imagick $watermark) 
+	public function brandImage(ImageMagick $watermark)
 	{
 		return $this->compositeImage(
 			$watermark, ImageMagick::COMPOSITE_DEFAULT,
 			($this->getOffsetX() - $watermark->getOffsetX()),
 			($this->getOffsetY() - $watermark->getOffsetY())
 		);
-		
 	}
-
 }
-?>

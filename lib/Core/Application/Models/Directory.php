@@ -57,7 +57,7 @@ class Directory extends BaseModel
 	/**
 	 * Parent
 	 *
-	 * @var App\Models\Directory
+	 * @var \App\Models\Directory
 	 *
 	 * @ManyToOne(targetEntity="App\Models\Directory")
 	 */
@@ -72,12 +72,11 @@ class Directory extends BaseModel
 	 */
 	protected $sort;
 
+
 	/**
 	 * Setzt das Parent Directory
 	 *
-	 * @param Core\Application\Models\Directory $parentDirectory Directory Model des Parents
-	 *
-	 * @return void
+	 * @param \Core\Application\Models\Directory $parentDirectory Directory Model des Parents
 	 */
 	public function setParentDirectory(DirectoryModel $parentDirectory)
 	{
@@ -87,7 +86,7 @@ class Directory extends BaseModel
 	/**
 	 * Liefert das Parent Directory
 	 *
-	 * @return Core\Application\Models\Directory
+	 * @return \Core\Application\Models\Directory
 	 */
 	public function getParentDirectory()
 	{

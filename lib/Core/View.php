@@ -147,11 +147,10 @@ class View extends ArrayObject
 
 	/**
 	 * Set router
-	 * Required to build urls in view via the url method
+	 * Required to build URLs in view via the URL method
 	 *
-	 * @param Core\Router $router Router
-	 *
-	 * @return Core\Router
+	 * @param Router $router Router
+	 * @return Router
 	 */
 	public function setRouter(Router $router)
 	{
@@ -162,7 +161,8 @@ class View extends ArrayObject
 	/**
 	 * Get name from current route
 	 *
-	 * @return Core\Route
+	 * @return mixed
+	 * @throws \ErrorException
 	 */
 	public function getRoute()
 	{

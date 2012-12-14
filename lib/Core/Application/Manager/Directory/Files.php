@@ -47,15 +47,15 @@ class Files
 	private static $cache = array();
 
 	/**
-	 * Liefert ein File anhand seiner Id
+	 * Liefer ein File anhand seiner ID
 	 *
-	 * @param integer $fileId Id des gewünschten Files
+	 * @static
+	 * @param integer $fileId ID des gewünschten Files
 	 *
-	 * @throws \InvalidArgumentException Wenn eine leere Filesid übermittelt wurde
-	 * @throws \InvalidArgumentException Wenn keine DirectorysId hinterlegt ist
+	 * @return \Core\Application\Models\Directory\Files
+	 *
 	 * @throws \ErrorException Wenn das gewünschte File nicht gefunden wurde
-	 *
-	 * @return App\Models\Directory\Files
+	 * @throws \InvalidArgumentException Wenn eine leere Filesid übermittelwurde oder keine DirectorysId hinterlegt ist
 	 */
 	public static function getFileById ($fileId)
 	{
@@ -145,17 +145,20 @@ class Files
 		return $files;
 	}
 
-
 	/**
 	 * Speichert eine neue Datei auf dem System aus dem filePost. Dabei überprüft die Funktion,
 	 * ob der Eintrag in schon vorhanden ist und somit geändert werden muss oder ob es sich um
 	 * eine neue Datei handelt.
 	 *
-	 * @param unknown_type $filePost     File Post aus der Form
-	 * @param unknown_type $directorieId ID des Directory
-	 * @param FilesModel   $filemodel    App\Models\Directory\Files oder null
+	 * @param $filePost
+	 * @param $directorieId
+	 * @param \Core\Application\Models\Directory\Files $filemodel
+	 * @param bool $addSource
+	 * @param int $watermark
 	 *
-	 * @return App\Models\Directory\Files || boolean
+	 * @return bool|\Core\Application\Models\Directory\Files
+	 *
+	 * @throws \ErrorException
 	 */
 	public static function saveUploadedFile($filePost, $directorieId, FilesModel $filemodel = null, $addSource = false, $watermark = 0)
 	{
