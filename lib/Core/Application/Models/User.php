@@ -48,8 +48,6 @@ use Exception,
  */
 class User extends BaseModel
 {
-
-
     /**
      * Id
      *
@@ -210,12 +208,12 @@ class User extends BaseModel
     {
         if (empty($password))
         {
-        	throw new \InvalidArgumentException('Das Passwort darf nicht leer sein');
+        	throw new \InvalidArgumentException(translate('Das Passwort darf nicht leer sein'));
         }
 
         if (strlen($password) < 5)
         {
-        	throw new \ErrorException('Das Passwort muss mindestens 5 Zeichen lang sein');
+        	throw new \ErrorException(translate('Das Passwort muss mindestens 5 Zeichen lang sein!'));
         }
 
         if ($md5)
@@ -265,7 +263,7 @@ class User extends BaseModel
     		}
     		catch (\Exception $e)
     		{
-    			throw new \InvalidArgumentException('Ungültige Datumsangabe');
+    			throw new \InvalidArgumentException(translate('Ungültige Datumsangabe!'));
     		}
     	}
 

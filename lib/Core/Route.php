@@ -129,7 +129,10 @@ class Route
 		}
 		else
 		{
-			$result['format'] = 'html';
+			if(!isset($this->defaults['format'])) {
+				$this->defaults['format'] = 'html';
+			}
+			$result['format'] = $this->defaults['format'];
 		}
 
 		$parts = explode('/', $this->pattern);

@@ -38,7 +38,6 @@ use Core\Model as BaseModel,
  */
 class Right extends BaseModel
 {
-
 	/**
      * Id
      *
@@ -127,14 +126,11 @@ class Right extends BaseModel
     		{
     			if (!($group instanceof RightGroup))
     			{
-    				throw new \InvalidArgumentException("Ungültiger Typ der Rechtegruppe");
+    				throw new \InvalidArgumentException(translate('Ungültiger Typ der Rechtegruppe'));
     			}
     		}
     	}
 
     	$this->groups = $groups;
     }
-
 }
-
-?>

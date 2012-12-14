@@ -191,7 +191,7 @@ class Files extends BaseModel
 					}
 				}
 				$visu = str_replace("{poster}", '', $visu);
-				$visu .= 'Your browser does not support the video tag.';
+				$visu .= translate('Ihr Browser unterstützt den Video Tag nicht.');
 				$visu .= '</video>';
 
 

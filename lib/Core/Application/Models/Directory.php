@@ -84,7 +84,6 @@ class Directory extends BaseModel
 		$this->parent = $parentDirectory;
 	}
 
-
 	/**
 	 * Liefert das Parent Directory
 	 *
