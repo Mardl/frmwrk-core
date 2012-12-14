@@ -22,10 +22,4 @@ use jamwork\common\Registry,
  * @package  Manager
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-class Language extends \Core\Application\Manager\Base
-{
-
-
-}
-
-?>
+class Language extends \Core\Application\Manager\Base {}

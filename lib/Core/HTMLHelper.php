@@ -99,11 +99,12 @@ class HTMLHelper
 		return (defined('APP_URL')?APP_URL.$path:$path);
 	}
 
-    /**
-     * Get system messages as HTML
-     *
-     * @return string
-     */
+	/**
+	 * Get system messages as HTML
+	 *
+	 * @param string $alternativ
+	 * @return string
+	 */
 	public function getSystemMessages($alternativ='')
 	{
 		$messages = SystemMessages::getList();

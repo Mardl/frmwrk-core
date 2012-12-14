@@ -33,7 +33,6 @@ use Core\Model as BaseModel;
  */
 class Language extends BaseModel implements \Core\Application\Interfaces\ModelsInterface
 {
-
     /**
      * Id
      *

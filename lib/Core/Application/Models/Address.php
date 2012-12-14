@@ -23,7 +23,6 @@ use Core\Model as BaseModel;
  */
 class Address extends BaseModel
 {
-
     /**
      * Id
      *
