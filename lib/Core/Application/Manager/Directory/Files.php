@@ -61,7 +61,7 @@ class Files
 	{
 		if (empty($fileId))
 		{
-			throw new \InvalidArgumentException('Invalid Fileid');
+			throw new \InvalidArgumentException('Invalid File ID');
 		}
 
 		if (array_key_exists($fileId, self::$cache))

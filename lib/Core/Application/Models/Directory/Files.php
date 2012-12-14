@@ -24,7 +24,7 @@ use Core\Model as BaseModel,
  * @method string getOrgname()
  * @method string getName()
  * @method string getBasename()
- * @method Directory getDirectory()
+ * @method \Directory getDirectory()
  * @method Files getParent()
  * @method string getMimetype()
  * @method float getSize()
@@ -32,7 +32,7 @@ use Core\Model as BaseModel,
  * @method setOrgname($value)
  * @method setName($value)
  * @method setBasename($value)
- * @method setDirectory(Directory $value)
+ * @method setDirectory(\Core\Application\Manager\Directory $value)
  * @method setParent(Files $value)
  * @method setMimetype($value)
  * @method setSize(\float $value)
@@ -83,7 +83,7 @@ class Files extends BaseModel
 	/**
 	 * Parent
 	 *
-	 * @var App\Models\Directory
+	 * @var \App\Models\Directory
 	 *
 	 * @ManyToOne(targetEntity="App\Models\Directory")
 	 * @JoinColumn(name="directory_id", referencedColumnName="id", nullable=false)
@@ -93,7 +93,7 @@ class Files extends BaseModel
 	/**
 	 * Parent
 	 *
-	 * @var App\Models\Directory\Files
+	 * @var \App\Models\Directory\Files
 	 *
 	 * @ManyToOne(targetEntity="App\Models\Directory\Files")
 	 * @JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
@@ -142,7 +142,7 @@ class Files extends BaseModel
 	/**
 	 * Liefert die IDs des Elternbaums
 	 *
-	 * @return string
+	 * @return int|string
 	 */
 	public function getParentIds()
 	{
@@ -156,13 +156,21 @@ class Files extends BaseModel
 	/**
 	 * Liefert ein leeres Array. (Files haben keine Children)
 	 *
-	 * @return array()
+	 * @return array
 	 */
 	public function getChildren()
 	{
 		return array();
 	}
 
+	/**
+	 * @param int $width
+	 * @param int $height
+	 * @param string $alt
+	 * @param string $style
+	 * @param null $additional
+	 * @return mixed|string
+	 */
 	public function getThumbnail($width = 128, $height = 128, $alt = '', $style = 'margin: 0px 10px 10px 0px;', $additional = null)
 	{
 		if (is_null($this->name)){
@@ -203,6 +211,11 @@ class Files extends BaseModel
 
 	}
 
+	/**
+	 * @param int $width
+	 * @param int $height
+	 * @return bool|string
+	 */
 	public function getThumbnailTarget($width = 128, $height = 128)
 	{
 		if (!preg_match('/.*video\/.*/', $this->getMimetype()))
@@ -216,9 +229,11 @@ class Files extends BaseModel
 		{
 			return false;
 		}
-
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getSources(){
 		$sources = array();
 

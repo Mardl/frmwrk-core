@@ -71,7 +71,7 @@ class Group
 	 *
 	 * @throws \Exception Wenn die Gruppe nicht gefunden wird
 	 *
-	 * @return App\Models\Right\Group
+	 * @return \App\Models\Right\Group
 	 */
 	public static function getGroupById($id, $rights = false, $users = false)
 	{
@@ -121,7 +121,7 @@ class Group
 	 *
 	 * @throws \ErrorException Wenn beim abruf ein Fehler auftretet
 	 *
-	 * @return App\Models\Right\Group[]
+	 * @return \App\Models\Right\Group[]
 	 */
 	public static function getGroupsByIds(array $ids, $rights = false, $users = false)
 	{
@@ -173,13 +173,15 @@ class Group
 	/**
 	 * Liefert die Gruppe anhand ihres Namens
 	 *
-	 * @param string  $name   Gruppen-ID
-	 * @param boolean $rights Optional, liefere auch die Rechte
-	 * @param boolean $users  Optional, liefere auch die Mitglieder
+	 * @static
 	 *
-	 * @throws \Exception Wenn die Gruppe nicht gefunden wird
+	 * @param $name
+	 * @param bool $rights
+	 * @param bool $users
 	 *
-	 * @return App\Models\Right\Group
+	 * @return \Core\Application\Models\Right\Group
+	 *
+	 * @throws \ErrorException Wenn die Gruppe nicht gefunden wird
 	 */
 	public static function getGroupByName($name, $rights = false, $users = false)
 	{
@@ -325,9 +327,13 @@ class Group
 	/**
 	 * Aktualisiert eine Gruppe
 	 *
-	 * @param GroupModel $group Zu aktualisierende Gruppe
+	 * @static
 	 *
-	 * @return boolean
+	 * @param \Core\Application\Models\Right\Group $group Zu aktualisierende Gruppe
+	 * @param bool $forceRights
+	 * @param bool $forceUser
+	 *
+	 * @return bool
 	 */
 	public static function updateGroup(GroupModel $group, $forceRights=false, $forceUser=false)
 	{
