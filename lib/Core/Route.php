@@ -45,12 +45,8 @@ class Route
 	protected $defaults = array();
 
 	/**
-	 * Constructor
-	 *
-	 * @param string $pattern  Pattern
-	 * @param array  $defaults Default values
-	 * 
-	 * @return void
+	 * @param $pattern
+	 * @param array $defaults
 	 */
 	public function __construct($pattern, array $defaults = array())
 	{
@@ -68,13 +64,10 @@ class Route
 		return $this->router;
 	}
 
-    /**
-     * Set router
-     *
-     * @param Core\Router $router Router Object
-     * 
-     * @return void
-     */
+	/**
+	 * Set router
+	 * @param \Core\Router $router
+	 */
 	public function setRouter(Router $router)
 	{
 		$this->router = $router;

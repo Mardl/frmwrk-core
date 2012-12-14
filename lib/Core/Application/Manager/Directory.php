@@ -137,9 +137,10 @@ class Directory
 	/**
 	 * Liefert alle Childelemente des Directories (Directories und Files)
 	 *
-	 *  @param integer $idDirectory Id von dem die Children benötigt werden
+	 * @static
+	 * @param integer $idDirectory Id von dem die Children benötigt werden
 	 *
-	 *  @return array mit App\Models\Directory\Files und App\Models\Directory
+	 * @return array mit App\Models\Directory\Files und App\Models\Directory
 	 */
 	public static function getChildren($idDirectory)
 	{
@@ -159,11 +160,11 @@ class Directory
 	}
 
 	/**
-	 * Speichert ein neues Directory in der Datenbank
+	 * Speichert ein neues Verzeichnis in der Datenbank
 	 *
-	 * @param App\Models\Directory $dirModel Directoryobject
-	 *
-	 * @return App\Models\Directory|boolean
+	 * @static
+	 * @param \Core\Application\Models\Directory $dirModel
+	 * @return bool|\Core\Application\Models\Directory
 	 */
 	public static function insertDirectory(DirectoryModel $dirModel)
 	{

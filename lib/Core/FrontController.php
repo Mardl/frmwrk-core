@@ -107,9 +107,7 @@ class FrontController
 	/**
 	 * Set router
 	 *
-	 * @param Core\Router $router Router
-	 *
-	 * @return void
+	 * @param \Core\Router $router
 	 */
 	public function setRouter(Router $router)
 	{
@@ -119,16 +117,14 @@ class FrontController
 	/**
 	 * Fügt die Seiteninfos dem internen Stack hinzu
 	 *
-	 * @param string $action     Actionname
-	 * @param string $controller Controllername
-	 * @param string $module     Modulname
-	 * @param string $format     Format
-	 *
-	 * @return void
+	 * @param $action
+	 * @param null $controller
+	 * @param null $module
+	 * @param null $format
+	 * @param null $prefix
 	 */
 	public function addPageToStack($action, $controller = null, $module = null, $format = null, $prefix = null)
 	{
-
 		$page = array_filter(
 			array(
 				'action'     => $action,
@@ -152,14 +148,16 @@ class FrontController
 	/**
 	 * Render
 	 *
-	 * @param string $actionName     Action name
-	 * @param string $controllerName Controller name
-	 * @param string $moduleName     Module name
-	 * @param string $actionFormat   Action format
+	 * @param $actionName Action name
+	 * @param $controllerName Controller name
+	 * @param $moduleName Module name
+	 * @param string $actionFormat Action format
+	 * @param string $prefix Prefix
 	 *
 	 * @return string
 	 *
-	 * @throws Exception
+	 * @throws \InvalidArgumentException
+	 * @throws \Exception
 	 */
 	public function render($actionName, $controllerName, $moduleName, $actionFormat = 'html', $prefix = '')
 	{

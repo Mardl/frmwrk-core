@@ -25,8 +25,8 @@ class Img extends Element{
 	}
 
 	/**
+	 * @param $src
 	 * @deprecated
-	 * @param $path
 	 */
 	public function setPath($src)
 	{
@@ -43,7 +43,6 @@ class Img extends Element{
 		$this->height = $height;
 	}
 
-
 	public function __toString()
 	{
 		$output = $this->renderStandard($this->renderOutput);
@@ -55,6 +54,4 @@ class Img extends Element{
 
 		return $output;
 	}
-
 }
-?>
