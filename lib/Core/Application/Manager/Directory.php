@@ -212,7 +212,7 @@ class Directory
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError(translate('Beim Erstellen des Verzeichnises ist ein Fehler aufgetreten!'));
+			SystemMessages::addError(translate('Beim Erstellen des Verzeichnisses ist ein Fehler aufgetreten!'));
 			return false;
 		}
 

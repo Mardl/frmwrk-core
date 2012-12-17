@@ -195,20 +195,21 @@ class User extends BaseModel
 	protected $language;
 
 	/**
-	 * Sets new password.
+	 * Sets new password
 	 *
-	 * @param string $password String mit dem neuen Passwort
-	 *
-	 * @throws \InvalidArgumentException Wenn das Passwort leer ist
-	 * @throws \ErrorException Wenn das Passwort zu kurz ist
+	 * @param $password String mit dem neuen Passwort
+	 * @param bool $md5 Kodierung mit MD5
 	 *
 	 * @return string
+	 *
+	 * @throws \ErrorException
+	 * @throws \InvalidArgumentException
 	 */
-    public function setPassword($password, $md5 = true)
+	public function setPassword($password, $md5 = true)
     {
         if (empty($password))
         {
-        	throw new \InvalidArgumentException(translate('Das Passwort darf nicht leer sein'));
+        	throw new \InvalidArgumentException(translate('Das Passwort darf nicht leer sein!'));
         }
 
         if (strlen($password) < 5)
@@ -245,15 +246,14 @@ class User extends BaseModel
     	return '';
     }
 
-
-    /**
-     * Sorgt dafür, dass das Geburtsdatum immer ein DateTime-Objekt ist.
-     *
-     * @param DateTime|string $datetime Datetime-Objekt oder String
-     *
-     * @return void
-     */
-    public function setBirthday($datetime)
+	/**
+	 * Sorgt dafür, dass das Geburtsdatum immer ein DateTime-Objekt ist
+	 *
+	 * @param \DateTime|string $datetime DateTime-Objekt oder String
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	public function setBirthday($datetime)
     {
     	if (!($datetime instanceof \DateTime))
     	{
@@ -291,7 +291,7 @@ class User extends BaseModel
     }
 
     /**
-     * Prüft ob User männlich ist.
+     * Prüft, ob User männlich ist.
      *
      * @return boolean
      */
@@ -305,7 +305,7 @@ class User extends BaseModel
     }
 
     /**
-     * Prüft ob User weiblich ist.
+     * Prüft, ob User weiblich ist.
      *
      * @return boolean
      */

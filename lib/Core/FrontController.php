@@ -29,25 +29,24 @@ use Exception,
  */
 class FrontController
 {
-
 	/**
 	 * View
 	 *
-	 * @var   Core\View
+	 * @var   \Core\View
 	 */
 	protected $view;
 
 	/**
 	 * Router
 	 *
-	 * @var   Core\Router
+	 * @var   \Core\Router
 	 */
 	protected $router;
 
 	/**
 	 * Request
 	 *
-	 * @var   Core\Request
+	 * @var   \Core\Request
 	 */
 	protected $request;
 
@@ -101,7 +100,6 @@ class FrontController
 		{
 			$this->view = Registry::getInstance()->view;
 		}
-
 	}
 
 	/**
@@ -318,6 +316,7 @@ class FrontController
 	/**
 	 * Führt den Aufruf aus
 	 *
+	 * @param null $url
 	 * @return string
 	 */
 	public function execute($url = null)
@@ -331,7 +330,6 @@ class FrontController
 		$this->request->setParams($route->getParams());
 
 		try {
-
 			$action = $this->router->getParam('action');
 			$controller = $this->router->getParam('controller');
 			$format = $this->router->getParam('format');
@@ -458,5 +456,4 @@ class FrontController
 		$msg = sprintf('Action "%s" not found in controller "%s"', $action, get_class($class));
 		throw new \InvalidArgumentException($msg, 404);
 	}
-
 }

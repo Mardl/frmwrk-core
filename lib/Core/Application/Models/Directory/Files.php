@@ -72,7 +72,7 @@ class Files extends BaseModel
 	protected $name;
 
 	/**
-	 * Generated Name
+	 * Basename
 	 *
 	 * @var string
 	 *
@@ -81,7 +81,7 @@ class Files extends BaseModel
 	protected $basename;
 
 	/**
-	 * Parent
+	 * Directory
 	 *
 	 * @var \App\Models\Directory
 	 *
@@ -101,7 +101,7 @@ class Files extends BaseModel
 	protected $parent;
 
 	/**
-	 * Generated Name
+	 * MIME-Type
 	 *
 	 * @var string
 	 *
@@ -110,7 +110,7 @@ class Files extends BaseModel
 	protected $mimetype;
 
 	/**
-	 * Generated Name
+	 * Dateigröße
 	 *
 	 * @var string
 	 *
@@ -201,14 +201,10 @@ class Files extends BaseModel
 				$visu = str_replace("{poster}", '', $visu);
 				$visu .= translate('Ihr Browser unterstützt den Video Tag nicht.');
 				$visu .= '</video>';
-
-
-
 			}
 			return $visu;
 		}
 		//throw new \ErrorException('Bei Videos gibts kein Thumbnail');
-
 	}
 
 	/**
