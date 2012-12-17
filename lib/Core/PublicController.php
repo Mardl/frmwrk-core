@@ -89,5 +89,13 @@ class PublicController extends Controller
 		die();
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function getCheckPermissions()
+	{
+		return $this->checkPermissions;
+	}
+
 
 }
