@@ -25,6 +25,9 @@ use App\Models\Right,
  */
 class PublicController extends Controller
 {
+	/**
+	 * @var bool
+	 */
 	protected $checkPermissions = true;
 
 	/**
