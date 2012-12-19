@@ -281,7 +281,7 @@ class Group
 	 *
 	 * @return App\Models\Right\Group
 	 */
-	public static function createGroup(GroupModel $group)
+	public static function createGroup(\Core\Application\Models\Right\Group $group)
 	{
 
 		try{

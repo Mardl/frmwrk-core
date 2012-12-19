@@ -127,11 +127,10 @@ class Router extends ArrayObject
 	}
 
 	/**
-	 * Find route matching $url
-	 *
 	 * @param string $url URL
+	 * @param bool $instance Instance
 	 *
-	 * @return Core\Route|boolean
+	 * @return bool|\Core\Route
 	 */
 	public function findRoute($url, $instance = false)
 	{

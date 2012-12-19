@@ -34,7 +34,7 @@ class Request extends HttpRequest
 	 */
 	public function __construct(array $get, array $post, array $server, array $cookie)
 	{
-		parent::__construct($_GET, $_POST, $_SERVER, $_COOKIE);
+		parent::__construct( $get, $post, $server, $cookie);
 		
 	}
 
@@ -52,7 +52,7 @@ class Request extends HttpRequest
 	 */
 	public function isAjax()
 	{
-		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
+		if ($this->getServer('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest')
 		{
 			return true;
 		}
@@ -70,12 +70,12 @@ class Request extends HttpRequest
 	 */
 	public function isHTTPS()
 	{
-		if (!empty($_SERVER['HTTPS']))
+		if ($this->getServer('HTTPS',false))
 		{
 			return true;
 		}
 		// Nginx
-		if (isset($_SERVER['HTTP_X_CLIENT_VERIFY']) && $_SERVER['HTTP_X_CLIENT_VERIFY'] == 'SUCCESS')
+		if ($this->getServer('HTTP_X_CLIENT_VERIFY') == 'SUCCESS')
 		{
 			return true;
 		}
@@ -140,7 +140,7 @@ class Request extends HttpRequest
 	 */
 	public function getMethod()
 	{
-		return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
+		return $this->getServer('REQUEST_METHOD',null);
 	}
 
 	/**
@@ -150,7 +150,7 @@ class Request extends HttpRequest
 	 */
 	public function isGet()
 	{
-		return isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'GET';
+		return $this->getServer('REQUEST_METHOD') == 'GET';
 	}
 
 	/**
@@ -160,7 +160,7 @@ class Request extends HttpRequest
 	 */
 	public function isPost()
 	{
-		return isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST';
+		return $this->getServer('REQUEST_METHOD') == 'POST';
 	}
 
 	/**
@@ -170,9 +170,10 @@ class Request extends HttpRequest
 	 */
 	public function getHost()
 	{
-		if (isset($_SERVER['HTTP_HOST']))
+		$host = $this->getServer('HTTP_HOST');
+		if (!empty($host))
 		{
-			return $_SERVER['HTTP_HOST'];
+			return $host;
 		}
 
 		if (function_exists('gethostname'))
@@ -205,6 +206,13 @@ class Request extends HttpRequest
 	 */
 	public function getClientIp()
 	{
+		return $this->getServer('HTTP_X_FORWARDED_FOR',$this->getServer('HTTP_X_REAL_IP',$this->getServer('REMOTE_ADDR',false)));
+
+		/* alte version */
+		if (!empty($host))
+		{
+			return $host;
+		}
 		// Apache
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
 		{
@@ -233,6 +241,7 @@ class Request extends HttpRequest
 	 * @param array $params Parameters
 	 * 
 	 * @return void
+	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
 	 */
 	public function setParams(array $params)
 	{
@@ -243,6 +252,7 @@ class Request extends HttpRequest
 	 * Get all param from Url
 	 *
 	 * @return array
+	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
 	 */
 	public function getParams()
 	{
@@ -257,6 +267,7 @@ class Request extends HttpRequest
 	 * @param mixed  $default Default value
 	 * 
 	 * @return string
+	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
 	 */
 	public function getParam($key, $default = null)
 	{
@@ -270,9 +281,13 @@ class Request extends HttpRequest
 	 * @param mixed  $default Default value
 	 * 
 	 * @return string
+	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
 	 */
 	public function get($key, $default=null)
 	{
+		return $this->getParamIfExist($key, $default );
+
+		/* oldschool, SuperGlobale werden nicht verwendet. */
 		if (!isset($_GET[$key]))
 		{
 			return $default;
@@ -292,9 +307,13 @@ class Request extends HttpRequest
 	 * @param mixed  $default Default value
 	 * 
 	 * @return string
+	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
 	 */
 	public function post($key, $default = null)
 	{
+		return $this->getPostIfExist($key, $default );
+
+		/* oldschool, SuperGlobale werden nicht verwendet. */
 		if (!isset($_POST[$key]))
 		{
 			return $default;
@@ -314,9 +333,15 @@ class Request extends HttpRequest
 	 * @param mixed  $default Default value
 	 * 
 	 * @return string
+	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
+	 *
 	 */
 	public function request($key, $default = null)
 	{
+		$ret = $this->getParamIfExist($key, $default );
+		return $this->getPostIfExist($key, $ret );
+
+
 		if (!isset($_REQUEST[$key]))
 		{
 			return $default;

@@ -30,6 +30,7 @@ class Response extends HttpResponse
 	 * 
 	 * @return void
 	 */
+	// @todo funktion bereits im Jamwork. Wenn alles aktualisiert ist, kann sie gelöscht werden!
 	public function redirect($url, $status = 302)
 	{
 		$this->setBody('');

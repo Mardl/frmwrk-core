@@ -120,9 +120,8 @@ abstract class Controller
 	/**
 	 * Set router
 	 *
-	 * @param Core\Router $router Router
-	 * 
-	 * @return boolean Status
+	 * @param \Core\Router $router
+	 * @return bool Status
 	 */
 	public function setRouter(Router $router) 
 	{
@@ -137,9 +136,8 @@ abstract class Controller
 	/**
 	 * Set view
 	 *
-	 * @param Core\View $view View
-	 * 
-	 * @return boolean Status
+	 * @param View $view
+	 * @return bool
 	 */
 	public function setView(View $view) 
 	{
@@ -157,7 +155,7 @@ abstract class Controller
 	 *
 	 * @param string $template Template file
 	 * 
-	 * @return Core\View
+	 * @return \Core\View
 	 */
 	public function createView($template = null) 
 	{
@@ -183,7 +181,7 @@ abstract class Controller
 	/**
 	 * Set response
 	 *
-	 * @param Core\Response $response Response
+	 * @param \Core\Response $response Response
 	 * 
 	 * @return boolean Status
 	 */
