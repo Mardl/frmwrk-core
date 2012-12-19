@@ -31,6 +31,7 @@ class FrontController
 {
 	/**
 	 * View
+     *
 	 *
 	 * @var   \Core\View
 	 */
