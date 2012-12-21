@@ -108,7 +108,7 @@ class Files
 	 *
 	 * @param int $directoryId directoryId
 	 *
-	 * @return App\Models\Directory\Files[]
+	 * @return \Core\Application\Models\Directory\Files[]
 	 */
 	public static function getFilesByDirectoryId($directoryId)
 	{
@@ -322,7 +322,7 @@ class Files
 	}
 
 	/**
-	 * @param $filename Dateiname
+	 * @param string $filename Dateiname
 	 *
 	 * @return bool|\Core\Application\Models\Directory\Files
 	 *
@@ -531,7 +531,7 @@ class Files
 	 *
 	 * @param FilesModel $fileModel File Model der zu aktualisierenden Datei
 	 *
-	 * @return App\Models\Directory\Files || boolean
+	 * @return \Core\Application\Models\Directory\Files || boolean
 	 */
 	public static function updateFile(FilesModel $fileModel)
 	{
@@ -614,7 +614,7 @@ class Files
 
 	/**
 	 * Konvertiert das übergebene Bild in die angegebene Größe und speichert es im Cache
-	 * Verzeichnis (mit Angabe der Größe im Dateinamen). Fiefert den Dateipfade der neuen Datei.
+	 * Verzeichnis (mit Angabe der Größe im Dateinamen). Liefert den Dateipfad der neuen Datei.
 	 *
 	 * @param \Core\Application\Models\Directory\Files $file FileModel des betroffenen Bildes
 	 * @param int $width Breite des Bildes
@@ -690,9 +690,9 @@ class Files
 	/**
 	 * Liefert den neuen Dateinamen mit Pfad
 	 *
-	 * @param $filename Original-Dateiname
-	 * @param $width Breite der Datei
-	 * @param $height Höhe der Datei
+	 * @param string $filename Original-Dateiname
+	 * @param int $width Breite der Datei
+	 * @param int $height Höhe der Datei
 	 *
 	 * @return string
 	 */
@@ -769,7 +769,7 @@ class Files
 	/**
 	 * Liefert Datei zurück anhand des Suchbegriffs
 	 *
-	 * @param $searchTerm Suchbegriff
+	 * @param string $searchTerm Suchbegriff
 	 * @return array
 	 */
 	public static function getFilesByLikeName($searchTerm)
