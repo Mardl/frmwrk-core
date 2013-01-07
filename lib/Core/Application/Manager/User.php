@@ -33,12 +33,12 @@ class User
 	/**
 	 * Liefert einen Benutzer anhand seiner Id
 	 *
-	 * @param integer $userid Benutzerid
+	 * @param integer $userid Benutzer ID
 	 *
-	 * @throws \InvalidArgumentException Wenn keine Id übergeben wurde
-	 * @throws \Exception Wenn der Benutzer nicht gefunden wurde
+	 * @throws \ErrorException Wenn der Benutzer nicht gefunden wurde
+	 * @throws \InvalidArgumentException Wenn keine ID übergeben wurde
 	 *
-	 * @return App\Models\User
+	 * @return \App\Models\User
 	 */
 	public static function getUserById($userid)
 	{
@@ -148,10 +148,10 @@ class User
 	 *
 	 * @param string $username Benutzername
 	 *
-	 * @throws \InvalidArgumentException Wenn kein Benutzername übergeben wurde
-	 * @throws \Exception Wenn der Benutzer nicht gefunden wurde
+	 * @return \Core\Application\Models\User
 	 *
-	 * @return App\Models\User
+	 * @throws \ErrorException Wenn der Benutzer nicht gefunden wurde
+	 * @throws \InvalidArgumentException Wenn kein Benutzername übergeben wurde
 	 */
 	public static function getUserByUsername($username)
 	{
@@ -196,14 +196,14 @@ class User
 	}
 
 	/**
-	 * Liefert einen Benutzer anhand seines Benutzernamens
+	 * Liefert einen Benutzer anhand seiner E-Mail Adresse
 	 *
-	 * @param string $username Benutzername
+	 * @param $email
 	 *
-	 * @throws \InvalidArgumentException Wenn kein Benutzername übergeben wurde
-	 * @throws \Exception Wenn der Benutzer nicht gefunden wurde
+	 * @return \Core\Application\Models\User
 	 *
-	 * @return App\Models\User
+	 * @throws \ErrorException Wenn die E-Mail Adresse nicht gefunden wurde
+	 * @throws \InvalidArgumentException Wenn die E-Mail Adresse leer ist
 	 */
 	public static function getUserByEMail($email)
 	{
@@ -278,17 +278,17 @@ class User
 
 		return false;
 	}
+
 	/**
-	 * Sucht einen Benutzer mittels Benutzername und Passwort.
-	 * Wenn dies klappt wird die Benutzer-Id in der Session gespeichert und
-	 * die ID zurückgeliefert.
+	 * Sucht einen Benutzer anhand von Benutzername und Passwort.
+	 * Wenn dies klappt wird die Benutzer-ID in der Session gespeichert und die ID zurückgeliefert wird.
 	 *
 	 * @param string $username Benutzername
 	 * @param string $password Passwort
 	 *
-	 * @throws \Exception Wenn mit den angegebenen Daten kein Benutzer gefunden wird
+	 * @return mixed
 	 *
-	 * @return integer
+	 * @throws \ErrorException Wenn mit den angegebenen Daten kein Benutzer gefunden wird
 	 */
 	public static function login($username, $password)
 	{
@@ -472,10 +472,12 @@ class User
 	/**
 	 * Speichert einen neuen Benutzer in der Datenbank
 	 *
-	 * @param App\Models\User $user     Userobject
-	 * @param string          $password Passwort
+	 * @param \Core\Application\Models\User $user User-Objekt
+	 * @param string $password Passwort
 	 *
-	 * @return App\Models\User|boolean
+	 * @return bool|\Core\Application\Models\User
+	 *
+	 * @throws \ErrorException
 	 */
 	public static function insertUser(UserModel $user, $password)
 	{
@@ -517,10 +519,12 @@ class User
 	/**
 	 * Speichert Änderungen eines Benutzers
 	 *
-	 * @param App\Models\User $user     Userobject
-	 * @param string          $password Optionales Passwort
+	 * @param \Core\Application\Models\User $user User-Objekt
+	 * @param string $password Optionales Passwort
 	 *
-	 * @return App\Models\User|boolean
+	 * @return bool|\Core\Application\Models\User
+	 *
+	 * @throws \ErrorException
 	 */
 	public static function updateUser(UserModel $user, $password = '')
 	{

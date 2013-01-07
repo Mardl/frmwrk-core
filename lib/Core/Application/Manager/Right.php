@@ -75,10 +75,12 @@ class Right
 	}
 
 	/**
-	 * @param string $module
-	 * @param string $controller
-	 * @param string $action
+	 * @static
+	 * @param $module
+	 * @param $controller
+	 * @param $action
 	 * @param string $prefix
+	 * @return string
 	 */
 	protected static function getActionName($module,$controller,$action,$prefix='')
 	{
@@ -101,8 +103,6 @@ class Right
 		{
 			$prefixSlash .= $prefix."\\";
 		}
-
-
 
 		$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($module)."\\Controller\\".ucfirst($controller);
 //		SystemMessages::addNotice('Single-> '."$module,$controller,$action,$prefix");

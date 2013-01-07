@@ -63,15 +63,13 @@ class Group
 	}
 
 	/**
-	 * Liefert die Gruppe anhand ihrer Id
+	 * @param integer $id Gruppen-ID
+	 * @param bool $rights Optional, liefere auch die Rechte
+	 * @param bool $users Optional, liefere auch die Mitglieder
 	 *
-	 * @param integer $id     Gruppen-ID
-	 * @param boolean $rights Optional, liefere auch die Rechte
-	 * @param boolean $users  Optional, liefere auch die Mitglieder
+	 * @return \Core\Application\Models\Right\Group
 	 *
-	 * @throws \Exception Wenn die Gruppe nicht gefunden wird
-	 *
-	 * @return \App\Models\Right\Group
+	 * @throws \ErrorException Wenn die Gruppe nicht gefunden wird
 	 */
 	public static function getGroupById($id, $rights = false, $users = false)
 	{
@@ -226,13 +224,11 @@ class Group
 	/**
 	 * Liefert die Gruppe anhand ihres Namens
 	 *
-	 * @param App\Models\User $user   Benutzerobjekt
-	 * @param boolean         $rights Optional, liefere auch die Rechte
-	 * @param boolean         $users  Optional, liefere auch die Mitglieder
+	 * @param \Core\Application\Models\User $user Benutzerobjekt
+	 * @param bool $rights Optional, liefert auch die Rechte
+	 * @param bool $users Optional, liefert auch die Mitglieder
 	 *
-	 * @throws \Exception Wenn die Gruppe nicht gefunden wird
-	 *
-	 * @return App\Models\Right\Group[]
+	 * @return array
 	 */
 	public static function getGroupsByUser(UserModel $user, $rights = false, $users = false)
 	{
@@ -279,9 +275,9 @@ class Group
 	/**
 	 * Erstellt eine Gruppe
 	 *
-	 * @param GroupModel $group Zu erstellende Gruppe
+	 * @param \Core\Application\Models\Right\Group $group Zu erstellende Gruppe
 	 *
-	 * @return App\Models\Right\Group
+	 * @return bool|\Core\Application\Models\Right\Group
 	 */
 	public static function createGroup(\Core\Application\Models\Right\Group $group)
 	{
@@ -326,8 +322,6 @@ class Group
 
 	/**
 	 * Aktualisiert eine Gruppe
-	 *
-	 * @static
 	 *
 	 * @param \Core\Application\Models\Right\Group $group Zu aktualisierende Gruppe
 	 * @param bool $forceRights
@@ -471,6 +465,11 @@ class Group
 
 	}
 
+	/**
+	 * @param \Core\Application\Models\User $user
+	 * @param array $groups
+	 * @return bool
+	 */
 	public static function updateUsersGroups(UserModel $user, array $groups)
 	{
 		$delete = "
@@ -553,7 +552,7 @@ class Group
 
 	}
 
-		/**
+	/**
 	 * Aktualisiert die Mitglieder einer Gruppe
 	 *
 	 * @param GroupModel $group zu aktualisierende Gruppe
@@ -648,10 +647,10 @@ class Group
 	/**
 	 * Fügt einen einzelnen Benutzer zur Gruppe hinzu
 	 *
-	 * @param App\Models\Right\Group $group Betreffende Gruppe
-	 * @param App\Models\User        $user  Betreffender Benutzer
+	 * @param \Core\Application\Models\Right\Group $group Betreffende Gruppe
+	 * @param \Core\Application\Models\User $user Betreffender Benutzer
 	 *
-	 * @return boolean
+	 * @return mixed
 	 */
 	public static function addUserToGroup(GroupModel $group, UserModel $user)
 	{
