@@ -31,7 +31,7 @@ use Exception,
  * @method int getStatus()
  * @method bool getOtp()
  * @method bool getAdmin()
- * @method \App\Models\Language getLanguage()
+ * @method \Core\Application\Models\Language getLanguage()
  *
  * @method setUsername($value)
  * @method setFirstname($value)

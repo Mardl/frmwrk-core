@@ -25,7 +25,6 @@ use Core\SystemMessages;
  */
 class Right
 {
-
 	/**
 	 * Zunächst wird das Recht aktualisiert und danach geprüft ob der Benutzer
 	 * das Recht besitzt.
@@ -105,8 +104,8 @@ class Right
 		}
 
 		$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($module)."\\Controller\\".ucfirst($controller);
-//		SystemMessages::addNotice('Single-> '."$module,$controller,$action,$prefix");
-//		SystemMessages::addNotice('INIT -> '."#$class#");
+		//SystemMessages::addNotice('Single-> '."$module,$controller,$action,$prefix");
+		//SystemMessages::addNotice('INIT -> '."#$class#");
 		$reflect = new \ReflectionClass($class);
 
 		//Methoden auslesen
@@ -136,7 +135,6 @@ class Right
 
 						$toCheck = strtolower('getActionName:'."$module:$controller:".$matches[1].":$prefix");
 						$sess->set($toCheck,$matchDoc[1]);
-
 					}
 				}
 			}
@@ -154,7 +152,7 @@ class Right
 	 * Erstellt ein neues Recht. Falls es schon existiert wird die "Modified"-Eigenschaft
 	 * aktualisiert
 	 *
-	 * @param App\Models\Right|array $right Rechte-Daten
+	 * @param \Core\Application\Models\Right|array $right Rechte-Daten
 	 *
 	 * @throws \InvalidArgumentException Wenn die Rechte-Daten in einem umbekannten Format
 	 * übergeben werden
@@ -200,11 +198,8 @@ class Right
 			$right = new RightModel($right);
 		}
 
-
-
 		if ($right instanceof RightModel)
 		{
-
 			/**
 			 * prüfen ob bereits geprüft :-)
 			 * @var $sess \jamwork\common\Session
@@ -220,7 +215,8 @@ class Right
 
 			// und weiter gehts
 
-			try {
+			try
+			{
 				$actionName = self::getActionName($right->getModule(),$right->getController(),$right->getAction(),$right->getPrefix());
 			}
 			catch (\Exception $e)
@@ -257,7 +253,6 @@ class Right
 				mysql_real_escape_string($right->getPrefix()),
 				$title,$title
 			);
-
 		}
 		else
 		{
@@ -271,13 +266,12 @@ class Right
 		);
 
 		return $rsExecution->isSuccessful();
-
 	}
 
 	/**
 	 * Liefert alle Rechte
 	 *
-	 * @return App\Models\Right[]
+	 * @return \Core\Application\Models\Right[]
 	 */
 	public static function getAllRights()
 	{
@@ -315,7 +309,7 @@ class Right
 	 *
 	 * @param array $ids Array mit den IDs der zu liefernden Rechte
 	 *
-	 * @return App\Models\Right[]
+	 * @return \Core\Application\Models\Right[]
 	 */
 	public static function getRightsByMultipleIds(array $ids)
 	{
@@ -330,7 +324,9 @@ class Right
 				modified'
 			)
 			->from('rights')
-			->addWhere('id', $ids);
+			->addWhere('id', $ids)
+			->orderBy('module')
+		;
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -379,7 +375,7 @@ class Right
 	 *
 	 * @param integer $groupId ID der zugehörigen Gruppe
 	 *
-	 * @return App\Models\Right[]
+	 * @return \Core\Application\Models\Right[]
 	 */
 	public static function getRightsByGroupId($groupId)
 	{
@@ -401,7 +397,6 @@ class Right
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
-
 		$rights = array();
 
 		if ($rsExecution->isSuccessfull())
@@ -414,7 +409,4 @@ class Right
 
 		return $rights;
 	}
-
 }
-
-?>

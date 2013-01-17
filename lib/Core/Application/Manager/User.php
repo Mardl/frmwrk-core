@@ -22,7 +22,6 @@ use Core\Application\Models\User as UserModel,
  */
 class User
 {
-
 	/**
 	 * Users
 	 *
@@ -38,7 +37,7 @@ class User
 	 * @throws \ErrorException Wenn der Benutzer nicht gefunden wurde
 	 * @throws \InvalidArgumentException Wenn keine ID übergeben wurde
 	 *
-	 * @return \App\Models\User
+	 * @return \Core\Application\Models\User
 	 */
 	public static function getUserById($userid)
 	{
@@ -98,7 +97,7 @@ class User
 	 *
 	 * @throws \InvalidArgumentException Wenn das Array leer übergeben wurde
 	 *
-	 * @return App\Models\User[]
+	 * @return \Core\Application\Models\User[]
 	 */
 	public static function getUserByIds($userids)
 	{
@@ -324,13 +323,11 @@ class User
 			}
 		}
 
-		throw new \ErrorException('Benutzer nicht gefunden');
+		throw new \ErrorException('Benutzer nicht gefunden!');
 	}
 
 	/**
 	 * Loggt den Benutzer aus, indem die Session zerstört wird.
-	 *
-	 * @return void
 	 */
 	public static function logout()
 	{
@@ -340,9 +337,9 @@ class User
 	/**
 	 * Liefert die Anzahl der Benutzer
 	 *
-	 * @param integer $status Der maximale Benutzerstatus, Default: Deleted
+	 * @param int $status Der maximale Benutzerstatus, Default: Deleted
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function getUserCount($status = STATUS_DELETED)
 	{
@@ -370,11 +367,11 @@ class User
 	 * Im ersten Parameter $status wird übermittelt bis (exklusive) welchem Benutzerstatus
 	 * die Benutzer aus der Datenbank gelesen werden sollen
 	 *
-	 * @param integer $status Der maximale Benutzerstatus, Default: Deleted
-	 * @param integer $offset Optionaler Offset
-	 * @param integer $limit  Optionales Limit
+	 * @param int $status Der maximale Benutzerstatus, Default: Deleted
+	 * @param int $offset Optionaler Offset
+	 * @param int $limit  Optionales Limit
 	 *
-	 * @return App\Models\User[]
+	 * @return \Core\Application\Models\User[]
 	 */
 	public static function getUsers($status = STATUS_DELETED, $offset = 0, $limit = 25)
 	{
@@ -422,9 +419,9 @@ class User
 	/**
 	 * Liefert Benutzer einer bestimmten Rolle
 	 *
-	 * @param integer $groupId ID der Rolle
+	 * @param int $groupId ID der Rolle
 	 *
-	 * @return App\Models\User[]
+	 * @return \Core\Application\Models\User[]
 	 */
 	public static function getUsersByGroupId($groupId)
 	{
@@ -451,7 +448,6 @@ class User
 			->innerJoin('right_group_users AS rgu')
 			->on('rgu.user_id = u.id')
 			->addWhere('rgu.group_id', $groupId);
-
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -486,7 +482,7 @@ class User
 
 		if(!self::checkUniqueUsername($user))
 		{
-			throw new \ErrorException("Der gewünschte Username ist bereits vergeben!");
+			throw new \ErrorException('Der gewünschte Benutzername ist bereits vergeben!');
 		}
 
 		$user->setCreated($datetime);
@@ -538,7 +534,7 @@ class User
 
 		if(!self::checkUniqueUsername($user))
 		{
-			throw new \ErrorException("Der gewünschte Username ist bereits vergeben!");
+			throw new \ErrorException('Der gewünschte Benutzername ist bereits vergeben!');
 		}
 
 		if (empty($password))
@@ -585,16 +581,15 @@ class User
 		}
 	}
 
-
 	/**
 	 * Liefert ein Array mit den Benutzern.
 	 * Im ersten Parameter $status wird übermittelt bis (exklusive) welchem Benutzerstatus
-	 * die Benutzer aus der Datenbank gelesen werden sollen
+	 * die Benutzer aus der Datenbank gelesen werden sollen.
 	 *
 	 * @param string  $keyword Suchwort
-	 * @param integer $status  Der maximale Benutzerstatus, Default: Deleted
+	 * @param int $status  Der maximale Benutzerstatus, Default: Deleted
 	 *
-	 * @return App\Models\User[]
+	 * @return \Core\Application\Models\User[]
 	 */
 	public static function searchUsers($keyword, $status = STATUS_DELETED)
 	{
@@ -641,6 +636,10 @@ class User
 		return $models;
 	}
 
+	/**
+	 * @param \Core\Application\Models\User $model
+	 * @return bool
+	 */
 	public static function checkUniqueUsername(UserModel $model)
 	{
 		$con = Registry::getInstance()->getDatabase();
@@ -665,6 +664,12 @@ class User
 		return true;
 	}
 
+	/**
+	 * Generiert ein einmaliges Passwort
+	 *
+	 * @param $userid ID des Benutzers
+	 * @return string
+	 */
 	public static function generateOTP($userid)
 	{
 		$userModel = self::getUserById($userid);
@@ -679,5 +684,3 @@ class User
 		return $randompass;
 	}
 }
-
-?>

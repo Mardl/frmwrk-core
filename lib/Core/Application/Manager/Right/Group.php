@@ -27,7 +27,6 @@ use Core\Application\Models\Right as RightModel,
  */
 class Group
 {
-
 	/**
 	 * Liefert alle Rechtegruppe
 	 *
@@ -59,7 +58,6 @@ class Group
 		}
 
 		return $groups;
-
 	}
 
 	/**
@@ -93,7 +91,7 @@ class Group
 		}
 		else
 		{
-			throw new \ErrorException("Rolle mit der ID: $id nicht gefunden");
+			throw new \ErrorException("Rolle mit der ID $id nicht gefunden°");
 		}
 
 		if ($rights)
@@ -105,7 +103,6 @@ class Group
 		{
 			$group->setUsers(UserManager::getUsersByGroupId($group->getId()));
 		}
-
 
 		return $group;
 	}
@@ -132,7 +129,6 @@ class Group
 			)
 			->from('right_groups')
 			->addWhere('id', $ids);
-
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -197,14 +193,13 @@ class Group
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
-
 		if ($rsExecution->isSuccessfull() && $rsExecution->count() == 1)
 		{
 			$group = new GroupModel($rsExecution->get());
 		}
 		else
 		{
-			throw new \ErrorException("Rolle mit dem Namen: $name nicht gefunden");
+			throw new \ErrorException("Rolle mit dem Namen: $name nicht gefunden!");
 		}
 
 		if ($rights)
@@ -216,7 +211,6 @@ class Group
 		{
 			$group->setUsers(UserManager::getUsersByGroupId($group->getId()));
 		}
-
 
 		return $group;
 	}
@@ -287,7 +281,7 @@ class Group
 			if ($g)
 			{
 				SystemMessages::addError(
-					'Eine Rolle mit dem Namen "'.$group->getName().'" existiert bereits'
+					'Eine Rolle mit dem Namen "'.$group->getName().'" existiert bereits!'
 				);
 				return false;
 			}
@@ -310,14 +304,13 @@ class Group
 
 		if (!$inserted)
 		{
-			SystemMessages::addError('Beim Erstellen der Rolle ist ein Fehler aufgetreten');
+			SystemMessages::addError('Beim Erstellen der Rolle ist ein Fehler aufgetreten!');
 			return false;
 		}
 
 		$usergroup = self::getGroupById($inserted);
 
 		return $usergroup;
-
 	}
 
 	/**
@@ -345,7 +338,7 @@ class Group
 
 		if (!$updated)
 		{
-			SystemMessages::addError('Beim Update der Rolle ist ein Fehler aufgetreten');
+			SystemMessages::addError('Beim Update der Rolle ist ein Fehler aufgetreten!');
 			return false;
 		}
 
@@ -355,7 +348,7 @@ class Group
 		{
 			if (!self::updateGroupRights($group))
 			{
-				SystemMessages::addError('Beim Update der Rechte ist ein Fehler aufgetreten');
+				SystemMessages::addError('Beim Update der Rechte ist ein Fehler aufgetreten!');
 				return false;
 			}
 		}
@@ -366,7 +359,7 @@ class Group
 		{
 			if (!self::updateGroupUsers($group))
 			{
-				SystemMessages::addError('Beim Update der Mitglieder ist ein Fehler aufgetreten');
+				SystemMessages::addError('Beim Update der Mitglieder ist ein Fehler aufgetreten!');
 				return false;
 			}
 		}
@@ -448,8 +441,8 @@ class Group
 			{
 				//Führe Rollback durch
 				$con->rollback();
-//				$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-//				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+				//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return false;
 			}
 		}
@@ -457,12 +450,10 @@ class Group
 		{
 			//Führe Rollback durch
 			$con->rollback();
-//			$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-//			$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
+			//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
+			//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
-
-
 	}
 
 	/**
@@ -548,8 +539,6 @@ class Group
 			//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
-
-
 	}
 
 	/**
@@ -640,8 +629,6 @@ class Group
 			//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
-
-
 	}
 
 	/**
@@ -662,9 +649,5 @@ class Group
 				'user_id' => $user->getId()
 			)
 		);
-
 	}
-
 }
-
-?>
