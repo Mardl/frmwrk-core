@@ -24,6 +24,7 @@ use Exception,
  * @method string getUsername()
  * @method string getFirstname()
  * @method string getLastname()
+ * @method int getGender()
  * @method string getEmail()
  * @method bool getEmailCorrupted()
  * @method string getBirthday()
@@ -36,6 +37,7 @@ use Exception,
  * @method setUsername($value)
  * @method setFirstname($value)
  * @method setLastname($value)
+ * @method setGender(\int $value)
  * @method setEmail($value)
  * @method setEmailCorrupted(\bool $value)
  * @method setCreated($value)
@@ -125,7 +127,7 @@ class User extends BaseModel
     /**
      * Birthday
      *
-     * @var DateTime
+     * @var \DateTime
      *
      * @Column(type="date")
      */
@@ -143,7 +145,7 @@ class User extends BaseModel
     /**
      * Created (Registration date)
      *
-     * @var DateTime
+     * @var \DateTime
      *
      * @Column(type="datetime")
      */
@@ -161,7 +163,7 @@ class User extends BaseModel
     /**
      * Address
      *
-     * @var Core\Application\Models\Address
+     * @var \Core\Application\Models\Address
      *
      * @OneToOne(targetEntity="\Core\Application\Models\Address", fetch="LAZY", mappedBy="user", cascade={"all"})
      */
@@ -209,12 +211,12 @@ class User extends BaseModel
     {
         if (empty($password))
         {
-        	throw new \InvalidArgumentException(translate('Das Passwort darf nicht leer sein!'));
+        	throw new \InvalidArgumentException('Das Passwort darf nicht leer sein!');
         }
 
         if (strlen($password) < 5)
         {
-        	throw new \ErrorException(translate('Das Passwort muss mindestens 5 Zeichen lang sein!'));
+        	throw new \ErrorException('Das Passwort muss mindestens 5 Zeichen lang sein!');
         }
 
         if ($md5)
@@ -263,7 +265,7 @@ class User extends BaseModel
     		}
     		catch (\Exception $e)
     		{
-    			throw new \InvalidArgumentException(translate('Ungültige Datumsangabe!'));
+    			throw new \InvalidArgumentException('Ungültige Datumsangabe!');
     		}
     	}
 
@@ -344,7 +346,7 @@ class User extends BaseModel
     	else
     	{
     		$avatar = '/static/images/avatar_';
-    		return  $avatar.($this->isMale()?'male.png':'female.png');
+    		return  $avatar.($this->isMale() ? 'male.png' : 'female.png');
     	}
     }
 
@@ -391,23 +393,23 @@ class User extends BaseModel
     }
 
 	/**
-	 * Set die Sprache
+	 * Setzt die Sprache
 	 *
 	 * @param $language int|\Core\Application\Models\Language
 	 */
 	public function setLanguage($language)
 	{
-		if (class_exists("App\Models\Language", false) && !($language instanceof \Core\Application\Models\Language) && $language !== null)
+		if (class_exists("Core\Application\Models\Language", false) && !($language instanceof \Core\Application\Models\Language) && $language !== null)
 		{
 			$manager = new \Core\Application\Manager\Language();
-			$language = $manager->getModelById(new \App\Models\Language(), $language);
+			$language = $manager->getModelById(new \Core\Application\Models\Language(), $language);
 		}
 
 		$this->language = $language;
 	}
 
 	/**
-	 * liefert die ID der Sprache
+	 * Liefert die ID der Sprache
 	 *
 	 * @return int
 	 */

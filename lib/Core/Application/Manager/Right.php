@@ -10,11 +10,11 @@
  */
 namespace Core\Application\Manager;
 
-use Core\Application\Models\Right as RightModel,
+use Core\SystemMessages,
+	Core\Application\Models\Right as RightModel,
 	Core\Application\Models\User as UserModel,
 	jamwork\common\Registry,
 	jamwork\database\MysqlRecordset as Recordset;
-use Core\SystemMessages;
 
 /**
  * Right
@@ -32,7 +32,7 @@ class Right
 	 * @param RightModel $right Das zu prüfende Recht
 	 * @param UserModel  $user  Der Benutzer
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isAllowed(RightModel $right, UserModel $user)
 	{
@@ -287,7 +287,7 @@ class Right
 				modified'
 			)
 			->from('rights')
-			->orderBy('prefix,module,controller,action');
+			->orderBy('module,controller,action ASC');
 
 		$rights = array();
 		$rs = $con->newRecordSet();

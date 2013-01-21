@@ -30,7 +30,7 @@ class Group
 	/**
 	 * Liefert alle Rechtegruppe
 	 *
-	 * @return App\Models\Right\Group[]
+	 * @return \Core\Application\Models\Right\Group[]
 	 */
 	public static function getAllGroups()
 	{

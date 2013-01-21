@@ -43,7 +43,7 @@ class User
 	{
 		if (empty($userid))
 		{
-			throw new \InvalidArgumentException('Invalid Userid');
+			throw new \InvalidArgumentException('Invalid User ID!');
 		}
 
 		if (array_key_exists($userid, self::$_users))
@@ -667,7 +667,7 @@ class User
 	/**
 	 * Generiert ein einmaliges Passwort
 	 *
-	 * @param $userid ID des Benutzers
+	 * @param int $userid ID des Benutzers
 	 * @return string
 	 */
 	public static function generateOTP($userid)
