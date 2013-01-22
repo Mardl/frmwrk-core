@@ -389,11 +389,11 @@ class View extends ArrayObject
 	}
 
 	/**
-	 * Render templates
-	 *
-	 * @param string|null $template Template filename
+	 * @param null $template Template filename
 	 *
 	 * @return string
+	 *
+	 * @throws \Exception
 	 */
 	public function render($template = null)
 	{

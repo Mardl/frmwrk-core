@@ -22,7 +22,6 @@ use Core\Application\Models\User as UserModel,
  */
 class User
 {
-
 	/**
 	 * Users
 	 *
@@ -33,18 +32,18 @@ class User
 	/**
 	 * Liefert einen Benutzer anhand seiner Id
 	 *
-	 * @param integer $userid Benutzerid
+	 * @param integer $userid Benutzer ID
 	 *
-	 * @throws \InvalidArgumentException Wenn keine Id übergeben wurde
-	 * @throws \Exception Wenn der Benutzer nicht gefunden wurde
+	 * @throws \ErrorException Wenn der Benutzer nicht gefunden wurde
+	 * @throws \InvalidArgumentException Wenn keine ID übergeben wurde
 	 *
-	 * @return App\Models\User
+	 * @return \Core\Application\Models\User
 	 */
 	public static function getUserById($userid)
 	{
 		if (empty($userid))
 		{
-			throw new \InvalidArgumentException('Invalid Userid');
+			throw new \InvalidArgumentException('Invalid User ID!');
 		}
 
 		if (array_key_exists($userid, self::$_users))
@@ -98,7 +97,7 @@ class User
 	 *
 	 * @throws \InvalidArgumentException Wenn das Array leer übergeben wurde
 	 *
-	 * @return App\Models\User[]
+	 * @return \Core\Application\Models\User[]
 	 */
 	public static function getUserByIds($userids)
 	{
@@ -148,10 +147,10 @@ class User
 	 *
 	 * @param string $username Benutzername
 	 *
-	 * @throws \InvalidArgumentException Wenn kein Benutzername übergeben wurde
-	 * @throws \Exception Wenn der Benutzer nicht gefunden wurde
+	 * @return \Core\Application\Models\User
 	 *
-	 * @return App\Models\User
+	 * @throws \ErrorException Wenn der Benutzer nicht gefunden wurde
+	 * @throws \InvalidArgumentException Wenn kein Benutzername übergeben wurde
 	 */
 	public static function getUserByUsername($username)
 	{
@@ -196,14 +195,14 @@ class User
 	}
 
 	/**
-	 * Liefert einen Benutzer anhand seines Benutzernamens
+	 * Liefert einen Benutzer anhand seiner E-Mail Adresse
 	 *
-	 * @param string $username Benutzername
+	 * @param $email
 	 *
-	 * @throws \InvalidArgumentException Wenn kein Benutzername übergeben wurde
-	 * @throws \Exception Wenn der Benutzer nicht gefunden wurde
+	 * @return \Core\Application\Models\User
 	 *
-	 * @return App\Models\User
+	 * @throws \ErrorException Wenn die E-Mail Adresse nicht gefunden wurde
+	 * @throws \InvalidArgumentException Wenn die E-Mail Adresse leer ist
 	 */
 	public static function getUserByEMail($email)
 	{
@@ -278,17 +277,17 @@ class User
 
 		return false;
 	}
+
 	/**
-	 * Sucht einen Benutzer mittels Benutzername und Passwort.
-	 * Wenn dies klappt wird die Benutzer-Id in der Session gespeichert und
-	 * die ID zurückgeliefert.
+	 * Sucht einen Benutzer anhand von Benutzername und Passwort.
+	 * Wenn dies klappt wird die Benutzer-ID in der Session gespeichert und die ID zurückgeliefert wird.
 	 *
 	 * @param string $username Benutzername
 	 * @param string $password Passwort
 	 *
-	 * @throws \Exception Wenn mit den angegebenen Daten kein Benutzer gefunden wird
+	 * @return mixed
 	 *
-	 * @return integer
+	 * @throws \ErrorException Wenn mit den angegebenen Daten kein Benutzer gefunden wird
 	 */
 	public static function login($username, $password)
 	{
@@ -324,13 +323,11 @@ class User
 			}
 		}
 
-		throw new \ErrorException('Benutzer nicht gefunden');
+		throw new \ErrorException('Benutzer nicht gefunden!');
 	}
 
 	/**
 	 * Loggt den Benutzer aus, indem die Session zerstört wird.
-	 *
-	 * @return void
 	 */
 	public static function logout()
 	{
@@ -340,9 +337,9 @@ class User
 	/**
 	 * Liefert die Anzahl der Benutzer
 	 *
-	 * @param integer $status Der maximale Benutzerstatus, Default: Deleted
+	 * @param int $status Der maximale Benutzerstatus, Default: Deleted
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function getUserCount($status = STATUS_DELETED)
 	{
@@ -370,11 +367,11 @@ class User
 	 * Im ersten Parameter $status wird übermittelt bis (exklusive) welchem Benutzerstatus
 	 * die Benutzer aus der Datenbank gelesen werden sollen
 	 *
-	 * @param integer $status Der maximale Benutzerstatus, Default: Deleted
-	 * @param integer $offset Optionaler Offset
-	 * @param integer $limit  Optionales Limit
+	 * @param int $status Der maximale Benutzerstatus, Default: Deleted
+	 * @param int $offset Optionaler Offset
+	 * @param int $limit  Optionales Limit
 	 *
-	 * @return App\Models\User[]
+	 * @return \Core\Application\Models\User[]
 	 */
 	public static function getUsers($status = STATUS_DELETED, $offset = 0, $limit = 25)
 	{
@@ -422,9 +419,9 @@ class User
 	/**
 	 * Liefert Benutzer einer bestimmten Rolle
 	 *
-	 * @param integer $groupId ID der Rolle
+	 * @param int $groupId ID der Rolle
 	 *
-	 * @return App\Models\User[]
+	 * @return \Core\Application\Models\User[]
 	 */
 	public static function getUsersByGroupId($groupId)
 	{
@@ -452,7 +449,6 @@ class User
 			->on('rgu.user_id = u.id')
 			->addWhere('rgu.group_id', $groupId);
 
-
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
@@ -472,10 +468,12 @@ class User
 	/**
 	 * Speichert einen neuen Benutzer in der Datenbank
 	 *
-	 * @param App\Models\User $user     Userobject
-	 * @param string          $password Passwort
+	 * @param \Core\Application\Models\User $user User-Objekt
+	 * @param string $password Passwort
 	 *
-	 * @return App\Models\User|boolean
+	 * @return bool|\Core\Application\Models\User
+	 *
+	 * @throws \ErrorException
 	 */
 	public static function insertUser(UserModel $user, $password)
 	{
@@ -484,7 +482,7 @@ class User
 
 		if(!self::checkUniqueUsername($user))
 		{
-			throw new \ErrorException("Der gewünschte Username ist bereits vergeben!");
+			throw new \ErrorException('Der gewünschte Benutzername ist bereits vergeben!');
 		}
 
 		$user->setCreated($datetime);
@@ -517,10 +515,12 @@ class User
 	/**
 	 * Speichert Änderungen eines Benutzers
 	 *
-	 * @param App\Models\User $user     Userobject
-	 * @param string          $password Optionales Passwort
+	 * @param \Core\Application\Models\User $user User-Objekt
+	 * @param string $password Optionales Passwort
 	 *
-	 * @return App\Models\User|boolean
+	 * @return bool|\Core\Application\Models\User
+	 *
+	 * @throws \ErrorException
 	 */
 	public static function updateUser(UserModel $user, $password = '')
 	{
@@ -534,7 +534,7 @@ class User
 
 		if(!self::checkUniqueUsername($user))
 		{
-			throw new \ErrorException("Der gewünschte Username ist bereits vergeben!");
+			throw new \ErrorException('Der gewünschte Benutzername ist bereits vergeben!');
 		}
 
 		if (empty($password))
@@ -581,16 +581,15 @@ class User
 		}
 	}
 
-
 	/**
 	 * Liefert ein Array mit den Benutzern.
 	 * Im ersten Parameter $status wird übermittelt bis (exklusive) welchem Benutzerstatus
-	 * die Benutzer aus der Datenbank gelesen werden sollen
+	 * die Benutzer aus der Datenbank gelesen werden sollen.
 	 *
 	 * @param string  $keyword Suchwort
-	 * @param integer $status  Der maximale Benutzerstatus, Default: Deleted
+	 * @param int $status  Der maximale Benutzerstatus, Default: Deleted
 	 *
-	 * @return App\Models\User[]
+	 * @return \Core\Application\Models\User[]
 	 */
 	public static function searchUsers($keyword, $status = STATUS_DELETED)
 	{
@@ -637,6 +636,10 @@ class User
 		return $models;
 	}
 
+	/**
+	 * @param \Core\Application\Models\User $model
+	 * @return bool
+	 */
 	public static function checkUniqueUsername(UserModel $model)
 	{
 		$con = Registry::getInstance()->getDatabase();
@@ -661,6 +664,12 @@ class User
 		return true;
 	}
 
+	/**
+	 * Generiert ein einmaliges Passwort
+	 *
+	 * @param int $userid ID des Benutzers
+	 * @return string
+	 */
 	public static function generateOTP($userid)
 	{
 		$userModel = self::getUserById($userid);
@@ -675,5 +684,3 @@ class User
 		return $randompass;
 	}
 }
-
-?>

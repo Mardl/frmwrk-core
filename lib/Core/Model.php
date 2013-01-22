@@ -20,7 +20,6 @@ namespace Core;
  */
 class Model
 {
-
 	/**
 	 * Integer value of gender male
 	 * @var integer
@@ -56,7 +55,7 @@ class Model
 	/**
 	 * Handelt es sich um ein der Datenbank unbekanntes Objekt
 	 *
-	 * @var ReflectionClass
+	 * @var \ReflectionClass
 	 */
 	protected $reflectionClass;
 
@@ -91,7 +90,6 @@ class Model
 				return $this->$newMethod($params[0]);
 			}
 		}
-
 
 		$method = $parts[1];
 		$attribute = $parts[2];
@@ -169,13 +167,12 @@ class Model
 				$this->$setter($value);
 			}
 		}
-
 	}
 
 	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
-	 * @param DateTime|string $datetime Datetime-Objekt oder String
+	 * @param \DateTime|string $datetime Datetime-Objekt oder String
 	 * @throws \InvalidArgumentException
 	 */
 	public function setCreated($datetime = 'now')
@@ -198,7 +195,7 @@ class Model
 	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
-	 * @param DateTime|string $datetime Datetime-Objekt oder String
+	 * @param \DateTime|string $datetime Datetime-Objekt oder String
 	 * @throws \InvalidArgumentException
 	 */
 	public function setModified($datetime = 'now')
@@ -217,7 +214,6 @@ class Model
 
 		$this->modified = $datetime;
 	}
-
 
 	/**
 	 *
@@ -263,7 +259,6 @@ class Model
 	{
 		return $this->new;
 	}
-
 
 	/**
 	 * Liefert den Tabellenname des Objekts anhand des Klassenkommentars @Table
@@ -311,6 +306,10 @@ class Model
 		return null;
 	}
 
+	/**
+	 * @return string
+	 * @throws \ErrorException
+	 */
 	public function getIdField()
 	{
 		if (!$this->reflectionClass)
@@ -327,7 +326,6 @@ class Model
 			{
 				return $this->getTablePrefix().$prop->getName();
 			}
-
 		}
 
 		throw new \ErrorException("Kein ID-Feld über @Id definiert");

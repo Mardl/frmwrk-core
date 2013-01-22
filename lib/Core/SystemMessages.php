@@ -29,17 +29,17 @@ class SystemMessages
      * @var array
      */
 	private static $_messages = array();
-	
-    /**
-     * Add message
-     *
-     * @param string  $content   Message
-     * @param string  $category  Category
-     * @param array   $arguments (sprintf) Arguments for message
-     * @param boolean $html      HTML = true, Plaintext = false
-     * 
-     * @return void
-     */
+
+	/**
+	 * Add message
+	 *
+	 * @param string $content Message
+	 * @param string $category Category
+	 * @param array $arguments (sprintf) Arguments for message
+	 * @param bool $html HTML = true, Plaintext = false
+	 *
+	 * @throws \InvalidArgumentException
+	 */
 	public static function add($content, $category = 'notice', $arguments = array(), $html = false) 
 	{
 		if (!in_array($category, array('notice', 'warning', 'error', 'success')))

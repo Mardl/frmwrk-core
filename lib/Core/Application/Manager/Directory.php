@@ -28,19 +28,22 @@ use jamwork\debug\DebugLogger,
  */
 class Directory
 {
+	/**
+	 * @var array
+	 */
 	private static $cache = array();
 
 	/**
 	 * Liefert ein Directory anhand seiner Id
 	 *
-	 * @param integer $directoryId Id des gewünschten Directory
+	 * @param int $directoryId Id des gewünschten Directory
 	 *
 	 * @throws \InvalidArgumentException Wenn eine leere Directoryid übermittelt wurde
 	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
 	 *
-	 * @return App\Models\Directory
+	 * @return \Core\Application\Models\Directory
 	 */
-	public static function getDirectoryById ($directoryId)
+	public static function getDirectoryById($directoryId)
 	{
 		if (empty($directoryId))
 		{
@@ -87,7 +90,7 @@ class Directory
 	 *
 	 * @param integer $parentDirectoryId gewünschtes Parent Directory
 	 *
-	 * @return App\Models\Directories[]
+	 * @return array
 	 */
 	public static function getDirectoriesByParentId($parentDirectoryId)
 	{
@@ -100,7 +103,6 @@ class Directory
 				->from('directories')
 				->addWhereIsNull('parent_id')
 				->orderby('sort');
-
 		}
 		else
 		{
@@ -137,7 +139,6 @@ class Directory
 	/**
 	 * Liefert alle Childelemente des Directories (Directories und Files)
 	 *
-	 * @static
 	 * @param integer $idDirectory Id von dem die Children benötigt werden
 	 *
 	 * @return array mit App\Models\Directory\Files und App\Models\Directory
@@ -152,7 +153,7 @@ class Directory
 	 *
 	 *  @param integer $idDirectory Id von dem die Files benötigt werden
 	 *
-	 *  @return App\Models\Directory\Files[]
+	 *  @return array
 	 */
 	public static function getChildrenFiles($idDirectory)
 	{
@@ -211,7 +212,7 @@ class Directory
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError('Beim Erstellen des Verzeichnises ist ein Fehler aufgetreten');
+			SystemMessages::addError(translate('Beim Erstellen des Verzeichnisses ist ein Fehler aufgetreten!'));
 			return false;
 		}
 
@@ -284,9 +285,9 @@ class Directory
 	/**
 	 * Löscht das gewünschte Verzeichnis
 	 *
-	 * @param unknown_type $directoryId ID des Verzeichnisses das gelöscht werden soll
-	 *
-	 * @return boolean
+	 * @static
+	 * @param $directoryId ID des Verzeichnisses, das gelöscht werden soll
+	 * @return bool
 	 */
 	public static function deleteDirectory($directoryId)
 	{
@@ -326,7 +327,6 @@ class Directory
 
 		return true;
 	}
-
 
 	/**
 	 * Liefert alle Einträge aus Tabelle directories im json-format
@@ -373,10 +373,10 @@ class Directory
 	 *
 	 * @param string $directory Bezeichnung
 	 *
-	 * @throws \InvalidArgumentException Wenn eine leere Bezeichnung übermittelt wurde
-	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
+	 * @return \Core\Application\Models\Directory
 	 *
-	 * @return App\Models\Directory
+	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
+	 * @throws \InvalidArgumentException Wenn eine leere Bezeichnung übermittelt wurde
 	 */
 	public static function getDirectoryByTitle($directory)
 	{

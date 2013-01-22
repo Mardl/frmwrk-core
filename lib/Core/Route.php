@@ -223,11 +223,13 @@ class Route
 	/**
 	 * Create url from route
 	 *
-	 * @param array        $params   Parameters
-	 * @param boolean|null $reset    Reset values from last match
-	 * @param boolean      $absolute Absolute Url with hostname
+	 * @param array $params Parameters
+	 * @param null $reset Reset values from last match
+	 * @param bool $absolute Absolute Url with hostname
 	 *
 	 * @return string
+	 *
+	 * @throws \ErrorException
 	 */
 	public function url(array $params = array(), $reset = null, $absolute = false)
 	{
