@@ -29,26 +29,25 @@ use Exception,
  */
 class FrontController
 {
-
 	/**
 	 * View
      *
 	 *
-	 * @var   Core\View
+	 * @var   \Core\View
 	 */
 	protected $view;
 
 	/**
 	 * Router
 	 *
-	 * @var   Core\Router
+	 * @var   \Core\Router
 	 */
 	protected $router;
 
 	/**
 	 * Request
 	 *
-	 * @var   Core\Request
+	 * @var   \Core\Request
 	 */
 	protected $request;
 
@@ -102,7 +101,6 @@ class FrontController
 		{
 			$this->view = Registry::getInstance()->view;
 		}
-
 	}
 
 	/**
@@ -196,8 +194,8 @@ class FrontController
 				if (strlen($val) < 2 || strlen($val) > 32)
 				{
 					$msg = sprintf(
-						'Controller %s must be at least 2 chars long and may not exceed 32',
-						ucfirst($val)
+						'Controller %s must be at least 2 chars long and may not exceed 32 (%s)',
+						ucfirst($val), $controllerName
 					);
 					throw new \InvalidArgumentException($msg);
 				}
@@ -319,6 +317,7 @@ class FrontController
 	/**
 	 * Führt den Aufruf aus
 	 *
+	 * @param null $url
 	 * @return string
 	 */
 	public function execute($url = null)
@@ -332,7 +331,6 @@ class FrontController
 		$this->request->setParams($route->getParams());
 
 		try {
-
 			$action = $this->router->getParam('action');
 			$controller = $this->router->getParam('controller');
 			$format = $this->router->getParam('format');
@@ -459,5 +457,4 @@ class FrontController
 		$msg = sprintf('Action "%s" not found in controller "%s"', $action, get_class($class));
 		throw new \InvalidArgumentException($msg, 404);
 	}
-
 }

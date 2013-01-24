@@ -129,11 +129,10 @@ class Mailer {
 	}
 
 	/**
-	 * Add header
-	 *
 	 * @param string $key key
-	 * @param string $value Value.
+	 * @param string $value value
 	 * @return array
+	 * @throws \Exception
 	 */
 	public function addHeader($key, $value) {
 		if (strpos($value, "\n") !== false) {
@@ -185,7 +184,8 @@ class Mailer {
 	/**
 	 * Send email with sendmail
 	 *
-	 * @return boolean
+	 * @return bool
+	 * @throws \Exception
 	 */
 	public function send() {
 		$to = implode(', ', $this->to);
