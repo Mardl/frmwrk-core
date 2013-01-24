@@ -100,7 +100,7 @@ class Files
 
 			return $file;
 		}
-		throw new \ErrorException(translate('Datei nicht gefunden!'));
+		throw new \ErrorException('Datei nicht gefunden!');
 	}
 
 	/**
@@ -300,7 +300,7 @@ class Files
 
 
 			if (!array_key_exists($extension, self::$mimetypes)){
-				throw new \ErrorException(translate('Nicht unterstützter Dateityp!'));
+				throw new \ErrorException('Nicht unterstützter Dateityp!');
 			}
 			$mimetype = self::$mimetypes[$extension];
 
@@ -332,7 +332,7 @@ class Files
 	{
 		if (empty($filename))
 		{
-			throw new \InvalidArgumentException(translate('Ungültige Datei ID!'));
+			throw new \InvalidArgumentException('Ungültige Datei ID!');
 		}
 
 		$con = Registry::getInstance()->getDatabase();
@@ -449,7 +449,7 @@ class Files
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError(translate('Beim Speichern der Datei ist ein Fehler aufgetreten!'));
+			SystemMessages::addError('Beim Speichern der Datei ist ein Fehler aufgetreten!');
 			return false;
 		}
 
@@ -519,7 +519,7 @@ class Files
 
 		if (!$rsExecution->isSuccessfull() || mysql_affected_rows() == 0)
 		{
-			SystemMessages::addError(translate('Fehler beim Löschen der Datei!'));
+			SystemMessages::addError('Fehler beim Löschen der Datei!');
 			return false;
 		}
 

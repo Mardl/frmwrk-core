@@ -104,8 +104,6 @@ class Right
 		}
 
 		$class = "\\App\\Modules\\".ucfirst($prefixSlash).ucfirst($module)."\\Controller\\".ucfirst($controller);
-		//SystemMessages::addNotice('Single-> '."$module,$controller,$action,$prefix");
-		//SystemMessages::addNotice('INIT -> '."#$class#");
 		$reflect = new \ReflectionClass($class);
 
 		//Methoden auslesen
@@ -116,9 +114,6 @@ class Right
 			preg_match("/(.+)(HTML|Html|JSON|Json)Action/", $method->getName(), $matches);
 			if (!empty($matches))
 			{
-				//SystemMessages::addError(print_r($matches,true));
-				//SystemMessages::addError($method->getName(). " -> $module,$controller,".$matches[1].",$prefix");
-
 				// Initialisieren
 				$request->setParameter("$module:$controller:".strtolower($matches[1]).":$prefix",'');
 
