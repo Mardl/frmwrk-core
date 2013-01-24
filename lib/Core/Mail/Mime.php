@@ -1,12 +1,4 @@
 <?php
-/**
- * Mime
- *
- * @package    Core
- * @subpackage Main
- * @author     Eraffe Media GmbH <info@eraffe-media.de>, MediaWorld AG <mail@mediaworld-ag.de>
- * @copyright  2009-2010 Eraffe Media GmbH, 2010 MediaWorld AG
- */
 
 namespace Core\Mail;
 
@@ -148,7 +140,7 @@ class Mime extends \ArrayObject {
 		foreach($headers as $key => $value) {
 			$result[] = $key.': '.$value;
 		}
-		
+
 		return implode("\n", $result);
 	}
 

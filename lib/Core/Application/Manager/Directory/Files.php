@@ -28,6 +28,9 @@ use Core\Application\Models\Directory\Files as FilesModel,
  */
 class Files
 {
+	/**
+	 * @var array MIME-Types
+	 */
 	private static $mimetypes = array(
 		"gif" => "image/gif",
 		"jfif" => "image/pipeg",
@@ -47,21 +50,20 @@ class Files
 	private static $cache = array();
 
 	/**
-	 * Liefer ein File anhand seiner ID
+	 * Liefert eine Datei anhand seiner ID
 	 *
-	 * @static
-	 * @param integer $fileId ID des gewünschten Files
+	 * @param int $fileId ID der Datei
 	 *
 	 * @return \Core\Application\Models\Directory\Files
 	 *
-	 * @throws \ErrorException Wenn das gewünschte File nicht gefunden wurde
+	 * @throws \ErrorException Wenn die Datei nicht gefunden wurde
 	 * @throws \InvalidArgumentException Wenn eine leere Filesid übermittelwurde oder keine DirectorysId hinterlegt ist
 	 */
 	public static function getFileById ($fileId)
 	{
 		if (empty($fileId))
 		{
-			throw new \InvalidArgumentException('Invalid Fileid');
+			throw new \InvalidArgumentException('Invalid File ID');
 		}
 
 		if (array_key_exists($fileId, self::$cache))
@@ -98,7 +100,7 @@ class Files
 
 			return $file;
 		}
-		throw new \ErrorException('File nicht gefunden');
+		throw new \ErrorException('Datei nicht gefunden!');
 	}
 
 	/**
@@ -106,7 +108,7 @@ class Files
 	 *
 	 * @param int $directoryId directoryId
 	 *
-	 * @return App\Models\Directory\Files[]
+	 * @return \Core\Application\Models\Directory\Files[]
 	 */
 	public static function getFilesByDirectoryId($directoryId)
 	{
@@ -147,11 +149,10 @@ class Files
 
 	/**
 	 * Speichert eine neue Datei auf dem System aus dem filePost. Dabei überprüft die Funktion,
-	 * ob der Eintrag in schon vorhanden ist und somit geändert werden muss oder ob es sich um
-	 * eine neue Datei handelt.
+	 * ob der Eintrag bereits vorhanden ist und somit geändert werden muss oder ob es sich um eine neue Datei handelt.
 	 *
 	 * @param $filePost
-	 * @param $directorieId
+	 * @param $directoryId
 	 * @param \Core\Application\Models\Directory\Files $filemodel
 	 * @param bool $addSource
 	 * @param int $watermark
@@ -160,9 +161,8 @@ class Files
 	 *
 	 * @throws \ErrorException
 	 */
-	public static function saveUploadedFile($filePost, $directorieId, FilesModel $filemodel = null, $addSource = false, $watermark = 0)
+	public static function saveUploadedFile($filePost, $directoryId, FilesModel $filemodel = null, $addSource = false, $watermark = 0)
 	{
-
 		$originalName = $filePost['name'];
 		$tmpName 	  = $filePost['tmp_name'];
 		$filesize 	  = $filePost['size'];
@@ -201,7 +201,6 @@ class Files
 					6 = The 0th row is the visual right-hand side of the image, and the 0th column is the visual top.
 					7 = The 0th row is the visual right-hand side of the image, and the 0th column is the visual bottom.
 					8 = The 0th row is the visual left-hand side of the image, and the 0th column is the visual bottom.
-
 
 					http://sylvana.net/jpegcrop/exif_orientation.html
 				 */
@@ -263,8 +262,6 @@ class Files
 				}
 			}
 
-
-
 			if ($watermark != 0)
 			{
 				$pWatermark = ROOT_PATH."/html/static/images/watermark.png";
@@ -280,7 +277,6 @@ class Files
 					$watermarking = "composite -geometry +".$x."+".$y." ".$pWatermark." ".$pFiles." ".$pFiles;
 					system($watermarking);
 				}
-
 			}
 
 			if ($isNew)
@@ -295,7 +291,7 @@ class Files
 				}
 			}
 
-			$directoryModel = DirectoryManager::getDirectoryById($directorieId);
+			$directoryModel = DirectoryManager::getDirectoryById($directoryId);
 
 			$filemodel->setOrgname($originalName);
 			$filemodel->setName($newFileName);
@@ -304,7 +300,7 @@ class Files
 
 
 			if (!array_key_exists($extension, self::$mimetypes)){
-				throw new \ErrorException("Unsupported Filetype");
+				throw new \ErrorException('Nicht unterstützter Dateityp!');
 			}
 			$mimetype = self::$mimetypes[$extension];
 
@@ -325,12 +321,18 @@ class Files
 		return false;
 	}
 
-
+	/**
+	 * @param string $filename Dateiname
+	 *
+	 * @return bool|\Core\Application\Models\Directory\Files
+	 *
+	 * @throws \InvalidArgumentException
+	 */
 	public static function fileExistsByName ($filename)
 	{
 		if (empty($filename))
 		{
-			throw new \InvalidArgumentException('Invalid Fileid');
+			throw new \InvalidArgumentException('Ungültige Datei ID!');
 		}
 
 		$con = Registry::getInstance()->getDatabase();
@@ -357,7 +359,6 @@ class Files
 
 		return false;
 	}
-
 
 	public static function saveProfileFile(FilesModel $filesModel,$lifeId)
 	{
@@ -386,16 +387,12 @@ class Files
 		UserManager::updateUser($user);
 	}
 
-
-
-
-
 	/**
 	 * Löscht eine Datei aus der Datenbank sowie physikalisch vom Server
 	 *
-	 * @param integer $fileId ID der Datei
+	 * @param int $fileId ID der Datei
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function deleteUploadedFile($fileId)
 	{
@@ -416,9 +413,9 @@ class Files
 	/**
 	 * Fügt einen neuen Eintrag in der Datei Tabelle ein
 	 *
-	 * @param App\Models\Directory\Files $filemodel FileModel das in die DB gespeichert werden soll
+	 * @param \Core\Application\Models\Directory\Files $filemodel FileModel, das in die DB gespeichert werden soll
 	 *
-	 * @return App\Models\Directory\Files || boolean
+	 * @return bool|\Core\Application\Models\Directory\Files
 	 */
 	private function insertFile(FilesModel $filemodel)
 	{
@@ -461,11 +458,10 @@ class Files
 	}
 
 	/**
-	 * Löscht den File Eintrag in der Datenbank
+	 * Löscht die Datei
 	 *
-	 * @param unknown_type $filesId Id der Datei
-	 *
-	 * @return boolean
+	 * @param int $filesId ID der Datei
+	 * @return bool
 	 */
 	private function deleteFile($filesId)
 	{
@@ -511,9 +507,7 @@ class Files
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-
-
-		//Delete File
+		//Delete file
 		$query = sprintf(
 			"DELETE FROM
 				files
@@ -523,10 +517,9 @@ class Files
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-
 		if (!$rsExecution->isSuccessfull() || mysql_affected_rows() == 0)
 		{
-			SystemMessages::addError('Fehler beim löschen der Datei!');
+			SystemMessages::addError('Fehler beim Löschen der Datei!');
 			return false;
 		}
 
@@ -538,7 +531,7 @@ class Files
 	 *
 	 * @param FilesModel $fileModel File Model der zu aktualisierenden Datei
 	 *
-	 * @return App\Models\Directory\Files || boolean
+	 * @return \Core\Application\Models\Directory\Files || boolean
 	 */
 	public static function updateFile(FilesModel $fileModel)
 	{
@@ -582,11 +575,11 @@ class Files
 	}
 
 	/**
-	 * Prüft ob es sich bei der Datei um ein Image handelt
+	 * Prüft, ob es sich bei der Datei um ein Image handelt
 	 *
-	 * @param App\Models\Directory\Files $file File Model der Datei die überprüft werden soll
+	 * @param \Core\Application\Models\Directory\Files $file FileModel der Datei, das überprüft werden soll
 	 *
-	 * @return boolean
+	 * @return bool|int
 	 */
 	public function isImage(FilesModel $file)
 	{
@@ -620,18 +613,17 @@ class Files
 	}
 
 	/**
-	 * Konvertiert das übergeben Bild in die angegebenen Größe und speichert es im Cache
-	 * Verzeichnis (mit Angabe der größe im Dateinamen). Liefert den Dateipfad der neuen Datei.
+	 * Konvertiert das übergebene Bild in die angegebene Größe und speichert es im Cache
+	 * Verzeichnis (mit Angabe der Größe im Dateinamen). Liefert den Dateipfad der neuen Datei.
 	 *
-	 * @param App\Models\Directory\Files $file   FileModel des betroffenen Bildes
-	 * @param integer                    $width  Breite des Bildes
-	 * @param integer                    $height Höhe des Bildes
+	 * @param \Core\Application\Models\Directory\Files $file FileModel des betroffenen Bildes
+	 * @param int $width Breite des Bildes
+	 * @param int $height Höhe des Bildes
 	 *
 	 * @return string
 	 */
 	public function getThumbnail(FilesModel $file, $width=0, $height=0)
 	{
-
 		if($file->getId() == 0)
 		{
 			return '';
@@ -698,9 +690,9 @@ class Files
 	/**
 	 * Liefert den neuen Dateinamen mit Pfad
 	 *
-	 * @param string  $filename original Dateiname
-	 * @param integer $width    Breite der Datei
-	 * @param integer $height   Höhe der Datei
+	 * @param string $filename Original-Dateiname
+	 * @param int $width Breite der Datei
+	 * @param int $height Höhe der Datei
 	 *
 	 * @return string
 	 */
@@ -713,14 +705,12 @@ class Files
 		$filename .= '_'.$width.'x'.$height.'.'.$extension;
 
 		return FILE_TEMP.$filename;
-
 	}
 
 	/**
 	 * Liefert den Colorspace
 	 *
 	 * @param string $filename Dateiname mit Pfad
-	 *
 	 * @return string
 	 */
 	private function getColorspace($filename)
@@ -745,12 +735,15 @@ class Files
 		return '';
 	}
 
+	/**
+	 * @param \Core\Application\Models\Directory\Files $filemodel
+	 * @return array
+	 */
 	public function getSourcesByModel(FilesModel $filemodel)
 	{
 		$sources = array();
 
 		$sources[] = array($filemodel->getName(), $filemodel->getMimetype());
-
 
 		$con = Registry::getInstance()->getDatabase();
 
@@ -758,7 +751,6 @@ class Files
 		->select('name, mimetype')
 		->from('files')
 		->addWhere('parent_id', $filemodel->getId());
-
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -772,10 +764,14 @@ class Files
 		}
 
 		return $sources;
-
-
 	}
 
+	/**
+	 * Liefert Datei zurück anhand des Suchbegriffs
+	 *
+	 * @param string $searchTerm Suchbegriff
+	 * @return array
+	 */
 	public static function getFilesByLikeName($searchTerm)
 	{
 		$con = Registry::getInstance()->getDatabase();
@@ -800,15 +796,8 @@ class Files
 								'label' => $rs['orgname']
 							);
 			}
-
 		}
 
 		return $dataArray;
 	}
-
-
-
-
 }
-
-?>

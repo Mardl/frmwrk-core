@@ -28,23 +28,26 @@ use jamwork\debug\DebugLogger,
  */
 class Directory
 {
+	/**
+	 * @var array
+	 */
 	private static $cache = array();
 
 	/**
 	 * Liefert ein Directory anhand seiner Id
 	 *
-	 * @param integer $directoryId Id des gewünschten Directory
+	 * @param int $directoryId Id des gewünschten Directory
 	 *
 	 * @throws \InvalidArgumentException Wenn eine leere Directoryid übermittelt wurde
 	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
 	 *
-	 * @return App\Models\Directory
+	 * @return \Core\Application\Models\Directory
 	 */
-	public static function getDirectoryById ($directoryId)
+	public static function getDirectoryById($directoryId)
 	{
 		if (empty($directoryId))
 		{
-			throw new \InvalidArgumentException(translate('Ungültige Verzeichnis ID!'));
+			throw new \InvalidArgumentException('Ungültige Verzeichnis ID!');
 		}
 
 		if (array_key_exists($directoryId, self::$cache))
@@ -79,7 +82,7 @@ class Directory
 			return $directory;
 		}
 
-		throw new \ErrorException(translate('Verzeichnis nicht gefunden!'));
+		throw new \ErrorException('Verzeichnis nicht gefunden!');
 	}
 
 	/**
@@ -87,7 +90,7 @@ class Directory
 	 *
 	 * @param integer $parentDirectoryId gewünschtes Parent Directory
 	 *
-	 * @return App\Models\Directories[]
+	 * @return array
 	 */
 	public static function getDirectoriesByParentId($parentDirectoryId)
 	{
@@ -100,7 +103,6 @@ class Directory
 				->from('directories')
 				->addWhereIsNull('parent_id')
 				->orderby('sort');
-
 		}
 		else
 		{
@@ -137,7 +139,6 @@ class Directory
 	/**
 	 * Liefert alle Childelemente des Directories (Directories und Files)
 	 *
-	 * @static
 	 * @param integer $idDirectory Id von dem die Children benötigt werden
 	 *
 	 * @return array mit App\Models\Directory\Files und App\Models\Directory
@@ -152,7 +153,7 @@ class Directory
 	 *
 	 *  @param integer $idDirectory Id von dem die Files benötigt werden
 	 *
-	 *  @return App\Models\Directory\Files[]
+	 *  @return array
 	 */
 	public static function getChildrenFiles($idDirectory)
 	{
@@ -211,7 +212,7 @@ class Directory
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError('Beim Erstellen des Verzeichnises ist ein Fehler aufgetreten');
+			SystemMessages::addError('Beim Erstellen des Verzeichnisses ist ein Fehler aufgetreten!');
 			return false;
 		}
 
@@ -274,7 +275,7 @@ class Directory
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError(translate('Beim Aktualisieren des Verzeichnisses ist ein Fehler aufgetreten!'));
+			SystemMessages::addError('Beim Aktualisieren des Verzeichnisses ist ein Fehler aufgetreten!');
 			return false;
 		}
 
@@ -284,9 +285,9 @@ class Directory
 	/**
 	 * Löscht das gewünschte Verzeichnis
 	 *
-	 * @param unknown_type $directoryId ID des Verzeichnisses das gelöscht werden soll
-	 *
-	 * @return boolean
+	 * @static
+	 * @param $directoryId ID des Verzeichnisses, das gelöscht werden soll
+	 * @return bool
 	 */
 	public static function deleteDirectory($directoryId)
 	{
@@ -294,7 +295,7 @@ class Directory
 
 		if ($directoryId == 0)
 		{
-			SystemMessages::addError(translate('Es wurde keine Verzeichnis ID übergeben!'));
+			SystemMessages::addError('Es wurde keine Verzeichnis ID übergeben!');
 			return false;
 		}
 
@@ -314,19 +315,18 @@ class Directory
 
 		if ($rsExecution->isSuccessfull() && mysql_affected_rows() == 0)
 		{
-			SystemMessages::addError(translate('Beim Löschen des Verzeichnisses ist ein Fehler aufgetreten!'));
+			SystemMessages::addError('Beim Löschen des Verzeichnisses ist ein Fehler aufgetreten!');
 			return false;
 		}
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError(translate('Verzeichnis kann nicht gelöscht werden, da noch Unterelemente existieren!'));
+			SystemMessages::addError('Verzeichnis kann nicht gelöscht werden, da noch Unterelemente existieren!');
 			return false;
 		}
 
 		return true;
 	}
-
 
 	/**
 	 * Liefert alle Einträge aus Tabelle directories im json-format
@@ -365,7 +365,7 @@ class Directory
 			return $directoriesJson;
 		}
 
-		throw new \ErrorException(translate('Verzeichnis nicht gefunden!'));
+		throw new \ErrorException('Verzeichnis nicht gefunden!');
 	}
 
 	/**
@@ -373,16 +373,16 @@ class Directory
 	 *
 	 * @param string $directory Bezeichnung
 	 *
-	 * @throws \InvalidArgumentException Wenn eine leere Bezeichnung übermittelt wurde
-	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
+	 * @return \Core\Application\Models\Directory
 	 *
-	 * @return App\Models\Directory
+	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
+	 * @throws \InvalidArgumentException Wenn eine leere Bezeichnung übermittelt wurde
 	 */
 	public static function getDirectoryByTitle($directory)
 	{
 		if (empty($directory))
 		{
-			throw new \InvalidArgumentException(translate('Ungültiger Titel des Verzeichnisses!'));
+			throw new \InvalidArgumentException('Ungültiger Titel des Verzeichnisses!');
 		}
 
 		$con = Registry::getInstance()->getDatabase();
@@ -410,6 +410,6 @@ class Directory
 			return $directory;
 		}
 
-		throw new \ErrorException(translate('Verzeichnis nicht gefunden!'));
+		throw new \ErrorException('Verzeichnis nicht gefunden!');
 	}
 }

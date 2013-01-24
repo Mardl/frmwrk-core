@@ -24,6 +24,7 @@ use Exception,
  * @method string getUsername()
  * @method string getFirstname()
  * @method string getLastname()
+ * @method int getGender()
  * @method string getEmail()
  * @method bool getEmailCorrupted()
  * @method string getBirthday()
@@ -31,11 +32,12 @@ use Exception,
  * @method int getStatus()
  * @method bool getOtp()
  * @method bool getAdmin()
- * @method \App\Models\Language getLanguage()
+ * @method \Core\Application\Models\Language getLanguage()
  *
  * @method setUsername($value)
  * @method setFirstname($value)
  * @method setLastname($value)
+ * @method setGender(\int $value)
  * @method setEmail($value)
  * @method setEmailCorrupted(\bool $value)
  * @method setCreated($value)
@@ -125,7 +127,7 @@ class User extends BaseModel
     /**
      * Birthday
      *
-     * @var DateTime
+     * @var \DateTime
      *
      * @Column(type="date")
      */
@@ -143,7 +145,7 @@ class User extends BaseModel
     /**
      * Created (Registration date)
      *
-     * @var DateTime
+     * @var \DateTime
      *
      * @Column(type="datetime")
      */
@@ -161,7 +163,7 @@ class User extends BaseModel
     /**
      * Address
      *
-     * @var Core\Application\Models\Address
+     * @var \Core\Application\Models\Address
      *
      * @OneToOne(targetEntity="\Core\Application\Models\Address", fetch="LAZY", mappedBy="user", cascade={"all"})
      */
@@ -195,25 +197,26 @@ class User extends BaseModel
 	protected $language;
 
 	/**
-	 * Sets new password.
+	 * Sets new password
 	 *
-	 * @param string $password String mit dem neuen Passwort
-	 *
-	 * @throws \InvalidArgumentException Wenn das Passwort leer ist
-	 * @throws \ErrorException Wenn das Passwort zu kurz ist
+	 * @param $password String mit dem neuen Passwort
+	 * @param bool $md5 Kodierung mit MD5
 	 *
 	 * @return string
+	 *
+	 * @throws \ErrorException
+	 * @throws \InvalidArgumentException
 	 */
-    public function setPassword($password, $md5 = true)
+	public function setPassword($password, $md5 = true)
     {
         if (empty($password))
         {
-        	throw new \InvalidArgumentException(translate('Das Passwort darf nicht leer sein'));
+        	throw new \InvalidArgumentException('Das Passwort darf nicht leer sein!');
         }
 
         if (strlen($password) < 5)
         {
-        	throw new \ErrorException(translate('Das Passwort muss mindestens 5 Zeichen lang sein!'));
+        	throw new \ErrorException('Das Passwort muss mindestens 5 Zeichen lang sein!');
         }
 
         if ($md5)
@@ -245,15 +248,14 @@ class User extends BaseModel
     	return '';
     }
 
-
-    /**
-     * Sorgt dafür, dass das Geburtsdatum immer ein DateTime-Objekt ist.
-     *
-     * @param DateTime|string $datetime Datetime-Objekt oder String
-     *
-     * @return void
-     */
-    public function setBirthday($datetime)
+	/**
+	 * Sorgt dafür, dass das Geburtsdatum immer ein DateTime-Objekt ist
+	 *
+	 * @param \DateTime|string $datetime DateTime-Objekt oder String
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	public function setBirthday($datetime)
     {
     	if (!($datetime instanceof \DateTime))
     	{
@@ -263,7 +265,7 @@ class User extends BaseModel
     		}
     		catch (\Exception $e)
     		{
-    			throw new \InvalidArgumentException(translate('Ungültige Datumsangabe!'));
+    			throw new \InvalidArgumentException('Ungültige Datumsangabe!');
     		}
     	}
 
@@ -291,7 +293,7 @@ class User extends BaseModel
     }
 
     /**
-     * Prüft ob User männlich ist.
+     * Prüft, ob User männlich ist.
      *
      * @return boolean
      */
@@ -305,7 +307,7 @@ class User extends BaseModel
     }
 
     /**
-     * Prüft ob User weiblich ist.
+     * Prüft, ob User weiblich ist.
      *
      * @return boolean
      */
@@ -344,7 +346,7 @@ class User extends BaseModel
     	else
     	{
     		$avatar = '/static/images/avatar_';
-    		return  $avatar.($this->isMale()?'male.png':'female.png');
+    		return  $avatar.($this->isMale() ? 'male.png' : 'female.png');
     	}
     }
 
@@ -391,23 +393,23 @@ class User extends BaseModel
     }
 
 	/**
-	 * Set die Sprache
+	 * Setzt die Sprache
 	 *
 	 * @param $language int|\Core\Application\Models\Language
 	 */
 	public function setLanguage($language)
 	{
-		if (class_exists("App\Models\Language", false) && !($language instanceof \Core\Application\Models\Language) && $language !== null)
+		if (class_exists("Core\Application\Models\Language", false) && !($language instanceof \Core\Application\Models\Language) && $language !== null)
 		{
 			$manager = new \Core\Application\Manager\Language();
-			$language = $manager->getModelById(new \App\Models\Language(), $language);
+			$language = $manager->getModelById(new \Core\Application\Models\Language(), $language);
 		}
 
 		$this->language = $language;
 	}
 
 	/**
-	 * liefert die ID der Sprache
+	 * Liefert die ID der Sprache
 	 *
 	 * @return int
 	 */

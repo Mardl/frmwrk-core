@@ -27,11 +27,10 @@ use Core\Application\Models\Right as RightModel,
  */
 class Group
 {
-
 	/**
 	 * Liefert alle Rechtegruppe
 	 *
-	 * @return App\Models\Right\Group[]
+	 * @return \Core\Application\Models\Right\Group[]
 	 */
 	public static function getAllGroups()
 	{
@@ -59,19 +58,16 @@ class Group
 		}
 
 		return $groups;
-
 	}
 
 	/**
-	 * Liefert die Gruppe anhand ihrer Id
+	 * @param integer $id Gruppen-ID
+	 * @param bool $rights Optional, liefere auch die Rechte
+	 * @param bool $users Optional, liefere auch die Mitglieder
 	 *
-	 * @param integer $id     Gruppen-ID
-	 * @param boolean $rights Optional, liefere auch die Rechte
-	 * @param boolean $users  Optional, liefere auch die Mitglieder
+	 * @return \Core\Application\Models\Right\Group
 	 *
-	 * @throws \Exception Wenn die Gruppe nicht gefunden wird
-	 *
-	 * @return App\Models\Right\Group
+	 * @throws \ErrorException Wenn die Gruppe nicht gefunden wird
 	 */
 	public static function getGroupById($id, $rights = false, $users = false)
 	{
@@ -95,7 +91,7 @@ class Group
 		}
 		else
 		{
-			throw new \ErrorException("Rolle mit der ID: $id nicht gefunden");
+			throw new \ErrorException("Rolle mit der ID $id nicht gefunden°");
 		}
 
 		if ($rights)
@@ -107,7 +103,6 @@ class Group
 		{
 			$group->setUsers(UserManager::getUsersByGroupId($group->getId()));
 		}
-
 
 		return $group;
 	}
@@ -121,7 +116,7 @@ class Group
 	 *
 	 * @throws \ErrorException Wenn beim abruf ein Fehler auftretet
 	 *
-	 * @return App\Models\Right\Group[]
+	 * @return \App\Models\Right\Group[]
 	 */
 	public static function getGroupsByIds(array $ids, $rights = false, $users = false)
 	{
@@ -134,7 +129,6 @@ class Group
 			)
 			->from('right_groups')
 			->addWhere('id', $ids);
-
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -173,13 +167,15 @@ class Group
 	/**
 	 * Liefert die Gruppe anhand ihres Namens
 	 *
-	 * @param string  $name   Gruppen-ID
-	 * @param boolean $rights Optional, liefere auch die Rechte
-	 * @param boolean $users  Optional, liefere auch die Mitglieder
+	 * @static
 	 *
-	 * @throws \Exception Wenn die Gruppe nicht gefunden wird
+	 * @param $name
+	 * @param bool $rights
+	 * @param bool $users
 	 *
-	 * @return App\Models\Right\Group
+	 * @return \Core\Application\Models\Right\Group
+	 *
+	 * @throws \ErrorException Wenn die Gruppe nicht gefunden wird
 	 */
 	public static function getGroupByName($name, $rights = false, $users = false)
 	{
@@ -197,14 +193,13 @@ class Group
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
-
 		if ($rsExecution->isSuccessfull() && $rsExecution->count() == 1)
 		{
 			$group = new GroupModel($rsExecution->get());
 		}
 		else
 		{
-			throw new \ErrorException("Rolle mit dem Namen: $name nicht gefunden");
+			throw new \ErrorException("Rolle mit dem Namen: $name nicht gefunden!");
 		}
 
 		if ($rights)
@@ -217,20 +212,17 @@ class Group
 			$group->setUsers(UserManager::getUsersByGroupId($group->getId()));
 		}
 
-
 		return $group;
 	}
 
 	/**
 	 * Liefert die Gruppe anhand ihres Namens
 	 *
-	 * @param App\Models\User $user   Benutzerobjekt
-	 * @param boolean         $rights Optional, liefere auch die Rechte
-	 * @param boolean         $users  Optional, liefere auch die Mitglieder
+	 * @param \Core\Application\Models\User $user Benutzerobjekt
+	 * @param bool $rights Optional, liefert auch die Rechte
+	 * @param bool $users Optional, liefert auch die Mitglieder
 	 *
-	 * @throws \Exception Wenn die Gruppe nicht gefunden wird
-	 *
-	 * @return App\Models\Right\Group[]
+	 * @return array
 	 */
 	public static function getGroupsByUser(UserModel $user, $rights = false, $users = false)
 	{
@@ -277,9 +269,9 @@ class Group
 	/**
 	 * Erstellt eine Gruppe
 	 *
-	 * @param GroupModel $group Zu erstellende Gruppe
+	 * @param \Core\Application\Models\Right\Group $group Zu erstellende Gruppe
 	 *
-	 * @return App\Models\Right\Group
+	 * @return bool|\Core\Application\Models\Right\Group
 	 */
 	public static function createGroup(\Core\Application\Models\Right\Group $group)
 	{
@@ -289,7 +281,7 @@ class Group
 			if ($g)
 			{
 				SystemMessages::addError(
-					'Eine Rolle mit dem Namen "'.$group->getName().'" existiert bereits'
+					'Eine Rolle mit dem Namen "'.$group->getName().'" existiert bereits!'
 				);
 				return false;
 			}
@@ -312,22 +304,23 @@ class Group
 
 		if (!$inserted)
 		{
-			SystemMessages::addError('Beim Erstellen der Rolle ist ein Fehler aufgetreten');
+			SystemMessages::addError('Beim Erstellen der Rolle ist ein Fehler aufgetreten!');
 			return false;
 		}
 
 		$usergroup = self::getGroupById($inserted);
 
 		return $usergroup;
-
 	}
 
 	/**
 	 * Aktualisiert eine Gruppe
 	 *
-	 * @param GroupModel $group Zu aktualisierende Gruppe
+	 * @param \Core\Application\Models\Right\Group $group Zu aktualisierende Gruppe
+	 * @param bool $forceRights
+	 * @param bool $forceUser
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function updateGroup(GroupModel $group, $forceRights=false, $forceUser=false)
 	{
@@ -345,7 +338,7 @@ class Group
 
 		if (!$updated)
 		{
-			SystemMessages::addError('Beim Update der Rolle ist ein Fehler aufgetreten');
+			SystemMessages::addError('Beim Update der Rolle ist ein Fehler aufgetreten!');
 			return false;
 		}
 
@@ -355,7 +348,7 @@ class Group
 		{
 			if (!self::updateGroupRights($group))
 			{
-				SystemMessages::addError('Beim Update der Rechte ist ein Fehler aufgetreten');
+				SystemMessages::addError('Beim Update der Rechte ist ein Fehler aufgetreten!');
 				return false;
 			}
 		}
@@ -366,7 +359,7 @@ class Group
 		{
 			if (!self::updateGroupUsers($group))
 			{
-				SystemMessages::addError('Beim Update der Mitglieder ist ein Fehler aufgetreten');
+				SystemMessages::addError('Beim Update der Mitglieder ist ein Fehler aufgetreten!');
 				return false;
 			}
 		}
@@ -423,8 +416,6 @@ class Group
 
 		//Starte Transaktion
 		$con->startTransaction();
-		//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
-		//$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
 
 		//Lösche die bestehenden Rechte
 		$execDelete = $rs->execute($con->newQuery()->setQueryOnce($deleteQuery));
@@ -440,16 +431,12 @@ class Group
 			{
 				//Schließe Transaktion erfolgreich ab
 				$con->commit();
-//				$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
-//				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
 				$con->rollback();
-//				$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-//				$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return false;
 			}
 		}
@@ -457,14 +444,15 @@ class Group
 		{
 			//Führe Rollback durch
 			$con->rollback();
-//			$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-//			$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
-
-
 	}
 
+	/**
+	 * @param \Core\Application\Models\User $user
+	 * @param array $groups
+	 * @return bool
+	 */
 	public static function updateUsersGroups(UserModel $user, array $groups)
 	{
 		$delete = "
@@ -505,8 +493,6 @@ class Group
 
 		//Starte Transaktion
 		$con->startTransaction();
-		//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
-		//$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
 
 		//Lösche die bestehenden Mitglieder
 		$execDelete = $rs->execute($con->newQuery()->setQueryOnce($deleteQuery));
@@ -522,16 +508,12 @@ class Group
 			{
 				//Schließe Transaktion erfolgreich ab
 				$con->commit();
-				//$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
-				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
 				$con->rollback();
-				//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return false;
 			}
 		}
@@ -539,15 +521,11 @@ class Group
 		{
 			//Führe Rollback durch
 			$con->rollback();
-			//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-			//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
-
-
 	}
 
-		/**
+	/**
 	 * Aktualisiert die Mitglieder einer Gruppe
 	 *
 	 * @param GroupModel $group zu aktualisierende Gruppe
@@ -597,8 +575,6 @@ class Group
 
 		//Starte Transaktion
 		$con->startTransaction();
-		//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=0;"));
-		//$rs->execute($con->newQuery()->setQueryOnce("START TRANSACTION;"));
 
 		//Lösche die bestehenden Mitglieder
 		$execDelete = $rs->execute($con->newQuery()->setQueryOnce($deleteQuery));
@@ -614,16 +590,12 @@ class Group
 			{
 				//Schließe Transaktion erfolgreich ab
 				$con->commit();
-				//$rs->execute($con->newQuery()->setQueryOnce("COMMIT;"));
-				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
 				$con->rollback();
-				//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-				//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 				return false;
 			}
 		}
@@ -631,21 +603,17 @@ class Group
 		{
 			//Führe Rollback durch
 			$con->rollback();
-			//$rs->execute($con->newQuery()->setQueryOnce("ROLLBACK;"));
-			//$rs->execute($con->newQuery()->setQueryOnce("SET AUTOCOMMIT=1;"));
 			return false;
 		}
-
-
 	}
 
 	/**
 	 * Fügt einen einzelnen Benutzer zur Gruppe hinzu
 	 *
-	 * @param App\Models\Right\Group $group Betreffende Gruppe
-	 * @param App\Models\User        $user  Betreffender Benutzer
+	 * @param \Core\Application\Models\Right\Group $group Betreffende Gruppe
+	 * @param \Core\Application\Models\User $user Betreffender Benutzer
 	 *
-	 * @return boolean
+	 * @return mixed
 	 */
 	public static function addUserToGroup(GroupModel $group, UserModel $user)
 	{
@@ -657,9 +625,5 @@ class Group
 				'user_id' => $user->getId()
 			)
 		);
-
 	}
-
 }
-
-?>
