@@ -194,8 +194,8 @@ class FrontController
 				if (strlen($val) < 2 || strlen($val) > 32)
 				{
 					$msg = sprintf(
-						'Controller %s must be at least 2 chars long and may not exceed 32',
-						ucfirst($val)
+						'Controller %s must be at least 2 chars long and may not exceed 32 (%s)',
+						ucfirst($val), $controllerName
 					);
 					throw new \InvalidArgumentException($msg);
 				}
