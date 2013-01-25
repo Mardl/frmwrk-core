@@ -282,7 +282,7 @@ class Right
 				modified'
 			)
 			->from('rights')
-			->orderBy('module,controller,action ASC');
+			->orderBy('prefix,module,controller,action ASC');
 
 		$rights = array();
 		$rs = $con->newRecordSet();
@@ -320,8 +320,7 @@ class Right
 			)
 			->from('rights')
 			->addWhere('id', $ids)
-			->orderBy('module')
-		;
+			->orderBy('module');
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
