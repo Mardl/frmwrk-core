@@ -47,7 +47,7 @@ class Directory
 	{
 		if (empty($directoryId))
 		{
-			throw new \InvalidArgumentException(translate('Ungültige Verzeichnis ID!'));
+			throw new \InvalidArgumentException('Ungültige Verzeichnis ID!');
 		}
 
 		if (array_key_exists($directoryId, self::$cache))
@@ -82,7 +82,7 @@ class Directory
 			return $directory;
 		}
 
-		throw new \ErrorException(translate('Verzeichnis nicht gefunden!'));
+		throw new \ErrorException('Verzeichnis nicht gefunden!');
 	}
 
 	/**
@@ -212,7 +212,7 @@ class Directory
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError(translate('Beim Erstellen des Verzeichnisses ist ein Fehler aufgetreten!'));
+			SystemMessages::addError('Beim Erstellen des Verzeichnisses ist ein Fehler aufgetreten!');
 			return false;
 		}
 
@@ -275,7 +275,7 @@ class Directory
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError(translate('Beim Aktualisieren des Verzeichnisses ist ein Fehler aufgetreten!'));
+			SystemMessages::addError('Beim Aktualisieren des Verzeichnisses ist ein Fehler aufgetreten!');
 			return false;
 		}
 
@@ -295,7 +295,7 @@ class Directory
 
 		if ($directoryId == 0)
 		{
-			SystemMessages::addError(translate('Es wurde keine Verzeichnis ID übergeben!'));
+			SystemMessages::addError('Es wurde keine Verzeichnis ID übergeben!');
 			return false;
 		}
 
@@ -315,13 +315,13 @@ class Directory
 
 		if ($rsExecution->isSuccessfull() && mysql_affected_rows() == 0)
 		{
-			SystemMessages::addError(translate('Beim Löschen des Verzeichnisses ist ein Fehler aufgetreten!'));
+			SystemMessages::addError('Beim Löschen des Verzeichnisses ist ein Fehler aufgetreten!');
 			return false;
 		}
 
 		if (!$rsExecution->isSuccessfull())
 		{
-			SystemMessages::addError(translate('Verzeichnis kann nicht gelöscht werden, da noch Unterelemente existieren!'));
+			SystemMessages::addError('Verzeichnis kann nicht gelöscht werden, da noch Unterelemente existieren!');
 			return false;
 		}
 
@@ -365,7 +365,7 @@ class Directory
 			return $directoriesJson;
 		}
 
-		throw new \ErrorException(translate('Verzeichnis nicht gefunden!'));
+		throw new \ErrorException('Verzeichnis nicht gefunden!');
 	}
 
 	/**
@@ -382,7 +382,7 @@ class Directory
 	{
 		if (empty($directory))
 		{
-			throw new \InvalidArgumentException(translate('Ungültiger Titel des Verzeichnisses!'));
+			throw new \InvalidArgumentException('Ungültiger Titel des Verzeichnisses!');
 		}
 
 		$con = Registry::getInstance()->getDatabase();
@@ -410,6 +410,6 @@ class Directory
 			return $directory;
 		}
 
-		throw new \ErrorException(translate('Verzeichnis nicht gefunden!'));
+		throw new \ErrorException('Verzeichnis nicht gefunden!');
 	}
 }

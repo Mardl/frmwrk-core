@@ -126,7 +126,7 @@ class Right extends BaseModel
     		{
     			if (!($group instanceof RightGroup))
     			{
-    				throw new \InvalidArgumentException(translate('Ungültiger Typ der Rechtegruppe'));
+    				throw new \InvalidArgumentException('Ungültiger Typ der Rechtegruppe');
     			}
     		}
     	}

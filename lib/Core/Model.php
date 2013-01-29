@@ -267,20 +267,31 @@ class Model
 	 */
 	public function getTableName()
 	{
+		$tableName = ModelInformation::get(get_class($this), "tablename");
+
+		if (!is_null($tableName)){
+			if (!($tableName == '-1')){
+				return $tableName;
+			}
+			return '';
+		}
+
 		if (!$this->reflectionClass)
 		{
 			$this->reflectionClass = new \ReflectionClass($this);
 		}
 		$doc = $this->reflectionClass->getDocComment();
-
+		$cache = '-1';
 		if (preg_match('/\@Table\((.*)\)/s', $doc, $matches))
 		{
 			$tmp = substr($matches[1], strpos($matches[1], 'name="'));
 			$tmp = substr($tmp, strpos($tmp, '"')+1);
-			return substr($tmp, 0, strpos($tmp, '"'));
+			$tableName = substr($tmp, 0, strpos($tmp, '"'));
+			$cache = $tableName;
 		}
+		ModelInformation::set(get_class($this), "tablename", $cache);
 
-		return null;
+		return $tableName;
 	}
 
 	/**
@@ -290,20 +301,32 @@ class Model
 	 */
 	public function getTablePrefix()
 	{
+		$prefix = ModelInformation::get(get_class($this), "prefix");
+
+		if (!is_null($prefix)){
+			if (!($prefix == '-1')){
+				return $prefix;
+			}
+			return '';
+		}
+
 		if (!$this->reflectionClass)
 		{
 			$this->reflectionClass = new \ReflectionClass($this);
 		}
 		$doc = $this->reflectionClass->getDocComment();
 
+		$cache = '-1';
 		if (preg_match('/\@Prefix\((.*)\)/s', $doc, $matches))
 		{
 			$tmp = substr($matches[1], strpos($matches[1], 'name="'));
 			$tmp = substr($tmp, strpos($tmp, '"')+1);
-			return substr($tmp, 0, strpos($tmp, '"'));
+			$prefix = substr($tmp, 0, strpos($tmp, '"'));
+			$cache = $prefix;
 		}
+		ModelInformation::set(get_class($this), "prefix", $cache);
 
-		return null;
+		return $prefix;
 	}
 
 	/**
@@ -312,6 +335,12 @@ class Model
 	 */
 	public function getIdField()
 	{
+		$id = ModelInformation::get(get_class($this), "idfield");
+
+		if (!is_null($id)){
+			return $id;
+		}
+
 		if (!$this->reflectionClass)
 		{
 			$this->reflectionClass = new \ReflectionClass($this);
@@ -324,7 +353,9 @@ class Model
 
 			if (preg_match('/\@Id/s', $doc, $matches))
 			{
-				return $this->getTablePrefix().$prop->getName();
+				$id = $this->getTablePrefix().$prop->getName();
+				ModelInformation::set(get_class($this), "idfield", $id);
+				return $id;
 			}
 		}
 
