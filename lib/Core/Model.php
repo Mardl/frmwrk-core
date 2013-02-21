@@ -89,6 +89,7 @@ class Model
 			{
 				return $this->$newMethod($params[0]);
 			}
+
 		}
 
 		$method = $parts[1];
@@ -125,6 +126,39 @@ class Model
 			);
 			break;
 		}
+	}
+
+	/**
+	 *
+	 * Überprüft, ob für $name ein Attribut vorhanden ist, oder bei Prefix direkt die Function!
+	 *
+	 * @param $name
+	 * @return bool
+	 */
+	private function existsProperty($name)
+	{
+		$parts = preg_split('/^([a-z]+)/', $name, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$method = $parts[1];
+		$attribute = lcfirst($parts[2]);
+
+		$prefix = $this->getTablePrefix();
+		if (!empty($prefix))
+		{
+			$attribute = str_replace($prefix, '', $attribute);
+
+			$newMethod = $method.ucfirst($attribute);
+			if (method_exists($this, $newMethod))
+			{
+				return true;
+			}
+		}
+
+		if (property_exists($this, $attribute))
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -167,6 +201,29 @@ class Model
 				$this->$setter($value);
 			}
 		}
+	}
+
+	/**
+	 * Überprüft $data nach vorhandene Settern und liefert bereinigtes array zurück
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function clearDataRow($data = array())
+	{
+		$ret = array();
+		if (!empty($data))
+		{
+			foreach ($data as $key => $value)
+			{
+				$setter = 'set'.ucfirst($key);
+				if($this->existsProperty($setter))
+				{
+					$ret[$key] = $value;
+				}
+			}
+		}
+		return $ret;
 	}
 
 	/**
