@@ -97,7 +97,7 @@ class Select extends \Core\Html\Input
 		$output = str_replace('{size}', $this->renderSize(), $output);
 		$output = str_replace('{multiple}', $this->renderMultiple(), $output);
 		$output = str_replace('{options}', $this->renderOptions(), $output);
-
+		$output = str_replace('{readonly}', $this->getReadonly() ? 'readonly' : '', $output);
 
 		return $output;
 	}
