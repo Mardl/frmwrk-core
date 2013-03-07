@@ -49,6 +49,10 @@ class BaseGenerator
 		return $this->form;
 	}
 
+	public function __toString(){
+		return $this->form->__toString();
+	}
+
 	/**
 	 * Standardvalidierung nach Pflichtfeldern
 	 *
