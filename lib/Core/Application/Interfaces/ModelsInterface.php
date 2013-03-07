@@ -17,4 +17,6 @@ interface ModelsInterface
 	public function getDataRow();
 	public function getId();
 	public function setId($id);
+	public function setCreated($datetime = 'now');
+	public function setModified($datetime = 'now');
 }

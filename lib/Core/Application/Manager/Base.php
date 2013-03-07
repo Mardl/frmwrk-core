@@ -35,6 +35,7 @@ class Base
 
 		if ($model->getId() == 0)
 		{
+			$model->setCreated();
 			$inserted = $this->con->insert($model->getTableName(),$model->getDataRow());
 		}
 
@@ -63,6 +64,7 @@ class Base
 			return false;
 		}
 
+		$model->setModified();
 		$updated = $this->con->update($model->getTableName(),$model->getDataRow());
 
 		if (!$updated)
