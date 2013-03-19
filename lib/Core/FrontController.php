@@ -328,7 +328,7 @@ class FrontController
 		}
 
 		$route = $this->router->searchRoute($url);
-		$this->request->setParams($route->getParams());
+		$this->request->setRoute($route->getParams());
 
 		try {
 			$action = $this->router->getParam('action');

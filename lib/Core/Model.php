@@ -250,6 +250,46 @@ class Model
 	}
 
 	/**
+	 * Liefert Create Datetime als mysql Format zurück
+	 *
+	 * @return string
+	 */
+	public function getCreatedAsString()
+	{
+		if ($this->created instanceof \DateTime)
+		{
+			return $this->created->format('Y-m-d H:i:s');
+		}
+		return $this->created;
+	}
+
+
+	/**
+	 * @param int $userId
+	 */
+	public function setCreateduser_Id($userId = 0)
+	{
+		$register = \jamwork\common\Registry::getInstance();
+		if (isset($register->login))
+		{
+			$this->createduser_id = $register->login->getId();
+
+		}
+		else
+		{
+			$this->createduser_id = !empty($userId) ? $userId : null;
+		}
+	}
+
+	/**
+	 * @return \int|null
+	 */
+	public function getCreateduser_Id()
+	{
+		return $this->createduser_id;
+	}
+
+	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
 	 * @param \DateTime|string $datetime Datetime-Objekt oder String
@@ -288,17 +328,29 @@ class Model
 	}
 
 	/**
-	 * Liefert Create Datetime als mysql Format zurück
-	 *
-	 * @return string
+	 * @param null $userId
 	 */
-	public function getCreatedAsString()
+	public function setModifieduser_Id($userId = NULL)
 	{
-		if ($this->created instanceof \DateTime)
+		$register = \jamwork\common\Registry::getInstance();
+		if (isset($register->login))
 		{
-			return $this->created->format('Y-m-d H:i:s');
+			$this->modifieduser_id = $register->login->getId();
+
 		}
-		return $this->created;
+		else
+		{
+			$this->modifieduser_id = !empty($userId) ? $userId : null;
+		}
+
+	}
+
+	/**
+	 * @return \int|null
+	 */
+	public function getModifieduser_Id()
+	{
+		return $this->modifieduser_id;
 	}
 
 	/**
