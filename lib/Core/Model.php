@@ -20,7 +20,6 @@ namespace Core;
  */
 class Model
 {
-
 	/**
 	 * Integer value of gender male
 	 * @var integer
@@ -56,7 +55,7 @@ class Model
 	/**
 	 * Handelt es sich um ein der Datenbank unbekanntes Objekt
 	 *
-	 * @var ReflectionClass
+	 * @var \ReflectionClass
 	 */
 	protected $reflectionClass;
 
@@ -90,8 +89,8 @@ class Model
 			{
 				return $this->$newMethod($params[0]);
 			}
-		}
 
+		}
 
 		$method = $parts[1];
 		$attribute = $parts[2];
@@ -127,6 +126,39 @@ class Model
 			);
 			break;
 		}
+	}
+
+	/**
+	 *
+	 * Überprüft, ob für $name ein Attribut vorhanden ist, oder bei Prefix direkt die Function!
+	 *
+	 * @param $name
+	 * @return bool
+	 */
+	private function existsProperty($name)
+	{
+		$parts = preg_split('/^([a-z]+)/', $name, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$method = $parts[1];
+		$attribute = lcfirst($parts[2]);
+
+		$prefix = $this->getTablePrefix();
+		if (!empty($prefix))
+		{
+			$attribute = str_replace($prefix, '', $attribute);
+
+			$newMethod = $method.ucfirst($attribute);
+			if (method_exists($this, $newMethod))
+			{
+				return true;
+			}
+		}
+
+		if (property_exists($this, $attribute))
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -169,13 +201,35 @@ class Model
 				$this->$setter($value);
 			}
 		}
+	}
 
+	/**
+	 * Überprüft $data nach vorhandene Settern und liefert bereinigtes array zurück
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function clearDataRow($data = array())
+	{
+		$ret = array();
+		if (!empty($data))
+		{
+			foreach ($data as $key => $value)
+			{
+				$setter = 'set'.ucfirst($key);
+				if($this->existsProperty($setter))
+				{
+					$ret[$key] = $value;
+				}
+			}
+		}
+		return $ret;
 	}
 
 	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
-	 * @param DateTime|string $datetime Datetime-Objekt oder String
+	 * @param \DateTime|string $datetime Datetime-Objekt oder String
 	 * @throws \InvalidArgumentException
 	 */
 	public function setCreated($datetime = 'now')
@@ -196,9 +250,49 @@ class Model
 	}
 
 	/**
+	 * Liefert Create Datetime als mysql Format zurück
+	 *
+	 * @return string
+	 */
+	public function getCreatedAsString()
+	{
+		if ($this->created instanceof \DateTime)
+		{
+			return $this->created->format('Y-m-d H:i:s');
+		}
+		return $this->created;
+	}
+
+
+	/**
+	 * @param int $userId
+	 */
+	public function setCreateduser_Id($userId = 0)
+	{
+		$register = \jamwork\common\Registry::getInstance();
+		if (isset($register->login))
+		{
+			$this->createduser_id = $register->login->getId();
+
+		}
+		else
+		{
+			$this->createduser_id = !empty($userId) ? $userId : null;
+		}
+	}
+
+	/**
+	 * @return \int|null
+	 */
+	public function getCreateduser_Id()
+	{
+		return $this->createduser_id;
+	}
+
+	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
-	 * @param DateTime|string $datetime Datetime-Objekt oder String
+	 * @param \DateTime|string $datetime Datetime-Objekt oder String
 	 * @throws \InvalidArgumentException
 	 */
 	public function setModified($datetime = 'now')
@@ -218,7 +312,6 @@ class Model
 		$this->modified = $datetime;
 	}
 
-
 	/**
 	 *
 	 * Liefert Modified Datetime als mysql Format zurück
@@ -235,17 +328,29 @@ class Model
 	}
 
 	/**
-	 * Liefert Create Datetime als mysql Format zurück
-	 *
-	 * @return string
+	 * @param null $userId
 	 */
-	public function getCreatedAsString()
+	public function setModifieduser_Id($userId = NULL)
 	{
-		if ($this->created instanceof \DateTime)
+		$register = \jamwork\common\Registry::getInstance();
+		if (isset($register->login))
 		{
-			return $this->created->format('Y-m-d H:i:s');
+			$this->modifieduser_id = $register->login->getId();
+
 		}
-		return $this->created;
+		else
+		{
+			$this->modifieduser_id = !empty($userId) ? $userId : null;
+		}
+
+	}
+
+	/**
+	 * @return \int|null
+	 */
+	public function getModifieduser_Id()
+	{
+		return $this->modifieduser_id;
 	}
 
 	/**
@@ -264,7 +369,6 @@ class Model
 		return $this->new;
 	}
 
-
 	/**
 	 * Liefert den Tabellenname des Objekts anhand des Klassenkommentars @Table
 	 *
@@ -272,20 +376,31 @@ class Model
 	 */
 	public function getTableName()
 	{
+		$tableName = ModelInformation::get(get_class($this), "tablename");
+
+		if (!is_null($tableName)){
+			if (!($tableName == '-1')){
+				return $tableName;
+			}
+			return '';
+		}
+
 		if (!$this->reflectionClass)
 		{
 			$this->reflectionClass = new \ReflectionClass($this);
 		}
 		$doc = $this->reflectionClass->getDocComment();
-
+		$cache = '-1';
 		if (preg_match('/\@Table\((.*)\)/s', $doc, $matches))
 		{
 			$tmp = substr($matches[1], strpos($matches[1], 'name="'));
 			$tmp = substr($tmp, strpos($tmp, '"')+1);
-			return substr($tmp, 0, strpos($tmp, '"'));
+			$tableName = substr($tmp, 0, strpos($tmp, '"'));
+			$cache = $tableName;
 		}
+		ModelInformation::set(get_class($this), "tablename", $cache);
 
-		return null;
+		return $tableName;
 	}
 
 	/**
@@ -295,24 +410,46 @@ class Model
 	 */
 	public function getTablePrefix()
 	{
+		$prefix = ModelInformation::get(get_class($this), "prefix");
+
+		if (!is_null($prefix)){
+			if (!($prefix == '-1')){
+				return $prefix;
+			}
+			return '';
+		}
+
 		if (!$this->reflectionClass)
 		{
 			$this->reflectionClass = new \ReflectionClass($this);
 		}
 		$doc = $this->reflectionClass->getDocComment();
 
+		$cache = '-1';
 		if (preg_match('/\@Prefix\((.*)\)/s', $doc, $matches))
 		{
 			$tmp = substr($matches[1], strpos($matches[1], 'name="'));
 			$tmp = substr($tmp, strpos($tmp, '"')+1);
-			return substr($tmp, 0, strpos($tmp, '"'));
+			$prefix = substr($tmp, 0, strpos($tmp, '"'));
+			$cache = $prefix;
 		}
+		ModelInformation::set(get_class($this), "prefix", $cache);
 
-		return null;
+		return $prefix;
 	}
 
+	/**
+	 * @return string
+	 * @throws \ErrorException
+	 */
 	public function getIdField()
 	{
+		$id = ModelInformation::get(get_class($this), "idfield");
+
+		if (!is_null($id)){
+			return $id;
+		}
+
 		if (!$this->reflectionClass)
 		{
 			$this->reflectionClass = new \ReflectionClass($this);
@@ -325,9 +462,10 @@ class Model
 
 			if (preg_match('/\@Id/s', $doc, $matches))
 			{
-				return $this->getTablePrefix().$prop->getName();
+				$id = $this->getTablePrefix().$prop->getName();
+				ModelInformation::set(get_class($this), "idfield", $id);
+				return $id;
 			}
-
 		}
 
 		throw new \ErrorException("Kein ID-Feld über @Id definiert");

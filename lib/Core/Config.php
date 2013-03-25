@@ -49,11 +49,10 @@ class Config
 	
 	/**
 	 * Lädt die Konfigurationsvariablen und speichert sie zwischen.
-	 * Wenn eine Konfigurationsvariable KEIN array ist, wird sie als globale Konstante
-	 * definiert.
-	 * 
-	 * @throws \Exception wenn für den aktuellen Hostname keine Konfigurationsdatei definiert wurde
-	 * @return void
+	 * Wenn eine Konfigurationsvariable KEIN Array ist, wird sie als globale Konstante definiert.
+	 *
+	 * @throws \InvalidArgumentException
+	 * @throws \LengthException
 	 */
 	public function load()
 	{

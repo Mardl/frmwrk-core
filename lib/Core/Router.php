@@ -33,7 +33,7 @@ class Router extends ArrayObject
 	/**
      * Current route
      *
-	 * @var Core\Route
+	 * @var \Core\Route
 	 */
 	protected $currentRoute;
 
@@ -49,7 +49,7 @@ class Router extends ArrayObject
 	 *
 	 * @param string $route Name of route
 	 *
-	 * @return Core\Route
+	 * @return \Core\Route
 	 */
 	public function offsetGet($route)
 	{

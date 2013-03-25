@@ -26,7 +26,7 @@ use Core\Model as BaseModel,
  * @method string getAction()
  * @method string getPrefix()
  * @method string getModified()
- * @method Core\Application\Models\Right\Group getGroups()
+ * @method \Core\Application\Models\Right\Group getGroups()
  *
  * @method setTitle($value)
  * @method setModule($value)
@@ -97,7 +97,7 @@ class Right extends BaseModel
     /**
      * Modified
      *
-     * @var datetime
+     * @var \DateTime
      *
      * @Column(type="datetime")
      */
@@ -111,14 +111,14 @@ class Right extends BaseModel
      */
     protected $groups;
 
-    /**
-     * Prüft die Elemente des Arrays auf Typ App\Models\Right\Group
-     *
-     * @param array $groups Array mit den Rechtegruppen
-     *
-     * @return void
-     */
-    public function setGroups(array $groups)
+	/**
+	 * Prüft die Elemente des Arrays auf Typ App\Models\Right\Group
+	 *
+	 * @param array $groups Array mit den Rechtegruppen
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	public function setGroups(array $groups)
     {
     	if (!empty($groups))
     	{
@@ -126,7 +126,7 @@ class Right extends BaseModel
     		{
     			if (!($group instanceof RightGroup))
     			{
-    				throw new \InvalidArgumentException(translate('Ungültiger Typ der Rechtegruppe'));
+    				throw new \InvalidArgumentException('Ungültiger Typ der Rechtegruppe');
     			}
     		}
     	}

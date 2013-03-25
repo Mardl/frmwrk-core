@@ -15,6 +15,7 @@ class Navigation
 	protected $files = array();
 	protected $links = array();
 	protected $controllerTitles = array();
+	protected $moduleTitles = array();
 
 	public function __construct(){
 		$this->_open(SITE_PATH);
@@ -246,9 +247,13 @@ class Navigation
 
 				$classDoc = $reflect->getDocComment();
 				if ($classDoc !== false){
-					preg_match('/.*\@title ([A-Za-z0-9äöüÄÖÜ]+).*/s', $classDoc, $matchClassDoc);
+					preg_match('/.*\@title ([A-Za-z0-9äöüÄÖÜ\-]+).*/s', $classDoc, $matchClassDoc);
 					if (!empty($matchClassDoc)){
 						$this->controllerTitles[$module][$controller] = $matchClassDoc[1];
+					}
+					preg_match('/.*\@modulTitle ([A-Za-z0-9äöüÄÖÜ\-]+).*/s', $classDoc, $matchClassDoc);
+					if (!empty($matchClassDoc) && !isset($this->moduleTitles[$module])){
+						$this->moduleTitles[$module] = $matchClassDoc[1];
 					}
 				}
 

@@ -77,13 +77,12 @@ class Group extends BaseModel
 	protected $users;
 
 	/**
-     * Prüft die Elemente des Arrays auf Typ App\Models\Right
-     *
-     * @param array $rights Zu setzende Rechte
-     *
-     * @return void
-     */
-    public function setRights(array $rights)
+	 * Prüft die Elemente des Arrays auf Typ App\Models\Right
+	 *
+	 * @param array $rights Zu setzende Rechte
+	 * @throws \InvalidArgumentException
+	 */
+	public function setRights(array $rights)
     {
     	if (!empty($rights))
     	{
@@ -99,14 +98,14 @@ class Group extends BaseModel
     	$this->rights = $rights;
     }
 
-    /**
-     * Prüft die Elemente des Arrays auf Typ App\Models\User
-     *
-     * @param array $users Zu setzende Benutzer
-     *
-     * @return void
-     */
-    public function setUsers(array $users)
+	/**
+	 * Prüft die ELemente des Arrays auf Typ App\Models\User
+	 *
+	 * @param array $users Zu setzende Benutzer
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	public function setUsers(array $users)
     {
     	if (!empty($users))
     	{

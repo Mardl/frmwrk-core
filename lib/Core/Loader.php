@@ -79,11 +79,11 @@ class Loader
 	/**
 	 * Load a class
 	 *
-	 * @param string $className Class name.
+	 * @param string $className Class name
 	 *
-	 * @throws Exception wenn die PHP-Datei nicht gefunden wird.
+	 * @return bool
 	 *
-	 * @return void
+	 * @throws \ErrorException Wenn die PHP-Datei nicht gefunden wird
 	 */
 	public function _autoload($className)
 	{

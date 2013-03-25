@@ -1,14 +1,5 @@
 <?php
 
-/**
- * Mail
- *
- * @package    Core
- * @subpackage Main
- * @author     Eraffe Media GmbH <info@eraffe-media.de>, MediaWorld AG <mail@mediaworld-ag.de>
- * @copyright  2009-2010 Eraffe Media GmbH, 2010 MediaWorld AG
- */
-
 namespace Core\Mail;
 
 use Exception,
@@ -129,11 +120,10 @@ class Mailer {
 	}
 
 	/**
-	 * Add header
-	 *
 	 * @param string $key key
-	 * @param string $value Value.
+	 * @param string $value value
 	 * @return array
+	 * @throws \Exception
 	 */
 	public function addHeader($key, $value) {
 		if (strpos($value, "\n") !== false) {
@@ -185,7 +175,8 @@ class Mailer {
 	/**
 	 * Send email with sendmail
 	 *
-	 * @return boolean
+	 * @return bool
+	 * @throws \Exception
 	 */
 	public function send() {
 		$to = implode(', ', $this->to);
@@ -220,7 +211,7 @@ class Mailer {
 		foreach($headers as $key => $value) {
 			$result[] = $key.': '.$value;
 		}
-		
+
 		return implode("\n", $result);
 	}
 
