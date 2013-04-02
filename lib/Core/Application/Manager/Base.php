@@ -12,7 +12,7 @@ Core\Application\Interfaces\ModelsInterface;
 class Base
 {
 	/**
-	 * @var \jamwork\database\MysqlDatabase
+	 * @var \jamwork\redatabase\MysqlDatabase
 	 */
 	protected $con = null;
 
@@ -208,7 +208,7 @@ class Base
 	/**
 	 * Führt ein Update anhand des übergebenen Update Objects aus.
 	 *
-	 * @param $update jamwork\database\Update
+	 * @param $update \jamwork\database\Update
 	 * @return bool
 	 */
 	public function updateByQuery(Query $query)
