@@ -221,12 +221,10 @@ class Navigation
 				$module = $matches[2];
 				$controller = $matches[3];
 
-				if ($prefix != '')
-				{
+				if ($prefix != '') {
 					$class = "\\App\\Modules\\".ucfirst($prefix)."\\".ucfirst($module)."\\Controller\\".ucfirst($controller);
 				}
-				else
-				{
+				else {
 					$class = "\\App\\Modules\\".ucfirst($module)."\\Controller\\".ucfirst($controller);
 				}
 
@@ -314,7 +312,6 @@ class Navigation
 
 
 	}
-
 
 }
 ?>

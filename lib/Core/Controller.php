@@ -107,9 +107,9 @@ abstract class Controller
 
 	/**
 	 * Speichert den FrontController zwischen
-	 * 
-	 * @param Core\FrontController $frontController FrontController
-	 * 
+	 *
+	 * @param \Core\FrontController $frontController FrontController
+	 *
 	 * @return void
 	 */
 	public function setFrontController(FrontController $frontController) 
@@ -167,7 +167,7 @@ abstract class Controller
 	/**
 	 * Set request
 	 *
-	 * @param Core\Request $request Request
+	 * @param \Core\Request $request Request
 	 * 
 	 * @return boolean Status
 	 */
