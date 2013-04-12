@@ -116,7 +116,7 @@ class Base
 				$query->addWhere($prefixOrModel->getTablePrefix().'deleted',0);
 			}
 		}
-		else
+		elseif(!is_object($prefixOrModel))
 		{
 			/**
 			 * Wenn er hier her kommt, dann wu5rde die Funktion Public von außen aufgerufen
