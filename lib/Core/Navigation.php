@@ -287,9 +287,9 @@ class Navigation
 								 * Module, Controller und Action werden für die Berechtigungen benötigt
 								 */
 								$conf = array(
-									'module' => strtolower($module),
-									'controller' => strtolower($controller),
-									'action' => strtolower($matches[1]),
+									'module' => $this->convertToPath($module),
+									'controller' => $this->convertToPath($controller),
+									'action' => $this->convertToPath($matches[1]),
 								);
 
 								$conf['url'] = $view->url($conf, 'default');
@@ -305,13 +305,18 @@ class Navigation
 				}
 
 			}
-
-
-
 		}
-
-
 	}
 
+	/**
+	 * Ausgelagert, damit es überschrieben werden kann
+	 *
+	 * @param string $str
+	 * @return string
+	 */
+	protected function convertToPath($str)
+	{
+		return strtolower($str);
+	}
 }
 ?>

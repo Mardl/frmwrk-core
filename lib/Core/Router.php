@@ -128,12 +128,13 @@ class Router extends ArrayObject
 
 	/**
 	 * @param string $url URL
-	 * @param bool $instance Instance
+	 * @param bool $instance
 	 *
 	 * @return bool|\Core\Route
 	 */
 	public function findRoute($url, $instance = false)
 	{
+		/** @var $route \Core\Route */
 		foreach ($this as $key => $route)
 		{
 			$routeData = $route->matchUrl($url);
@@ -173,7 +174,8 @@ class Router extends ArrayObject
 						else if ($key == 'action' && $val == $temp['action'])
 						{
 							$matching[$routeName] += 1;
-						} else if ($key == 'module' && $val != $temp['module'])
+						}
+						else if ($key == 'module' && $val != $temp['module'])
 						{
 							$matching[$routeName] -= 3;
 						}

@@ -257,7 +257,7 @@ class View extends ArrayObject
 	 * Add keywords
 	 * Add keywords for HTML meta tags
 	 *
-	 * @param string $keyword[,...] Keywords
+	 * @internal param string $keyword [,...] Keywords
 	 *
 	 * @return array
 	 */

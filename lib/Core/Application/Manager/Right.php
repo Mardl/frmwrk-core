@@ -188,41 +188,41 @@ class Right
 				`modified` = NOW() %s
 		";
 
-		if (is_array($right) && !empty($right))
-		{
+		if (is_array($right) && !empty($right)) {
 			$right = new RightModel($right);
 		}
 
-		if ($right instanceof RightModel)
-		{
-			/**
+		// @actionName in der Action des Controllers "\App\Modules\Tinymce-extend\Controller\Parser" -> "test-tinymce" nicht gesetzt!
+
+		if ($right instanceof RightModel) {
+
+			/*
 			 * prüfen ob bereits geprüft :-)
 			 * @var $sess \jamwork\common\Session
 			 */
+			// echo '<pre>';
+			// var_dump($right);
+			// echo '</pre>';
+
 			$toCheck = strtolower('setright'.$right->getModule().':'.$right->getController().':'.$right->getAction().':'.$right->getPrefix());
 			$reg = Registry::getInstance();
 			$sess = $reg->getSession();
-			if ($sess->has($toCheck))
-			{
+			if ($sess->has($toCheck)) {
 				return true;
 			}
 			$sess->set($toCheck,1);
-
 			// und weiter gehts
 
-			try
-			{
+
+			try {
 				$actionName = self::getActionName($right->getModule(),$right->getController(),$right->getAction(),$right->getPrefix());
 			}
-			catch (\Exception $e)
-			{
+			catch (\Exception $e) {
 				$actionName = null;
 			}
 
-			if (empty($actionName))
-			{
-				if (APPLICATION_ENV < ENV_PROD && !defined("UNITTEST"))
-				{
+			if (empty($actionName)) {
+				if (APPLICATION_ENV < ENV_PROD && !defined("UNITTEST")) {
 					$prefixSlash = '';
 					$pre = $right->getPrefix();
 					if (!empty($pre))
@@ -242,10 +242,10 @@ class Right
 			}
 			$queryString = sprintf(
 				$sql,
-				mysql_real_escape_string($right->getModule()),
-				mysql_real_escape_string($right->getController()),
-				mysql_real_escape_string($right->getAction()),
-				mysql_real_escape_string($right->getPrefix()),
+				strtolower(mysql_real_escape_string($right->getModule())),
+				strtolower(mysql_real_escape_string($right->getController())),
+				strtolower(mysql_real_escape_string($right->getAction())),
+				strtolower(mysql_real_escape_string($right->getPrefix())),
 				$title,$title
 			);
 		}
