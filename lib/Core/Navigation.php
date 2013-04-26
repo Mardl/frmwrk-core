@@ -226,12 +226,10 @@ class Navigation
 				$module = $matches[2];
 				$controller = $matches[3];
 
-				if ($prefix != '')
-				{
+				if ($prefix != '') {
 					$class = "\\App\\Modules\\".ucfirst($prefix)."\\".ucfirst($module)."\\Controller\\".ucfirst($controller);
 				}
-				else
-				{
+				else {
 					$class = "\\App\\Modules\\".ucfirst($module)."\\Controller\\".ucfirst($controller);
 				}
 
@@ -294,9 +292,9 @@ class Navigation
 								 * Module, Controller und Action werden für die Berechtigungen benötigt
 								 */
 								$conf = array(
-									'module' => strtolower($module),
-									'controller' => strtolower($controller),
-									'action' => strtolower($matches[1]),
+									'module' => $this->convertToPath($module),
+									'controller' => $this->convertToPath($controller),
+									'action' => $this->convertToPath($matches[1]),
 								);
 
 								$conf['url'] = $view->url($conf, 'default');
@@ -312,14 +310,18 @@ class Navigation
 				}
 
 			}
-
-
-
 		}
-
-
 	}
 
-
+	/**
+	 * Ausgelagert, damit es überschrieben werden kann
+	 *
+	 * @param string $str
+	 * @return string
+	 */
+	protected function convertToPath($str)
+	{
+		return strtolower($str);
+	}
 }
 ?>
