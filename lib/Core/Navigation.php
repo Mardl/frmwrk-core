@@ -64,7 +64,6 @@ class Navigation
 		$navigation = '<div class="tabmenu">';
 		$navigation .= '<ul>';
 
-
 		foreach ($groups as $group => $actions)
 		{
 			if (empty($actions['links'])){
@@ -73,6 +72,7 @@ class Navigation
 			$point = '';
 
 			$links = $actions['links'];
+			$linksCount = count($links);
 			ksort($links);
 			$keys = array_keys($links);
 
@@ -80,13 +80,21 @@ class Navigation
 
 			$point .= '<li class="{current}"><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
 
-			$point .= '<ul class="subnav">';
+
+			if ($linksCount > 1){
+				$point .= '<ul class="subnav">';
+			}
 
 			$subPoints = '';
 
 			$sp = array();
+
+			$counter = count($links);
+
+
 			foreach ($links as $action)
 			{
+
 				if ($action['permissions'] && class_exists('\App\Models\Right'))
 				{
 					$data = array(
@@ -98,17 +106,13 @@ class Navigation
 
 					$right = new \App\Models\Right($data);
 
-					if (class_exists('\App\Manager\Right'))
-					{
-						if (\App\Manager\Right::isAllowed($right, $user)){
-							$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
-						}
+					$class = '\Core\Application\Manager\Right';
+					if (class_exists('\App\Manager\Right')){
+						$class = '\App\Manager\Right';
 					}
-					else
-					{
-						if (\Core\Application\Manager\Right::isAllowed($right, $user)){
-							$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
-						}
+
+					if ($class::isAllowed($right, $user)){
+						$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
 					}
 
 					$link = strtolower($action['prefix'].$action['module'].$action['controller'].$action['action'].'html');
@@ -161,9 +165,10 @@ class Navigation
 				}
 			}
 
-			$point .= $subPoints;
-
-			$point .= '</ul>';
+			if ($linksCount > 1){
+				$point .= $subPoints;
+				$point .= '</ul>';
+			}
 
 			$point = str_replace('{current}', '', $point);
 

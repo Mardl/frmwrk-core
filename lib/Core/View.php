@@ -341,9 +341,14 @@ class View extends ArrayObject
 		return $this->templates;
 	}
 
-	public function addPlaceholder($key, $value)
+	public function addPlaceholder($key, $value, $prerender = false)
 	{
-		$this->placeholder[$key] = $value;
+		if ($prerender){
+			$this->placeholder[$key] = $value.'';
+		} else {
+			$this->placeholder[$key] = $value;
+		}
+
 	}
 
 	/**
