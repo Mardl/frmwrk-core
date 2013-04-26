@@ -193,12 +193,19 @@ class Right
 			$right = new RightModel($right);
 		}
 
+		// @actionName in der Action des Controllers "\App\Modules\Tinymce-extend\Controller\Parser" -> "test-tinymce" nicht gesetzt!
+
 		if ($right instanceof RightModel)
 		{
+
 			/**
 			 * prüfen ob bereits geprüft :-)
 			 * @var $sess \jamwork\common\Session
 			 */
+			// echo '<pre>';
+			// var_dump($right);
+			// echo '</pre>';
+
 			$toCheck = strtolower('setright'.$right->getModule().':'.$right->getController().':'.$right->getAction().':'.$right->getPrefix());
 			$reg = Registry::getInstance();
 			$sess = $reg->getSession();
@@ -209,6 +216,7 @@ class Right
 			$sess->set($toCheck,1);
 
 			// und weiter gehts
+
 
 			try
 			{

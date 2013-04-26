@@ -257,7 +257,7 @@ class View extends ArrayObject
 	 * Add keywords
 	 * Add keywords for HTML meta tags
 	 *
-	 * @param string $keyword[,...] Keywords
+	 * @internal param string $keyword [,...] Keywords
 	 *
 	 * @return array
 	 */
@@ -341,9 +341,14 @@ class View extends ArrayObject
 		return $this->templates;
 	}
 
-	public function addPlaceholder($key, $value)
+	public function addPlaceholder($key, $value, $prerender = false)
 	{
-		$this->placeholder[$key] = $value;
+		if ($prerender){
+			$this->placeholder[$key] = $value.'';
+		} else {
+			$this->placeholder[$key] = $value;
+		}
+
 	}
 
 	/**

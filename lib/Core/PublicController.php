@@ -25,6 +25,9 @@ use App\Models\Right,
  */
 class PublicController extends Controller
 {
+	/**
+	 * @var bool
+	 */
 	protected $checkPermissions = true;
 
 	/**
@@ -87,6 +90,14 @@ class PublicController extends Controller
 		$response->setBody( json_encode($json) );
 		$response->flush();
 		die();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getCheckPermissions()
+	{
+		return $this->checkPermissions;
 	}
 
 
