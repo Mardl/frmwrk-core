@@ -61,7 +61,7 @@ class Navigation
 				$groups[$group]['links'] = $actions;
 			}
 		}
-		$navigation = '<div class="tabmenu">';
+		$navigation = '<div class="tabmenu navigation">';
 		$navigation .= '<ul>';
 
 		foreach ($groups as $group => $actions)
@@ -204,7 +204,10 @@ class Navigation
 				}
 				else
 				{
-					$this->files[] = $dir.'/'.$file;
+					if (\Core\String::endsWith($file, '.php')){
+						$this->files[] = $dir.'/'.$file;
+					}
+
 				}
 
 			}
