@@ -176,11 +176,6 @@ class Files
 
 		if (!file_exists(FILE_PATH))
 		{
-			var_dump('saveUploadedFile');
-			var_dump('filepath');
-			var_dump(FILE_PATH);
-			die();
-
 			mkdir(FILE_PATH);
 			@chmod(FILE_PATH, 0777);
 		}
@@ -651,13 +646,6 @@ class Files
 
 		if (!file_exists(ROOT_PATH.'/html/'.FILE_TEMP))
 		{
-			var_dump('getThumbnail');
-			var_dump('filepath');
-			var_dump(FILE_PATH);
-			var_dump(FILE_TEMP);
-			var_dump($target);
-			die();
-
 			mkdir(FILE_TEMP);
 			@chmod(FILE_TEMP, 0777);
 		}
