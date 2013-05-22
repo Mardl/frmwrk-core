@@ -270,10 +270,9 @@ class Model
 	public function setCreateduser_Id($userId = 0)
 	{
 		$register = \jamwork\common\Registry::getInstance();
-		if (isset($register->login))
+		if (isset($register->login) && $register->login instanceof \Core\Application\Models\User)
 		{
 			$this->createduser_id = $register->login->getId();
-
 		}
 		else
 		{
