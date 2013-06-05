@@ -25,14 +25,14 @@ class Config
 	 * 
 	 * @var array
 	 */
-	private $_domains = array();
+	protected $_domains = array();
 	
 	/**
 	 * Speichert die Konfigurationsvariablen
 	 * 
 	 * @var array
 	 */
-	private $_vars = array();
+	protected $_vars = array();
 	
 	/**
 	 * Fügt die Zuweisung von Hostname zu Config-File dem internen Array zu
@@ -109,7 +109,7 @@ class Config
 	 * 
 	 * @return boolean
 	 */
-	private function _hostEndsWith($haystack, $needle)
+	protected function _hostEndsWith($haystack, $needle)
 	{
 		if (substr($haystack, -strlen($needle)) == $needle)
 		{
