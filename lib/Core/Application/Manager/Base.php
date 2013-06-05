@@ -7,6 +7,10 @@ jamwork\database\Query,
 Core\SystemMessages,
 Core\Application\Interfaces\ModelsInterface;
 
+/**
+ * Class Base
+ * @package Core\Application\Manager
+ */
 class Base
 {
 	/**
@@ -15,6 +19,9 @@ class Base
 	protected $con = null;
 
 
+	/**
+	 *
+	 */
 	public function __construct()
 	{
 		$this->con = Registry::getInstance()->getDatabase();

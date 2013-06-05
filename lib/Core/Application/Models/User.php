@@ -191,10 +191,10 @@ class User extends BaseModel
 	/**
 	 * Language
 	 *
-	 * @ManyToOne(targetEntity="App\Models\Language")
+	 * @ManyToOne(targetEntity="App\Models\Language", nullable=true)
 	 *
 	 */
-	protected $language;
+	protected $language = null;
 
 	/**
 	 * Sets new password
@@ -404,6 +404,7 @@ class User extends BaseModel
 			$manager = new \Core\Application\Manager\Language();
 			$language = $manager->getModelById(new \Core\Application\Models\Language(), $language);
 		}
+
 
 		$this->language = $language;
 	}

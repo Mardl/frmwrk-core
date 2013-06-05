@@ -65,7 +65,7 @@ class Router extends ArrayObject
 	 *
 	 * @param string $routeName Routenname
 	 *
-	 * @return Core\Route
+	 * @return \Core\Route
 	 */
     public function getRoute($routeName)
     {
@@ -79,7 +79,7 @@ class Router extends ArrayObject
 	 * @param string $path     Path with placeholders
 	 * @param array  $defaults Default values for route
 	 *
-	 * @return Core\Route
+	 * @return \Core\Route
 	 */
 	public function addRoute($key, $path, array $defaults = array())
 	{
@@ -109,7 +109,7 @@ class Router extends ArrayObject
 	 *
 	 * @param string $url URL
 	 *
-	 * @return Core\Route|boolean
+	 * @return \Core\Route|boolean
 	 */
 	public function searchRoute($url)
 	{
@@ -221,7 +221,7 @@ class Router extends ArrayObject
     /**
      * Get current route
      *
-     * @return Core\Route
+     * @return \Core\Route
      */
 	public function getCurrentRoute()
 	{
