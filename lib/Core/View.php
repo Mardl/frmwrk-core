@@ -364,6 +364,10 @@ class View extends ArrayObject
 			$this->placeholder[$key] = array();
 		}
 
+		if (!is_array($this->placeholder[$key])){
+			$this->placeholder[$key] = array();
+		}
+
 		$this->placeholder[$key][] = $value;
 	}
 
