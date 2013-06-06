@@ -191,7 +191,7 @@ class User extends BaseModel
 	/**
 	 * Language
 	 *
-	 * @ManyToOne(targetEntity="App\Models\Language", nullable=true)
+	 * @ManyToOne(targetEntity="App\Models\Language")
 	 *
 	 */
 	protected $language = null;
