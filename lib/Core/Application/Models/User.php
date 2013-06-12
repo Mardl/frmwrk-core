@@ -345,7 +345,7 @@ class User extends BaseModel
     	}
     	else
     	{
-    		$avatar = '/static/images/avatar_';
+    		$avatar = 'static/images/avatar_';
     		return  $avatar.($this->isMale() ? 'male.png' : 'female.png');
     	}
     }
