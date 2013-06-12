@@ -4,11 +4,13 @@ namespace Core\Application\Manager;
 
 use jamwork\common\Registry,
 jamwork\database\Query,
-jamwork\database\Update,
 Core\SystemMessages,
-Core\Model as BaseModel,
 Core\Application\Interfaces\ModelsInterface;
 
+/**
+ * Class Base
+ * @package Core\Application\Manager
+ */
 class Base
 {
 	/**
@@ -17,6 +19,9 @@ class Base
 	protected $con = null;
 
 
+	/**
+	 *
+	 */
 	public function __construct()
 	{
 		$this->con = Registry::getInstance()->getDatabase();
@@ -35,6 +40,8 @@ class Base
 
 		if ($model->getId() == 0)
 		{
+			$model->setCreated();
+			$model->setCreateduser_Id();
 			$inserted = $this->con->insert($model->getTableName(),$model->getDataRow());
 		}
 
@@ -63,6 +70,8 @@ class Base
 			return false;
 		}
 
+		$model->setModified();
+		$model->setModifieduser_Id();
 		$updated = $this->con->update($model->getTableName(),$model->getDataRow());
 
 		if (!$updated)
@@ -100,6 +109,33 @@ class Base
 	}
 
 	/**
+	 * @param string|ModelsInterface $prefixOrModel
+	 * @param \jamwork\database\Query $query
+	 * @return \jamwork\database\Query
+	 */
+	public function addDeleteWhere($prefixOrModel,\jamwork\database\Query $query)
+	{
+
+		if ($prefixOrModel instanceof ModelsInterface)
+		{
+			if (property_exists($prefixOrModel,'deleted'))
+			{
+				$query->addWhere($prefixOrModel->getTablePrefix().'deleted',0);
+			}
+		}
+		elseif(!is_object($prefixOrModel))
+		{
+			/**
+			 * Wenn er hier her kommt, dann wu5rde die Funktion Public von außen aufgerufen
+			 * Parameter als String übergeben. Somit weiß der Herr Programmierer, was er macht!
+			 */
+			$query->addWhere($prefixOrModel.'deleted',0);
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Liefert ein Model von ModelsInterface aus dem Query-Select
 	 *
 	 * @param \Core\Application\Interfaces\ModelsInterface $model
@@ -113,6 +149,8 @@ class Base
 		$query->select('*');
 		$query->from($model->getTableName());
 		$query->addWhere($model->getIdField(), $id);
+		$query = $this->addDeleteWhere($model,$query);
+
 		/**
 		 * @var $rs \jamwork\database\MysqlRecordset
 		 */
@@ -141,6 +179,7 @@ class Base
 	 */
 	public function getModelsByQuery($modelClassName, Query $query)
 	{
+		$query = $this->addDeleteWhere(new $modelClassName(),$query);
 		/**
 		 * @var $rs \jamwork\database\MysqlRecordset
 		 */
@@ -167,6 +206,8 @@ class Base
 	 */
 	public function getModelByQuery($modelClassName, Query $query)
 	{
+		$query = $this->addDeleteWhere(new $modelClassName(),$query);
+
 		/**
 		 * @var $rs \jamwork\database\MysqlRecordset
 		 */
@@ -207,12 +248,14 @@ class Base
 
 	/**
 	 * Führt ein Update anhand des übergebenen Update Objects aus.
-	 *
-	 * @param $update jamwork\database\Update
+	 * @param \jamwork\database\Query $query
 	 * @return bool
 	 */
 	public function updateByQuery(Query $query)
 	{
+		/**
+		 * @var $ret \jamwork\database\MysqlRecordset
+		 */
 		$rs = $this->con->newRecordSet();
 		$ret = $rs->execute($query);
 

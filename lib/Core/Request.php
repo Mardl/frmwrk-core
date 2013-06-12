@@ -25,6 +25,13 @@ class Request extends HttpRequest
 	protected static $instance;
 
 	/**
+	 * Beinhaltet die Parameter der Route
+	 * modul / prefix / controller / action / format
+	 * @var array
+	 */
+	private $routeParams = array();
+
+	/**
 	 * Konstruktor
 	 * 
 	 * @param array $get    Array $_GET
@@ -242,10 +249,20 @@ class Request extends HttpRequest
 	 * 
 	 * @return void
 	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
+	 * ersetzt durch setRoute
 	 */
 	public function setParams(array $params)
 	{
-		$this->params = $params;
+		$this->setRoute($params);
+	}
+
+	/**
+	 * Set Route params from URL
+	 * @param array $params
+	 */
+	public function setRoute(array $params)
+	{
+		$this->routeParams = $params;
 	}
 
 	/**
@@ -256,7 +273,16 @@ class Request extends HttpRequest
 	 */
 	public function getParams()
 	{
-		return $this->params;
+		return $this->getRoute();
+	}
+
+	/**
+	 * Get all Route param from Url
+	 * @return mixed
+	 */
+	public function getRoute()
+	{
+		return $this->routeParams;
 	}
 
 	/**
@@ -268,10 +294,25 @@ class Request extends HttpRequest
 	 * 
 	 * @return string
 	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
+	 * ersetzt durch getRouteParam
 	 */
 	public function getParam($key, $default = null)
 	{
+		return $this->getRouteParam($key, $default);
+
 		return isset($this->params[$key]) ? trim($this->params[$key]) : $default;
+	}
+
+	/**
+	 * Get param from Url with $key
+	 *
+	 * @param $key
+	 * @param null $default
+	 * @return null|string
+	 */
+	public function getRouteParam($key, $default = null)
+	{
+		return isset($this->routeParams[$key]) ? trim($this->routeParams[$key]) : $default;
 	}
 
 	/**

@@ -33,7 +33,7 @@ class Router extends ArrayObject
 	/**
      * Current route
      *
-	 * @var Core\Route
+	 * @var \Core\Route
 	 */
 	protected $currentRoute;
 
@@ -49,7 +49,7 @@ class Router extends ArrayObject
 	 *
 	 * @param string $route Name of route
 	 *
-	 * @return Core\Route
+	 * @return \Core\Route
 	 */
 	public function offsetGet($route)
 	{
@@ -65,7 +65,7 @@ class Router extends ArrayObject
 	 *
 	 * @param string $routeName Routenname
 	 *
-	 * @return Core\Route
+	 * @return \Core\Route
 	 */
     public function getRoute($routeName)
     {
@@ -79,7 +79,7 @@ class Router extends ArrayObject
 	 * @param string $path     Path with placeholders
 	 * @param array  $defaults Default values for route
 	 *
-	 * @return Core\Route
+	 * @return \Core\Route
 	 */
 	public function addRoute($key, $path, array $defaults = array())
 	{
@@ -109,7 +109,7 @@ class Router extends ArrayObject
 	 *
 	 * @param string $url URL
 	 *
-	 * @return Core\Route|boolean
+	 * @return \Core\Route|boolean
 	 */
 	public function searchRoute($url)
 	{
@@ -128,12 +128,13 @@ class Router extends ArrayObject
 
 	/**
 	 * @param string $url URL
-	 * @param bool $instance Instance
+	 * @param bool $instance
 	 *
 	 * @return bool|\Core\Route
 	 */
 	public function findRoute($url, $instance = false)
 	{
+		/** @var $route \Core\Route */
 		foreach ($this as $key => $route)
 		{
 			$routeData = $route->matchUrl($url);
@@ -173,7 +174,8 @@ class Router extends ArrayObject
 						else if ($key == 'action' && $val == $temp['action'])
 						{
 							$matching[$routeName] += 1;
-						} else if ($key == 'module' && $val != $temp['module'])
+						}
+						else if ($key == 'module' && $val != $temp['module'])
 						{
 							$matching[$routeName] -= 3;
 						}
@@ -219,7 +221,7 @@ class Router extends ArrayObject
     /**
      * Get current route
      *
-     * @return Core\Route
+     * @return \Core\Route
      */
 	public function getCurrentRoute()
 	{

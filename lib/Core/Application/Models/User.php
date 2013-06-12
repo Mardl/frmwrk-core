@@ -194,7 +194,7 @@ class User extends BaseModel
 	 * @ManyToOne(targetEntity="App\Models\Language")
 	 *
 	 */
-	protected $language;
+	protected $language = null;
 
 	/**
 	 * Sets new password
@@ -345,7 +345,7 @@ class User extends BaseModel
     	}
     	else
     	{
-    		$avatar = '/static/images/avatar_';
+    		$avatar = 'static/images/avatar_';
     		return  $avatar.($this->isMale() ? 'male.png' : 'female.png');
     	}
     }
@@ -404,6 +404,7 @@ class User extends BaseModel
 			$manager = new \Core\Application\Manager\Language();
 			$language = $manager->getModelById(new \Core\Application\Models\Language(), $language);
 		}
+
 
 		$this->language = $language;
 	}

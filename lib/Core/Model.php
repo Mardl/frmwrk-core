@@ -89,6 +89,7 @@ class Model
 			{
 				return $this->$newMethod($params[0]);
 			}
+
 		}
 
 		$method = $parts[1];
@@ -125,6 +126,39 @@ class Model
 			);
 			break;
 		}
+	}
+
+	/**
+	 *
+	 * Überprüft, ob für $name ein Attribut vorhanden ist, oder bei Prefix direkt die Function!
+	 *
+	 * @param $name
+	 * @return bool
+	 */
+	private function existsProperty($name)
+	{
+		$parts = preg_split('/^([a-z]+)/', $name, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$method = $parts[1];
+		$attribute = lcfirst($parts[2]);
+
+		$prefix = $this->getTablePrefix();
+		if (!empty($prefix))
+		{
+			$attribute = str_replace($prefix, '', $attribute);
+
+			$newMethod = $method.ucfirst($attribute);
+			if (method_exists($this, $newMethod))
+			{
+				return true;
+			}
+		}
+
+		if (property_exists($this, $attribute))
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -170,6 +204,29 @@ class Model
 	}
 
 	/**
+	 * Überprüft $data nach vorhandene Settern und liefert bereinigtes array zurück
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function clearDataRow($data = array())
+	{
+		$ret = array();
+		if (!empty($data))
+		{
+			foreach ($data as $key => $value)
+			{
+				$setter = 'set'.ucfirst($key);
+				if($this->existsProperty($setter))
+				{
+					$ret[$key] = $value;
+				}
+			}
+		}
+		return $ret;
+	}
+
+	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
 	 * @param \DateTime|string $datetime Datetime-Objekt oder String
@@ -190,6 +247,45 @@ class Model
 		}
 
 		$this->created = $datetime;
+	}
+
+	/**
+	 * Liefert Create Datetime als mysql Format zurück
+	 *
+	 * @return string
+	 */
+	public function getCreatedAsString()
+	{
+		if ($this->created instanceof \DateTime)
+		{
+			return $this->created->format('Y-m-d H:i:s');
+		}
+		return $this->created;
+	}
+
+
+	/**
+	 * @param int $userId
+	 */
+	public function setCreateduser_Id($userId = 0)
+	{
+		$register = \jamwork\common\Registry::getInstance();
+		if (isset($register->login) && $register->login instanceof \Core\Application\Models\User)
+		{
+			$this->createduser_id = $register->login->getId();
+		}
+		else
+		{
+			$this->createduser_id = !empty($userId) ? $userId : null;
+		}
+	}
+
+	/**
+	 * @return \int|null
+	 */
+	public function getCreateduser_Id()
+	{
+		return $this->createduser_id;
 	}
 
 	/**
@@ -231,17 +327,29 @@ class Model
 	}
 
 	/**
-	 * Liefert Create Datetime als mysql Format zurück
-	 *
-	 * @return string
+	 * @param null $userId
 	 */
-	public function getCreatedAsString()
+	public function setModifieduser_Id($userId = NULL)
 	{
-		if ($this->created instanceof \DateTime)
+		$register = \jamwork\common\Registry::getInstance();
+		if (isset($register->login))
 		{
-			return $this->created->format('Y-m-d H:i:s');
+			$this->modifieduser_id = $register->login->getId();
+
 		}
-		return $this->created;
+		else
+		{
+			$this->modifieduser_id = !empty($userId) ? $userId : null;
+		}
+
+	}
+
+	/**
+	 * @return \int|null
+	 */
+	public function getModifieduser_Id()
+	{
+		return $this->modifieduser_id;
 	}
 
 	/**

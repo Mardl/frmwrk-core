@@ -25,6 +25,9 @@ use App\Models\Right,
  */
 class PublicController extends Controller
 {
+	/**
+	 * @var bool
+	 */
 	protected $checkPermissions = true;
 
 	/**
@@ -34,10 +37,10 @@ class PublicController extends Controller
 	{
 		parent::__construct();
 
-		$module 	= $this->request->getParam('module');
-		$controller = $this->request->getParam('controller');
-		$action		= $this->request->getParam('action');
-		$prefix		= $this->request->getParam('prefix');
+		$module 	= $this->request->getRouteParam('module');
+		$controller = $this->request->getRouteParam('controller');
+		$action		= $this->request->getRouteParam('action');
+		$prefix		= $this->request->getRouteParam('prefix');
 
 		$right = new Right(
 			array(
@@ -87,6 +90,14 @@ class PublicController extends Controller
 		$response->setBody( json_encode($json) );
 		$response->flush();
 		die();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getCheckPermissions()
+	{
+		return $this->checkPermissions;
 	}
 
 

@@ -26,7 +26,7 @@ class Route
     /**
      * Router
      *
-     * @var Core\Router;
+     * @var \Core\Router;
      */
 	protected $router;
 
