@@ -83,7 +83,7 @@ class DbManagement
 
 		//ORM Configuration
 		$config = new \Doctrine\ORM\Configuration();
-		$config->setProxyDir(ROOT_PATH.'/Vendor/proxies');
+		$config->setProxyDir(ROOT_PATH.'/tmp/proxies');
 		$config->setProxyNamespace('Proxy');
 		$driverImpl = $config->newDefaultAnnotationDriver(array(APPLICATION_PATH.'/Models'));
 		$config->setMetadataDriverImpl($driverImpl);
