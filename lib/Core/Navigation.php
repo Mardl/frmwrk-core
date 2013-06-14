@@ -277,6 +277,17 @@ class Navigation
 							preg_match('/.*\@showInNavigation ([a-z]+).*/', $docComment, $matchDoc);
 
 							if (!empty($matchDoc) && $matchDoc[1] == 'true'){
+
+								if (\jamwork\common\Registry::getInstance()->hasEventDispatcher())
+								{
+									$eventDispatcher = \jamwork\common\Registry::getInstance()->getEventDispatcher();
+									$event = $eventDispatcher->triggerEvent('onAddNavigation', $docComment, $method->getName());
+									if ($event->isCanceled())
+									{
+										continue;
+									}
+								}
+
 								//Name des Navigationspunktes ermitteln
 								preg_match('/.*\@navigationName ([A-Za-z0-9äöüÄÖÜ -\/]+).*$/s', $docComment, $matchDoc);
 								$navigationName = $matchDoc[1];
