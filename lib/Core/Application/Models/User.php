@@ -399,10 +399,18 @@ class User extends BaseModel
 	 */
 	public function setLanguage($language)
 	{
-		if (class_exists("Core\Application\Models\Language", false) && !($language instanceof \Core\Application\Models\Language) && $language !== null)
+		if (class_exists('Core\Application\Models\Language', false) && !($language instanceof \Core\Application\Models\Language) && $language !== null)
 		{
-			$manager = new \Core\Application\Manager\Language();
-			$language = $manager->getModelById(new \Core\Application\Models\Language(), $language);
+			if (class_exists('\App\Manager\Language') && class_exists('\App\Models\Language') )
+			{
+				$manager = new \App\Manager\Language();
+				$language = $manager->getModelById(new \App\Models\Language(), $language);
+			}
+			else
+			{
+				$manager = new \Core\Application\Manager\Language();
+				$language = $manager->getModelById(new \Core\Application\Models\Language(), $language);
+			}
 		}
 
 

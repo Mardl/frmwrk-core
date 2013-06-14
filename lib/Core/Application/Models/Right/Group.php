@@ -11,8 +11,8 @@
 namespace Core\Application\Models\Right;
 
 use Core\Model as BaseModel,
-	Core\Application\Models\Right as RightModel,
-	Core\Application\Models\User as UserModel;
+	App\Models\Right as RightModel,
+	App\Models\User as UserModel;
 
 /**
  * Right

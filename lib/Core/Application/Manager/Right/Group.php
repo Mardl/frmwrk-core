@@ -10,11 +10,11 @@
  */
 namespace Core\Application\Manager\Right;
 
-use Core\Application\Models\Right as RightModel,
-	Core\Application\Models\Right\Group as GroupModel,
-	Core\Application\Models\User as UserModel,
-	Core\Application\Manager\Right as RightManager,
-	Core\Application\Manager\User as UserManager,
+use App\Models\Right as RightModel,
+	App\Models\Right\Group as GroupModel,
+	App\Models\User as UserModel,
+	App\Manager\Right as RightManager,
+	App\Manager\User as UserManager,
 	Core\SystemMessages,
 	jamwork\common\Registry;
 

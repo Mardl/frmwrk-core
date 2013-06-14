@@ -11,8 +11,8 @@
 namespace Core\Application\Manager;
 
 use Core\SystemMessages,
-	Core\Application\Models\Right as RightModel,
-	Core\Application\Models\User as UserModel,
+	App\Models\Right as RightModel,
+	App\Models\User as UserModel,
 	jamwork\common\Registry,
 	jamwork\database\MysqlRecordset as Recordset;
 
@@ -168,18 +168,6 @@ class Right
 
 	protected static function createRightEx($right)
 	{
-		/*
-		 * Oldschool !!!
-		$sql = "
-			INSERT INTO
-				rights
-				(`module`,`controller`,`action`,`prefix`,`modified`)
-			VALUES
-				('%s', '%s', '%s', '%s', NOW())
-			ON DUPLICATE KEY UPDATE
-				`modified` = NOW()
-		";
-		*/
 		$sql = "
 			INSERT INTO
 				rights

@@ -10,7 +10,7 @@
  */
 namespace Core\Application\Manager;
 
-use Core\Application\Models\User as UserModel,
+use App\Models\User as UserModel,
 	jamwork\common\Registry;
 
 /**

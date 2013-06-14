@@ -17,7 +17,7 @@ use Core\Application\Models\Directory\Files as FilesModel,
 	Core\Application\Manager\Directory as DirectoryManager,
 	jamwork\common\Registry,
 	Core\SystemMessages,
-	Core\Application\Manager\User as UserManager;
+	App\Manager\User as UserManager;
 
 /**
  * Files

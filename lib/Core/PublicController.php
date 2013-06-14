@@ -74,6 +74,7 @@ class PublicController extends Controller
 
 	}
 
+
 	/**
 	 *
 	 * Übergebene Array wird json encodiert und ausgegeben
