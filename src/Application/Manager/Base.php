@@ -207,7 +207,7 @@ class Base
 	 *
 	 * @param $modelClassName
 	 * @param \jamwork\database\Query $query
-	 * @return bool
+	 * @return \Core\Application\Interfaces\ModelsInterface|bool
 	 */
 	public function getModelByQuery($modelClassName, Query $query)
 	{
