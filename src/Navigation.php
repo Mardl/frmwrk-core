@@ -253,13 +253,13 @@ class Navigation
 
 				$classDoc = $reflect->getDocComment();
 				if ($classDoc !== false){
-					preg_match('/.*\@title ([A-Za-z0-9äöüÄÖÜ\-]+).*/s', $classDoc, $matchClassDoc);
+					preg_match('/.*\@title ([A-Za-z0-9äöüÄÖÜ \-]+).*/s', $classDoc, $matchClassDoc);
 					if (!empty($matchClassDoc)){
-						$this->controllerTitles[$module][$controller] = $matchClassDoc[1];
+						$this->controllerTitles[$module][$controller] = trim($matchClassDoc[1]);
 					}
-					preg_match('/.*\@modulTitle ([A-Za-z0-9äöüÄÖÜ\-]+).*/s', $classDoc, $matchClassDoc);
+					preg_match('/.*\@modulTitle ([A-Za-z0-9äöüÄÖÜ \-]+).*/s', $classDoc, $matchClassDoc);
 					if (!empty($matchClassDoc) && !isset($this->moduleTitles[$module])){
-						$this->moduleTitles[$module] = $matchClassDoc[1];
+						$this->moduleTitles[$module] = trim($matchClassDoc[1]);
 					}
 				}
 
@@ -290,15 +290,16 @@ class Navigation
 
 								//Name des Navigationspunktes ermitteln
 								preg_match('/.*\@navigationName ([A-Za-z0-9äöüÄÖÜ -\/]+).*$/s', $docComment, $matchDoc);
-								$navigationName = $matchDoc[1];
+								$navigationName = trim($matchDoc[1]);
 
 								//Sortierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationSort ([0-9]+).*/s', $docComment, $matchDoc);
-								$navigationSort = $matchDoc[1];
+								preg_match('/.*\@navigationSort ([0-9 ]+).*/s', $docComment, $matchDoc);
+								$navigationSort = trim($matchDoc[1]);
 
 								//Gruppierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationGroup ([A-Za-z0-9äöüÄÖÜ]+).*/s', $docComment, $matchDoc);
-								$navigationGroup = $matchDoc[1];
+								preg_match('/.*\@navigationGroup ([A-Za-z0-9äöüÄÖÜ ]+).*/s', $docComment, $matchDoc);
+
+								$navigationGroup = trim($matchDoc[1]);
 
 								/*
 								 * Config für Navigationspunkt definieren
