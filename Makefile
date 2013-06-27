@@ -9,12 +9,12 @@ help:
 
 install:
 	@echo "Aktualisiere Jamwork"
-	@if [ -d Vendor/Jamwork/.git ]; then \
-		echo "install:\n\t git pull" > Vendor/Jamwork/Makefile ;\
-		$(MAKE) -C Vendor/Jamwork ;\
-		rm Vendor/Jamwork/Makefile ;\
+	@if [ -d Vendor/jamwork/.git ]; then \
+		echo "install:\n\t git pull" > Vendor/jamwork/Makefile ;\
+		$(MAKE) -C Vendor/jamwork ;\
+		rm Vendor/jamwork/Makefile ;\
 	else\
-		git clone git@repo.dreiwerken.intern:frameworks/jamwork.git Vendor/Jamwork ;\
+		git clone git@repo.dreiwerken.intern:frameworks/jamwork.git Vendor/jamwork ;\
 	fi
 
 phpunit:
