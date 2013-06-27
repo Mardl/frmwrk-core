@@ -97,6 +97,9 @@ class Loader
 
 		$classNameSrc = str_replace($this->namespace,'',$className);
 		$fileSrc = $this->path.'/'.$this->namespace.'/src'.trim(strtr($classNameSrc, $this->replace), '_\\');
+		$fileRootSrc = $this->path.'/src'.trim(strtr($classNameSrc, $this->replace), '_\\');
+
+
 		$php = false;
 		$inc = false;
 
@@ -117,6 +120,16 @@ class Loader
 		{
 			$inc = true;
 			$file = $fileSrc;
+		}
+		elseif (file_exists($fileRootSrc.'.php'))
+		{
+			$php = true;
+			$file = $fileRootSrc;
+		}
+		elseif (file_exists($fileRootSrc.'.inc'))
+		{
+			$inc = true;
+			$file = $fileRootSrc;
 		}
 
 		if ($php == true)

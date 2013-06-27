@@ -1,6 +1,5 @@
 <?php
 /**
- * Lifemeter\Form\Base-Class
  *
  * PHP version 5.3
  *
