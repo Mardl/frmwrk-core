@@ -1,16 +1,17 @@
 <?php
 namespace Core\Html;
 
-class ListItem extends Element{
+class ListItem extends Element
+{
 
 	private $renderOutput = '<li class="{class}" style="{style}" {id} {attr} >{elements}</li>';
 
 	public function __construct($id, $css = array(), $breakafter = false)
 	{
 		parent::__construct($id, $css, $breakafter);
-		if (file_exists(APPLICATION_PATH.'/Layout/Html/li.html.php'))
+		if (file_exists(APPLICATION_PATH . '/Layout/Html/li.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/li.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH . '/Layout/Html/li.html.php');
 		}
 	}
 
@@ -23,4 +24,5 @@ class ListItem extends Element{
 	}
 
 }
+
 ?>

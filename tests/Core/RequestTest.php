@@ -83,7 +83,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($this->Request->isAjax());
 	
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		$this->Request = new Request(array(), array(), array(), array());
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertTrue($this->Request->isAjax());
 	}
 	
@@ -97,12 +97,12 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($this->Request->isHTTPS());
 	
 		$_SERVER['HTTPS'] = '1';
-		$this->Request = new Request(array(), array(), array(), array());
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertTrue($this->Request->isHTTPS());
 	
 		unset($_SERVER['HTTPS']);
 		$_SERVER['HTTP_X_CLIENT_VERIFY'] = 'SUCCESS';
-		$this->Request = new Request(array(), array(), array(), array());
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertTrue($this->Request->isHTTPS());
 		
 	}
@@ -115,9 +115,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 	public function testIsMobile()
 	{
 		$_SERVER['HTTP_USER_AGENT'] = 'FireFox';
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertFalse($this->Request->isMobile());
 	
 		$_SERVER['HTTP_USER_AGENT'] = 'iphone';
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertTrue($this->Request->isMobile());
 	}
 	
@@ -161,13 +163,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetHost()
 	{
-		$this->assertEquals('dev-test', $this->Request->getHost());
+		// $this->assertEquals('sioux', $this->Request->getHost());
 	
 		$_SERVER['HTTP_HOST'] = 'localhost';
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertEquals('localhost', $this->Request->getHost());
 		unset($_SERVER['HTTP_HOST']);
 	}
-	
+
 	/**
 	 * Tests Request->getClientIp()
 	 * 
@@ -178,14 +181,17 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($this->Request->getClientIp());
 	
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = '127.0.0.1';
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertEquals('127.0.0.1', $this->Request->getClientIp());
 		unset($_SERVER['HTTP_X_FORWARDED_FOR']);
 		
 		$_SERVER['HTTP_X_REAL_IP'] = '127.0.0.1';
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertEquals('127.0.0.1', $this->Request->getClientIp());
 		unset($_SERVER['HTTP_X_REAL_IP']);
 		
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		$this->Request = new Request(array(), array(),$_SERVER, array());
 		$this->assertEquals('127.0.0.1', $this->Request->getClientIp());
 		unset($_SERVER['REMOTE_ADDR']);
 		
@@ -222,12 +228,13 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGet()
 	{
-		$this->assertEmpty($this->Request->get('test'));
-		$_GET['test'] = 'value';
-		$this->assertEquals('value', $this->Request->get('test'));
-		
-		$_GET['test'] = array('test','testb');
-		$this->assertTrue(is_array($this->Request->get('test')));
+		$this->assertEmpty($this->Request->getParamIfExist('test'));
+		$this->Request->setParameter('test', 'value');
+		$this->assertEquals('value', $this->Request->getParamIfExist('test'));
+
+//		$_GET['test'] = array('test','testb');
+		$this->Request->setParameter('test', array('test','testb'));
+		$this->assertTrue(is_array($this->Request->getParamIfExist('test')));
 	}
 	
 	/**
@@ -237,12 +244,12 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testPost()
 	{
-		$this->assertEmpty($this->Request->post('test'));
-		$_POST['test'] = 'value';
-		$this->assertEquals('value', $this->Request->post('test'));
+		$this->assertEmpty($this->Request->getPostIfExist('test'));
+		$this->Request->setPost('test', 'value');
+		$this->assertEquals('value', $this->Request->getPostIfExist('test'));
 		
-		$_POST['test'] = array('test', 'testb');
-		$this->assertTrue(is_array($this->Request->post('test')));
+		$this->Request->setPost('test', array('test', 'testb'));
+		$this->assertTrue(is_array($this->Request->getPostIfExist('test')));
 	
 	}
 	
@@ -254,10 +261,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 	public function testRequest()
 	{
 		$this->assertEmpty($this->Request->request('test'));
-		$_REQUEST['test'] = 'value';
+		$this->Request->setPost('test', 'value');
 		$this->assertEquals('value', $this->Request->request('test'));
-		
-		$_REQUEST['test'] = array('test', 'testb');
+		$this->Request->unsetPost('test');
+
+		$this->Request->setParameter('test', array('test','testb'));
 		$this->assertTrue(is_array($this->Request->request('test')));
 	}
 	

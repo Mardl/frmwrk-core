@@ -20,6 +20,7 @@ namespace Core;
  */
 class Model
 {
+
 	/**
 	 * Integer value of gender male
 	 * @var integer
@@ -84,7 +85,7 @@ class Model
 		{
 			$parts[2] = str_replace($prefix, '', $parts[2]);
 
-			$newMethod = $parts[1].ucfirst($parts[2]);
+			$newMethod = $parts[1] . ucfirst($parts[2]);
 			if (method_exists($this, $newMethod))
 			{
 				return $this->$newMethod($params[0]);
@@ -97,34 +98,30 @@ class Model
 
 		if (!property_exists($this, $attribute))
 		{
-			throw new \InvalidArgumentException(
-				'Die Klasse '.__CLASS__.' hat das Attribut "'.$attribute.'" nicht'
-			);
+			throw new \InvalidArgumentException('Die Klasse ' . __CLASS__ . ' hat das Attribut "' . $attribute . '" nicht');
 		}
 
 		switch ($method)
 		{
-		case 'set':
-			if ($this->$attribute != $params[0])
-			{
-				$this->$attribute = $params[0];
-				$this->changed = true;
-			}
-			break;
-		case 'get':
-			return $this->$attribute;
-			break;
-		case 'has':
-			return !empty($this->$attribute);
-			break;
-		case 'is':
-			return ($this->$attribute == $params[0]);
-			break;
-		default:
-			throw new \InvalidArgumentException(
-				'Unbekannte Methode "'.$name.'" in '.__CLASS__
-			);
-			break;
+			case 'set':
+				if ($this->$attribute != $params[0])
+				{
+					$this->$attribute = $params[0];
+					$this->changed = true;
+				}
+				break;
+			case 'get':
+				return $this->$attribute;
+				break;
+			case 'has':
+				return !empty($this->$attribute);
+				break;
+			case 'is':
+				return ($this->$attribute == $params[0]);
+				break;
+			default:
+				throw new \InvalidArgumentException('Unbekannte Methode "' . $name . '" in ' . __CLASS__);
+				break;
 		}
 	}
 
@@ -146,7 +143,7 @@ class Model
 		{
 			$attribute = str_replace($prefix, '', $attribute);
 
-			$newMethod = $method.ucfirst($attribute);
+			$newMethod = $method . ucfirst($attribute);
 			if (method_exists($this, $newMethod))
 			{
 				return true;
@@ -191,13 +188,14 @@ class Model
 	/**
 	 * @param array $data
 	 */
-	public function setDataRow($data = array()){
+	public function setDataRow($data = array())
+	{
 
 		if (!empty($data))
 		{
 			foreach ($data as $key => $value)
 			{
-				$setter = 'set'.ucfirst($key);
+				$setter = 'set' . ucfirst($key);
 				$this->$setter($value);
 			}
 		}
@@ -216,13 +214,14 @@ class Model
 		{
 			foreach ($data as $key => $value)
 			{
-				$setter = 'set'.ucfirst($key);
-				if($this->existsProperty($setter))
+				$setter = 'set' . ucfirst($key);
+				if ($this->existsProperty($setter))
 				{
 					$ret[$key] = $value;
 				}
 			}
 		}
+
 		return $ret;
 	}
 
@@ -237,13 +236,12 @@ class Model
 		if (!($datetime instanceof \DateTime))
 		{
 			try
-    		{
-    			$datetime = new \DateTime($datetime);
-    		}
-    		catch (\Exception $e)
-    		{
-    			throw new \InvalidArgumentException('Ungültige Datumsangabe');
-    		}
+			{
+				$datetime = new \DateTime($datetime);
+			} catch (\Exception $e)
+			{
+				throw new \InvalidArgumentException('Ungültige Datumsangabe');
+			}
 		}
 
 		$this->created = $datetime;
@@ -260,6 +258,7 @@ class Model
 		{
 			return $this->created->format('Y-m-d H:i:s');
 		}
+
 		return $this->created;
 	}
 
@@ -299,13 +298,12 @@ class Model
 		if (!($datetime instanceof \DateTime))
 		{
 			try
-    		{
-    			$datetime = new \DateTime($datetime);
-    		}
-    		catch (\Exception $e)
-    		{
-    			throw new \InvalidArgumentException('Ungültige Datumsangabe');
-    		}
+			{
+				$datetime = new \DateTime($datetime);
+			} catch (\Exception $e)
+			{
+				throw new \InvalidArgumentException('Ungültige Datumsangabe');
+			}
 		}
 
 		$this->modified = $datetime;
@@ -323,13 +321,14 @@ class Model
 		{
 			return $this->modified->format('Y-m-d H:i:s');
 		}
+
 		return $this->modified;
 	}
 
 	/**
 	 * @param null $userId
 	 */
-	public function setModifieduser_Id($userId = NULL)
+	public function setModifieduser_Id($userId = null)
 	{
 		$register = \jamwork\common\Registry::getInstance();
 		if (isset($register->login))
@@ -357,7 +356,7 @@ class Model
 	 */
 	public function setNew($new)
 	{
-		$this->new=$new;
+		$this->new = $new;
 	}
 
 	/**
@@ -377,10 +376,13 @@ class Model
 	{
 		$tableName = ModelInformation::get(get_class($this), "tablename");
 
-		if (!is_null($tableName)){
-			if (!($tableName == '-1')){
+		if (!is_null($tableName))
+		{
+			if (!($tableName == '-1'))
+			{
 				return $tableName;
 			}
+
 			return '';
 		}
 
@@ -393,7 +395,7 @@ class Model
 		if (preg_match('/\@Table\((.*)\)/s', $doc, $matches))
 		{
 			$tmp = substr($matches[1], strpos($matches[1], 'name="'));
-			$tmp = substr($tmp, strpos($tmp, '"')+1);
+			$tmp = substr($tmp, strpos($tmp, '"') + 1);
 			$tableName = substr($tmp, 0, strpos($tmp, '"'));
 			$cache = $tableName;
 		}
@@ -411,10 +413,13 @@ class Model
 	{
 		$prefix = ModelInformation::get(get_class($this), "prefix");
 
-		if (!is_null($prefix)){
-			if (!($prefix == '-1')){
+		if (!is_null($prefix))
+		{
+			if (!($prefix == '-1'))
+			{
 				return $prefix;
 			}
+
 			return '';
 		}
 
@@ -428,7 +433,7 @@ class Model
 		if (preg_match('/\@Prefix\((.*)\)/s', $doc, $matches))
 		{
 			$tmp = substr($matches[1], strpos($matches[1], 'name="'));
-			$tmp = substr($tmp, strpos($tmp, '"')+1);
+			$tmp = substr($tmp, strpos($tmp, '"') + 1);
 			$prefix = substr($tmp, 0, strpos($tmp, '"'));
 			$cache = $prefix;
 		}
@@ -445,7 +450,8 @@ class Model
 	{
 		$id = ModelInformation::get(get_class($this), "idfield");
 
-		if (!is_null($id)){
+		if (!is_null($id))
+		{
 			return $id;
 		}
 
@@ -461,8 +467,9 @@ class Model
 
 			if (preg_match('/\@Id/s', $doc, $matches))
 			{
-				$id = $this->getTablePrefix().$prop->getName();
+				$id = $this->getTablePrefix() . $prop->getName();
 				ModelInformation::set(get_class($this), "idfield", $id);
+
 				return $id;
 			}
 		}

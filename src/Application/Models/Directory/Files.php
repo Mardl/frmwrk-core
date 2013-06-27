@@ -11,8 +11,7 @@
 
 namespace Core\Application\Models\Directory;
 
-use Core\Model as BaseModel,
-	Core\Application\Manager\Directory\Files as FileManager;
+use Core\Model as BaseModel, Core\Application\Manager\Directory\Files as FileManager;
 
 /**
  * Files
@@ -42,6 +41,7 @@ use Core\Model as BaseModel,
  */
 class Files extends BaseModel
 {
+
 	/**
 	 * Id
 	 *
@@ -148,8 +148,9 @@ class Files extends BaseModel
 	{
 		if (!is_null($this->directory))
 		{
-			return ($this->directory->getParentIds().','.$this->directory->getId());
+			return ($this->directory->getParentIds() . ',' . $this->directory->getId());
 		}
+
 		return 0;
 	}
 
@@ -164,16 +165,17 @@ class Files extends BaseModel
 	}
 
 	/**
-	 * @param int $width
-	 * @param int $height
+	 * @param int    $width
+	 * @param int    $height
 	 * @param string $alt
 	 * @param string $style
-	 * @param null $additional
+	 * @param null   $additional
 	 * @return mixed|string
 	 */
 	public function getThumbnail($width = 128, $height = 128, $alt = '', $style = 'margin: 0px 10px 10px 0px;', $additional = null)
 	{
-		if (is_null($this->name)){
+		if (is_null($this->name))
+		{
 			return;
 		}
 
@@ -182,26 +184,31 @@ class Files extends BaseModel
 			$fm = new FileManager();
 			$thumb = $fm->getThumbnail($this, $width, $height);
 
-			return "<img src='".$thumb."' alt='".$alt."' style='".$style."' ".$additional." />";
+			return "<img src='" . $thumb . "' alt='" . $alt . "' style='" . $style . "' " . $additional . " />";
 		}
 		else
 		{
 			$sources = $this->getSources();
 			$visu = '';
-			if (!empty($sources)){
-				$visu = '<video height="'.$height.'" autoplay="autoplay" {poster}loop="loop" style="'.$style.'">';
+			if (!empty($sources))
+			{
+				$visu = '<video height="' . $height . '" autoplay="autoplay" {poster}loop="loop" style="' . $style . '">';
 				foreach ($sources as $source)
 				{
-					if (!preg_match('/.*video\/.*/', $source[1])){
-						$visu = str_replace("{poster}", 'poster="/files/'.$source[0].'" ', $visu);
-					} else {
-						$visu .= '<source src="/files/'.$source[0].'" type="'.$source[1].'" style="'.$style.'" />';
+					if (!preg_match('/.*video\/.*/', $source[1]))
+					{
+						$visu = str_replace("{poster}", 'poster="/files/' . $source[0] . '" ', $visu);
+					}
+					else
+					{
+						$visu .= '<source src="/files/' . $source[0] . '" type="' . $source[1] . '" style="' . $style . '" />';
 					}
 				}
 				$visu = str_replace("{poster}", '', $visu);
 				$visu .= 'Ihr Browser unterstützt den Video Tag nicht.';
 				$visu .= '</video>';
 			}
+
 			return $visu;
 		}
 		//throw new \ErrorException('Bei Videos gibts kein Thumbnail');
@@ -230,7 +237,8 @@ class Files extends BaseModel
 	/**
 	 * @return array
 	 */
-	public function getSources(){
+	public function getSources()
+	{
 		$sources = array();
 
 		if (preg_match('/.*video\/.*/', $this->getMimetype()))

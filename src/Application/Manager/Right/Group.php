@@ -10,13 +10,7 @@
  */
 namespace Core\Application\Manager\Right;
 
-use App\Models\Right as RightModel,
-	App\Models\Right\Group as GroupModel,
-	App\Models\User as UserModel,
-	App\Manager\Right as RightManager,
-	App\Manager\User as UserManager,
-	Core\SystemMessages,
-	jamwork\common\Registry;
+use App\Models\Right as RightModel, App\Models\Right\Group as GroupModel, App\Models\User as UserModel, App\Manager\Right as RightManager, App\Manager\User as UserManager, Core\SystemMessages, jamwork\common\Registry;
 
 /**
  * Group
@@ -27,6 +21,7 @@ use App\Models\Right as RightModel,
  */
 class Group
 {
+
 	/**
 	 * Liefert alle Rechtegruppe
 	 *
@@ -35,14 +30,9 @@ class Group
 	public static function getAllGroups()
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'id,
+		$query = $con->newQuery()->select('id,
 				name,
-				modified'
-			)
-			->from('right_groups')
-			->orderBy('name');
+				modified')->from('right_groups')->orderBy('name');
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -61,9 +51,9 @@ class Group
 	}
 
 	/**
-	 * @param integer $id Gruppen-ID
-	 * @param bool $rights Optional, liefere auch die Rechte
-	 * @param bool $users Optional, liefere auch die Mitglieder
+	 * @param integer $id     Gruppen-ID
+	 * @param bool    $rights Optional, liefere auch die Rechte
+	 * @param bool    $users  Optional, liefere auch die Mitglieder
 	 *
 	 * @return \Core\Application\Models\Right\Group
 	 *
@@ -72,15 +62,9 @@ class Group
 	public static function getGroupById($id, $rights = false, $users = false)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'id,
+		$query = $con->newQuery()->select('id,
 				name,
-				modified'
-			)
-			->from('right_groups')
-			->addWhere('id', $id)
-			->limit(0, 1);
+				modified')->from('right_groups')->addWhere('id', $id)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -121,21 +105,16 @@ class Group
 	public static function getGroupsByIds(array $ids, $rights = false, $users = false)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'id,
+		$query = $con->newQuery()->select('id,
 				name,
-				modified'
-			)
-			->from('right_groups')
-			->addWhere('id', $ids);
+				modified')->from('right_groups')->addWhere('id', $ids);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		$groups = array();
 
-		if ($rsExecution->isSuccessfull() &&  $rsExecution->count() >= 1)
+		if ($rsExecution->isSuccessfull() && $rsExecution->count() >= 1)
 		{
 			while (($data = $rsExecution->get()) == true)
 			{
@@ -156,9 +135,7 @@ class Group
 		}
 		else
 		{
-			throw new \ErrorException(
-				"Beim Abruf der Gruppen (IDs '".implode(',', $ids)."') ist ein Fehler aufgetreten"
-			);
+			throw new \ErrorException("Beim Abruf der Gruppen (IDs '" . implode(',', $ids) . "') ist ein Fehler aufgetreten");
 		}
 
 		return $groups;
@@ -169,7 +146,7 @@ class Group
 	 *
 	 * @static
 	 *
-	 * @param $name
+	 * @param      $name
 	 * @param bool $rights
 	 * @param bool $users
 	 *
@@ -180,15 +157,9 @@ class Group
 	public static function getGroupByName($name, $rights = false, $users = false)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'id,
+		$query = $con->newQuery()->select('id,
 				name,
-				modified'
-			)
-			->from('right_groups')
-			->addWhere('name', $name)
-			->limit(0, 1);
+				modified')->from('right_groups')->addWhere('name', $name)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -218,25 +189,18 @@ class Group
 	/**
 	 * Liefert die Gruppe anhand ihres Namens
 	 *
-	 * @param \Core\Application\Models\User $user Benutzerobjekt
-	 * @param bool $rights Optional, liefert auch die Rechte
-	 * @param bool $users Optional, liefert auch die Mitglieder
+	 * @param \Core\Application\Models\User $user   Benutzerobjekt
+	 * @param bool                          $rights Optional, liefert auch die Rechte
+	 * @param bool                          $users  Optional, liefert auch die Mitglieder
 	 *
 	 * @return array
 	 */
 	public static function getGroupsByUser(UserModel $user, $rights = false, $users = false)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'rg.id,
+		$query = $con->newQuery()->select('rg.id,
 				rg.name,
-				rg.modified'
-			)
-			->from('right_groups AS rg')
-			->innerJoin('right_group_users AS rgu')
-			->on('rgu.group_id = rg.id')
-			->addWhere('rgu.user_id', $user->getId());
+				rg.modified')->from('right_groups AS rg')->innerJoin('right_group_users AS rgu')->on('rgu.group_id = rg.id')->addWhere('rgu.user_id', $user->getId());
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -245,7 +209,7 @@ class Group
 
 		if ($rsExecution->isSuccessfull())
 		{
-			while (($data = $rsExecution->get()) == true )
+			while (($data = $rsExecution->get()) == true)
 			{
 				$group = new GroupModel($data);
 
@@ -276,17 +240,16 @@ class Group
 	public static function createGroup(\Core\Application\Models\Right\Group $group)
 	{
 
-		try{
+		try
+		{
 			$g = self::getGroupByName($group->getName());
 			if ($g)
 			{
-				SystemMessages::addError(
-					'Eine Rolle mit dem Namen "'.$group->getName().'" existiert bereits!'
-				);
+				SystemMessages::addError('Eine Rolle mit dem Namen "' . $group->getName() . '" existiert bereits!');
+
 				return false;
 			}
-		}
-		catch (\ErrorException $e)
+		} catch (\ErrorException $e)
 		{
 			/*** Ist ok ***/
 		}
@@ -294,17 +257,15 @@ class Group
 		$con = Registry::getInstance()->getDatabase();
 		$datetime = new \DateTime();
 
-		$inserted = $con->insert(
-			'right_groups',
-			array(
-				'name' => $group->getName(),
-				'modified' => $datetime->format('Y-m-d H:i:s')
-			)
-		);
+		$inserted = $con->insert('right_groups', array(
+		                                              'name' => $group->getName(),
+		                                              'modified' => $datetime->format('Y-m-d H:i:s')
+		                                         ));
 
 		if (!$inserted)
 		{
 			SystemMessages::addError('Beim Erstellen der Rolle ist ein Fehler aufgetreten!');
+
 			return false;
 		}
 
@@ -317,28 +278,26 @@ class Group
 	 * Aktualisiert eine Gruppe
 	 *
 	 * @param \Core\Application\Models\Right\Group $group Zu aktualisierende Gruppe
-	 * @param bool $forceRights
-	 * @param bool $forceUser
+	 * @param bool                                 $forceRights
+	 * @param bool                                 $forceUser
 	 *
 	 * @return bool
 	 */
-	public static function updateGroup(GroupModel $group, $forceRights=false, $forceUser=false)
+	public static function updateGroup(GroupModel $group, $forceRights = false, $forceUser = false)
 	{
 		$con = Registry::getInstance()->getDatabase();
 		$datetime = new \DateTime();
 
-		$updated = $con->update(
-			'right_groups',
-			array(
-				'name' => $group->getName(),
-				'modified' => $datetime->format('Y-m-d H:i:s'),
-				'id' => $group->getId()
-			)
-		);
+		$updated = $con->update('right_groups', array(
+		                                             'name' => $group->getName(),
+		                                             'modified' => $datetime->format('Y-m-d H:i:s'),
+		                                             'id' => $group->getId()
+		                                        ));
 
 		if (!$updated)
 		{
 			SystemMessages::addError('Beim Update der Rolle ist ein Fehler aufgetreten!');
+
 			return false;
 		}
 
@@ -349,6 +308,7 @@ class Group
 			if (!self::updateGroupRights($group))
 			{
 				SystemMessages::addError('Beim Update der Rechte ist ein Fehler aufgetreten!');
+
 				return false;
 			}
 		}
@@ -360,6 +320,7 @@ class Group
 			if (!self::updateGroupUsers($group))
 			{
 				SystemMessages::addError('Beim Update der Mitglieder ist ein Fehler aufgetreten!');
+
 				return false;
 			}
 		}
@@ -398,11 +359,7 @@ class Group
 
 		foreach ($rights as $right)
 		{
-			$values[] = sprintf(
-				$value,
-				mysql_real_escape_string($group->getId()),
-				mysql_real_escape_string($right->getId())
-			);
+			$values[] = sprintf($value, mysql_real_escape_string($group->getId()), mysql_real_escape_string($right->getId()));
 		}
 		$insertQuery = '';
 		$deleteQuery = sprintf($delete, mysql_real_escape_string($group->getId()));
@@ -431,12 +388,14 @@ class Group
 			{
 				//Schließe Transaktion erfolgreich ab
 				$con->commit();
+
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
 				$con->rollback();
+
 				return false;
 			}
 		}
@@ -444,13 +403,14 @@ class Group
 		{
 			//Führe Rollback durch
 			$con->rollback();
+
 			return false;
 		}
 	}
 
 	/**
 	 * @param \Core\Application\Models\User $user
-	 * @param array $groups
+	 * @param array                         $groups
 	 * @return bool
 	 */
 	public static function updateUsersGroups(UserModel $user, array $groups)
@@ -474,11 +434,7 @@ class Group
 
 		foreach ($groups as $group)
 		{
-			$values[] = sprintf(
-				$value,
-				mysql_real_escape_string($group->getId()),
-				mysql_real_escape_string($user->getId())
-			);
+			$values[] = sprintf($value, mysql_real_escape_string($group->getId()), mysql_real_escape_string($user->getId()));
 		}
 
 		$insertQuery = '';
@@ -508,12 +464,14 @@ class Group
 			{
 				//Schließe Transaktion erfolgreich ab
 				$con->commit();
+
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
 				$con->rollback();
+
 				return false;
 			}
 		}
@@ -521,6 +479,7 @@ class Group
 		{
 			//Führe Rollback durch
 			$con->rollback();
+
 			return false;
 		}
 	}
@@ -556,11 +515,7 @@ class Group
 
 		foreach ($users as $user)
 		{
-			$values[] = sprintf(
-				$value,
-				mysql_real_escape_string($group->getId()),
-				mysql_real_escape_string($user->getId())
-			);
+			$values[] = sprintf($value, mysql_real_escape_string($group->getId()), mysql_real_escape_string($user->getId()));
 		}
 
 		$insertQuery = '';
@@ -590,12 +545,14 @@ class Group
 			{
 				//Schließe Transaktion erfolgreich ab
 				$con->commit();
+
 				return true;
 			}
 			else
 			{
 				//Führe Rollback durch
 				$con->rollback();
+
 				return false;
 			}
 		}
@@ -603,6 +560,7 @@ class Group
 		{
 			//Führe Rollback durch
 			$con->rollback();
+
 			return false;
 		}
 	}
@@ -611,19 +569,17 @@ class Group
 	 * Fügt einen einzelnen Benutzer zur Gruppe hinzu
 	 *
 	 * @param \Core\Application\Models\Right\Group $group Betreffende Gruppe
-	 * @param \Core\Application\Models\User $user Betreffender Benutzer
+	 * @param \Core\Application\Models\User        $user  Betreffender Benutzer
 	 *
 	 * @return mixed
 	 */
 	public static function addUserToGroup(GroupModel $group, UserModel $user)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		return $con->insert(
-			'right_group_users',
-			array(
-				'group_id' => $group->getId(),
-				'user_id' => $user->getId()
-			)
-		);
+
+		return $con->insert('right_group_users', array(
+		                                              'group_id' => $group->getId(),
+		                                              'user_id' => $user->getId()
+		                                         ));
 	}
 }

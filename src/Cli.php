@@ -13,7 +13,8 @@ namespace Core;
 class Cli
 {
 
-	public function __construct(){
+	public function __construct()
+	{
 		$this->params = $this->_parseParameters();
 		define('DISABLE_HTTP', true);
 	}
@@ -58,9 +59,11 @@ class Cli
 	{
 		$params = array();
 
-		foreach ($_SERVER['argv'] as $key => $value){
-			if ($key > 0){
-				$parsed  = $this->_parseParameter(trim($value,'--'));
+		foreach ($_SERVER['argv'] as $key => $value)
+		{
+			if ($key > 0)
+			{
+				$parsed = $this->_parseParameter(trim($value, '--'));
 				$params[strtolower($parsed[0])] = $parsed[1];
 			}
 		}
@@ -83,4 +86,5 @@ class Cli
 	}
 
 }
+
 ?>

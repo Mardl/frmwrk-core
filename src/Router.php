@@ -31,17 +31,17 @@ class Router extends ArrayObject
 	protected $current;
 
 	/**
-     * Current route
-     *
+	 * Current route
+	 *
 	 * @var \Core\Route
 	 */
 	protected $currentRoute;
 
-    /**
-     * Parameters from last match
-     *
-     * @var array
-     */
+	/**
+	 * Parameters from last match
+	 *
+	 * @var array
+	 */
 	protected $params = array();
 
 	/**
@@ -57,6 +57,7 @@ class Router extends ArrayObject
 		{
 			return parent::offsetGet('default');
 		}
+
 		return parent::offsetGet($route);
 	}
 
@@ -67,10 +68,10 @@ class Router extends ArrayObject
 	 *
 	 * @return \Core\Route
 	 */
-    public function getRoute($routeName)
-    {
-        return $this[$routeName];
-    }
+	public function getRoute($routeName)
+	{
+		return $this[$routeName];
+	}
 
 	/**
 	 * Add route
@@ -86,16 +87,17 @@ class Router extends ArrayObject
 		$route = new Route($path, $defaults);
 		$route->setRouter($this);
 		$this[$key] = $route;
+
 		return $this[$key];
 	}
 
-    /**
-     * Add routes
-     *
-     * @param array $routes Routeninformationen
-     *
-     * @return void
-     */
+	/**
+	 * Add routes
+	 *
+	 * @param array $routes Routeninformationen
+	 *
+	 * @return void
+	 */
 	public function addRoutes(array $routes)
 	{
 		foreach ($routes as $route)
@@ -119,16 +121,18 @@ class Router extends ArrayObject
 			{
 				$this->current = $key;
 				$this->currentRoute = $route;
+
 				return $route;
 			}
 		}
+
 		return false;
 
 	}
 
 	/**
 	 * @param string $url URL
-	 * @param bool $instance
+	 * @param bool   $instance
 	 *
 	 * @return bool|\Core\Route
 	 */
@@ -150,19 +154,24 @@ class Router extends ArrayObject
 				}
 			}
 		}
+
 		return false;
 
 	}
 
-	public function getRouteByArray($data){
+	public function getRouteByArray($data)
+	{
 		$matching = array();
-		foreach($this as $routeName => $value)
+		foreach ($this as $routeName => $value)
 		{
-			if ($value instanceof \Core\Route && $routeName != 'default'){
+			if ($value instanceof \Core\Route && $routeName != 'default')
+			{
 				$temp = $value->getDefaults();
 				$matching[$routeName] = 0;
-				foreach ($data as $key => $val){
-					if (array_key_exists($key, $temp)){
+				foreach ($data as $key => $val)
+				{
+					if (array_key_exists($key, $temp))
+					{
 						if ($key == 'module' && $val == $temp['module'])
 						{
 							$matching[$routeName] += 3;
@@ -183,9 +192,12 @@ class Router extends ArrayObject
 						{
 							$matching[$routeName] -= 2;
 						}
-						else if ($key == 'action' && $val != $temp['action'])
+						else
 						{
-							$matching[$routeName] -= 1;
+							if ($key == 'action' && $val != $temp['action'])
+							{
+								$matching[$routeName] -= 1;
+							}
 						}
 					}
 				}
@@ -194,14 +206,17 @@ class Router extends ArrayObject
 		$max = 0;
 		$winnerRoute = null;
 
-		foreach ($matching as $route => $count){
-			if ($count > $max){
+		foreach ($matching as $route => $count)
+		{
+			if ($count > $max)
+			{
 				$max = $count;
 				$winnerRoute = $route;
 			}
 		}
 
-		if (is_null($winnerRoute)){
+		if (is_null($winnerRoute))
+		{
 			$winnerRoute = 'default';
 		}
 
@@ -218,11 +233,11 @@ class Router extends ArrayObject
 		return $this->current;
 	}
 
-    /**
-     * Get current route
-     *
-     * @return \Core\Route
-     */
+	/**
+	 * Get current route
+	 *
+	 * @return \Core\Route
+	 */
 	public function getCurrentRoute()
 	{
 		return $this->currentRoute;
@@ -243,39 +258,40 @@ class Router extends ArrayObject
 
 
 	/**
-     * Get params from route
-     *
-     * @return array
-     */
+	 * Get params from route
+	 *
+	 * @return array
+	 */
 	public function getParams()
 	{
 		return $this->params;
 	}
 
-    /**
-     * Get param from route by name
-     *
-     * @param string $key Parametername
-     *
-     * @return string
-     */
+	/**
+	 * Get param from route by name
+	 *
+	 * @param string $key Parametername
+	 *
+	 * @return string
+	 */
 	public function getParam($key)
 	{
 		if (array_key_exists($key, $this->params))
 		{
 			return $this->params[$key];
 		}
+
 		return null;
 
 	}
 
-    /**
-     * Set params
-     *
-     * @param array $params Array mit Parametern
-     *
-     * @return void
-     */
+	/**
+	 * Set params
+	 *
+	 * @param array $params Array mit Parametern
+	 *
+	 * @return void
+	 */
 	public function setParams($params)
 	{
 		$this->params = $params;

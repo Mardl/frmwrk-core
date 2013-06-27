@@ -11,10 +11,7 @@
 
 namespace Core;
 
-use Exception,
-    InvalidArgumentException,
-    jamwork\common\Registry,
-	Core\HTMLHelper;
+use Exception, InvalidArgumentException, jamwork\common\Registry, Core\HTMLHelper;
 
 /**
  * FrontController
@@ -29,9 +26,10 @@ use Exception,
  */
 class FrontController
 {
+
 	/**
 	 * View
-     *
+	 *
 	 *
 	 * @var   \Core\View
 	 */
@@ -93,7 +91,7 @@ class FrontController
 		// View
 		if (!isset(Registry::getInstance()->view))
 		{
-			$view = new View(APPLICATION_PATH.'/Layout/layout.html.php');
+			$view = new View(APPLICATION_PATH . '/Layout/layout.html.php');
 			$this->view = $view;
 			Registry::getInstance()->view = $view;
 		}
@@ -116,7 +114,7 @@ class FrontController
 	/**
 	 * Fügt die Seiteninfos dem internen Stack hinzu
 	 *
-	 * @param $action
+	 * @param      $action
 	 * @param null $controller
 	 * @param null $module
 	 * @param null $format
@@ -124,15 +122,13 @@ class FrontController
 	 */
 	public function addPageToStack($action, $controller = null, $module = null, $format = null, $prefix = null)
 	{
-		$page = array_filter(
-			array(
-				'action'     => $action,
-				'controller' => $controller,
-				'module'     => $module,
-				'format'     => $format,
-				'prefix'     => $prefix
-			)
-		);
+		$page = array_filter(array(
+		                          'action' => $action,
+		                          'controller' => $controller,
+		                          'module' => $module,
+		                          'format' => $format,
+		                          'prefix' => $prefix
+		                     ));
 
 		if ($this->lastPage)
 		{
@@ -147,11 +143,11 @@ class FrontController
 	/**
 	 * Render
 	 *
-	 * @param $actionName Action name
-	 * @param $controllerName Controller name
-	 * @param $moduleName Module name
-	 * @param string $actionFormat Action format
-	 * @param string $prefix Prefix
+	 * @param        $actionName     Action name
+	 * @param        $controllerName Controller name
+	 * @param        $moduleName     Module name
+	 * @param string $actionFormat   Action format
+	 * @param string $prefix         Prefix
 	 *
 	 * @return string
 	 *
@@ -171,20 +167,11 @@ class FrontController
 
 		if ($prefix == '')
 		{
-			$controllerName = sprintf(
-				'App\Modules\%s\Controller\%s',
-				ucfirst(str_replace('/', '_', $parts['module'])),
-				ucfirst($controllerName)
-			);
+			$controllerName = sprintf('App\Modules\%s\Controller\%s', ucfirst(str_replace('/', '_', $parts['module'])), ucfirst($controllerName));
 		}
 		else
 		{
-			$controllerName = sprintf(
-				'App\Modules\%s\%s\Controller\%s',
-				ucfirst(str_replace('/', '_', $parts['prefix'])),
-				ucfirst(str_replace('/', '_', $parts['module'])),
-				ucfirst($controllerName)
-			);
+			$controllerName = sprintf('App\Modules\%s\%s\Controller\%s', ucfirst(str_replace('/', '_', $parts['prefix'])), ucfirst(str_replace('/', '_', $parts['module'])), ucfirst($controllerName));
 		}
 
 		if (!class_exists($controllerName))
@@ -193,10 +180,7 @@ class FrontController
 			{
 				if (strlen($val) < 2 || strlen($val) > 32)
 				{
-					$msg = sprintf(
-						'Controller %s must be at least 2 chars long and may not exceed 32 (%s)',
-						ucfirst($val), $controllerName
-					);
+					$msg = sprintf('Controller %s must be at least 2 chars long and may not exceed 32 (%s)', ucfirst($val), $controllerName);
 					throw new \InvalidArgumentException($msg);
 				}
 
@@ -213,49 +197,36 @@ class FrontController
 			if ($prefix == '')
 			{
 				// Define the controller file
-				$controllerFile = sprintf(
-						'%s/Modules/%s/Controller/%s.php',
-						APPLICATION_PATH,
-						ucfirst($parts['module']),
-						ucfirst($parts['controller'])
-				);
+				$controllerFile = sprintf('%s/Modules/%s/Controller/%s.php', APPLICATION_PATH, ucfirst($parts['module']), ucfirst($parts['controller']));
 			}
 			else
 			{
 				// Define the controller file
-				$controllerFile = sprintf(
-					'%s/Modules/%s/%s/Controller/%s.php',
-					APPLICATION_PATH,
-					ucfirst($parts['prefix']),
-					ucfirst($parts['module']),
-					ucfirst($parts['controller'])
-				);
+				$controllerFile = sprintf('%s/Modules/%s/%s/Controller/%s.php', APPLICATION_PATH, ucfirst($parts['prefix']), ucfirst($parts['module']), ucfirst($parts['controller']));
 			}
 
 
 			if (!file_exists($controllerFile))
 			{
-				throw new \Exception('Controller file '.$controllerFile.' not found', 404);
+				throw new \Exception('Controller file ' . $controllerFile . ' not found', 404);
 			}
 
-			try {
-				require $controllerFile;
-			}
-			catch(Exception $e)
+			try
 			{
-				throw new \Exception('Controller file '.$controllerFile.' not found', 404);
+				require $controllerFile;
+			} catch (Exception $e)
+			{
+				throw new \Exception('Controller file ' . $controllerFile . ' not found', 404);
 			}
 
 			if (!class_exists($controllerName, false))
 			{
-				throw new \Exception('Controller class „'.$controllerFile.'“ not found', 404);
+				throw new \Exception('Controller class „' . $controllerFile . '“ not found', 404);
 			}
 
 			if (!is_subclass_of($controllerName, 'Core\\Controller'))
 			{
-				throw new Exception(
-					'Controller „'.$controllerName.'“ must extend Core\\Controller'
-				);
+				throw new Exception('Controller „' . $controllerName . '“ must extend Core\\Controller');
 			}
 		}
 
@@ -285,32 +256,19 @@ class FrontController
 			{
 				if ($prefix == '')
 				{
-					$template = sprintf(
-						'%s/Modules/%s/Views/%s/%s.%s.php',
-						APPLICATION_PATH,
-						ucfirst($parts['module']),
-						ucfirst($parts['controller']),
-						$parts['action'],
-						$parts['format']
-					);
+					$template = sprintf('%s/Modules/%s/Views/%s/%s.%s.php', APPLICATION_PATH, ucfirst($parts['module']), ucfirst($parts['controller']), $parts['action'], $parts['format']);
 				}
 				else
 				{
-					$template = sprintf(
-						'%s/Modules/%s/%s/Views/%s/%s.%s.php',
-						APPLICATION_PATH,
-						ucfirst($parts['prefix']),
-						ucfirst($parts['module']),
-						ucfirst($parts['controller']),
-						$parts['action'],
-						$parts['format']
-					);
+					$template = sprintf('%s/Modules/%s/%s/Views/%s/%s.%s.php', APPLICATION_PATH, ucfirst($parts['prefix']), ucfirst($parts['module']), ucfirst($parts['controller']), $parts['action'], $parts['format']);
 				}
 
 				$this->view->addTemplate($template);
 			}
+
 			return $this->view->render();
 		}
+
 		return '';
 	}
 
@@ -330,20 +288,15 @@ class FrontController
 		$route = $this->router->searchRoute($url);
 		$this->request->setRoute($route->getParams());
 
-		try {
+		try
+		{
 			$action = $this->router->getParam('action');
 			$controller = $this->router->getParam('controller');
 			$format = $this->router->getParam('format');
 			$prefix = $this->router->getParam('prefix');
 			$module = $this->router->getParam('module');
 
-			$this->addPageToStack(
-				$action,
-				$controller,
-				$module,
-				$format,
-				$prefix
-			);
+			$this->addPageToStack($action, $controller, $module, $format, $prefix);
 
 			if (!Registry::getInstance()->getSession()->has('user'))
 			{
@@ -353,28 +306,23 @@ class FrontController
 			{
 				if (class_exists('\App\Manager\User'))
 				{
-					$this->view->login = \App\Manager\User::getUserById(
-						Registry::getInstance()->getSession()->get('user')
-					);
+					$this->view->login = \App\Manager\User::getUserById(Registry::getInstance()->getSession()->get('user'));
 				}
 				else
 				{
-					$this->view->login = \Core\Application\Manager\User::getUserById(
-						Registry::getInstance()->getSession()->get('user')
-					);
+					$this->view->login = \Core\Application\Manager\User::getUserById(Registry::getInstance()->getSession()->get('user'));
 				}
 
 				Registry::getInstance()->login = $this->view->login;
 			}
 
 			$result = $this->dispatchLoop();
-		}
-		catch(Exception $e)
+		} catch (Exception $e)
 		{
 			$route = $this->router->getRoute('default');
 			$this->stack = array();
 			$this->addPageToStack('index', 'error', 'index', 'html', $route->get('prefix'));
-			$this->view->setTemplate(APPLICATION_PATH.'/Layout/layout.html.php');
+			$this->view->setTemplate(APPLICATION_PATH . '/Layout/layout.html.php');
 			SystemMessages::addError($e->getMessage());
 			$this->view->exception = $e;
 			$result = $this->dispatchLoop();
@@ -390,17 +338,11 @@ class FrontController
 	 */
 	public function dispatchLoop()
 	{
-		for ($i=0; $i<count($this->stack); $i++)
+		for ($i = 0; $i < count($this->stack); $i++)
 		{
 			$this->currentPage = $this->stack[$i];
 
-			$result = $this->render(
-				$this->currentPage['action'],
-				$this->currentPage['controller'],
-				$this->currentPage['module'],
-				isset($this->currentPage['format']) ? $this->currentPage['format'] : '',
-				isset($this->currentPage['prefix']) ? $this->currentPage['prefix'] : ''
-			);
+			$result = $this->render($this->currentPage['action'], $this->currentPage['controller'], $this->currentPage['module'], isset($this->currentPage['format']) ? $this->currentPage['format'] : '', isset($this->currentPage['prefix']) ? $this->currentPage['prefix'] : '');
 		}
 
 		return $result;
@@ -430,25 +372,25 @@ class FrontController
 		$action = ucfirst($action);
 		$format = ucfirst($format);
 
-		$actionName = $method.$action.$format.'Action';
+		$actionName = $method . $action . $format . 'Action';
 		if (method_exists($class, $actionName))
 		{
 			return $actionName;
 		}
 
-		$actionName = $method.$action.'Action';
+		$actionName = $method . $action . 'Action';
 		if (method_exists($class, $actionName))
 		{
 			return $actionName;
 		}
 
-		$actionName = $action.$format.'Action';
+		$actionName = $action . $format . 'Action';
 		if (method_exists($class, $actionName))
 		{
 			return $actionName;
 		}
 
-		$actionName = $action.'Action';
+		$actionName = $action . 'Action';
 		if (method_exists($class, $actionName))
 		{
 			return $actionName;

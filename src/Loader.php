@@ -47,7 +47,7 @@ class Loader
 	 * @var array
 	 */
 	protected $replace = array(
-		'_'  => DIRECTORY_SEPARATOR,
+		'_' => DIRECTORY_SEPARATOR,
 		'\\' => DIRECTORY_SEPARATOR
 	);
 
@@ -93,40 +93,40 @@ class Loader
 			return false;
 		}
 
-		$file = $this->path.'/'.trim(strtr($className, $this->replace), '_\\');
+		$file = $this->path . '/' . trim(strtr($className, $this->replace), '_\\');
 
-		$classNameSrc = str_replace($this->namespace,'',$className);
-		$fileSrc = $this->path.'/'.$this->namespace.'/src'.trim(strtr($classNameSrc, $this->replace), '_\\');
-		$fileRootSrc = $this->path.'/src'.trim(strtr($classNameSrc, $this->replace), '_\\');
+		$classNameSrc = str_replace($this->namespace, '', $className);
+		$fileSrc = $this->path . '/' . $this->namespace . '/src' . trim(strtr($classNameSrc, $this->replace), '_\\');
+		$fileRootSrc = $this->path . '/src' . trim(strtr($classNameSrc, $this->replace), '_\\');
 
 
 		$php = false;
 		$inc = false;
 
-		if (file_exists($file.'.php'))
+		if (file_exists($file . '.php'))
 		{
 			$php = true;
 		}
-		elseif (file_exists($file.'.inc'))
+		elseif (file_exists($file . '.inc'))
 		{
 			$inc = true;
 		}
-		elseif (file_exists($fileSrc.'.php'))
+		elseif (file_exists($fileSrc . '.php'))
 		{
 			$php = true;
 			$file = $fileSrc;
 		}
-		elseif (file_exists($fileSrc.'.inc'))
+		elseif (file_exists($fileSrc . '.inc'))
 		{
 			$inc = true;
 			$file = $fileSrc;
 		}
-		elseif (file_exists($fileRootSrc.'.php'))
+		elseif (file_exists($fileRootSrc . '.php'))
 		{
 			$php = true;
 			$file = $fileRootSrc;
 		}
-		elseif (file_exists($fileRootSrc.'.inc'))
+		elseif (file_exists($fileRootSrc . '.inc'))
 		{
 			$inc = true;
 			$file = $fileRootSrc;
@@ -134,21 +134,21 @@ class Loader
 
 		if ($php == true)
 		{
-			require_once $file.'.php';
-		}
-		else if ($inc == true)
-		{
-			require_once $file.'.inc';
+			require_once $file . '.php';
 		}
 		else
 		{
-			syslog(LOG_ALERT, "Klasse $className (Pfad: $file) wurde nicht gefunden");
-			if ($this->exception)
+			if ($inc == true)
 			{
-				throw new \ErrorException(
-					"Klasse $className (Pfad: $file) wurde nicht gefunden",
-					404
-				);
+				require_once $file . '.inc';
+			}
+			else
+			{
+				syslog(LOG_ALERT, "Klasse $className (Pfad: $file) wurde nicht gefunden");
+				if ($this->exception)
+				{
+					throw new \ErrorException("Klasse $className (Pfad: $file) wurde nicht gefunden", 404);
+				}
 			}
 		}
 

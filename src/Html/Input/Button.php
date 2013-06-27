@@ -3,22 +3,25 @@ namespace Core\Html\Input;
 
 use Core\Html\Input;
 
-class Button extends Input{
+class Button extends Input
+{
 
 	private $renderOutput = '<button type="{type}" class="{class}" style="{style}"  {id} name="{name}">{value}</button>{breakafter}';
 
-	public function __construct($id, $default, $css = array(), $breakafter = false){
+	public function __construct($id, $default, $css = array(), $breakafter = false)
+	{
 		parent::__construct($id, $default, $css, $breakafter);
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Html/button.html.php'))
+		if (file_exists(APPLICATION_PATH . '/Layout/Html/button.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/button.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH . '/Layout/Html/button.html.php');
 		}
 	}
 
 	public function __toString()
 	{
-		if (is_null($this->name) && is_null($this->id)){
+		if (is_null($this->name) && is_null($this->id))
+		{
 			throw new \ErrorException("Form element 'input' has neither id nor name.");
 		}
 

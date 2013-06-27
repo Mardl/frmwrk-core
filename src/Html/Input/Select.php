@@ -11,13 +11,13 @@ class Select extends \Core\Html\Input
 
 	private $renderOutput = '{label}<select class="{class}" style="{style}" {id} name="{name}" {multiple} {size}>{options}</select>{breakafter}';
 
-	public function __construct($id='', $css = array(), $breakafter = false, $required=false)
+	public function __construct($id = '', $css = array(), $breakafter = false, $required = false)
 	{
 		parent::__construct($id, '', $css, $breakafter, $required);
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Html/select.html.php'))
+		if (file_exists(APPLICATION_PATH . '/Layout/Html/select.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/select.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH . '/Layout/Html/select.html.php');
 		}
 	}
 
@@ -27,7 +27,7 @@ class Select extends \Core\Html\Input
 		{
 			$found = false;
 			$count = 0;
-			foreach($this->options as $option)
+			foreach ($this->options as $option)
 			{
 				$count++;
 				if ($count == 1)
@@ -38,7 +38,7 @@ class Select extends \Core\Html\Input
 			}
 			if (!$found)
 			{
-				return "Fehlende Eingabe für ".$this->getId();
+				return "Fehlende Eingabe für " . $this->getId();
 			}
 		}
 
@@ -53,7 +53,7 @@ class Select extends \Core\Html\Input
 
 	public function addOption($value, $tag, $selected = false)
 	{
-		$this->options[] = array($value,$tag,$selected);
+		$this->options[] = array($value, $tag, $selected);
 
 	}
 
@@ -64,7 +64,7 @@ class Select extends \Core\Html\Input
 			$this->optGroups[$optgroup] = array();
 		}
 
-		$this->optGroups[$optgroup][] = array($value,$tag,$selected);
+		$this->optGroups[$optgroup][] = array($value, $tag, $selected);
 
 	}
 
@@ -107,8 +107,9 @@ class Select extends \Core\Html\Input
 		$size = '';
 		if ($this->size > 1)
 		{
-			$size = ' size="'.$this->size.'"';
+			$size = ' size="' . $this->size . '"';
 		}
+
 		return $size;
 	}
 
@@ -117,34 +118,40 @@ class Select extends \Core\Html\Input
 		$multiple = '';
 		if ($this->multiselect > 1)
 		{
-			$multiple =' multiple="multiple"';
+			$multiple = ' multiple="multiple"';
 		}
+
 		return $multiple;
 	}
 
 	private function renderOptions()
 	{
 		$opts = '';
-		foreach ($this->options as $option){
-			$opts .= '<option value="'.$option[0].'"';
-			if ($option[2] || ($this->getValue() == $option[0])){
+		foreach ($this->options as $option)
+		{
+			$opts .= '<option value="' . $option[0] . '"';
+			if ($option[2] || ($this->getValue() == $option[0]))
+			{
 				$opts .= 'selected="selected"';
 			}
-			$opts .= '>'.$option[1].'</option>';
+			$opts .= '>' . $option[1] . '</option>';
 		}
 
-		foreach ($this->optGroups as $group => $options){
-			$opts .= "<optgroup label='".$group."'>";
+		foreach ($this->optGroups as $group => $options)
+		{
+			$opts .= "<optgroup label='" . $group . "'>";
 			foreach ($options as $option)
 			{
-				$opts .= '<option value="'.$option[0].'"';
-				if ($option[2] || ($this->getValue() == $option[0])){
+				$opts .= '<option value="' . $option[0] . '"';
+				if ($option[2] || ($this->getValue() == $option[0]))
+				{
 					$opts .= 'selected="selected"';
 				}
-				$opts .= '>'.$option[1].'</option>';
+				$opts .= '>' . $option[1] . '</option>';
 			}
 			$opts .= "</optgroup>";
 		}
+
 		return $opts;
 	}
 

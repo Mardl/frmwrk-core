@@ -22,9 +22,9 @@ class String
 {
 
 	/**
-     * Sluggify string
-     * Replace non ASCII chars from string
-     *
+	 * Sluggify string
+	 * Replace non ASCII chars from string
+	 *
 	 * @param string $string String to sluggify
 	 *
 	 * @return string
@@ -41,37 +41,38 @@ class String
 		);
 		$string = strtr($string, $replace);
 
-        // Replace other chars to -
+		// Replace other chars to -
 		$string = preg_replace('/[^a-zA-Z0-9]+/', '-', $string);
 		$string = trim($string, '-');
 		if ($string == '')
 		{
 			return '-';
 		}
+
 		return $string;
 	}
 
-    /**
-     * String starts with $needle
-     *
-     * @param string $haystack Zeichenkette die geprüft werden soll
-     * @param string $needle   Zeichenkette auf die geprüft werden soll
-     *
-     * @return boolean
-     */
+	/**
+	 * String starts with $needle
+	 *
+	 * @param string $haystack Zeichenkette die geprüft werden soll
+	 * @param string $needle   Zeichenkette auf die geprüft werden soll
+	 *
+	 * @return boolean
+	 */
 	public static function startsWith($haystack, $needle)
 	{
 		return substr($haystack, 0, strlen($needle)) == $needle;
 	}
 
-    /**
-     * String ends with needle
-     *
-     * @param string $haystack Zeichenkette die geprüft werden soll
-     * @param string $needle   Zeichenkette auf die geprüft werden soll
-     *
-     * @return boolean
-     */
+	/**
+	 * String ends with needle
+	 *
+	 * @param string $haystack Zeichenkette die geprüft werden soll
+	 * @param string $needle   Zeichenkette auf die geprüft werden soll
+	 *
+	 * @return boolean
+	 */
 	public static function endsWith($haystack, $needle)
 	{
 		return substr($haystack, -strlen($needle)) == $needle;
@@ -79,7 +80,8 @@ class String
 
 	public static function bcryptEncode($pwd, $salt)
 	{
-		$salt = '$6$rounds=6000$'.substr($salt,0,16).'$';
+		$salt = '$6$rounds=6000$' . substr($salt, 0, 16) . '$';
+
 		return crypt($pwd, $salt);
 	}
 
@@ -88,12 +90,15 @@ class String
 		return (crypt($pwd, $stored) == $stored);
 	}
 
-	public static function reduce($string, $limit = 144, $end = true){
+	public static function reduce($string, $limit = 144, $end = true)
+	{
 
-		if (strlen($string) > $limit + 3){
+		if (strlen($string) > $limit + 3)
+		{
 			$string = substr($string, 0, $limit);
 
-			if ($end){
+			if ($end)
+			{
 				$string .= '...';
 			}
 		}

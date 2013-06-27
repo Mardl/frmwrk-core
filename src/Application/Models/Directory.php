@@ -10,9 +10,7 @@
  */
 namespace Core\Application\Models;
 
-use Core\Model as BaseModel,
-	Core\Application\Manager\Directory as DirectoryManager,
-	Core\Application\Models\Directory as DirectoryModel;
+use Core\Model as BaseModel, Core\Application\Manager\Directory as DirectoryManager, Core\Application\Models\Directory as DirectoryModel;
 
 
 /**
@@ -34,6 +32,7 @@ use Core\Model as BaseModel,
  */
 class Directory extends BaseModel
 {
+
 	/**
 	 * Id
 	 *
@@ -122,8 +121,9 @@ class Directory extends BaseModel
 	{
 		if (!is_null($this->parent))
 		{
-			return ($this->parent->getParentIds().','.$this->parent->getId());
+			return ($this->parent->getParentIds() . ',' . $this->parent->getId());
 		}
+
 		return 0;
 	}
 

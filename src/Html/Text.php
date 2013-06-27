@@ -3,6 +3,7 @@ namespace Core\Html;
 
 class Text extends Element
 {
+
 	private $text = '';
 
 	public function __construct($id, $text = '', $breakafter = false)
@@ -13,17 +14,20 @@ class Text extends Element
 		$this->text = $text;
 	}
 
-	public function setText($text){
+	public function setText($text)
+	{
 		$this->text = $text;
 
 	}
 
-	public function addText($text){
+	public function addText($text)
+	{
 		$this->text .= $text;
 	}
 
 
-	public function __toString(){
+	public function __toString()
+	{
 		$t = '';
 		$t .= $this->text;
 
@@ -37,4 +41,5 @@ class Text extends Element
 	}
 
 }
+
 ?>

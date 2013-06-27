@@ -23,66 +23,66 @@ use Imagick as ImageMagick;
  */
 class Image extends ImageMagick
 {
-	
+
 	/**
 	 * Offset x
-	 * 
+	 *
 	 * @var   integer
 	 */
 	protected $offsetX = 0;
-	
+
 	/**
 	 * Offset y
-	 * 
+	 *
 	 * @var   integer
 	 */
 	protected $offsetY = 0;
 
 	/**
 	 * Set offset for Imagick::brandImage
-	 * 
+	 *
 	 * @param integer $x X-Position.
 	 * @param integer $y Y-Position.
-	 * 
+	 *
 	 * @return void
 	 */
-	public function setOffset($x, $y) 
+	public function setOffset($x, $y)
 	{
 		if ($x < 0)
 		{
 			$x = ($this->getImageWidth() + $x);
 		}
-		
+
 		if ($y < 0)
 		{
 			$y = ($this->getImageHeight() + $y);
 		}
-		
+
 		$this->offsetX = $x;
 		$this->offsetY = $y;
-		
+
 	}
 
 	/**
 	 * Get offset x
-	 * 
-	 * @return integer 
+	 *
+	 * @return integer
 	 */
-	public function getOffsetX() 
+	public function getOffsetX()
 	{
 		return $this->offsetX;
-		
+
 	}
 
 	/**
 	 * Get offset y
-	 * 
-	 * @return integer 
+	 *
+	 * @return integer
 	 */
 	public function getOffsetY()
 	{
 		return $this->offsetY;
-		
+
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Image extends ImageMagick
 	 * @param integer $width
 	 * @param integer $height
 	 */
-	public function thumbnailWithCanvas($width, $height) 
+	public function thumbnailWithCanvas($width, $height)
 	{
 		$this->thumbnailImage($width, $height, true);
 		$geometry = $this->getImageGeometry();
@@ -109,7 +109,7 @@ class Image extends ImageMagick
 	 *
 	 * @param integer $width
 	 */
-	public function resizeWidthTo($width) 
+	public function resizeWidthTo($width)
 	{
 		$this->thumbnailImage($width, 0, false);
 	}
@@ -119,7 +119,7 @@ class Image extends ImageMagick
 	 *
 	 * @param integer $height
 	 */
-	public function resizeHeightTo($height) 
+	public function resizeHeightTo($height)
 	{
 		$this->thumbnailImage(0, $height, false);
 	}
@@ -129,24 +129,20 @@ class Image extends ImageMagick
 	 *
 	 * @param integer $length
 	 */
-	public function resizeLongerSideTo($length) 
+	public function resizeLongerSideTo($length)
 	{
 		$this->thumbnailImage($length, $length, true);
 	}
 
 	/**
 	 * Brand image
-	 * 
+	 *
 	 * @param ImageMagick $watermark Watermark
-	 * 
+	 *
 	 * @return object
 	 */
 	public function brandImage(ImageMagick $watermark)
 	{
-		return $this->compositeImage(
-			$watermark, ImageMagick::COMPOSITE_DEFAULT,
-			($this->getOffsetX() - $watermark->getOffsetX()),
-			($this->getOffsetY() - $watermark->getOffsetY())
-		);
+		return $this->compositeImage($watermark, ImageMagick::COMPOSITE_DEFAULT, ($this->getOffsetX() - $watermark->getOffsetX()), ($this->getOffsetY() - $watermark->getOffsetY()));
 	}
 }

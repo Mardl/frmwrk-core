@@ -11,9 +11,7 @@
 
 namespace Core;
 
-use ArrayObject,
-    Exception,
-    jamwork\common\Registry;
+use ArrayObject, Exception, jamwork\common\Registry;
 
 /**
  * Core\View
@@ -124,8 +122,7 @@ class View extends ArrayObject
 		try
 		{
 			return $this->render();
-		}
-		catch(Exception $e)
+		} catch (Exception $e)
 		{
 			return $e->getMessage();
 		}
@@ -155,6 +152,7 @@ class View extends ArrayObject
 	public function setRouter(Router $router)
 	{
 		$this->router = $router;
+
 		return $this->router;
 	}
 
@@ -166,11 +164,11 @@ class View extends ArrayObject
 	 */
 	public function getRoute()
 	{
-		$route = $this->router->getCurrent() ?: 'default';
-		try {
+		$route = $this->router->getCurrent() ? : 'default';
+		try
+		{
 			return $this->router[$route];
-		}
-		catch (\Exception $e)
+		} catch (\Exception $e)
 		{
 			throw new \ErrorException("Specified route $route not found");
 		}
@@ -206,6 +204,7 @@ class View extends ArrayObject
 	public function setTitle($title)
 	{
 		$this->pageTitle = array($title);
+
 		return $this->pageTitle;
 	}
 
@@ -219,6 +218,7 @@ class View extends ArrayObject
 	public function addTitle($title)
 	{
 		$this->pageTitle[] = $title;
+
 		return $this->pageTitle;
 	}
 
@@ -230,12 +230,13 @@ class View extends ArrayObject
 	 *
 	 * @return string
 	 */
-	public function getTitle($separator=' - ')
+	public function getTitle($separator = ' - ')
 	{
 		if (!isset($this->pageTitle))
 		{
 			return 'No title set';
 		}
+
 		return implode($separator, array_map('htmlspecialchars', array_reverse($this->pageTitle)));
 	}
 
@@ -250,6 +251,7 @@ class View extends ArrayObject
 	public function addKeyword($keyword)
 	{
 		$this->pageKeywords[] = $keyword;
+
 		return $this->pageKeywords;
 	}
 
@@ -275,13 +277,14 @@ class View extends ArrayObject
 	 *
 	 * @return string Keywords
 	 */
-	public function getKeywords($separator=', ')
+	public function getKeywords($separator = ', ')
 	{
 		if (empty($this->pageKeywords))
 		{
 			return false;
 		}
 		sort($this->pageKeywords);
+
 		return implode($separator, array_map('htmlspecialchars', $this->pageKeywords));
 	}
 
@@ -295,10 +298,7 @@ class View extends ArrayObject
 	 */
 	public function setDescription($description)
 	{
-		$this->pageDescription = $this->html->truncate(
-			preg_replace('#\s+#', ' ', strip_tags($description)),
-			140
-		);
+		$this->pageDescription = $this->html->truncate(preg_replace('#\s+#', ' ', strip_tags($description)), 140);
 	}
 
 	/**
@@ -312,6 +312,7 @@ class View extends ArrayObject
 		{
 			return null;
 		}
+
 		return htmlspecialchars($this->pageDescription);
 	}
 
@@ -325,6 +326,7 @@ class View extends ArrayObject
 	public function setTemplate($template)
 	{
 		$this->templates = array($template);
+
 		return $this->templates;
 	}
 
@@ -338,14 +340,18 @@ class View extends ArrayObject
 	public function addTemplate($template)
 	{
 		$this->templates[] = $template;
+
 		return $this->templates;
 	}
 
 	public function addPlaceholder($key, $value, $prerender = false)
 	{
-		if ($prerender){
-			$this->placeholder[$key] = $value.'';
-		} else {
+		if ($prerender)
+		{
+			$this->placeholder[$key] = $value . '';
+		}
+		else
+		{
 			$this->placeholder[$key] = $value;
 		}
 
@@ -364,7 +370,8 @@ class View extends ArrayObject
 			$this->placeholder[$key] = array();
 		}
 
-		if (!is_array($this->placeholder[$key])){
+		if (!is_array($this->placeholder[$key]))
+		{
 			$this->placeholder[$key] = array();
 		}
 
@@ -384,6 +391,7 @@ class View extends ArrayObject
 	public function removeTemplates()
 	{
 		$this->templates = array();
+
 		return $this->templates;
 	}
 
@@ -425,7 +433,8 @@ class View extends ArrayObject
 				$this->content = ob_get_clean();
 
 
-				foreach ($this->placeholder as $key => $value){
+				foreach ($this->placeholder as $key => $value)
+				{
 					$c = $value;
 
 					if (is_array($value))
@@ -442,20 +451,20 @@ class View extends ArrayObject
 
 					}
 
-					$this->content = str_replace('{'.$key.'}', $c, $this->content);
+					$this->content = str_replace('{' . $key . '}', $c, $this->content);
 				}
-			}
-			catch(Exception $e)
+			} catch (Exception $e)
 			{
 				ob_end_clean();
 
 				$this->content = '<div style="background: #f99; padding: 0.5em; margin: 0.5em;';
-				$this->content .= ' border: 1px solid #f00;">'.$e->getMessage();
-				$this->content .= '<br />File: '.$e->getFile().':'.$e->getLine().'</div>';
+				$this->content .= ' border: 1px solid #f00;">' . $e->getMessage();
+				$this->content .= '<br />File: ' . $e->getFile() . ':' . $e->getLine() . '</div>';
 
 				throw $e;
 			}
-        }
+		}
+
 		return $this->content;
 	}
 
@@ -469,13 +478,14 @@ class View extends ArrayObject
 	}
 
 	/**
-	 * @param $value
+	 * @param        $value
 	 * @param string $currency
 	 * @return string
 	 */
-	public function convertToCurrency($value,$currency='€')
+	public function convertToCurrency($value, $currency = '€')
 	{
 		$number = number_format($value, 2, ',', '.');
+
 		return $number . " $currency";
 	}
 
@@ -485,10 +495,11 @@ class View extends ArrayObject
 	 */
 	public function formatNumberStyle($value)
 	{
-		if(!empty($value))
+		if (!empty($value))
 		{
 			return $this->convertToCurrency($value);
 		}
+
 		return '-';
 	}
 

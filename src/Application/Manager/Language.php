@@ -11,9 +11,7 @@
 
 namespace Core\Application\Manager;
 
-use jamwork\common\Registry,
-	Core\SystemMessages,
-	jamwork\database\MysqlRecordset as Recordset;
+use jamwork\common\Registry, Core\SystemMessages, jamwork\database\MysqlRecordset as Recordset;
 
 /**
  * Languagemanager
@@ -22,4 +20,7 @@ use jamwork\common\Registry,
  * @package  Manager
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-class Language extends \Core\Application\Manager\Base {}
+class Language extends \Core\Application\Manager\Base
+{
+
+}

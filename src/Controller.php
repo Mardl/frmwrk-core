@@ -11,14 +11,11 @@
 
 namespace Core;
 
-use InvalidArgumentException,
-	Core\Request,
-	Core\FrontController,
-	jamwork\common\Registry;
+use InvalidArgumentException, Core\Request, Core\FrontController, jamwork\common\Registry;
 
 /**
  * Abstract controller class
- * 
+ *
  * @category Controller
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
@@ -42,7 +39,7 @@ abstract class Controller
 
 	/**
 	 * Request
-     * HTTP request
+	 * HTTP request
 	 *
 	 * @var   Request
 	 */
@@ -50,7 +47,7 @@ abstract class Controller
 
 	/**
 	 * Response
-     * HTTP response
+	 * HTTP response
 	 *
 	 * @var   Response
 	 */
@@ -80,26 +77,26 @@ abstract class Controller
 	/**
 	 * Construct
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		$reg = Registry::getInstance();
 		$this->request = $reg->getRequest();
 		$this->response = $reg->getResponse();
 		$this->view = $reg->view;
-		
+
 	}
 
 	/**
 	 * Magische Funktion für den Aufruf einer Action
-	 * 
+	 *
 	 * @param string $method    Name der Action
 	 * @param array  $arguments Array mit Argumenten
-	 * 
+	 *
 	 * @throws \InvalidArgumentException Wenn die Action in dem Controller unbekannt ist
-	 * 
+	 *
 	 * @return void
 	 */
-	public function __call($method, $arguments = array()) 
+	public function __call($method, $arguments = array())
 	{
 		$msg = sprintf('Action "%s" not found in controller "%s"', $method, __CLASS__);
 		throw new \InvalidArgumentException($msg, 404);
@@ -112,7 +109,7 @@ abstract class Controller
 	 *
 	 * @return void
 	 */
-	public function setFrontController(FrontController $frontController) 
+	public function setFrontController(FrontController $frontController)
 	{
 		$this->frontController = $frontController;
 	}
@@ -123,13 +120,14 @@ abstract class Controller
 	 * @param \Core\Router $router
 	 * @return bool Status
 	 */
-	public function setRouter(Router $router) 
+	public function setRouter(Router $router)
 	{
 		if ($this->view)
 		{
 			$this->view->setRouter($router);
 		}
 		$this->router = $router;
+
 		return true;
 	}
 
@@ -139,13 +137,14 @@ abstract class Controller
 	 * @param View $view
 	 * @return bool
 	 */
-	public function setView(View $view) 
+	public function setView(View $view)
 	{
 		if ($this->router)
 		{
 			$view->setRouter($this->router);
 		}
 		$this->view = $view;
+
 		return true;
 
 	}
@@ -154,13 +153,14 @@ abstract class Controller
 	 * Create new view and set router
 	 *
 	 * @param string $template Template file
-	 * 
+	 *
 	 * @return \Core\View
 	 */
-	public function createView($template = null) 
+	public function createView($template = null)
 	{
 		$view = new View($template);
 		$view->setRouter($this->router);
+
 		return $view;
 	}
 
@@ -168,12 +168,13 @@ abstract class Controller
 	 * Set request
 	 *
 	 * @param \Core\Request $request Request
-	 * 
+	 *
 	 * @return boolean Status
 	 */
-	public function setRequest(Request $request) 
+	public function setRequest(Request $request)
 	{
 		$this->request = $request;
+
 		return true;
 
 	}
@@ -182,12 +183,13 @@ abstract class Controller
 	 * Set response
 	 *
 	 * @param \Core\Response $response Response
-	 * 
+	 *
 	 * @return boolean Status
 	 */
-	public function setResponse(Response $response) 
+	public function setResponse(Response $response)
 	{
 		$this->response = $response;
+
 		return true;
 	}
 
@@ -195,10 +197,10 @@ abstract class Controller
 	 * Disables the rendering for the controller
 	 *
 	 * @param boolean $flag Entweder True oder False
-	 * 
+	 *
 	 * @return void
 	 */
-	public function setNoRender($flag = true) 
+	public function setNoRender($flag = true)
 	{
 		$this->disableRendering = $flag;
 	}
@@ -208,22 +210,22 @@ abstract class Controller
 	 *
 	 * @return bool
 	 */
-	public function isNoRender() 
+	public function isNoRender()
 	{
 		return $this->disableRendering;
 	}
 
 	/**
 	 * Fügt die Seiteninfos dem Frontcontroller hinzu
-	 * 
+	 *
 	 * @param string $action     Actionname
 	 * @param string $controller Controllername
 	 * @param string $module     Modulname
 	 * @param string $format     Format
-	 * 
+	 *
 	 * @return void
 	 */
-	public function forward($action, $controller = null, $module = null, $format = null) 
+	public function forward($action, $controller = null, $module = null, $format = null)
 	{
 		$this->frontController->addPageToStack($action, $controller, $module, $format);
 	}
@@ -233,7 +235,7 @@ abstract class Controller
 	 *
 	 * @return void
 	 */
-	public function init() 
+	public function init()
 	{
 
 	}

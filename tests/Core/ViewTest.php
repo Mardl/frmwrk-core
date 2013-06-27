@@ -238,7 +238,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetTitleEXPNoTitleSet()
 	{
-		$this->assertEquals('No title set', $this->View->getTitle());
+		$this->assertEquals('', $this->View->getTitle());
 	
 	}
 	

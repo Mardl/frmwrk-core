@@ -24,19 +24,23 @@ class Element
 
 	}
 
-	public function addElement(Element $element){
+	public function addElement(Element $element)
+	{
 		$this->elements[] = $element;
 
 	}
 
-	public function addElements(array $elements){
-		foreach ($elements as $element){
+	public function addElements(array $elements)
+	{
+		foreach ($elements as $element)
+		{
 			$this->addElement($element);
 		}
 
 	}
 
-	public function setRequired($required = true){
+	public function setRequired($required = true)
+	{
 		$this->required = $required;
 		if ($this->label)
 		{
@@ -44,84 +48,102 @@ class Element
 		}
 	}
 
-	public function isRequired(){
+	public function isRequired()
+	{
 		return $this->required;
 
 	}
 
-	public function setCssClass($class){
+	public function setCssClass($class)
+	{
 		$this->cssClasses = array($class);
 
 	}
 
-	public function addCssClass($class){
+	public function addCssClass($class)
+	{
 		$this->cssClasses[] = $class;
 
 	}
 
-	public function addCssClasses(array $classes){
-		foreach ($classes as $class){
+	public function addCssClasses(array $classes)
+	{
+		foreach ($classes as $class)
+		{
 			$this->addCssClass($class);
 		}
 
 	}
 
-	public function hasCssClasses(){
+	public function hasCssClasses()
+	{
 		return (count($this->cssClasses) >= 1);
 
 	}
 
 	public function getCssClasses()
 	{
-		$output = implode(' ',$this->cssClasses);
+		$output = implode(' ', $this->cssClasses);
+
 		return $output;
 
 	}
 
-	public function setInlineStyle($style,$value){
+	public function setInlineStyle($style, $value)
+	{
 		$this->cssInline[$style] = $value;
 
 	}
 
-	public function getInlineCss(){
+	public function getInlineCss()
+	{
 		$output = '';
-		foreach ($this->cssInline as $style => $value){
-			$output .= $style.':'.$value.';';
+		foreach ($this->cssInline as $style => $value)
+		{
+			$output .= $style . ':' . $value . ';';
 
 		}
+
 		return $output;
 
 	}
 
-	public function hasInlineCss(){
+	public function hasInlineCss()
+	{
 		return (count($this->cssInline) >= 1);
 
 	}
 
-	public function setLabel($label){
-		if (!($label instanceof Label)){
+	public function setLabel($label)
+	{
+		if (!($label instanceof Label))
+		{
 			$label = new Label($label, $this->getName());
 		}
 		$this->label = $label;
 
 	}
 
-	public function getLabel(){
+	public function getLabel()
+	{
 		return $this->label;
 
 	}
 
-	public function setId($id){
+	public function setId($id)
+	{
 		$this->id = $id;
 
 	}
 
-	public function getPlainId(){
+	public function getPlainId()
+	{
 		return $this->id;
 
 	}
 
-	public function getId($count=''){
+	public function getId($count = '')
+	{
 		if (empty($this->id) && empty($this->name))
 		{
 			return null;
@@ -130,14 +152,16 @@ class Element
 		{
 			if (empty($this->id))
 			{
-				return ' id="'.$this->name.(!empty($count) ? '-'.$count : '').'"';
+				return ' id="' . $this->name . (!empty($count) ? '-' . $count : '') . '"';
 			}
-			return ' id="'.$this->id.(!empty($count) ? '-'.$count : '').'"';
+
+			return ' id="' . $this->id . (!empty($count) ? '-' . $count : '') . '"';
 		}
 
 	}
 
-	public function setName($name){
+	public function setName($name)
+	{
 		$this->name = $name;
 
 	}
@@ -148,6 +172,7 @@ class Element
 		{
 			return $this->name;
 		}
+
 		return $this->id;
 	}
 
@@ -167,11 +192,11 @@ class Element
 		{
 			if ($this->label)
 			{
-				return "Fehlende Eingabe für ".$this->label->getValue();
+				return "Fehlende Eingabe für " . $this->label->getValue();
 			}
 			else
 			{
-				return "Fehlende Eingabe für ".$this->getId();
+				return "Fehlende Eingabe für " . $this->getId();
 			}
 		}
 
@@ -201,7 +226,7 @@ class Element
 
 		foreach ($this->attributes as $attr => $vals)
 		{
-			$output .= $attr."='".implode(' ', $vals)."' ";
+			$output .= $attr . "='" . implode(' ', $vals) . "' ";
 		}
 
 		return $output;
@@ -230,7 +255,8 @@ class Element
 	protected function renderStandard($output)
 	{
 		$elements = '';
-		foreach ($this->elements as $element){
+		foreach ($this->elements as $element)
+		{
 			$elements .= $element;
 		}
 
@@ -238,7 +264,7 @@ class Element
 		$output = str_replace('{style}', $this->renderInlineStyles($output), $output);
 		$output = str_replace('{id}', $this->getId(), $output);
 		$output = str_replace('{attr}', $this->renderAttributes(), $output);
-		$output = str_replace('{elements}',$elements, $output);
+		$output = str_replace('{elements}', $elements, $output);
 		$output = $this->breakafter ? str_replace('{breakafter}', '<br class="clear"/>', $output) : str_replace('{breakafter}', '', $output);
 
 		$output = $this->clearUp($output);

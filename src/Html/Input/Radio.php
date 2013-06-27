@@ -3,31 +3,33 @@ namespace Core\Html\Input;
 
 use Core\Html\Input;
 
-class Radio extends Input{
+class Radio extends Input
+{
 
 	private $options = array();
 	private $renderOutput = '<label class="checkbox {class}"><input type="radio" class="{class}" style="{style}" {id} name="{name}" value="{value}" {attr} {checked}/> {title}</label>';
 
-	public function __construct($id, $default, $css = array(), $breakafter = false, $opt = array(), $required=false )
+	public function __construct($id, $default, $css = array(), $breakafter = false, $opt = array(), $required = false)
 	{
 		parent::__construct($id, $default, $css, $breakafter, $required);
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Html/radio.html.php'))
+		if (file_exists(APPLICATION_PATH . '/Layout/Html/radio.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/radio.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH . '/Layout/Html/radio.html.php');
 		}
 
 		if (!empty($opt))
 		{
-			foreach($opt as $key => $value)
+			foreach ($opt as $key => $value)
 			{
 				$this->addOption($key, $value, $key == $default);
 			}
 		}
 	}
 
-	public function addOption($value, $tag, $selected = false){
-		$this->options[] = array($value,$tag,$selected);
+	public function addOption($value, $tag, $selected = false)
+	{
+		$this->options[] = array($value, $tag, $selected);
 
 	}
 
@@ -37,23 +39,24 @@ class Radio extends Input{
 		if ($this->isRequired())
 		{
 			$found = false;
-			foreach($this->options as $option)
+			foreach ($this->options as $option)
 			{
-				  $found = $found || $option[2];
+				$found = $found || $option[2];
 			}
 			if (!$found)
 			{
-				return "Fehlende Eingabe für ".$this->getId();
+				return "Fehlende Eingabe für " . $this->getId();
 			}
 		}
 
 		return true;
 	}
 
-	public function __toString(){
+	public function __toString()
+	{
 		$output = '';
 
-		$count=0;
+		$count = 0;
 		foreach ($this->options as $option)
 		{
 			$count++;

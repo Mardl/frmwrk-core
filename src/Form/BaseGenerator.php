@@ -9,11 +9,11 @@
  */
 namespace Core\Form;
 
-use Core\Form,
-	Core\SystemMessages;
+use Core\Form, Core\SystemMessages;
 
 class BaseGenerator
 {
+
 	protected $form;
 
 	/**
@@ -48,7 +48,8 @@ class BaseGenerator
 		return $this->form;
 	}
 
-	public function __toString(){
+	public function __toString()
+	{
 		return $this->form->__toString();
 	}
 

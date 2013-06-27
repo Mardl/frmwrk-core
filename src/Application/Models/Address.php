@@ -23,60 +23,61 @@ use Core\Model as BaseModel;
  */
 class Address extends BaseModel
 {
-    /**
-     * Id
-     *
-     * @var integer
-     *
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
 
-    /**
-     * Street
-     *
-     * @var string
-     *
-     * @Column(type="string", length=32, nullable=true)
-     */
-    protected $street;
+	/**
+	 * Id
+	 *
+	 * @var integer
+	 *
+	 * @Id
+	 * @Column(type="integer")
+	 * @GeneratedValue(strategy="AUTO")
+	 */
+	protected $id;
 
-    /**
-     * City
-     *
-     * @var string
-     *
-     * @Column(type="string", length=32, nullable=true)
-     */
-    protected $city;
+	/**
+	 * Street
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=32, nullable=true)
+	 */
+	protected $street;
 
-    /**
-     * Zipcode
-     *
-     * @var string
-     *
-     * @Column(type="string", length=16, nullable=true)
-     */
-    protected $zipcode;
+	/**
+	 * City
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=32, nullable=true)
+	 */
+	protected $city;
 
-    /**
-     * Province
-     *
-     * @var string
-     *
-     * @Column(type="string", length=32, nullable=true)
-     */
-    protected $province;
+	/**
+	 * Zipcode
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=16, nullable=true)
+	 */
+	protected $zipcode;
 
-    /**
-     * User
-     *
-     * @var App\Model\User
-     *
-     * @OneToOne(targetEntity="App\Models\User", fetch="LAZY", inversedBy="address")
-     */
-    protected $user;
+	/**
+	 * Province
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=32, nullable=true)
+	 */
+	protected $province;
+
+	/**
+	 * User
+	 *
+	 * @var App\Model\User
+	 *
+	 * @OneToOne(targetEntity="App\Models\User", fetch="LAZY", inversedBy="address")
+	 */
+	protected $user;
 
 }

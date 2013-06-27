@@ -10,8 +10,7 @@
  */
 namespace Core\Application\Manager;
 
-use App\Models\User as UserModel,
-	jamwork\common\Registry;
+use App\Models\User as UserModel, jamwork\common\Registry;
 
 /**
  * User
@@ -22,6 +21,7 @@ use App\Models\User as UserModel,
  */
 class User
 {
+
 	/**
 	 * Users
 	 *
@@ -56,9 +56,7 @@ class User
 		/**
 		 * @var $query \jamwork\database\MysqlQuery
 		 */
-		$query = $con->newQuery()
-			->select(
-				'u.id,
+		$query = $con->newQuery()->select('u.id,
 				u.username,
 				u.firstname,
 				u.lastname,
@@ -71,11 +69,7 @@ class User
 				u.status,
 				u.admin,
 				u.language_id as language,
-				u.otp'
-			)
-			->from('users as u')
-			->addWhere('id', $userid)
-			->limit(0, 1);
+				u.otp')->from('users as u')->addWhere('id', $userid)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -84,10 +78,11 @@ class User
 		{
 			$rs = $rsExecution->get();
 			self::$_users[$userid] = new UserModel($rs);
+
 			return self::$_users[$userid];
 		}
 
-		throw new \ErrorException('Benutzer mit ID: '.$userid.' nicht gefunden');
+		throw new \ErrorException('Benutzer mit ID: ' . $userid . ' nicht gefunden');
 	}
 
 	/**
@@ -108,9 +103,7 @@ class User
 
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-			->select(
-				'u.id,
+		$query = $con->newQuery()->select('u.id,
 				u.username,
 				u.firstname,
 				u.lastname,
@@ -123,10 +116,7 @@ class User
 				u.status,
 				u.admin,
 				u.language_id as language,
-				u.otp'
-			)
-			->from('users as u')
-			->addWhere('id', $userids);
+				u.otp')->from('users as u')->addWhere('id', $userids);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -134,7 +124,8 @@ class User
 		$users = array();
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
 		{
-			while (($rs = $rsExecution->get()) == true){
+			while (($rs = $rsExecution->get()) == true)
+			{
 				$users[] = new UserModel($rs);
 			}
 		}
@@ -160,9 +151,7 @@ class User
 		}
 
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'u.id,
+		$query = $con->newQuery()->select('u.id,
 				u.username,
 				u.firstname,
 				u.lastname,
@@ -175,11 +164,7 @@ class User
 				u.status,
 				u.admin,
 				u.language_id as language,
-				u.otp'
-			)
-			->from('users as u')
-			->addWhere('username', $username)
-			->limit(0, 1);
+				u.otp')->from('users as u')->addWhere('username', $username)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -187,6 +172,7 @@ class User
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
 		{
 			$rs = $rsExecution->get();
+
 			return new UserModel($rs);
 
 		}
@@ -212,9 +198,7 @@ class User
 		}
 
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'u.id,
+		$query = $con->newQuery()->select('u.id,
 				u.username,
 				u.firstname,
 				u.lastname,
@@ -227,11 +211,7 @@ class User
 				u.status,
 				u.admin,
 				u.language_id as language,
-				u.otp'
-		)
-			->from('users as u')
-			->addWhere('email', $email)
-			->limit(0, 1);
+				u.otp')->from('users as u')->addWhere('email', $email)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -239,6 +219,7 @@ class User
 		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
 		{
 			$rs = $rsExecution->get();
+
 			return new UserModel($rs);
 
 		}
@@ -249,11 +230,7 @@ class User
 	public static function checkPassword($userid, $password)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select('id, password, otp')
-			->from('users')
-			->addWhere('id', $userid)
-			->addWhere('status', STATUS_ACTIVE);
+		$query = $con->newQuery()->select('id, password, otp')->from('users')->addWhere('id', $userid)->addWhere('status', STATUS_ACTIVE);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -263,7 +240,8 @@ class User
 			$rs = $rsExecution->get();
 			$checkup = false;
 
-			if (strlen($rs['password']) <= 32){
+			if (strlen($rs['password']) <= 32)
+			{
 				$checkup = (md5($password) == $rs['password']);
 			}
 			else
@@ -292,11 +270,7 @@ class User
 	public static function login($username, $password)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select('id, password, otp, language_id as language')
-			->from('users')
-			->addWhere('username', $username)
-			->addWhere('status', STATUS_ACTIVE);
+		$query = $con->newQuery()->select('id, password, otp, language_id as language')->from('users')->addWhere('username', $username)->addWhere('status', STATUS_ACTIVE);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -305,7 +279,8 @@ class User
 		{
 			$rs = $rsExecution->get();
 
-			if (strlen($rs['password']) <= 32){
+			if (strlen($rs['password']) <= 32)
+			{
 				$checkup = (md5($password) == $rs['password']);
 			}
 			else
@@ -319,6 +294,7 @@ class User
 				$session->set('user', $rs['id']);
 				$session->set('otp', $rs['otp']);
 				$session->set('language', $rs['language']);
+
 				return $rs['id'];
 			}
 		}
@@ -344,10 +320,7 @@ class User
 	public static function getUserCount($status = STATUS_DELETED)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select('COUNT(*) AS count')
-			->from('users as u')
-			->addWhere('status', $status, '<=');
+		$query = $con->newQuery()->select('COUNT(*) AS count')->from('users as u')->addWhere('status', $status, '<=');
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -376,9 +349,7 @@ class User
 	public static function getUsers($status = STATUS_DELETED, $offset = 0, $limit = 25)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'u.id,
+		$query = $con->newQuery()->select('u.id,
 				u.username,
 				u.firstname,
 				u.lastname,
@@ -391,12 +362,7 @@ class User
 				u.status,
 				u.admin,
 				u.language_id as language,
-				u.otp'
-			)
-			->from('users as u')
-			->addWhere('status', $status, '<=')
-			->orderBy('username')
-			->limit($offset, $limit);
+				u.otp')->from('users as u')->addWhere('status', $status, '<=')->orderBy('username')->limit($offset, $limit);
 
 		$query->distinct();
 
@@ -427,9 +393,7 @@ class User
 	{
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-			->select(
-				'u.id,
+		$query = $con->newQuery()->select('u.id,
 				u.username,
 				u.firstname,
 				u.lastname,
@@ -442,12 +406,7 @@ class User
 				u.status,
 				u.admin,
 				u.language_id as language,
-				u.otp'
-			)
-			->from('users as u')
-			->innerJoin('right_group_users AS rgu')
-			->on('rgu.user_id = u.id')
-			->addWhere('rgu.group_id', $groupId);
+				u.otp')->from('users as u')->innerJoin('right_group_users AS rgu')->on('rgu.user_id = u.id')->addWhere('rgu.group_id', $groupId);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -468,8 +427,8 @@ class User
 	/**
 	 * Speichert einen neuen Benutzer in der Datenbank
 	 *
-	 * @param \Core\Application\Models\User $user User-Objekt
-	 * @param string $password Passwort
+	 * @param \Core\Application\Models\User $user     User-Objekt
+	 * @param string                        $password Passwort
 	 *
 	 * @return bool|\Core\Application\Models\User
 	 *
@@ -480,32 +439,30 @@ class User
 		$con = Registry::getInstance()->getDatabase();
 		$datetime = new \DateTime();
 
-		if(!self::checkUniqueUsername($user))
+		if (!self::checkUniqueUsername($user))
 		{
 			throw new \ErrorException('Der gewünschte Benutzername ist bereits vergeben!');
 		}
 
 		$user->setCreated($datetime);
 
-		$id = $con->insert(
-			'users',
-			array(
-				'username' 	=> $user->getUsername(),
-				'firstname' => $user->getFirstname(),
-				'lastname' 	=> $user->getLastname(),
-				'password' 	=> $user->setPassword($password, false),
-				'email' 	=> $user->getEmail(),
-				'birthday' 	=> $user->getBirthday()->format('Y-m-d'),
-				'gender' 	=> $user->getGender(),
-				'created' 	=> $datetime->format('Y-m-d H:i:s'),
-				'status' 	=> STATUS_ACTIVE,
-				'admin' 	=> $user->getAdmin()
-			)
-		);
+		$id = $con->insert('users', array(
+		                                 'username' => $user->getUsername(),
+		                                 'firstname' => $user->getFirstname(),
+		                                 'lastname' => $user->getLastname(),
+		                                 'password' => $user->setPassword($password, false),
+		                                 'email' => $user->getEmail(),
+		                                 'birthday' => $user->getBirthday()->format('Y-m-d'),
+		                                 'gender' => $user->getGender(),
+		                                 'created' => $datetime->format('Y-m-d H:i:s'),
+		                                 'status' => STATUS_ACTIVE,
+		                                 'admin' => $user->getAdmin()
+		                            ));
 
 		if ($id)
 		{
 			$user->setId($id);
+
 			return $user;
 		}
 
@@ -515,8 +472,8 @@ class User
 	/**
 	 * Speichert Änderungen eines Benutzers
 	 *
-	 * @param \Core\Application\Models\User $user User-Objekt
-	 * @param string $password Optionales Passwort
+	 * @param \Core\Application\Models\User $user     User-Objekt
+	 * @param string                        $password Optionales Passwort
 	 *
 	 * @return bool|\Core\Application\Models\User
 	 *
@@ -532,7 +489,7 @@ class User
 			return false;
 		}
 
-		if(!self::checkUniqueUsername($user))
+		if (!self::checkUniqueUsername($user))
 		{
 			throw new \ErrorException('Der gewünschte Benutzername ist bereits vergeben!');
 		}
@@ -540,34 +497,36 @@ class User
 		if (empty($password))
 		{
 			$data = array(
-				'username' 	=> $user->getUsername(),
+				'username' => $user->getUsername(),
 				'firstname' => $user->getFirstname(),
-				'lastname' 	=> $user->getLastname(),
-				'email' 	=> $user->getEmail(),
-				'birthday' 	=> $user->getBirthday()->format('Y-m-d'),
-				'gender' 	=> $user->getGender(),
-				'avatar' 	=> $user->getAvatarId(),
-				'status' 	=> $user->getStatus(),
-				'admin' 	=> $user->getAdmin(),
-				'otp'	 	=> $user->getOtp(),
-				'language'	=> $user->getLanguage(),
-				'id' 		=> $user->getId()
+				'lastname' => $user->getLastname(),
+				'email' => $user->getEmail(),
+				'birthday' => $user->getBirthday()->format('Y-m-d'),
+				'gender' => $user->getGender(),
+				'avatar' => $user->getAvatarId(),
+				'status' => $user->getStatus(),
+				'admin' => $user->getAdmin(),
+				'otp' => $user->getOtp(),
+				'language' => $user->getLanguage(),
+				'id' => $user->getId()
 			);
-		} else {
+		}
+		else
+		{
 			$data = array(
-				'username' 	=> $user->getUsername(),
+				'username' => $user->getUsername(),
 				'firstname' => $user->getFirstname(),
-				'lastname' 	=> $user->getLastname(),
-				'email' 	=> $user->getEmail(),
-				'birthday' 	=> $user->getBirthday()->format('Y-m-d'),
-				'gender' 	=> $user->getGender(),
-				'avatar' 	=> $user->getAvatarId(),
-				'status' 	=> $user->getStatus(),
-				'password' 	=> $user->setPassword($password, false),
-				'admin' 	=> $user->getAdmin(),
-				'otp'	 	=> $user->getOtp(),
-				'language' 	=> $user->getLanguage(),
-				'id' 		=> $user->getId()
+				'lastname' => $user->getLastname(),
+				'email' => $user->getEmail(),
+				'birthday' => $user->getBirthday()->format('Y-m-d'),
+				'gender' => $user->getGender(),
+				'avatar' => $user->getAvatarId(),
+				'status' => $user->getStatus(),
+				'password' => $user->setPassword($password, false),
+				'admin' => $user->getAdmin(),
+				'otp' => $user->getOtp(),
+				'language' => $user->getLanguage(),
+				'id' => $user->getId()
 			);
 		}
 
@@ -586,17 +545,15 @@ class User
 	 * Im ersten Parameter $status wird übermittelt bis (exklusive) welchem Benutzerstatus
 	 * die Benutzer aus der Datenbank gelesen werden sollen.
 	 *
-	 * @param string  $keyword Suchwort
-	 * @param int $status  Der maximale Benutzerstatus, Default: Deleted
+	 * @param string $keyword Suchwort
+	 * @param int    $status  Der maximale Benutzerstatus, Default: Deleted
 	 *
 	 * @return \Core\Application\Models\User[]
 	 */
 	public static function searchUsers($keyword, $status = STATUS_DELETED)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select(
-				'u.id,
+		$query = $con->newQuery()->select('u.id,
 				u.username,
 				u.firstname,
 				u.lastname,
@@ -607,16 +564,7 @@ class User
 				u.gender,
 				u.created,
 				u.status,
-				u.admin'
-			)
-			->from('users as u')
-			->addWhere('status', $status, '<=')
-			->openClosure()
-			->addWhereLike('username', $keyword)
-			->addWhereLike('firstname', $keyword, '%%%s%%', 'OR')
-			->addWhereLike('lastname', $keyword, '%%%s%%', 'OR')
-			->closeClosure()
-			->orderBy('username');
+				u.admin')->from('users as u')->addWhere('status', $status, '<=')->openClosure()->addWhereLike('username', $keyword)->addWhereLike('firstname', $keyword, '%%%s%%', 'OR')->addWhereLike('lastname', $keyword, '%%%s%%', 'OR')->closeClosure()->orderBy('username');
 
 		$query->distinct();
 
@@ -643,19 +591,16 @@ class User
 	public static function checkUniqueUsername(UserModel $model)
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()
-			->select('*')
-			->from('users')
-			->addWhere('username', $model->getUsername());
+		$query = $con->newQuery()->select('*')->from('users')->addWhere('username', $model->getUsername());
 
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
-		if($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
+		if ($rsExecution->isSuccessfull() && ($rsExecution->count() > 0))
 		{
 			$rsExecution = $rs->get();
-			if($rsExecution['id'] != $model->getId())
+			if ($rsExecution['id'] != $model->getId())
 			{
 				return false;
 			}
@@ -674,12 +619,12 @@ class User
 	{
 		$userModel = self::getUserById($userid);
 
-		$crypttime=md5(crypt(time()));
-		$randompass=substr($crypttime, 0, 8);
+		$crypttime = md5(crypt(time()));
+		$randompass = substr($crypttime, 0, 8);
 		$randompass = strtolower($randompass);
 
 		$userModel->setOtp(1);
-		self::updateUser($userModel,$randompass);
+		self::updateUser($userModel, $randompass);
 
 		return $randompass;
 	}

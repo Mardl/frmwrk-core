@@ -10,9 +10,7 @@
  */
 namespace Core\Application\Models\Right;
 
-use Core\Model as BaseModel,
-	App\Models\Right as RightModel,
-	App\Models\User as UserModel;
+use Core\Model as BaseModel, App\Models\Right as RightModel, App\Models\User as UserModel;
 
 /**
  * Right
@@ -35,38 +33,38 @@ class Group extends BaseModel
 {
 
 	/**
-     * Id
-     *
-     * @var integer
-     *
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+	 * Id
+	 *
+	 * @var integer
+	 *
+	 * @Id
+	 * @Column(type="integer")
+	 * @GeneratedValue(strategy="AUTO")
+	 */
+	protected $id;
 
-    /**
-     * Module
-     *
-     * @var string
-     *
-     * @Column(type="string", unique=true)
-     */
-    protected $name;
+	/**
+	 * Module
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", unique=true)
+	 */
+	protected $name;
 
-    /**
-     * Modified
-     *
-     * @var datetime
-     *
-     * @Column(type="datetime")
-     */
-    protected $modified;
+	/**
+	 * Modified
+	 *
+	 * @var datetime
+	 *
+	 * @Column(type="datetime")
+	 */
+	protected $modified;
 
-    /**
-     * @var array
-     */
-    protected $rights;
+	/**
+	 * @var array
+	 */
+	protected $rights;
 
 	/**
 	 * Users
@@ -83,20 +81,20 @@ class Group extends BaseModel
 	 * @throws \InvalidArgumentException
 	 */
 	public function setRights(array $rights)
-    {
-    	if (!empty($rights))
-    	{
-    		foreach ($rights as $right)
-    		{
-    			if (!($right instanceof RightModel))
-    			{
-    				throw new \InvalidArgumentException("Ungültiger Typ vom Recht");
-    			}
-    		}
-    	}
+	{
+		if (!empty($rights))
+		{
+			foreach ($rights as $right)
+			{
+				if (!($right instanceof RightModel))
+				{
+					throw new \InvalidArgumentException("Ungültiger Typ vom Recht");
+				}
+			}
+		}
 
-    	$this->rights = $rights;
-    }
+		$this->rights = $rights;
+	}
 
 	/**
 	 * Prüft die ELemente des Arrays auf Typ App\Models\User
@@ -106,20 +104,20 @@ class Group extends BaseModel
 	 * @throws \InvalidArgumentException
 	 */
 	public function setUsers(array $users)
-    {
-    	if (!empty($users))
-    	{
-    		foreach ($users as $user)
-    		{
-    			if (!($user instanceof UserModel))
-    			{
-    				throw new \InvalidArgumentException("Kein User");
-    			}
-    		}
-    	}
+	{
+		if (!empty($users))
+		{
+			foreach ($users as $user)
+			{
+				if (!($user instanceof UserModel))
+				{
+					throw new \InvalidArgumentException("Kein User");
+				}
+			}
+		}
 
-    	$this->users = $users;
-    }
+		$this->users = $users;
+	}
 }
 
 ?>

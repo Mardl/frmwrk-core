@@ -29,10 +29,7 @@ class Coverage extends \PHPUnit_Framework_TestCase
 	public function __construct()
 	{
 		$this->whiteList = array(
-			'App/Manager', 
-			'App/Models', 
-			'framework/Core', 
-			'framework/Lifemeter'
+			'src'
 		);
 	}
 

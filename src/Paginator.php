@@ -97,12 +97,11 @@ class Paginator
 
 		if ($steps > 1)
 		{
-			$view = new View(APPLICATION_PATH.'/Layout/Helpers/paginator.html.php');
+			$view = new View(APPLICATION_PATH . '/Layout/Helpers/paginator.html.php');
 			$view->steps = ceil($steps);
 			$view->last = $view->steps - 1;
 			$view->current = $this->_page;
 			$view->class = $this->_class;
-
 
 
 			if ($view->current < ($steps - 1))
@@ -131,11 +130,13 @@ class Paginator
 				$view->end = $view->current + 3;
 				$view->start = $view->current - 2;
 
-				if ($view->start < 0){
+				if ($view->start < 0)
+				{
 					$view->start = 0;
 				}
 
-				if ($view->end > $view->steps){
+				if ($view->end > $view->steps)
+				{
 					$view->end = $view->steps;
 				}
 			}

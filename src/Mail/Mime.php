@@ -7,7 +7,8 @@ namespace Core\Mail;
  *
  * Encode files(string) as mime to send attachments via mail
  */
-class Mime extends \ArrayObject {
+class Mime extends \ArrayObject
+{
 
 	/**
 	 * MimeType
@@ -26,8 +27,9 @@ class Mime extends \ArrayObject {
 	/**
 	 * Constructor
 	 */
-	public function __construct() {
-		$this->boundary = 'MIME-BOUNDARY-'.sha1(uniqid('', true));
+	public function __construct()
+	{
+		$this->boundary = 'MIME-BOUNDARY-' . sha1(uniqid('', true));
 	}
 
 	/**
@@ -35,7 +37,8 @@ class Mime extends \ArrayObject {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->execute();
 	}
 
@@ -45,8 +48,10 @@ class Mime extends \ArrayObject {
 	 * @param string $mimetype MimeType
 	 * @return string
 	 */
-	public function setType($mimetype) {
+	public function setType($mimetype)
+	{
 		$this->type = $mimetype;
+
 		return $this->type;
 	}
 
@@ -55,10 +60,11 @@ class Mime extends \ArrayObject {
 	 *
 	 * @return array
 	 */
-	public function getHeaders() {
+	public function getHeaders()
+	{
 		return array(
 			'MIME-Version' => '1.0 (PHP Core\Mime)',
-			'Content-Type' => $this->type.';'." ".'boundary="'.$this->boundary.'"'
+			'Content-Type' => $this->type . ';' . " " . 'boundary="' . $this->boundary . '"'
 		);
 	}
 
@@ -71,22 +77,26 @@ class Mime extends \ArrayObject {
 	 *
 	 * @return array
 	 */
-	public function addPart($name, $value, $type) {
+	public function addPart($name, $value, $type)
+	{
 		$part = explode(';', $type);
 
 		// Wenn $type == 'text/html' dann füge vorher eine alternative text/plain ein
-		if($part[0] == 'text/html' and $this->type == 'multipart/alternative') {
+		if ($part[0] == 'text/html' and $this->type == 'multipart/alternative')
+		{
 			$dom = new \Core\DOM\Document();
 			@ $dom->loadHTML($value);
 			$elements = $dom->getElementsByTagName('body');
-			if(count($elements) == 1) {
-				$this->addPart(NULL, $elements->item(0)->textContent, 'text/plain; charset=UTF-8');
+			if (count($elements) == 1)
+			{
+				$this->addPart(null, $elements->item(0)->textContent, 'text/plain; charset=UTF-8');
 			}
 		}
+
 		return $this[] = array(
-			'name'  => $name,
+			'name' => $name,
 			'value' => $value,
-			'type'  => $type
+			'type' => $type
 		);
 	}
 
@@ -95,35 +105,45 @@ class Mime extends \ArrayObject {
 	 *
 	 * @return string
 	 */
-	public function execute() {
+	public function execute()
+	{
 		// Line separator (depends from mailserver?)
 		$ls = "\n";
 
 		$result = '';
-		foreach($this as $item) {
-			$result .= '--'.$this->boundary.$ls;
-			if($item['value'] instanceOf Mime) {
-				$result .= $this->prepareHeaders($item['value']->getHeaders()).$ls;
-			} else {
-				$result .= 'Content-Type: '.$item['type'].$ls;
+		foreach ($this as $item)
+		{
+			$result .= '--' . $this->boundary . $ls;
+			if ($item['value'] instanceOf Mime)
+			{
+				$result .= $this->prepareHeaders($item['value']->getHeaders()) . $ls;
+			}
+			else
+			{
+				$result .= 'Content-Type: ' . $item['type'] . $ls;
 			}
 
 			// Attachment name
-			if($item['name']) {
-				$result .= "Content-Disposition: attachment;".$ls."\tfilename=\"".$item['name']."\"".$ls;
+			if ($item['name'])
+			{
+				$result .= "Content-Disposition: attachment;" . $ls . "\tfilename=\"" . $item['name'] . "\"" . $ls;
 			}
 
 			// Encoding and data
-			if(substr($item['type'], 0, 5) == 'text/' || substr($item['type'], 0, 10) == 'multipart/') {
-				$result .= "Content-Transfer-Encoding: 8bit".$ls.$ls;
-				$result .= $item['value'].$ls;
-			} else {
-				$result .= "Content-Transfer-Encoding: base64".$ls.$ls;
-				$result .= chunk_split(base64_encode($item['value'])).$ls;
+			if (substr($item['type'], 0, 5) == 'text/' || substr($item['type'], 0, 10) == 'multipart/')
+			{
+				$result .= "Content-Transfer-Encoding: 8bit" . $ls . $ls;
+				$result .= $item['value'] . $ls;
+			}
+			else
+			{
+				$result .= "Content-Transfer-Encoding: base64" . $ls . $ls;
+				$result .= chunk_split(base64_encode($item['value'])) . $ls;
 			}
 		}
 
-		$result = rtrim($result).$ls.'--'.$this->boundary."--".$ls;
+		$result = rtrim($result) . $ls . '--' . $this->boundary . "--" . $ls;
+
 		return $result;
 
 	}
@@ -134,11 +154,13 @@ class Mime extends \ArrayObject {
 	 * @param array $headers Headers
 	 * @return string
 	 */
-	private function prepareHeaders(array $headers) {
+	private function prepareHeaders(array $headers)
+	{
 		$result = array();
 		unset($headers['MIME-Version']);
-		foreach($headers as $key => $value) {
-			$result[] = $key.': '.$value;
+		foreach ($headers as $key => $value)
+		{
+			$result[] = $key . ': ' . $value;
 		}
 
 		return implode("\n", $result);

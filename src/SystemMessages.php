@@ -23,24 +23,24 @@ use \jamwork\common\Registry;
 class SystemMessages
 {
 
-    /**
-     * Messages
-     *
-     * @var array
-     */
+	/**
+	 * Messages
+	 *
+	 * @var array
+	 */
 	private static $_messages = array();
 
 	/**
 	 * Add message
 	 *
-	 * @param string $content Message
-	 * @param string $category Category
-	 * @param array $arguments (sprintf) Arguments for message
-	 * @param bool $html HTML = true, Plaintext = false
+	 * @param string $content   Message
+	 * @param string $category  Category
+	 * @param array  $arguments (sprintf) Arguments for message
+	 * @param bool   $html      HTML = true, Plaintext = false
 	 *
 	 * @throws \InvalidArgumentException
 	 */
-	public static function add($content, $category = 'notice', $arguments = array(), $html = false) 
+	public static function add($content, $category = 'notice', $arguments = array(), $html = false)
 	{
 		if (!in_array($category, array('notice', 'warning', 'error', 'success')))
 		{
@@ -56,78 +56,78 @@ class SystemMessages
 
 	}
 
-    /**
-     * Add notice
-     *
-     * @param string  $content   Message
-     * @param array   $arguments (sprintf) Arguments for message
-     * @param boolean $html      HTML = true, Plaintext = false
-     * 
-     * @return void
-     */
-	public static function addNotice($content, $arguments = array(), $html = false) 
+	/**
+	 * Add notice
+	 *
+	 * @param string  $content   Message
+	 * @param array   $arguments (sprintf) Arguments for message
+	 * @param boolean $html      HTML = true, Plaintext = false
+	 *
+	 * @return void
+	 */
+	public static function addNotice($content, $arguments = array(), $html = false)
 	{
 		self::add($content, 'notice', $arguments, $html);
 	}
 
-    /**
-     * Add warning
-     *
-     * @param string  $content   Message
-     * @param array   $arguments (sprintf) Arguments for message
-     * @param boolean $html      HTML = true, Plaintext = false
-     * 
-     * @return void
-     */
-	public static function addWarning($content, $arguments = array(), $html = false) 
+	/**
+	 * Add warning
+	 *
+	 * @param string  $content   Message
+	 * @param array   $arguments (sprintf) Arguments for message
+	 * @param boolean $html      HTML = true, Plaintext = false
+	 *
+	 * @return void
+	 */
+	public static function addWarning($content, $arguments = array(), $html = false)
 	{
 		self::add($content, 'warning', $arguments, $html);
 	}
 
-    /**
-     * Add success
-     *
-     * @param string  $content   Message
-     * @param array   $arguments (sprintf) Arguments for message
-     * @param boolean $html      HTML = true, Plaintext = false
-     * 
-     * @return void
-     */
-	public static function addSuccess($content, $arguments = array(), $html = false) 
+	/**
+	 * Add success
+	 *
+	 * @param string  $content   Message
+	 * @param array   $arguments (sprintf) Arguments for message
+	 * @param boolean $html      HTML = true, Plaintext = false
+	 *
+	 * @return void
+	 */
+	public static function addSuccess($content, $arguments = array(), $html = false)
 	{
 		self::add($content, 'success', $arguments, $html);
 	}
 
-    /**
-     * Add error
-     *
-     * @param string  $content   Message
-     * @param array   $arguments (sprintf) Arguments for message
-     * @param boolean $html      HTML = true, Plaintext = false
-     * 
-     * @return void
-     */
-	public static function addError($content, $arguments = array(), $html = false) 
+	/**
+	 * Add error
+	 *
+	 * @param string  $content   Message
+	 * @param array   $arguments (sprintf) Arguments for message
+	 * @param boolean $html      HTML = true, Plaintext = false
+	 *
+	 * @return void
+	 */
+	public static function addError($content, $arguments = array(), $html = false)
 	{
 		self::add($content, 'error', $arguments, $html);
 	}
 
-    /**
-     * Get list of messages
-     *
-     * @return array
-     */
-	public static function getList() 
+	/**
+	 * Get list of messages
+	 *
+	 * @return array
+	 */
+	public static function getList()
 	{
 		return self::$_messages;
 	}
 
-    /**
-     * Clear messages
-     * 
-     * @return void
-     */
-	public static function clear() 
+	/**
+	 * Clear messages
+	 *
+	 * @return void
+	 */
+	public static function clear()
 	{
 		self::$_messages = array();
 	}

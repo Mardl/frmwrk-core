@@ -10,6 +10,7 @@
  */
 
 namespace Core;
+
 use jamwork\common\HttpResponse;
 
 /**
@@ -27,7 +28,7 @@ class Response extends HttpResponse
 	 *
 	 * @param string  $url    Target url
 	 * @param integer $status Status
-	 * 
+	 *
 	 * @return void
 	 */
 	// @todo funktion bereits im Jamwork. Wenn alles aktualisiert ist, kann sie gelöscht werden!
@@ -35,7 +36,7 @@ class Response extends HttpResponse
 	{
 		$this->setBody('');
 		$this->setStatus($status);
-		$this->addHeader('Location',$url);
+		$this->addHeader('Location', $url);
 		$this->flush();
 		die();
 

@@ -11,9 +11,7 @@
 
 namespace Core;
 
-use App\Models\Right,
-	App\Manager\Right as RightManager,
-	jamwork\common\Registry;
+use App\Models\Right, App\Manager\Right as RightManager, jamwork\common\Registry;
 
 /**
  * PublicController Class
@@ -25,6 +23,7 @@ use App\Models\Right,
  */
 class PublicController extends Controller
 {
+
 	/**
 	 * @var bool
 	 */
@@ -37,26 +36,24 @@ class PublicController extends Controller
 	{
 		parent::__construct();
 
-		$module 	= $this->request->getRouteParam('module');
+		$module = $this->request->getRouteParam('module');
 		$controller = $this->request->getRouteParam('controller');
-		$action		= $this->request->getRouteParam('action');
-		$prefix		= $this->request->getRouteParam('prefix');
+		$action = $this->request->getRouteParam('action');
+		$prefix = $this->request->getRouteParam('prefix');
 
-		$right = new Right(
-			array(
-				'module' => $module,
-				'controller' => $controller,
-				'action' => $action,
-				'prefix' => $prefix
-			)
-		);
+		$right = new Right(array(
+		                        'module' => $module,
+		                        'controller' => $controller,
+		                        'action' => $action,
+		                        'prefix' => $prefix
+		                   ));
 
 		if ($this->checkPermissions)
 		{
-			try {
+			try
+			{
 				$login = Registry::getInstance()->login;
-			}
-			catch (\Exception $e)
+			} catch (\Exception $e)
 			{
 				$this->response->redirect($this->view->url(array(), 'login', true));
 			}
@@ -88,7 +85,7 @@ class PublicController extends Controller
 		$response = $registry->getResponse();
 		$response->addHeader('Content-Type', 'application/json; charset=utf-8');
 
-		$response->setBody( json_encode($json) );
+		$response->setBody(json_encode($json));
 		$response->flush();
 		die();
 	}

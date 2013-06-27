@@ -6,3 +6,8 @@
  * Time: 13:57
  * To change this template use File | Settings | File Templates.
  */
+
+$config = array(
+	'UNITTESTING'=>'defined',
+	'BASE_URL'=>'http://lifemeter.testing.dev/'
+);

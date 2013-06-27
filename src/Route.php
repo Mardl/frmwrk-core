@@ -15,7 +15,7 @@ use Core\Request;
 
 /**
  * Route
- * 
+ *
  * @category Routing
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
@@ -23,11 +23,11 @@ use Core\Request;
 class Route
 {
 
-    /**
-     * Router
-     *
-     * @var \Core\Router;
-     */
+	/**
+	 * Router
+	 *
+	 * @var \Core\Router;
+	 */
 	protected $router;
 
 	/**
@@ -45,7 +45,7 @@ class Route
 	protected $defaults = array();
 
 	/**
-	 * @param $pattern
+	 * @param       $pattern
 	 * @param array $defaults
 	 */
 	public function __construct($pattern, array $defaults = array())
@@ -54,12 +54,12 @@ class Route
 		$this->defaults = $defaults;
 	}
 
-    /**
-     * Get router
-     *
-     * @return Core\Router
-     */
-	public function getRouter() 
+	/**
+	 * Get router
+	 *
+	 * @return Core\Router
+	 */
+	public function getRouter()
 	{
 		return $this->router;
 	}
@@ -77,7 +77,7 @@ class Route
 	 * Get param value from route
 	 *
 	 * @param string $key Key
-	 * 
+	 *
 	 * @return string
 	 */
 	public function get($key)
@@ -95,7 +95,8 @@ class Route
 		return $this->getRouter()->getParams();
 	}
 
-	public function getDefaults(){
+	public function getDefaults()
+	{
 		return $this->defaults;
 	}
 
@@ -103,7 +104,7 @@ class Route
 	 * Match $url to route
 	 *
 	 * @param string $url Url
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function match($url)
@@ -113,16 +114,17 @@ class Route
 
 		// Get file extension
 		$temp = pathinfo($url['path']);
-		
-		$url['path'] = $temp['dirname'].'/'.$temp['filename'];
-		
+
+		$url['path'] = $temp['dirname'] . '/' . $temp['filename'];
+
 		if (isset($temp['extension']) && $temp['extension'])
 		{
 			$result['format'] = $temp['extension'];
 		}
 		else
 		{
-			if(!isset($this->defaults['format'])) {
+			if (!isset($this->defaults['format']))
+			{
 				$this->defaults['format'] = 'html';
 			}
 			$result['format'] = $this->defaults['format'];
@@ -133,23 +135,23 @@ class Route
 
 		$urlparts = explode('/', $url['path']);
 		$urlparts = array_values(array_filter($urlparts));
-	
+
 		foreach ($parts as $key => $part)
 		{
-			
+
 			// Constant part not exists
 			if (substr($part, 0, 1) != ':' && !isset($urlparts[$key]))
 			{
 				return false;
 			}
-			
+
 			// Constant part wrong
 			if (substr($part, 0, 1) != ':' && $urlparts[$key] != $part)
 			{
 				return false;
 			}
 
-            // Save dynamic value to $result
+			// Save dynamic value to $result
 			if (isset($urlparts[$key]) && $urlparts[$key])
 			{
 				$result[substr($part, 1)] = $urlparts[$key];
@@ -157,6 +159,7 @@ class Route
 		}
 
 		$this->getRouter()->setParams($result);
+
 		return $result;
 
 	}
@@ -176,7 +179,7 @@ class Route
 		// Get file extension
 		$temp = pathinfo($url['path']);
 
-		$url['path'] = $temp['dirname'].'/'.$temp['filename'];
+		$url['path'] = $temp['dirname'] . '/' . $temp['filename'];
 
 		if (isset($temp['extension']) && $temp['extension'])
 		{
@@ -223,9 +226,9 @@ class Route
 	/**
 	 * Create url from route
 	 *
-	 * @param array $params Parameters
-	 * @param null $reset Reset values from last match
-	 * @param bool $absolute Absolute Url with hostname
+	 * @param array $params   Parameters
+	 * @param null  $reset    Reset values from last match
+	 * @param bool  $absolute Absolute Url with hostname
 	 *
 	 * @return string
 	 *
@@ -240,7 +243,7 @@ class Route
 		}
 
 		$parts = preg_split('/[\/\.]/', $this->pattern, 32, PREG_SPLIT_NO_EMPTY);
-		
+
 		foreach ($parts as $key => $part)
 		{
 			// Add constant parts
@@ -255,38 +258,39 @@ class Route
 				// Replace values from parameters
 				$result[substr($part, 1)] = String::slug($params[substr($part, 1)]);
 				unset($params[substr($part, 1)]);
-			} 
-			else if (isset($defaults[substr($part, 1)]))
+			}
+			else
 			{
-				// Replace default values
-				$result[substr($part, 1)] = $defaults[substr($part, 1)];
-			} 
-			else 
-			{
-				throw new \ErrorException(
-					'Key '.substr($part, 1).' is not defined in route '.$this->pattern
-				);
+				if (isset($defaults[substr($part, 1)]))
+				{
+					// Replace default values
+					$result[substr($part, 1)] = $defaults[substr($part, 1)];
+				}
+				else
+				{
+					throw new \ErrorException('Key ' . substr($part, 1) . ' is not defined in route ' . $this->pattern);
+				}
 			}
 		}
-		
+
 		// Remove values already defined in defaults
-		foreach ($params as $key => $value) 
+		foreach ($params as $key => $value)
 		{
 			if (!isset($this->defaults[$key]))
 			{
 				continue;
 			}
-			
+
 			if ($this->defaults[$key] != $value)
 			{
 				continue;
 			}
-			
+
 			if ($key == 'format')
 			{
 				continue;
 			}
-			
+
 			unset($params[$key]);
 		}
 
@@ -304,26 +308,26 @@ class Route
 		{
 			if (isset($params['hostname']))
 			{
-				$url = 'http://'.$params['hostname'].'/';
+				$url = 'http://' . $params['hostname'] . '/';
 			}
 			else if (isset($defaults['hostname']))
 			{
-				$url = 'http://'.$defaults['hostname'].'/';
-			} 
+				$url = 'http://' . $defaults['hostname'] . '/';
+			}
 			else if (isset($_SERVER['HTTP_HOST']))
 			{
-				$url = 'http://'.$_SERVER['HTTP_HOST'].'/';
-			} 
+				$url = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+			}
 			else if (defined('DOMAIN'))
 			{
-				$url = 'http://'.DOMAIN.'/';
-			} 
-			else 
-			{
-				$url = 'http://'.Request::getInstance()->getHost().'/';
+				$url = 'http://' . DOMAIN . '/';
 			}
-		} 
-		else 
+			else
+			{
+				$url = 'http://' . Request::getInstance()->getHost() . '/';
+			}
+		}
+		else
 		{
 			$url = '/';
 		}
@@ -334,23 +338,23 @@ class Route
 		{
 			if (isset($params['format']))
 			{
-				$url .= '.'.$params['format'];
+				$url .= '.' . $params['format'];
 				unset($params['format']);
-			} 
+			}
 			else if (isset($defaults['format']))
 			{
-				$url .= '.'.$defaults['format'];
+				$url .= '.' . $defaults['format'];
 			}
 		}
-		else 
+		else
 		{
 			if (isset($params['format']))
 			{
-				$url .= 'index.'.$params['format'];
+				$url .= 'index.' . $params['format'];
 				unset($params['format']);
 			}
 		}
-		
+
 
 		if (isset($params['anchor']))
 		{
@@ -364,13 +368,13 @@ class Route
 			$query = http_build_query($params);
 			if ($query)
 			{
-				$url .= '?'.http_build_query($params);
+				$url .= '?' . http_build_query($params);
 			}
 		}
 
 		if (isset($anchor))
 		{
-			$url .= '#'.$anchor;
+			$url .= '#' . $anchor;
 		}
 
 		return $url;

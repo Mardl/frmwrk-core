@@ -33,16 +33,17 @@ use Core\Model as BaseModel;
  */
 class Language extends BaseModel implements \Core\Application\Interfaces\ModelsInterface
 {
-    /**
-     * Id
-     *
-     * @var integer
-     *
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+
+	/**
+	 * Id
+	 *
+	 * @var integer
+	 *
+	 * @Id
+	 * @Column(type="integer")
+	 * @GeneratedValue(strategy="AUTO")
+	 */
+	protected $id;
 
 	/**
 	 *
@@ -57,13 +58,13 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 
 
 	/**
-     * Landesspezifischer Name
-     *
-     * @var string
-     *
-     * @Column(type="string", length=50, nullable=true)
-     */
-    protected $national;
+	 * Landesspezifischer Name
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=50, nullable=true)
+	 */
+	protected $national;
 
 	/**
 	 * Internationaler Name
@@ -77,36 +78,36 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	/**
 	 * Iso-Code from ISO-639-1
 	 *
-     * @var string
-     *
-     * @Column(type="string", length=10)
-     */
-    protected $isocode;
+	 * @var string
+	 *
+	 * @Column(type="string", length=10)
+	 */
+	protected $isocode;
 
 	/**
 	 *
 	 * Iso-Code from ISO-3166-1
 	 *
-     *
-     * @var string
-     *
-     * @Column(type="string", length=10)
-     */
-    protected $countryCode;
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=10)
+	 */
+	protected $countryCode;
 
 
 	public function getDataRow()
-    {
-    	$data = array(
-    		'id'			=> $this->getId(),
-			'isocode' 		=> $this->getIsocode(),
-			'countryCode'	=> $this->getCountryCode(),
+	{
+		$data = array(
+			'id' => $this->getId(),
+			'isocode' => $this->getIsocode(),
+			'countryCode' => $this->getCountryCode(),
 			'international' => $this->getInternational(),
-			'national'		=> $this->getNational()
+			'national' => $this->getNational()
 		);
 
-    	return $data;
-    }
+		return $data;
+	}
 
 	/**
 	 *
@@ -117,6 +118,6 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	 */
 	public function getHtmlLanguage()
 	{
-		return $this->getIsocode().'-'.$this->getCountryCode();
+		return $this->getIsocode() . '-' . $this->getCountryCode();
 	}
 }

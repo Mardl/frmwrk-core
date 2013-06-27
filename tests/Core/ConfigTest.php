@@ -52,7 +52,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 	protected function tearDown()
 	{
 		// TODO Auto-generated ConfigTest::tearDown()
-
+		
 		$this->Config = null;
 		
 		parent::tearDown();

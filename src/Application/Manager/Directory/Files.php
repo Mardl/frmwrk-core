@@ -12,12 +12,7 @@
 
 namespace Core\Application\Manager\Directory;
 
-use Core\Application\Models\Directory\Files as FilesModel,
-	Core\Application\Manager\Directory\Files as FilesManager,
-	Core\Application\Manager\Directory as DirectoryManager,
-	jamwork\common\Registry,
-	Core\SystemMessages,
-	App\Manager\User as UserManager;
+use Core\Application\Models\Directory\Files as FilesModel, Core\Application\Manager\Directory\Files as FilesManager, Core\Application\Manager\Directory as DirectoryManager, jamwork\common\Registry, Core\SystemMessages, App\Manager\User as UserManager;
 
 /**
  * Files
@@ -28,6 +23,7 @@ use Core\Application\Models\Directory\Files as FilesModel,
  */
 class Files
 {
+
 	/**
 	 * @var array MIME-Types
 	 */
@@ -59,7 +55,7 @@ class Files
 	 * @throws \ErrorException Wenn die Datei nicht gefunden wurde
 	 * @throws \InvalidArgumentException Wenn eine leere Filesid übermittelwurde oder keine DirectorysId hinterlegt ist
 	 */
-	public static function getFileById ($fileId)
+	public static function getFileById($fileId)
 	{
 		if (empty($fileId))
 		{
@@ -73,11 +69,7 @@ class Files
 
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-			->select('id, orgname, name, size, basename, directory_id as directory, parent_id as parent, mimetype')
-			->from('files')
-			->addWhere('id', $fileId)
-			->limit(0, 1);
+		$query = $con->newQuery()->select('id, orgname, name, size, basename, directory_id as directory, parent_id as parent, mimetype')->from('files')->addWhere('id', $fileId)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -114,11 +106,7 @@ class Files
 	{
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-			->select('id, orgname, name, size, basename, directory_id as directory, parent_id as parent, mimetype')
-			->from('files')
-			->addWhere('directory_id', $directoryId)
-			->addWhereIsNull('parent_id');
+		$query = $con->newQuery()->select('id, orgname, name, size, basename, directory_id as directory, parent_id as parent, mimetype')->from('files')->addWhere('directory_id', $directoryId)->addWhereIsNull('parent_id');
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -151,11 +139,11 @@ class Files
 	 * Speichert eine neue Datei auf dem System aus dem filePost. Dabei überprüft die Funktion,
 	 * ob der Eintrag bereits vorhanden ist und somit geändert werden muss oder ob es sich um eine neue Datei handelt.
 	 *
-	 * @param $filePost
-	 * @param $directoryId
+	 * @param                                          $filePost
+	 * @param                                          $directoryId
 	 * @param \Core\Application\Models\Directory\Files $filemodel
-	 * @param bool $addSource
-	 * @param int $watermark
+	 * @param bool                                     $addSource
+	 * @param int                                      $watermark
 	 *
 	 * @return bool|\Core\Application\Models\Directory\Files
 	 *
@@ -164,15 +152,15 @@ class Files
 	public static function saveUploadedFile($filePost, $directoryId, FilesModel $filemodel = null, $addSource = false, $watermark = 0)
 	{
 		$originalName = $filePost['name'];
-		$tmpName 	  = $filePost['tmp_name'];
-		$filesize 	  = $filePost['size'];
-		$isNew 		  = $filemodel == null;
+		$tmpName = $filePost['tmp_name'];
+		$filesize = $filePost['size'];
+		$isNew = $filemodel == null;
 
 		$fileinfo = pathinfo($originalName);
 		$extension = $fileinfo['extension'];
 
-		$newFileName = md5($originalName.time()).'.'.$extension;
-		$newName = FILE_PATH.$newFileName;
+		$newFileName = md5($originalName . time()) . '.' . $extension;
+		$newName = FILE_PATH . $newFileName;
 
 		if (!file_exists(FILE_PATH))
 		{
@@ -188,22 +176,23 @@ class Files
 			{
 				/**
 				 *
-				 * 	1 = The 0th row is at the visual top of the image, and the 0th column is the visual left-hand side.
-					2 = The 0th row is at the visual top of the image, and the 0th column is the visual right-hand side.
-					3 = The 0th row is at the visual bottom of the image, and the 0th column is the visual right-hand side.
-					4 = The 0th row is at the visual bottom of the image, and the 0th column is the visual left-hand side.
-					5 = The 0th row is the visual left-hand side of the image, and the 0th column is the visual top.
-					6 = The 0th row is the visual right-hand side of the image, and the 0th column is the visual top.
-					7 = The 0th row is the visual right-hand side of the image, and the 0th column is the visual bottom.
-					8 = The 0th row is the visual left-hand side of the image, and the 0th column is the visual bottom.
+				 *    1 = The 0th row is at the visual top of the image, and the 0th column is the visual left-hand side.
+				2 = The 0th row is at the visual top of the image, and the 0th column is the visual right-hand side.
+				3 = The 0th row is at the visual bottom of the image, and the 0th column is the visual right-hand side.
+				4 = The 0th row is at the visual bottom of the image, and the 0th column is the visual left-hand side.
+				5 = The 0th row is the visual left-hand side of the image, and the 0th column is the visual top.
+				6 = The 0th row is the visual right-hand side of the image, and the 0th column is the visual top.
+				7 = The 0th row is the visual right-hand side of the image, and the 0th column is the visual bottom.
+				8 = The 0th row is the visual left-hand side of the image, and the 0th column is the visual bottom.
 
-					http://sylvana.net/jpegcrop/exif_orientation.html
+				http://sylvana.net/jpegcrop/exif_orientation.html
 				 */
 
 				$flip = false;
 				$degree = false;
 
-				switch ($info["Orientation"]){
+				switch ($info["Orientation"])
+				{
 					case 2: //flip horizontal
 						$flip = "flopImage";
 						$doit = false;
@@ -259,17 +248,17 @@ class Files
 
 			if ($watermark != 0)
 			{
-				$pWatermark = ROOT_PATH."/html/static/images/watermark.png";
+				$pWatermark = ROOT_PATH . "/html/static/images/watermark.png";
 				if (file_exists($pWatermark))
 				{
-					$pFiles = ROOT_PATH."/html/".$newName;
+					$pFiles = ROOT_PATH . "/html/" . $newName;
 					$sizesF = getimagesize($pFiles);
 					$sizesW = getimagesize($pWatermark);
 
-					$x = ($sizesF[0]/2) - ($sizesW[0]/2);
-					$y = ($sizesF[1]/2) - ($sizesW[1]/2);
+					$x = ($sizesF[0] / 2) - ($sizesW[0] / 2);
+					$y = ($sizesF[1] / 2) - ($sizesW[1] / 2);
 
-					$watermarking = "composite -geometry +".$x."+".$y." ".$pWatermark." ".$pFiles." ".$pFiles;
+					$watermarking = "composite -geometry +" . $x . "+" . $y . " " . $pWatermark . " " . $pFiles . " " . $pFiles;
 					system($watermarking);
 				}
 			}
@@ -280,9 +269,9 @@ class Files
 			}
 			else //Edit Modus -> alte Datei löschen
 			{
-				if (file_exists(FILE_PATH.$filemodel->getName()) && $addSource == false)
+				if (file_exists(FILE_PATH . $filemodel->getName()) && $addSource == false)
 				{
-					unlink(FILE_PATH.$filemodel->getName());
+					unlink(FILE_PATH . $filemodel->getName());
 				}
 			}
 
@@ -291,10 +280,11 @@ class Files
 			$filemodel->setOrgname($originalName);
 			$filemodel->setName($newFileName);
 			$filemodel->setDirectory($directoryModel);
-			$filemodel->setSize(($filesize/1024)); //umrechnen in KB
+			$filemodel->setSize(($filesize / 1024)); //umrechnen in KB
 
 
-			if (!array_key_exists($extension, self::$mimetypes)){
+			if (!array_key_exists($extension, self::$mimetypes))
+			{
 				throw new \ErrorException('Nicht unterstützter Dateityp!');
 			}
 			$mimetype = self::$mimetypes[$extension];
@@ -313,6 +303,7 @@ class Files
 
 			return $filemodel;
 		}
+
 		return false;
 	}
 
@@ -323,7 +314,7 @@ class Files
 	 *
 	 * @throws \InvalidArgumentException
 	 */
-	public static function fileExistsByName ($filename)
+	public static function fileExistsByName($filename)
 	{
 		if (empty($filename))
 		{
@@ -332,11 +323,7 @@ class Files
 
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-			->select('id, orgname, name, size, basename, directory_id')
-			->from('files')
-			->addWhere('name', $filename)
-			->limit(0, 1);
+		$query = $con->newQuery()->select('id, orgname, name, size, basename, directory_id')->from('files')->addWhere('name', $filename)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -349,20 +336,21 @@ class Files
 			$file = new FilesModel($rs);
 
 			$file->setDirectory(DirectoryManager::getDirectoryById($directory));
+
 			return $file;
 		}
 
 		return false;
 	}
 
-	public static function saveProfileFile(FilesModel $filesModel,$lifeId)
+	public static function saveProfileFile(FilesModel $filesModel, $lifeId)
 	{
-		$exists = self::fileExistsByName( $filesModel->getName() );
+		$exists = self::fileExistsByName($filesModel->getName());
 		if ($exists === false)
 		{
 			if (self::insertFile($filesModel) !== false)
 			{
-				$user =  UserManager::getUserById($lifeId);
+				$user = UserManager::getUserById($lifeId);
 				//$user->setAvatar($filesModel->getThumbnailTarget());
 				$user->setAvatar($filesModel->getId());
 			}
@@ -374,7 +362,7 @@ class Files
 			#$cachefile = FILE_TEMP.md5($lifeId).'*';
 			#@unlink($cachefile);
 
-			$user =  UserManager::getUserById($lifeId);
+			$user = UserManager::getUserById($lifeId);
 			//$user->setAvatar($exists->getThumbnailTarget());
 			$user->setAvatar($exists->getId());
 		}
@@ -396,9 +384,9 @@ class Files
 		$bRet = true;
 
 		$fileModel = FilesManager::getFileById($fileId);
-		if (file_exists(FILE_PATH.$fileModel->getName()))
+		if (file_exists(FILE_PATH . $fileModel->getName()))
 		{
-			$bRet = $bRet && unlink(FILE_PATH.$fileModel->getName());
+			$bRet = $bRet && unlink(FILE_PATH . $fileModel->getName());
 		}
 		$bRet = $bRet && self::deleteFile($fileModel->getId());
 
@@ -417,8 +405,7 @@ class Files
 		$con = Registry::getInstance()->getDatabase();
 		$info = pathinfo($filemodel->getName());
 
-		$query = sprintf(
-			"INSERT INTO
+		$query = sprintf("INSERT INTO
 				files (
 				directory_id,
 				orgname,
@@ -429,15 +416,7 @@ class Files
 				mimetype
 				)
 			VALUES
-				(%d, '%s', '%s', %d, '%s', %s, '%s');",
-			mysql_real_escape_string($filemodel->getDirectory()->getId()),
-			mysql_real_escape_string($filemodel->getOrgname()),
-			mysql_real_escape_string($filemodel->getName()),
-			mysql_real_escape_string($filemodel->getSize()),
-			mysql_real_escape_string(basename($filemodel->getName(), '.'.@$info['extension'])),
-			mysql_real_escape_string(($filemodel->getParent())?$filemodel->getParent()->getId():'NULL'),
-			mysql_real_escape_string($filemodel->getMimetype())
-		);
+				(%d, '%s', '%s', %d, '%s', %s, '%s');", mysql_real_escape_string($filemodel->getDirectory()->getId()), mysql_real_escape_string($filemodel->getOrgname()), mysql_real_escape_string($filemodel->getName()), mysql_real_escape_string($filemodel->getSize()), mysql_real_escape_string(basename($filemodel->getName(), '.' . @$info['extension'])), mysql_real_escape_string(($filemodel->getParent()) ? $filemodel->getParent()->getId() : 'NULL'), mysql_real_escape_string($filemodel->getMimetype()));
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
@@ -445,10 +424,12 @@ class Files
 		if (!$rsExecution->isSuccessfull())
 		{
 			SystemMessages::addError('Beim Speichern der Datei ist ein Fehler aufgetreten!');
+
 			return false;
 		}
 
 		$filemodel->setId(mysql_insert_id());
+
 		return $filemodel;
 	}
 
@@ -464,12 +445,9 @@ class Files
 
 		$con = Registry::getInstance()->getDatabase();
 		//Delete Sources
-		$query = sprintf(
-			"DELETE FROM
+		$query = sprintf("DELETE FROM
 				files
-			WHERE parent_id = %d;",
-			mysql_real_escape_string($filesId)
-		);
+			WHERE parent_id = %d;", mysql_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
@@ -503,18 +481,16 @@ class Files
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		//Delete file
-		$query = sprintf(
-			"DELETE FROM
+		$query = sprintf("DELETE FROM
 				files
-			WHERE id = %d;",
-			mysql_real_escape_string($filesId)
-		);
+			WHERE id = %d;", mysql_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		if (!$rsExecution->isSuccessfull() || mysql_affected_rows() == 0)
 		{
 			SystemMessages::addError('Fehler beim Löschen der Datei!');
+
 			return false;
 		}
 
@@ -536,8 +512,7 @@ class Files
 
 		$info = pathinfo($fileModel->getName());
 
-		$query = sprintf(
-			"UPDATE
+		$query = sprintf("UPDATE
 				files
 			SET
 				directory_id = %d,
@@ -547,15 +522,7 @@ class Files
 				basename = '%s',
 				mimetype = '%s'
 			WHERE
-				id = %d;",
-			mysql_real_escape_string($fileModel->getDirectory()->getId()),
-			mysql_real_escape_string($fileModel->getOrgname()),
-			mysql_real_escape_string($fileModel->getName()),
-			mysql_real_escape_string($fileModel->getSize()),
-			mysql_real_escape_string(basename($fileModel->getName(), '.'.$info['extension'])),
-			mysql_real_escape_string($fileModel->getMimetype()),
-			mysql_real_escape_string($fileModel->getId())
-		);
+				id = %d;", mysql_real_escape_string($fileModel->getDirectory()->getId()), mysql_real_escape_string($fileModel->getOrgname()), mysql_real_escape_string($fileModel->getName()), mysql_real_escape_string($fileModel->getSize()), mysql_real_escape_string(basename($fileModel->getName(), '.' . $info['extension'])), mysql_real_escape_string($fileModel->getMimetype()), mysql_real_escape_string($fileModel->getId()));
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
@@ -563,6 +530,7 @@ class Files
 		if (!$rsExecution->isSuccessfull())
 		{
 			SystemMessages::addError('Fehler beim aktualisieren der Datei!');
+
 			return false;
 		}
 
@@ -583,7 +551,7 @@ class Files
 			return false;
 		}
 
-		return exif_imagetype(FILE_PATH.$file->getName());
+		return exif_imagetype(FILE_PATH . $file->getName());
 	}
 
 	/**
@@ -601,9 +569,10 @@ class Files
 		{
 			if ($entry != "." && $entry != "..")
 			{
-				$bRet = $bRet && unlink(FILE_TEMP.$entry);
+				$bRet = $bRet && unlink(FILE_TEMP . $entry);
 			}
 		}
+
 		return $bRet;
 	}
 
@@ -611,25 +580,25 @@ class Files
 	 * Konvertiert das übergebene Bild in die angegebene Größe und speichert es im Cache
 	 * Verzeichnis (mit Angabe der Größe im Dateinamen). Liefert den Dateipfad der neuen Datei.
 	 *
-	 * @param \Core\Application\Models\Directory\Files $file FileModel des betroffenen Bildes
-	 * @param int $width Breite des Bildes
-	 * @param int $height Höhe des Bildes
+	 * @param \Core\Application\Models\Directory\Files $file   FileModel des betroffenen Bildes
+	 * @param int                                      $width  Breite des Bildes
+	 * @param int                                      $height Höhe des Bildes
 	 *
 	 * @return string
 	 */
-	public function getThumbnail(FilesModel $file, $width=0, $height=0)
+	public function getThumbnail(FilesModel $file, $width = 0, $height = 0)
 	{
-		if($file->getId() == 0)
+		if ($file->getId() == 0)
 		{
 			return '';
 		}
 
 		if (empty($width) && empty($height))
 		{
-			return FILE_PATH.$file->getName();
+			return FILE_PATH . $file->getName();
 		}
 
-		$source = ROOT_PATH.'/html/'.FILE_PATH.$file->getName();
+		$source = ROOT_PATH . '/html/' . FILE_PATH . $file->getName();
 
 		$colorspace = self::getColorspace($source);
 		$width = empty($width) ? '' : $width;
@@ -639,12 +608,12 @@ class Files
 		$quality = '-quality 82';
 		$target = self::getTarget($file->getName(), $width, $height);
 
-		if (file_exists(ROOT_PATH.'/html/'.$target))
+		if (file_exists(ROOT_PATH . '/html/' . $target))
 		{
-			return '/'.$target;
+			return '/' . $target;
 		}
 
-		if (!file_exists(ROOT_PATH.'/html/'.FILE_TEMP))
+		if (!file_exists(ROOT_PATH . '/html/' . FILE_TEMP))
 		{
 			mkdir(FILE_TEMP);
 			@chmod(FILE_TEMP, 0777);
@@ -652,18 +621,18 @@ class Files
 
 		if ($width > 0 || $height > 0)
 		{
-			$resize = '-resize "'.$width.'x'.$height.'"';
+			$resize = '-resize "' . $width . 'x' . $height . '"';
 		}
 
-		$imageConvert = 'convert "'.$source .'" '.$colorspace.' ';
+		$imageConvert = 'convert "' . $source . '" ' . $colorspace . ' ';
 		if (!empty($resize))
 		{
-			$imageConvert .= $resize.' ';
+			$imageConvert .= $resize . ' ';
 		}
 
-		$imageConvert .= $density.' '.$quality.' -antialias ';
+		$imageConvert .= $density . ' ' . $quality . ' -antialias ';
 		$imageConvert .= '-strip';
-		$imageConvert .= ' "'.ROOT_PATH.'/html/'.$target.'"';
+		$imageConvert .= ' "' . ROOT_PATH . '/html/' . $target . '"';
 
 		system($imageConvert);
 
@@ -672,15 +641,15 @@ class Files
 			@chmod($this->target, 0777);
 		}
 
-		return '/'.$target;
+		return '/' . $target;
 	}
 
 	/**
 	 * Liefert den neuen Dateinamen mit Pfad
 	 *
 	 * @param string $filename Original-Dateiname
-	 * @param int $width Breite der Datei
-	 * @param int $height Höhe der Datei
+	 * @param int    $width    Breite der Datei
+	 * @param int    $height   Höhe der Datei
 	 *
 	 * @return string
 	 */
@@ -689,10 +658,10 @@ class Files
 		$fileinfo = pathinfo($filename);
 		$extension = $fileinfo['extension'];
 
-		$filename = str_replace('.'.$extension, '', $filename);
-		$filename .= '_'.$width.'x'.$height.'.'.$extension;
+		$filename = str_replace('.' . $extension, '', $filename);
+		$filename .= '_' . $width . 'x' . $height . '.' . $extension;
 
-		return FILE_TEMP.$filename;
+		return FILE_TEMP . $filename;
 	}
 
 	/**
@@ -720,6 +689,7 @@ class Files
 				return "-colorspace RGB";
 				break;
 		}
+
 		return '';
 	}
 
@@ -735,10 +705,7 @@ class Files
 
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-		->select('name, mimetype')
-		->from('files')
-		->addWhere('parent_id', $filemodel->getId());
+		$query = $con->newQuery()->select('name, mimetype')->from('files')->addWhere('parent_id', $filemodel->getId());
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -765,9 +732,7 @@ class Files
 		$con = Registry::getInstance()->getDatabase();
 		$query = $con->newQuery();
 
-		$query->select('id, orgname, name')
-			->from('files')
-			->addWhereLike('orgname', $searchTerm);
+		$query->select('id, orgname, name')->from('files')->addWhereLike('orgname', $searchTerm);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -778,11 +743,11 @@ class Files
 			while (($rs = $rsExecution->get()) == true)
 			{
 				$dataArray[] = array(
-								'id' => $rs['id'],
-								'filename' => $rs['name'],
-								'value' => $rs['orgname'],
-								'label' => $rs['orgname']
-							);
+					'id' => $rs['id'],
+					'filename' => $rs['name'],
+					'value' => $rs['orgname'],
+					'label' => $rs['orgname']
+				);
 			}
 		}
 

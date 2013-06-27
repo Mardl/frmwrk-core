@@ -3,7 +3,8 @@ namespace Core\Html\Input;
 
 use Core\Html\Input;
 
-class Email extends Input{
+class Email extends Input
+{
 
 	public function validate()
 	{
@@ -13,17 +14,21 @@ class Email extends Input{
 		{
 			if ($this->label)
 			{
-				return "Fehlende Eingabe für ".$this->label->getValue();
+				return "Fehlende Eingabe für " . $this->label->getValue();
 			}
 			else
 			{
-				return "Fehlende Eingabe für ".$this->getId();
+				return "Fehlende Eingabe für " . $this->getId();
 			}
 		}
-		else if (!empty($val))
+		else
 		{
-			if (!filter_var($val, FILTER_VALIDATE_EMAIL)) {
-				return "Die Emailadresse wird als ungültig angesehen";
+			if (!empty($val))
+			{
+				if (!filter_var($val, FILTER_VALIDATE_EMAIL))
+				{
+					return "Die Emailadresse wird als ungültig angesehen";
+				}
 			}
 		}
 

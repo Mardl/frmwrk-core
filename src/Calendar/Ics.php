@@ -3,7 +3,8 @@
 namespace Core\Calendar;
 
 
-class Ics {
+class Ics
+{
 
 	protected $prodid = "-//Wellergy Health Management Calendar Version 1.0//DE";
 	protected $version = "2.0";

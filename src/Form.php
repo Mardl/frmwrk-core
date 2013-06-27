@@ -1,7 +1,8 @@
 <?php
 namespace Core;
 
-class Form{
+class Form
+{
 
 	private $method = 'post';
 	private $class = '';
@@ -19,26 +20,30 @@ class Form{
 		$this->values = $data;
 	}
 
-	public function getValue($key,$default=null)
+	public function getValue($key, $default = null)
 	{
 		if (array_key_exists($key, $this->values))
 		{
 			return $this->values[$key];
 		}
+
 		return $default;
 	}
 
-	public function setMethod($method){
+	public function setMethod($method)
+	{
 		$this->method = $method;
 
 	}
 
-	public function setAction($action){
+	public function setAction($action)
+	{
 		$this->action = $action;
 
 	}
 
-	public function setId($id){
+	public function setId($id)
+	{
 		$this->id = $id;
 
 	}
@@ -53,20 +58,25 @@ class Form{
 		return $this->class;
 	}
 
-	public function getId(){
-		if (!empty($this->id)){
-			return "id='".$this->id."'";
+	public function getId()
+	{
+		if (!empty($this->id))
+		{
+			return "id='" . $this->id . "'";
 		}
+
 		return null;
 
 	}
 
-	public function addAttribute(array $attr){
+	public function addAttribute(array $attr)
+	{
 		$this->attributes[] = $attr;
 
 	}
 
-	public function addElement(Html\Element $element){
+	public function addElement(Html\Element $element)
+	{
 		$this->elements[] = $element;
 
 	}
@@ -81,8 +91,10 @@ class Form{
 		return $this->elements;
 	}
 
-	public function addElements(array $elements){
-		foreach ($elements as $element){
+	public function addElements(array $elements)
+	{
+		foreach ($elements as $element)
+		{
 			$this->addElement($element);
 		}
 
@@ -94,33 +106,36 @@ class Form{
 		{
 			$this->addElements($elements);
 		}
-		elseif( $elements instanceof \Core\Html\Element )
+		elseif ($elements instanceof \Core\Html\Element)
 		{
 			$this->addElement($elements);
 		}
-		else{
-			$text = new \Core\Html\Text('',$elements);
+		else
+		{
+			$text = new \Core\Html\Text('', $elements);
 			$this->addElement($text);
 		}
 	}
 
-	public function __toString(){
+	public function __toString()
+	{
 		$elements = '';
-		foreach ($this->elements as $element){
+		foreach ($this->elements as $element)
+		{
 			$elements .= $element;
 		}
 
 		$attributes = '';
 		foreach ($this->attributes as $attr)
 		{
-			$attributes = $attr[0].'="'.$attr[1].'" ';
+			$attributes = $attr[0] . '="' . $attr[1] . '" ';
 		}
 
 		$output = '<form method="{method}" action="{action}" {id} {attributes}>{elements}</form>';
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Html/form.html.php'))
+		if (file_exists(APPLICATION_PATH . '/Layout/Html/form.html.php'))
 		{
-			$output = file_get_contents(APPLICATION_PATH.'/Layout/Html/form.html.php');
+			$output = file_get_contents(APPLICATION_PATH . '/Layout/Html/form.html.php');
 		}
 		$output = str_replace('{method}', $this->method, $output);
 		$output = str_replace('{class}', $this->class, $output);
@@ -155,14 +170,17 @@ class Form{
 			$container = $this;
 		}
 
-		foreach ($container->getElements() as $el){
+		foreach ($container->getElements() as $el)
+		{
 			if ($el->getPlainId() == $elementId)
 			{
 				$el->$updateType($value);
+
 				return;
 			}
 
-			if ($el->hasElements()){
+			if ($el->hasElements())
+			{
 				$this->updateElement($elementId, $value, $updateType, $el);
 			}
 		}
@@ -177,13 +195,15 @@ class Form{
 			$container = $this;
 		}
 
-		foreach ($container->getElements() as $el){
+		foreach ($container->getElements() as $el)
+		{
 			if ($el->getPlainId() == $elementId)
 			{
 				return $el;
 			}
 
-			if ($el->hasElements()){
+			if ($el->hasElements())
+			{
 				$target = $this->findElement($elementId, $el);
 			}
 		}
@@ -193,4 +213,5 @@ class Form{
 	}
 
 }
+
 ?>

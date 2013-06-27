@@ -10,8 +10,7 @@
  */
 namespace Core\Application\Models;
 
-use Core\Model as BaseModel,
-	Core\Application\Models\Right\Group as RightGroup;
+use Core\Model as BaseModel, Core\Application\Models\Right\Group as RightGroup;
 
 /**
  * Right
@@ -38,78 +37,79 @@ use Core\Model as BaseModel,
  */
 class Right extends BaseModel
 {
+
 	/**
-     * Id
-     *
-     * @var integer
-     *
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+	 * Id
+	 *
+	 * @var integer
+	 *
+	 * @Id
+	 * @Column(type="integer")
+	 * @GeneratedValue(strategy="AUTO")
+	 */
+	protected $id;
 
-    /**
-     * Module
-     *
-     * @var string
-     *
-     * @Column(type="string")
-     */
-    protected $title;
+	/**
+	 * Module
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string")
+	 */
+	protected $title;
 
-    /**
-     * Module
-     *
-     * @var string
-     *
-     * @Column(type="string")
-     */
-    protected $module;
+	/**
+	 * Module
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string")
+	 */
+	protected $module;
 
-    /**
-     * Controller
-     *
-     * @var string
-     *
-     * @Column(type="string")
-     */
-    protected $controller;
+	/**
+	 * Controller
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string")
+	 */
+	protected $controller;
 
-    /**
-     * Action
-     *
-     * @var string
-     *
-     * @Column(type="string")
-     */
-    protected $action;
+	/**
+	 * Action
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string")
+	 */
+	protected $action;
 
-    /**
-     * Prefix
-     *
-     * @var string
-     *
-     * @Column(type="string")
-     */
-    protected $prefix = '';
+	/**
+	 * Prefix
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string")
+	 */
+	protected $prefix = '';
 
-    /**
-     * Modified
-     *
-     * @var \DateTime
-     *
-     * @Column(type="datetime")
-     */
-    protected $modified;
+	/**
+	 * Modified
+	 *
+	 * @var \DateTime
+	 *
+	 * @Column(type="datetime")
+	 */
+	protected $modified;
 
-    /**
-     * Rights
-     *
-     * @ManyToMany(targetEntity="App\Models\Right\Group")
-     * @JoinTable(name="right_group_rights")
-     */
-    protected $groups;
+	/**
+	 * Rights
+	 *
+	 * @ManyToMany(targetEntity="App\Models\Right\Group")
+	 * @JoinTable(name="right_group_rights")
+	 */
+	protected $groups;
 
 	/**
 	 * Prüft die Elemente des Arrays auf Typ App\Models\Right\Group
@@ -119,18 +119,18 @@ class Right extends BaseModel
 	 * @throws \InvalidArgumentException
 	 */
 	public function setGroups(array $groups)
-    {
-    	if (!empty($groups))
-    	{
-    		foreach ($groups as $group)
-    		{
-    			if (!($group instanceof RightGroup))
-    			{
-    				throw new \InvalidArgumentException('Ungültiger Typ der Rechtegruppe');
-    			}
-    		}
-    	}
+	{
+		if (!empty($groups))
+		{
+			foreach ($groups as $group)
+			{
+				if (!($group instanceof RightGroup))
+				{
+					throw new \InvalidArgumentException('Ungültiger Typ der Rechtegruppe');
+				}
+			}
+		}
 
-    	$this->groups = $groups;
-    }
+		$this->groups = $groups;
+	}
 }

@@ -10,7 +10,7 @@
  */
 namespace tests\Core;
 
-use \Core\Loader;
+use Core\Loader;
 
 /**
  * Loader test case.
