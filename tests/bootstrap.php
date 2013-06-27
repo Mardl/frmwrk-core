@@ -11,9 +11,9 @@
 
 
 
-use Core\FrontController,
-	jamwork\common\Registry,
-	jamwork\common\HttpSession;
+use \Core\FrontController,
+	\jamwork\common\Registry,
+	\jamwork\common\HttpSession;
 
 /**
  * Init Klasse
@@ -54,7 +54,7 @@ class InitUnittests
 	 */
 	public function initGlobalConstants()
 	{
-		define('ROOT_PATH', '.');
+		define('ROOT_PATH', '../src');
 		define('FRAMEWORK_PATH', ROOT_PATH.'/framework');
 		define('APPLICATION_PATH', ROOT_PATH.'/App');
 		define('ENV_DEV', 0);
