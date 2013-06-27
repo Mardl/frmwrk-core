@@ -60,19 +60,19 @@
 	-->
 
 	<target name="lint" description="Perform syntax check of sourcecode files">
-		<srcly executable="php" failonerror="true">
-			<arg value="-l" />
+        <apply executable="php" failonerror="true">
+            <arg value="-l" />
 
-			<fileset dir="${basedir}/src">
-				<include name="**/*.php" />
-				<modified />
-			</fileset>
+            <fileset dir="${basedir}/src">
+                <include name="**/*.php" />
+                <modified />
+            </fileset>
 
-			<fileset dir="${basedir}/tests">
-				<include name="**/*.php" />
-				<modified />
-			</fileset>
-		</srcly>
+            <fileset dir="${basedir}/tests">
+                <include name="**/*.php" />
+                <modified />
+            </fileset>
+        </apply>
 	</target>
 
 	<target name="phploc" description="Measure project size using PHPLOC">
