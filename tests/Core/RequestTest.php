@@ -8,7 +8,7 @@
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace unittest\lifemeter\Core;
+namespace tests\Core;
 
 use Core\Request;
 

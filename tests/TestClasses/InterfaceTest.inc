@@ -9,7 +9,7 @@
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
 
-namespace TestClasses;
+namespace tests\TestClasses;
 
 /**
  * Testinterface

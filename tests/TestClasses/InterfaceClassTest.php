@@ -8,7 +8,7 @@
  * @package  TestClasses
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace TestClasses;
+namespace tests\TestClasses;
 
 /**
  * Testing Class implementing Interface
@@ -17,7 +17,7 @@ namespace TestClasses;
  * @package  TestClasses
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-class InterfaceClassTest implements InterfaceTest
+class InterfaceClassTest implements \tests\TestClasses\InterfaceTest
 {
 
 }

@@ -8,7 +8,7 @@
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace unittest\lifemeter\Core;
+namespace tests\Core;
 
 use Core\Config;
 
@@ -52,7 +52,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 	protected function tearDown()
 	{
 		// TODO Auto-generated ConfigTest::tearDown()
-		
+
 		$this->Config = null;
 		
 		parent::tearDown();

@@ -11,9 +11,8 @@
 
 
 
-use \Core\FrontController,
-	\jamwork\common\Registry,
-	\jamwork\common\HttpSession;
+use \jamwork\common\Registry;
+use \jamwork\common\HttpSession;
 
 /**
  * Init Klasse
@@ -26,8 +25,6 @@ use \Core\FrontController,
  */
 class InitUnittests
 {
-	private $_registry = null;
-	
 	/**
 	 * Konstruktor.
 	 * 
@@ -54,9 +51,11 @@ class InitUnittests
 	 */
 	public function initGlobalConstants()
 	{
-		define('ROOT_PATH', '../src');
-		define('FRAMEWORK_PATH', ROOT_PATH.'/framework');
-		define('APPLICATION_PATH', ROOT_PATH.'/App');
+		define('ROOT_PATH', '.');
+		define('FRAMEWORK_PATH', ROOT_PATH.'/src');
+		define('APPLICATION_PATH', ROOT_PATH.'/tests');
+		define('TESTS_PATH', ROOT_PATH.'/tests');
+		define('VENDOR_PATH', ROOT_PATH.'/Vendor');
 		define('ENV_DEV', 0);
 		define('ENV_STAG', 1);
 		define('ENV_PROD', 2);
@@ -113,23 +112,14 @@ class InitUnittests
 	 */
 	public function initAutoLoader()
 	{
-		require_once FRAMEWORK_PATH.'/Core/Loader.php';
+		require_once FRAMEWORK_PATH.'/Loader.php';
 		
-		$loader = new Core\Loader('Core', FRAMEWORK_PATH);
+		$loader = new Core\Loader('Core', ROOT_PATH);
 		$loader->register();
 		
-		$loader = new Core\Loader('Lifemeter', FRAMEWORK_PATH);
+		$loader = new Core\Loader('jamwork', VENDOR_PATH);
 		$loader->register();
-		
-		$loader = new Core\Loader('Modules', FRAMEWORK_PATH);
-		$loader->register();
-		
-		$loader = new Core\Loader('App', ROOT_PATH);
-		$loader->register();
-		
-		$loader = new Core\Loader('jamwork', FRAMEWORK_PATH);
-		$loader->register();
-		
+
 	}
 	
 	/**
@@ -139,7 +129,9 @@ class InitUnittests
 	 */
 	public function initDatabase()
 	{
-		$database = new jamwork\database\MysqlDatabase(
+		// @todo noch sauber machen!
+		return;
+		$database = new \jamwork\database\MysqlDatabase(
 			DB_SERVER,
 			DB_USER,
 			DB_PASSWORD,
@@ -217,7 +209,6 @@ class InitUnittests
 	}
 }
 
-require_once(__DIR__.'/../App/Conf/dbunittest.php');
+//require_once(__DIR__.'/../App/Conf/dbunittest.php');
 
 new InitUnittests();
-?>

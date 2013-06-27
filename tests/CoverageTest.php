@@ -9,7 +9,7 @@
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace unittest\lifemeter;
+namespace tests\Core;
 
 use Core\Config;
 
