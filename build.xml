@@ -38,7 +38,7 @@
 		<delete dir="${basedir}/build/pdepend"/>
 	</target>
 
-	<target name="prepare" depends="clean" description="Prepare for build">
+	<target name="prepare" depends="clean,install-vendor" description="Prepare for build">
 		<mkdir dir="${basedir}/build/api"/>
 		<mkdir dir="${basedir}/build/code-browser"/>
 		<mkdir dir="${basedir}/build/coverage"/>
@@ -47,6 +47,11 @@
 		<mkdir dir="${basedir}/build/phpdox"/>
 	</target>
 
+	<target name="install-vendor">
+		<exec executable="make">
+			<arg value="install"/>
+		</exec>
+	</target>
 	<!--
     	<target name="setup-test-db" description="Create test database">
         	<exec executable="make">
