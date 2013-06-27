@@ -1,20 +1,11 @@
 <?php
-/**
- * Core\String-Class
- *
- * PHP version 5.3
- *
- * @category Controller
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 /**
- * String
+ * Class String
  *
- * @category Controller
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -26,7 +17,6 @@ class String
 	 * Replace non ASCII chars from string
 	 *
 	 * @param string $string String to sluggify
-	 *
 	 * @return string
 	 */
 	public static function slug($string)
@@ -44,8 +34,7 @@ class String
 		// Replace other chars to -
 		$string = preg_replace('/[^a-zA-Z0-9]+/', '-', $string);
 		$string = trim($string, '-');
-		if ($string == '')
-		{
+		if ($string == '') {
 			return '-';
 		}
 
@@ -57,7 +46,6 @@ class String
 	 *
 	 * @param string $haystack Zeichenkette die geprüft werden soll
 	 * @param string $needle   Zeichenkette auf die geprüft werden soll
-	 *
 	 * @return boolean
 	 */
 	public static function startsWith($haystack, $needle)
@@ -70,7 +58,6 @@ class String
 	 *
 	 * @param string $haystack Zeichenkette die geprüft werden soll
 	 * @param string $needle   Zeichenkette auf die geprüft werden soll
-	 *
 	 * @return boolean
 	 */
 	public static function endsWith($haystack, $needle)
@@ -78,6 +65,11 @@ class String
 		return substr($haystack, -strlen($needle)) == $needle;
 	}
 
+	/**
+	 * @param string $pwd
+	 * @param string $salt
+	 * @return string
+	 */
 	public static function bcryptEncode($pwd, $salt)
 	{
 		$salt = '$6$rounds=6000$' . substr($salt, 0, 16) . '$';
@@ -85,25 +77,32 @@ class String
 		return crypt($pwd, $salt);
 	}
 
+	/**
+	 * @param string $pwd
+	 * @param string $stored
+	 * @return bool
+	 */
 	public static function bcryptCheckup($pwd, $stored)
 	{
 		return (crypt($pwd, $stored) == $stored);
 	}
 
+	/**
+	 * @param string    $string
+	 * @param int       $limit
+	 * @param bool      $end
+	 * @return string
+	 */
 	public static function reduce($string, $limit = 144, $end = true)
 	{
-
-		if (strlen($string) > $limit + 3)
-		{
+		if (strlen($string) > $limit + 3) {
 			$string = substr($string, 0, $limit);
 
-			if ($end)
-			{
+			if ($end) {
 				$string .= '...';
 			}
 		}
 
 		return $string;
 	}
-
 }

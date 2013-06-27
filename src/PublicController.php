@@ -1,23 +1,16 @@
 <?php
-/**
- * Core\PublicController-Class
- *
- * PHP version 5.3
- *
- * @category Controller
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
-use App\Models\Right, App\Manager\Right as RightManager, jamwork\common\Registry;
+use App\Models\Right,
+	App\Manager\Right as RightManager,
+	jamwork\common\Registry;
 
 /**
- * PublicController Class
- * PublicController inkl. Rechteabfrage
+ * Class PublicController
+ * inkl. Rechteabfrage
  *
- * @category Controller
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -42,42 +35,35 @@ class PublicController extends Controller
 		$prefix = $this->request->getRouteParam('prefix');
 
 		$right = new Right(array(
-		                        'module' => $module,
-		                        'controller' => $controller,
-		                        'action' => $action,
-		                        'prefix' => $prefix
-		                   ));
+			'module'     => $module,
+			'controller' => $controller,
+			'action'     => $action,
+			'prefix'     => $prefix
+		));
 
-		if ($this->checkPermissions)
-		{
-			try
-			{
+		if ($this->checkPermissions) {
+			try {
 				$login = Registry::getInstance()->login;
-			} catch (\Exception $e)
-			{
+			} catch (\Exception $e) {
 				$this->response->redirect($this->view->url(array(), 'login', true));
 			}
 
-			if (!RightManager::isAllowed($right, $login))
-			{
+			if (!RightManager::isAllowed($right, $login)) {
 				throw new \Exception('Zugriff auf nicht erlaubte Aktion');
 			}
 		}
 
-		if ($this->view->login)
-		{
+		if ($this->view->login) {
 			$this->view->html->addJsAsset('loggedin');
 		}
-
 	}
-
 
 	/**
 	 *
-	 * Übergebene Array wird json encodiert und ausgegeben
-	 * Header wird sauber angepasst
+	 * Übergebene Array wird json encodiert und ausgegeben Header wird sauber angepasst
 	 *
 	 * @param array $json
+	 * @return void
 	 */
 	protected function flushJSON(array $json)
 	{
@@ -97,6 +83,4 @@ class PublicController extends Controller
 	{
 		return $this->checkPermissions;
 	}
-
-
 }

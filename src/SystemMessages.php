@@ -1,22 +1,13 @@
 <?php
-/**
- * Core\SystemMessages-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 use \jamwork\common\Registry;
 
 /**
- * SystemMessages
+ * Class SystemMessages
  *
- * @category Helper
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -37,23 +28,21 @@ class SystemMessages
 	 * @param string $category  Category
 	 * @param array  $arguments (sprintf) Arguments for message
 	 * @param bool   $html      HTML = true, Plaintext = false
-	 *
+	 * @return void
 	 * @throws \InvalidArgumentException
 	 */
 	public static function add($content, $category = 'notice', $arguments = array(), $html = false)
 	{
-		if (!in_array($category, array('notice', 'warning', 'error', 'success')))
-		{
+		if (!in_array($category, array('notice', 'warning', 'error', 'success'))) {
 			throw new \InvalidArgumentException('Invalid category');
 		}
 
 		self::$_messages[] = array(
-			'category' => $category,
-			'content' => $content,
+			'category'  => $category,
+			'content'   => $content,
 			'arguments' => $arguments,
-			'html' => $html
+			'html'      => $html
 		);
-
 	}
 
 	/**
@@ -131,5 +120,4 @@ class SystemMessages
 	{
 		self::$_messages = array();
 	}
-
 }

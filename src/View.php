@@ -1,20 +1,11 @@
 <?php
-/**
- * Core\View-Class
- *
- * PHP version 5.3
- *
- * @category View
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 use ArrayObject, Exception, jamwork\common\Registry;
 
 /**
- * Core\View
+ * Class View
  *
  * The view for the MVC pattern. This class holds the template and all variables
  * assigned to it. It also supports "template stacking". All added templates will
@@ -25,7 +16,7 @@ use ArrayObject, Exception, jamwork\common\Registry;
  * required the full path to the template. With the stack its possible to define
  * places to look for the template in case it hasn't been found with the name provided.
  *
- * @category View
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -99,8 +90,7 @@ class View extends ArrayObject
 	{
 		parent::__construct(array(), self::ARRAY_AS_PROPS);
 
-		if ($template !== null)
-		{
+		if ($template !== null) {
 			$this->setTemplate($template);
 		}
 
@@ -119,11 +109,9 @@ class View extends ArrayObject
 	 */
 	public function __toString()
 	{
-		try
-		{
+		try {
 			return $this->render();
-		} catch (Exception $e)
-		{
+		} catch (Exception $e) {
 			return $e->getMessage();
 		}
 	}
@@ -165,11 +153,9 @@ class View extends ArrayObject
 	public function getRoute()
 	{
 		$route = $this->router->getCurrent() ? : 'default';
-		try
-		{
+		try {
 			return $this->router[$route];
-		} catch (\Exception $e)
-		{
+		} catch (\Exception $e) {
 			throw new \ErrorException("Specified route $route not found");
 		}
 	}
@@ -186,8 +172,7 @@ class View extends ArrayObject
 	 */
 	public function url(array $data = array(), $route = null, $reset = null, $absolute = false)
 	{
-		if (!$route)
-		{
+		if (!$route) {
 			$route = $this->router->getCurrent();
 		}
 
@@ -232,8 +217,7 @@ class View extends ArrayObject
 	 */
 	public function getTitle($separator = ' - ')
 	{
-		if (!isset($this->pageTitle))
-		{
+		if (!isset($this->pageTitle)) {
 			return 'No title set';
 		}
 
@@ -279,8 +263,7 @@ class View extends ArrayObject
 	 */
 	public function getKeywords($separator = ', ')
 	{
-		if (empty($this->pageKeywords))
-		{
+		if (empty($this->pageKeywords)) {
 			return false;
 		}
 		sort($this->pageKeywords);
@@ -308,8 +291,7 @@ class View extends ArrayObject
 	 */
 	public function getDescription()
 	{
-		if (empty($this->pageDescription))
-		{
+		if (empty($this->pageDescription)) {
 			return null;
 		}
 
@@ -344,17 +326,19 @@ class View extends ArrayObject
 		return $this->templates;
 	}
 
+	/**
+	 * @param string $key
+	 * @param mixed  $value
+	 * @param bool   $prerender
+	 * @return void
+	 */
 	public function addPlaceholder($key, $value, $prerender = false)
 	{
-		if ($prerender)
-		{
+		if ($prerender) {
 			$this->placeholder[$key] = $value . '';
-		}
-		else
-		{
+		} else {
 			$this->placeholder[$key] = $value;
 		}
-
 	}
 
 	/**
@@ -362,22 +346,25 @@ class View extends ArrayObject
 	 *
 	 * @param string $key   Placeholdername
 	 * @param mixed  $value Content
+	 * @return void
 	 */
 	public function addMultiPlaceholder($key, $value)
 	{
-		if (!array_key_exists($key, $this->placeholder))
-		{
+		if (!array_key_exists($key, $this->placeholder)) {
 			$this->placeholder[$key] = array();
 		}
 
-		if (!is_array($this->placeholder[$key]))
-		{
+		if (!is_array($this->placeholder[$key])) {
 			$this->placeholder[$key] = array();
 		}
 
 		$this->placeholder[$key][] = $value;
 	}
 
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
 	public function getPlaceholder($key)
 	{
 		return $this->placeholder[$key];
@@ -414,36 +401,28 @@ class View extends ArrayObject
 	 */
 	public function render($template = null)
 	{
-		if ($template !== null)
-		{
+		if ($template !== null) {
 			$this->setTemplate($template);
 		}
 
-		if (count($this->templates) === 0)
-		{
+		if (count($this->templates) === 0) {
 			return '';
 		}
 
-		foreach (array_reverse($this->templates) as $template)
-		{
-			try
-			{
+		foreach (array_reverse($this->templates) as $template) {
+			try {
 				ob_start();
 				include $template;
 				$this->content = ob_get_clean();
 
 
-				foreach ($this->placeholder as $key => $value)
-				{
+				foreach ($this->placeholder as $key => $value) {
 					$c = $value;
 
-					if (is_array($value))
-					{
+					if (is_array($value)) {
 						$c = '';
-						foreach ($value as $val)
-						{
-							if (!empty($val))
-							{
+						foreach ($value as $val) {
+							if (!empty($val)) {
 								$c .= $val;
 							}
 
@@ -453,8 +432,7 @@ class View extends ArrayObject
 
 					$this->content = str_replace('{' . $key . '}', $c, $this->content);
 				}
-			} catch (Exception $e)
-			{
+			} catch (Exception $e) {
 				ob_end_clean();
 
 				$this->content = '<div style="background: #f99; padding: 0.5em; margin: 0.5em;';
@@ -469,7 +447,9 @@ class View extends ArrayObject
 	}
 
 	/**
-	 * @param $date Formatiert das Datum in d.m.Y (z.B. 01.01.1970)
+	 * Formatiert das Datum in d.m.Y (z.B. 01.01.1970)
+	 *
+	 * @param string $date
 	 * @return string
 	 */
 	public function formatDate($date)
@@ -478,8 +458,10 @@ class View extends ArrayObject
 	}
 
 	/**
-	 * @param        $value
-	 * @param string $currency
+	 * Formatiert den Wert in ein Währungsformat um
+	 *
+	 * @param string $value      Input
+	 * @param string $currency   Währungseinheit (z.B. $ oder €)
 	 * @return string
 	 */
 	public function convertToCurrency($value, $currency = '€')
@@ -490,17 +472,15 @@ class View extends ArrayObject
 	}
 
 	/**
-	 * @param $value
+	 * @param string $value
 	 * @return string
 	 */
 	public function formatNumberStyle($value)
 	{
-		if (!empty($value))
-		{
+		if (!empty($value)) {
 			return $this->convertToCurrency($value);
 		}
 
 		return '-';
 	}
-
 }
