@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset name="CoreFramework">
+    <description>The 3Werken coding standard.</description>
+    <rule ref="DREIWerken"/>
+</ruleset>
