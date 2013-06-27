@@ -22,9 +22,14 @@ class Base
 	/**
 	 *
 	 */
-	public function __construct()
+	public function __construct(\jamwork\database\Database $dataBase = null)
 	{
-		$this->con = Registry::getInstance()->getDatabase();
+		$this->con = is_null($dataBase) ? Registry::getInstance()->getDatabase() : $dataBase;
+	}
+
+	public function getConnection()
+	{
+		return $this->con;
 	}
 
 	/**
@@ -202,7 +207,7 @@ class Base
 	 *
 	 * @param $modelClassName
 	 * @param \jamwork\database\Query $query
-	 * @return bool
+	 * @return \Core\Application\Interfaces\ModelsInterface|bool
 	 */
 	public function getModelByQuery($modelClassName, Query $query)
 	{
