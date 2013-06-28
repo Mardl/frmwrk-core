@@ -1,22 +1,14 @@
 <?php
-/**
- * Model Address
- *
- * PHP version 5.3
- *
- * @category Model
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Application\Models;
 
 use Core\Model as BaseModel;
 
 /**
- * Address
+ * Class Address
  *
- * @category Model
- * @package  Models
+ * @category Core
+ * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @MappedSuperclass
@@ -74,10 +66,9 @@ class Address extends BaseModel
 	/**
 	 * User
 	 *
-	 * @var App\Model\User
+	 * @var \Core\Application\Models\User
 	 *
 	 * @OneToOne(targetEntity="App\Models\User", fetch="LAZY", inversedBy="address")
 	 */
 	protected $user;
-
 }

@@ -1,24 +1,19 @@
 <?php
-/**
- * Directory Manager
- *
- * PHP version 5.3
- *
- * @category Manager
- * @package  Manager
- * @author   Reinhard Hampl <reini@dreiwerken.de>
- */
-
 
 namespace Core\Application\Manager;
 
-use jamwork\debug\DebugLogger, Core\Application\Models\Directory as DirectoryModel, Core\Application\Manager\Directory\Files as FilesManager, jamwork\common\Registry, Core\SystemMessages, jamwork\database\MysqlRecordset as Recordset;
+use jamwork\debug\DebugLogger,
+	Core\Application\Models\Directory as DirectoryModel,
+	Core\Application\Manager\Directory\Files as FilesManager,
+	jamwork\common\Registry,
+	Core\SystemMessages,
+	jamwork\database\MysqlRecordset as Recordset;
 
 /**
- * Directory
+ * Class Directory
  *
- * @category Manager
- * @package  Manager
+ * @category Core
+ * @package  Core\Application\Manager
  * @author   Reinhard Hampl <reini@dreiwerken.de>
  */
 class Directory
@@ -33,11 +28,9 @@ class Directory
 	 * Liefert ein Directory anhand seiner Id
 	 *
 	 * @param int $directoryId Id des gewünschten Directory
-	 *
 	 * @throws \InvalidArgumentException Wenn eine leere Directoryid übermittelt wurde
 	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
-	 *
-	 * @return \Core\Application\Models\Directory
+	 * @return DirectoryModel
 	 */
 	public static function getDirectoryById($directoryId)
 	{
@@ -123,8 +116,7 @@ class Directory
 	/**
 	 * Liefert alle Childelemente des Directories (Directories und Files)
 	 *
-	 * @param integer $idDirectory Id von dem die Children benötigt werden
-	 *
+	 * @param int $idDirectory Id von dem die Children benötigt werden
 	 * @return array mit App\Models\Directory\Files und App\Models\Directory
 	 */
 	public static function getChildren($idDirectory)
@@ -135,8 +127,7 @@ class Directory
 	/**
 	 * Liefert alle Files des Directory
 	 *
-	 * @param integer $idDirectory Id von dem die Files benötigt werden
-	 *
+	 * @param int $idDirectory Id von dem die Files benötigt werden
 	 * @return array
 	 */
 	public static function getChildrenFiles($idDirectory)
@@ -253,7 +244,7 @@ class Directory
 	 * Löscht das gewünschte Verzeichnis
 	 *
 	 * @static
-	 * @param $directoryId ID des Verzeichnisses, das gelöscht werden soll
+	 * @param int $directoryId ID des Verzeichnisses, das gelöscht werden soll
 	 * @return bool
 	 */
 	public static function deleteDirectory($directoryId)
@@ -300,7 +291,7 @@ class Directory
 	 *
 	 * @param string $searchString Suchphrase
 	 *
-	 * @throws \ErrorException Wenn das keine Daten zurückgegeben werden
+	 * @throws \ErrorException Wenn keine Daten zurückgegeben wurden
 	 *
 	 * @return array
 	 */
@@ -336,7 +327,7 @@ class Directory
 	 *
 	 * @param string $directory Bezeichnung
 	 *
-	 * @return \Core\Application\Models\Directory
+	 * @return DirectoryModel
 	 *
 	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
 	 * @throws \InvalidArgumentException Wenn eine leere Bezeichnung übermittelt wurde

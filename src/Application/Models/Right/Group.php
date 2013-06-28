@@ -1,22 +1,14 @@
 <?php
-/**
- * Model Address
- *
- * PHP version 5.3
- *
- * @category Model
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Application\Models\Right;
 
 use Core\Model as BaseModel, App\Models\Right as RightModel, App\Models\User as UserModel;
 
 /**
- * Right
+ * Class Group
  *
- * @category Model
- * @package  Models
+ * @category Core
+ * @package  Core\Application\Models\Right
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @method string getName()
@@ -55,7 +47,7 @@ class Group extends BaseModel
 	/**
 	 * Modified
 	 *
-	 * @var datetime
+	 * @var \DateTime
 	 *
 	 * @Column(type="datetime")
 	 */
@@ -78,6 +70,7 @@ class Group extends BaseModel
 	 * Prüft die Elemente des Arrays auf Typ App\Models\Right
 	 *
 	 * @param array $rights Zu setzende Rechte
+	 * @return void
 	 * @throws \InvalidArgumentException
 	 */
 	public function setRights(array $rights)
@@ -88,7 +81,7 @@ class Group extends BaseModel
 			{
 				if (!($right instanceof RightModel))
 				{
-					throw new \InvalidArgumentException("Ungültiger Typ vom Recht");
+					throw new \InvalidArgumentException("Ungültiger Typ vom Recht!");
 				}
 			}
 		}
@@ -100,7 +93,7 @@ class Group extends BaseModel
 	 * Prüft die ELemente des Arrays auf Typ App\Models\User
 	 *
 	 * @param array $users Zu setzende Benutzer
-	 *
+	 * @return void
 	 * @throws \InvalidArgumentException
 	 */
 	public function setUsers(array $users)
@@ -111,7 +104,7 @@ class Group extends BaseModel
 			{
 				if (!($user instanceof UserModel))
 				{
-					throw new \InvalidArgumentException("Kein User");
+					throw new \InvalidArgumentException("Kein User!");
 				}
 			}
 		}
@@ -119,5 +112,3 @@ class Group extends BaseModel
 		$this->users = $users;
 	}
 }
-
-?>

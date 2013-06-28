@@ -1,6 +1,14 @@
 <?php
+
 namespace Core;
 
+/**
+ * Class Form
+ *
+ * @category Core
+ * @package  Core
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Form
 {
 
@@ -14,12 +22,20 @@ class Form
 	protected $elements = array();
 	protected $values = array();
 
+	/**
+	 * @param array $data
+	 */
 	public function __construct($data = array())
 	{
 
 		$this->values = $data;
 	}
 
+	/**
+	 * @param string $key
+	 * @param null   $default
+	 * @return null
+	 */
 	public function getValue($key, $default = null)
 	{
 		if (array_key_exists($key, $this->values))
@@ -30,34 +46,53 @@ class Form
 		return $default;
 	}
 
+	/**
+	 * @param string $method
+	 * @return void
+	 */
 	public function setMethod($method)
 	{
 		$this->method = $method;
-
 	}
 
+	/**
+	 * @param string $action
+	 * @return void
+	 */
 	public function setAction($action)
 	{
 		$this->action = $action;
-
 	}
 
+	/**
+	 * @param int $id
+	 * @return void
+	 */
 	public function setId($id)
 	{
 		$this->id = $id;
-
 	}
 
+	/**
+	 * @param string $class
+	 * @return void
+	 */
 	public function setClass($class)
 	{
 		$this->class = $class;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getClass()
 	{
 		return $this->class;
 	}
 
+	/**
+	 * @return null|string
+	 */
 	public function getId()
 	{
 		if (!empty($this->id))
@@ -66,40 +101,59 @@ class Form
 		}
 
 		return null;
-
 	}
 
+	/**
+	 * @param array $attr
+	 * @return void
+	 */
 	public function addAttribute(array $attr)
 	{
 		$this->attributes[] = $attr;
 
 	}
 
+	/**
+	 * @param Html\Element $element
+	 * @return void
+	 */
 	public function addElement(Html\Element $element)
 	{
 		$this->elements[] = $element;
-
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function hasElements()
 	{
 		return (count($this->elements) > 0);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getElements()
 	{
 		return $this->elements;
 	}
 
+	/**
+	 * @param array $elements
+	 * @return void
+	 */
 	public function addElements(array $elements)
 	{
 		foreach ($elements as $element)
 		{
 			$this->addElement($element);
 		}
-
 	}
 
+	/**
+	 * @param array $elements
+	 * @return void
+	 */
 	public function addElementsAllTypes($elements)
 	{
 		if (is_array($elements))
@@ -117,6 +171,9 @@ class Form
 		}
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function __toString()
 	{
 		$elements = '';
@@ -146,11 +203,13 @@ class Form
 
 		$output = $this->clearUp($output);
 
-
 		return $output;
-
 	}
 
+	/**
+	 * @param array $data
+	 * @return mixed
+	 */
 	private function clearUp($data)
 	{
 		$output = str_replace('class=""', '', $data);
@@ -163,6 +222,13 @@ class Form
 		return $output;
 	}
 
+	/**
+	 * @param int   $elementId
+	 * @param mixed $value
+	 * @param mixed $updateType
+	 * @param null  $container
+	 * @return void
+	 */
 	public function updateElement($elementId, $value, $updateType, $container = null)
 	{
 		if (is_null($container))
@@ -186,6 +252,11 @@ class Form
 		}
 	}
 
+	/**
+	 * @param int  $elementId
+	 * @param null $container
+	 * @return null
+	 */
 	public function findElement($elementId, $container = null)
 	{
 		$target = null;
@@ -209,9 +280,5 @@ class Form
 		}
 
 		return $target;
-
 	}
-
 }
-
-?>

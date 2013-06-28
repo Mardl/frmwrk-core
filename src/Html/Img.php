@@ -43,6 +43,7 @@ class Img extends Element
 
 	/**
 	 * @param string $src
+	 * @return void
 	 * @deprecated
 	 */
 	public function setPath($src)

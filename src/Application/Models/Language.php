@@ -1,22 +1,13 @@
 <?php
-/**
- * Model Language
- *
- * PHP version 5.3
- *
- * @category Model
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 namespace Core\Application\Models;
 
 use Core\Model as BaseModel;
 
 /**
- * Language
+ * Class Language
  *
- * @category Model
- * @package  Models
+ * @category Core
+ * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @method string getIsocode()
@@ -46,7 +37,6 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	protected $id;
 
 	/**
-	 *
 	 * Kurzversion D, I, NL ... however
 	 *
 	 *
@@ -85,9 +75,7 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	protected $isocode;
 
 	/**
-	 *
 	 * Iso-Code from ISO-3166-1
-	 *
 	 *
 	 * @var string
 	 *
@@ -95,7 +83,9 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	 */
 	protected $countryCode;
 
-
+	/**
+	 * @return array
+	 */
 	public function getDataRow()
 	{
 		$data = array(
@@ -110,7 +100,6 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	}
 
 	/**
-	 *
 	 * Liefert Länder-Sprachkennzeichen
 	 * Beispiel de-de oder de-AT
 	 *

@@ -1,23 +1,14 @@
 <?php
-/**
- * Model Files
- *
- * PHP version 5.3
- *
- * @category Model
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core\Application\Models\Directory;
 
 use Core\Model as BaseModel, Core\Application\Manager\Directory\Files as FileManager;
 
 /**
- * Files
+ * Class Files
  *
- * @category Model
- * @package  Models
+ * @category Core
+ * @package  Core\Application\Models\Directory
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @method string getOrgname()
@@ -83,7 +74,7 @@ class Files extends BaseModel
 	/**
 	 * Directory
 	 *
-	 * @var \App\Models\Directory
+	 * @var \Core\Application\Models\Directory
 	 *
 	 * @ManyToOne(targetEntity="App\Models\Directory")
 	 * @JoinColumn(name="directory_id", referencedColumnName="id", nullable=false)
@@ -93,7 +84,7 @@ class Files extends BaseModel
 	/**
 	 * Parent
 	 *
-	 * @var \App\Models\Directory\Files
+	 * @var \Core\Application\Models\Directory\Files
 	 *
 	 * @ManyToOne(targetEntity="App\Models\Directory\Files")
 	 * @JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
@@ -211,7 +202,7 @@ class Files extends BaseModel
 
 			return $visu;
 		}
-		//throw new \ErrorException('Bei Videos gibts kein Thumbnail');
+		//throw new \ErrorException('Bei Videos gibts kein Thumbnail!');
 	}
 
 	/**
@@ -252,7 +243,5 @@ class Files extends BaseModel
 		}
 
 		return $sources;
-
 	}
-
 }

@@ -1,26 +1,17 @@
 <?php
-/**
- * Core\Frontcontroller-Class
- *
- * PHP version 5.3
- *
- * @category Controller
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 use Exception, InvalidArgumentException, jamwork\common\Registry, Core\HTMLHelper;
 
 /**
- * FrontController
+ * Class FrontController
  *
  * Set up view, router, request and response.
  * Dispatch url and execute controller and action by defined routes in router.
  * Render view and return result.
  *
- * @category Controller
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -29,8 +20,7 @@ class FrontController
 
 	/**
 	 * View
-	 *
-	 *
+	 * 
 	 * @var   \Core\View
 	 */
 	protected $view;
@@ -105,6 +95,7 @@ class FrontController
 	 * Set router
 	 *
 	 * @param \Core\Router $router
+	 * @return void
 	 */
 	public function setRouter(Router $router)
 	{
@@ -114,21 +105,24 @@ class FrontController
 	/**
 	 * Fügt die Seiteninfos dem internen Stack hinzu
 	 *
-	 * @param      $action
-	 * @param null $controller
-	 * @param null $module
-	 * @param null $format
-	 * @param null $prefix
+	 * @param string $action
+	 * @param null   $controller
+	 * @param null   $module
+	 * @param null   $format
+	 * @param null   $prefix
+	 * @return void
 	 */
 	public function addPageToStack($action, $controller = null, $module = null, $format = null, $prefix = null)
 	{
-		$page = array_filter(array(
-		                          'action' => $action,
-		                          'controller' => $controller,
-		                          'module' => $module,
-		                          'format' => $format,
-		                          'prefix' => $prefix
-		                     ));
+		$page = array_filter(
+			array(
+				'action' => $action,
+				'controller' => $controller,
+				'module' => $module,
+				'format' => $format,
+				'prefix' => $prefix
+			)
+		);
 
 		if ($this->lastPage)
 		{
@@ -141,16 +135,12 @@ class FrontController
 	}
 
 	/**
-	 * Render
-	 *
-	 * @param        $actionName     Action name
-	 * @param        $controllerName Controller name
-	 * @param        $moduleName     Module name
+	 * @param string $actionName     Action name
+	 * @param string $controllerName Controller name
+	 * @param string $moduleName     Module name
 	 * @param string $actionFormat   Action format
 	 * @param string $prefix         Prefix
-	 *
 	 * @return string
-	 *
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
 	 */
@@ -193,7 +183,6 @@ class FrontController
 				$parts[$key] = str_replace('-', '_', $val);
 			}
 
-
 			if ($prefix == '')
 			{
 				// Define the controller file
@@ -204,7 +193,6 @@ class FrontController
 				// Define the controller file
 				$controllerFile = sprintf('%s/Modules/%s/%s/Controller/%s.php', APPLICATION_PATH, ucfirst($parts['prefix']), ucfirst($parts['module']), ucfirst($parts['controller']));
 			}
-
 
 			if (!file_exists($controllerFile))
 			{
@@ -238,8 +226,7 @@ class FrontController
 		$class->setRouter($this->router);
 		$class->init();
 
-		// Action might set a template, so we need to save the state before
-		// the method has been called
+		// Action might set a template, so we need to save the state before the method has been called
 		$templates = $this->view->getTemplates();
 		$class->$method();
 

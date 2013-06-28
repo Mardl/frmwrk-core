@@ -1,21 +1,17 @@
 <?php
-/**
- * Files Manager
- *
- * PHP version 5.3
- *
- * @category Manager
- * @package  Manager
- * @author   Reinhard Hampl <reini@dreiwerken.de>
- */
 
 
 namespace Core\Application\Manager\Directory;
 
-use Core\Application\Models\Directory\Files as FilesModel, Core\Application\Manager\Directory\Files as FilesManager, Core\Application\Manager\Directory as DirectoryManager, jamwork\common\Registry, Core\SystemMessages, App\Manager\User as UserManager;
+use Core\Application\Models\Directory\Files as FilesModel,
+	Core\Application\Manager\Directory\Files as FilesManager,
+	Core\Application\Manager\Directory as DirectoryManager,
+	jamwork\common\Registry,
+	Core\SystemMessages,
+	App\Manager\User as UserManager;
 
 /**
- * Files
+ * Class Files
  *
  * @category Manager
  * @package  Manager
@@ -99,7 +95,6 @@ class Files
 	 * Liefert ein Array von Files abhängig von der übermittelten Directory Id
 	 *
 	 * @param int $directoryId directoryId
-	 *
 	 * @return \Core\Application\Models\Directory\Files[]
 	 */
 	public static function getFilesByDirectoryId($directoryId)
@@ -139,11 +134,11 @@ class Files
 	 * Speichert eine neue Datei auf dem System aus dem filePost. Dabei überprüft die Funktion,
 	 * ob der Eintrag bereits vorhanden ist und somit geändert werden muss oder ob es sich um eine neue Datei handelt.
 	 *
-	 * @param                                          $filePost
-	 * @param                                          $directoryId
-	 * @param \Core\Application\Models\Directory\Files $filemodel
-	 * @param bool                                     $addSource
-	 * @param int                                      $watermark
+	 * @param array      $filePost
+	 * @param int        $directoryId
+	 * @param FilesModel $filemodel
+	 * @param bool       $addSource
+	 * @param int        $watermark
 	 *
 	 * @return bool|\Core\Application\Models\Directory\Files
 	 *
@@ -174,9 +169,8 @@ class Files
 
 			if (isset($info["Orientation"]) && $info["Orientation"] != "1")
 			{
-				/**
-				 *
-				 *    1 = The 0th row is at the visual top of the image, and the 0th column is the visual left-hand side.
+				/*
+				1 = The 0th row is at the visual top of the image, and the 0th column is the visual left-hand side.
 				2 = The 0th row is at the visual top of the image, and the 0th column is the visual right-hand side.
 				3 = The 0th row is at the visual bottom of the image, and the 0th column is the visual right-hand side.
 				4 = The 0th row is at the visual bottom of the image, and the 0th column is the visual left-hand side.
@@ -282,7 +276,6 @@ class Files
 			$filemodel->setDirectory($directoryModel);
 			$filemodel->setSize(($filesize / 1024)); //umrechnen in KB
 
-
 			if (!array_key_exists($extension, self::$mimetypes))
 			{
 				throw new \ErrorException('Nicht unterstützter Dateityp!');
@@ -300,7 +293,6 @@ class Files
 				self::updateFile($filemodel);
 			}
 
-
 			return $filemodel;
 		}
 
@@ -309,9 +301,7 @@ class Files
 
 	/**
 	 * @param string $filename Dateiname
-	 *
 	 * @return bool|\Core\Application\Models\Directory\Files
-	 *
 	 * @throws \InvalidArgumentException
 	 */
 	public static function fileExistsByName($filename)
@@ -359,8 +349,8 @@ class Files
 		{
 			self::clearCache();
 			// funktioniert noch nicht
-			#$cachefile = FILE_TEMP.md5($lifeId).'*';
-			#@unlink($cachefile);
+			// $cachefile = FILE_TEMP.md5($lifeId).'*';
+			// @unlink($cachefile);
 
 			$user = UserManager::getUserById($lifeId);
 			//$user->setAvatar($exists->getThumbnailTarget());
@@ -451,7 +441,7 @@ class Files
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		//Verknpüfungen löschen
+		// Verknpüfungen löschen
 		$query = sprintf("UPDATE nutritioncategory SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
@@ -480,7 +470,7 @@ class Files
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		//Delete file
+		// Delete file
 		$query = sprintf("DELETE FROM
 				files
 			WHERE id = %d;", mysql_real_escape_string($filesId));
@@ -502,7 +492,7 @@ class Files
 	 *
 	 * @param FilesModel $fileModel File Model der zu aktualisierenden Datei
 	 *
-	 * @return \Core\Application\Models\Directory\Files || boolean
+	 * @return \Core\Application\Models\Directory\Files|bool
 	 */
 	public static function updateFile(FilesModel $fileModel)
 	{
@@ -557,7 +547,7 @@ class Files
 	/**
 	 * Leert das Cache Verzeichnis der Dateien
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function clearCache()
 	{

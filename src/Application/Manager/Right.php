@@ -1,30 +1,24 @@
 <?php
-/**
- * Rechte Manager
- *
- * PHP version 5.3
- *
- * @category Manager
- * @package  Manager
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 namespace Core\Application\Manager;
 
-use Core\SystemMessages, App\Models\Right as RightModel, App\Models\User as UserModel, jamwork\common\Registry, jamwork\database\MysqlRecordset as Recordset;
+use Core\SystemMessages,
+	App\Models\Right as RightModel,
+	App\Models\User as UserModel,
+	jamwork\common\Registry,
+	jamwork\database\MysqlRecordset as Recordset;
 
 /**
  * Right
  *
- * @category Manager
- * @package  Manager
+ * @category Core
+ * @package  Core\Application\Manager
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
 class Right
 {
 
 	/**
-	 * Zunächst wird das Recht aktualisiert und danach geprüft ob der Benutzer
-	 * das Recht besitzt.
+	 * Zunächst wird das Recht aktualisiert und danach geprüft ob der Benutzer das Recht besitzt.
 	 *
 	 * @param RightModel $right Das zu prüfende Recht
 	 * @param UserModel  $user  Der Benutzer
@@ -130,15 +124,11 @@ class Right
 	}
 
 	/**
-	 * Erstellt ein neues Recht. Falls es schon existiert wird die "Modified"-Eigenschaft
-	 * aktualisiert
+	 * Erstellt ein neues Recht. Falls es schon existiert wird die "Modified"-Eigenschaft aktualisiert
 	 *
-	 * @param \Core\Application\Models\Right|array $right Rechte-Daten
-	 *
-	 * @throws \InvalidArgumentException Wenn die Rechte-Daten in einem umbekannten Format
-	 * übergeben werden
-	 *
-	 * @return boolean
+	 * @param RightModel $right Rechte-Daten
+	 * @throws \InvalidArgumentException Wenn die Rechte-Daten in einem umbekannten Format übergeben werden
+	 * @return bool
 	 */
 	public static function createRight($right)
 	{

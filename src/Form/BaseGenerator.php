@@ -1,16 +1,16 @@
 <?php
-/**
- *
- * PHP version 5.3
- *
- * @category Forms
- * @package  Lifemeter
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Form;
 
 use Core\Form, Core\SystemMessages;
 
+/**
+ * Class BaseGenerator
+ *
+ * @category Core
+ * @package  Core\Form
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class BaseGenerator
 {
 
@@ -48,6 +48,9 @@ class BaseGenerator
 		return $this->form;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function __toString()
 	{
 		return $this->form->__toString();
@@ -58,7 +61,7 @@ class BaseGenerator
 	 *
 	 * @param \Core\Form|\Core\Form\Element $elementContainer
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function checkRequired($elementContainer)
 	{

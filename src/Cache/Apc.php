@@ -63,7 +63,7 @@ class Apc
 	}
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 * @return bool|\string[]
 	 */
 	public function has($key)
@@ -72,7 +72,7 @@ class Apc
 	}
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 * @return bool|\string[]
 	 */
 	public function remove($key)

@@ -1,13 +1,5 @@
 <?php
-/**
- * Model Address
- *
- * PHP version 5.3
- *
- * @category Model
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Application\Models;
 
 use Core\Model as BaseModel, Core\Application\Models\Right\Group as RightGroup;
@@ -15,8 +7,8 @@ use Core\Model as BaseModel, Core\Application\Models\Right\Group as RightGroup;
 /**
  * Right
  *
- * @category Model
- * @package  Models
+ * @category Core
+ * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @method string getTitle()
@@ -115,7 +107,7 @@ class Right extends BaseModel
 	 * Prüft die Elemente des Arrays auf Typ App\Models\Right\Group
 	 *
 	 * @param array $groups Array mit den Rechtegruppen
-	 *
+	 * @return void
 	 * @throws \InvalidArgumentException
 	 */
 	public function setGroups(array $groups)
@@ -126,7 +118,7 @@ class Right extends BaseModel
 			{
 				if (!($group instanceof RightGroup))
 				{
-					throw new \InvalidArgumentException('Ungültiger Typ der Rechtegruppe');
+					throw new \InvalidArgumentException('Ungültiger Typ der Rechtegruppe!');
 				}
 			}
 		}

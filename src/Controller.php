@@ -1,13 +1,4 @@
 <?php
-/**
- * Core\Controller-Class
- *
- * PHP version 5.3
- *
- * @category Controller
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
@@ -16,7 +7,7 @@ use InvalidArgumentException, Core\Request, Core\FrontController, jamwork\common
 /**
  * Abstract controller class
  *
- * @category Controller
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -83,7 +74,6 @@ abstract class Controller
 		$this->request = $reg->getRequest();
 		$this->response = $reg->getResponse();
 		$this->view = $reg->view;
-
 	}
 
 	/**
@@ -146,7 +136,6 @@ abstract class Controller
 		$this->view = $view;
 
 		return true;
-
 	}
 
 	/**
@@ -169,14 +158,13 @@ abstract class Controller
 	 *
 	 * @param \Core\Request $request Request
 	 *
-	 * @return boolean Status
+	 * @return bool Status
 	 */
 	public function setRequest(Request $request)
 	{
 		$this->request = $request;
 
 		return true;
-
 	}
 
 	/**
@@ -184,7 +172,7 @@ abstract class Controller
 	 *
 	 * @param \Core\Response $response Response
 	 *
-	 * @return boolean Status
+	 * @return bool Status
 	 */
 	public function setResponse(Response $response)
 	{
@@ -196,7 +184,7 @@ abstract class Controller
 	/**
 	 * Disables the rendering for the controller
 	 *
-	 * @param boolean $flag Entweder True oder False
+	 * @param bool $flag Entweder True oder False
 	 *
 	 * @return void
 	 */
@@ -239,5 +227,4 @@ abstract class Controller
 	{
 
 	}
-
 }

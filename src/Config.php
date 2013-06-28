@@ -1,20 +1,11 @@
 <?php
-/**
- * Core\Config-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 /**
- * Core\Config-Class
+ * Class Config
  *
- * @category Helper
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -40,7 +31,6 @@ class Config
 	 *
 	 * @param string $domain   Domainname
 	 * @param string $fileName Name der Konfigurationsdatei
-	 *
 	 * @return void
 	 */
 	public function add($domain, $fileName)
@@ -52,6 +42,7 @@ class Config
 	 * Lädt die Konfigurationsvariablen und speichert sie zwischen.
 	 * Wenn eine Konfigurationsvariable KEIN Array ist, wird sie als globale Konstante definiert.
 	 *
+	 * @return void
 	 * @throws \InvalidArgumentException
 	 * @throws \LengthException
 	 */
@@ -99,7 +90,6 @@ class Config
 				$this->_vars[$key] = $value;
 			}
 		}
-
 	}
 
 	/**
@@ -107,8 +97,7 @@ class Config
 	 *
 	 * @param string $haystack Aktueller Hostname
 	 * @param string $needle   Vergleichswert
-	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function _hostEndsWith($haystack, $needle)
 	{
@@ -124,11 +113,9 @@ class Config
 
 	/**
 	 * Magische Funktion um Daten aus der Config zu bekommen.
-	 * Liefert entweder den Wert für den angegeben Konfigurationsparamter, wenn dieser vorhanden
-	 * ist, ansonsten den Wert null;
+	 * Liefert entweder den Wert für den angegeben Konfigurationsparamter, wenn dieser vorhanden ist, ansonsten den Wert null;
 	 *
-	 * @param string|integer $name Index
-	 *
+	 * @param string|int $name Index
 	 * @return mixed|null
 	 */
 	public function __get($name)
@@ -140,5 +127,4 @@ class Config
 
 		return null;
 	}
-
 }

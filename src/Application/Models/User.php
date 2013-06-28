@@ -1,22 +1,14 @@
 <?php
-/**
- * Model User
- *
- * PHP version 5.3
- *
- * @category Model
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Application\Models;
 
 use Exception, Core\Application\Manager\Directory\Files as FilesManager, Core\Model as BaseModel;
 
 /**
- * User
+ * Class User
  *
- * @category Model
- * @package  Models
+ * @category Core
+ * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @method string getUsername()
@@ -52,7 +44,7 @@ class User extends BaseModel
 	/**
 	 * Id
 	 *
-	 * @var integer
+	 * @var int
 	 *
 	 * @Id
 	 * @Column(type="integer")
@@ -171,7 +163,7 @@ class User extends BaseModel
 	/**
 	 * Einmal-Passwort wurde gesetzt
 	 *
-	 * @var boolean
+	 * @var bool
 	 *
 	 * @Column(type="boolean", name="otp")
 	 */
@@ -180,7 +172,7 @@ class User extends BaseModel
 	/**
 	 * Administrator
 	 *
-	 * @var boolean
+	 * @var bool
 	 *
 	 * @Column(type="boolean")
 	 */
@@ -196,13 +188,11 @@ class User extends BaseModel
 	protected $language = null;
 
 	/**
-	 * Sets new password
+	 * Setzt das neue Passwort
 	 *
-	 * @param      $password String mit dem neuen Passwort
-	 * @param bool $md5      Kodierung mit MD5
-	 *
+	 * @param string $password String mit dem neuen Passwort
+	 * @param bool   $md5      Kodierung mit MD5
 	 * @return string
-	 *
 	 * @throws \ErrorException
 	 * @throws \InvalidArgumentException
 	 */
@@ -231,8 +221,7 @@ class User extends BaseModel
 	}
 
 	/**
-	 * Das Passwort kann man nicht wiederherstellen, deswegen wird ein leerer String
-	 * zurückgegeben
+	 * Das Passwort kann man nicht wiederherstellen, deswegen wird ein leerer String zurückgegeben
 	 *
 	 * @return string
 	 *
@@ -246,7 +235,7 @@ class User extends BaseModel
 	 * Sorgt dafür, dass das Geburtsdatum immer ein DateTime-Objekt ist
 	 *
 	 * @param \DateTime|string $datetime DateTime-Objekt oder String
-	 *
+	 * @return void
 	 * @throws \InvalidArgumentException
 	 */
 	public function setBirthday($datetime)
@@ -288,7 +277,7 @@ class User extends BaseModel
 	/**
 	 * Prüft, ob User männlich ist.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMale()
 	{
@@ -303,7 +292,7 @@ class User extends BaseModel
 	/**
 	 * Prüft, ob User weiblich ist.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFemale()
 	{
@@ -395,7 +384,8 @@ class User extends BaseModel
 	/**
 	 * Setzt die Sprache
 	 *
-	 * @param $language int|\Core\Application\Models\Language
+	 * @param int|\Core\Application\Models\Language $language
+	 * @return void
 	 */
 	public function setLanguage($language)
 	{
@@ -420,7 +410,7 @@ class User extends BaseModel
 	/**
 	 * Liefert die ID der Sprache
 	 *
-	 * @return int
+	 * @return int|null
 	 */
 	public function getLanguageId()
 	{
