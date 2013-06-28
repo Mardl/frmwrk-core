@@ -5,6 +5,6 @@ Thumbs.db
 .buildpath
 .idea/
 ._*
-Vendor
+Vendor/
 build/logs
 build/coverage
