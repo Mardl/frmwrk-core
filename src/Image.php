@@ -1,18 +1,11 @@
 <?php
-/**
- * Core\Image-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core;
 
 use Imagick as ImageMagick;
 
 /**
+ * Class Image
  * Extension for Imagick
  *
  * Requires PECL::Imagick 3?
@@ -20,6 +13,10 @@ use Imagick as ImageMagick;
  * Install:
  * aptitude install libmagick9-dev
  * pecl install imagick
+ *
+ * @category Core
+ * @package  Core
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
  */
 class Image extends ImageMagick
 {
@@ -27,22 +24,22 @@ class Image extends ImageMagick
 	/**
 	 * Offset x
 	 *
-	 * @var   integer
+	 * @var int
 	 */
 	protected $offsetX = 0;
 
 	/**
 	 * Offset y
 	 *
-	 * @var   integer
+	 * @var int
 	 */
 	protected $offsetY = 0;
 
 	/**
 	 * Set offset for Imagick::brandImage
 	 *
-	 * @param integer $x X-Position.
-	 * @param integer $y Y-Position.
+	 * @param int $x X-Position.
+	 * @param int $y Y-Position.
 	 *
 	 * @return void
 	 */
@@ -60,36 +57,34 @@ class Image extends ImageMagick
 
 		$this->offsetX = $x;
 		$this->offsetY = $y;
-
 	}
 
 	/**
 	 * Get offset x
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getOffsetX()
 	{
 		return $this->offsetX;
-
 	}
 
 	/**
 	 * Get offset y
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getOffsetY()
 	{
 		return $this->offsetY;
-
 	}
 
 	/**
 	 * Create thumbnail with canvas
 	 *
-	 * @param integer $width
-	 * @param integer $height
+	 * @param int $width
+	 * @param int $height
+	 * @return void
 	 */
 	public function thumbnailWithCanvas($width, $height)
 	{
@@ -107,7 +102,8 @@ class Image extends ImageMagick
 	/**
 	 * Resize width to $width
 	 *
-	 * @param integer $width
+	 * @param int $width
+	 * @return void
 	 */
 	public function resizeWidthTo($width)
 	{
@@ -118,6 +114,7 @@ class Image extends ImageMagick
 	 * Resize height to $height
 	 *
 	 * @param integer $height
+	 * @return void
 	 */
 	public function resizeHeightTo($height)
 	{
@@ -127,7 +124,8 @@ class Image extends ImageMagick
 	/**
 	 * Resize longer side to $length
 	 *
-	 * @param integer $length
+	 * @param int $length
+	 * @return void
 	 */
 	public function resizeLongerSideTo($length)
 	{
@@ -135,10 +133,7 @@ class Image extends ImageMagick
 	}
 
 	/**
-	 * Brand image
-	 *
-	 * @param ImageMagick $watermark Watermark
-	 *
+	 * @param \Imagick $watermark Watermark
 	 * @return object
 	 */
 	public function brandImage(ImageMagick $watermark)

@@ -20,28 +20,30 @@ class ModelInformation
 	private static $information = array();
 
 	/**
-	 * @param string    $className
-	 * @param string    $key
-	 * @param mixed     $value
+	 * @param string $className
+	 * @param string $key
+	 * @param mixed  $value
 	 * @return void
 	 */
 	public static function set($className, $key, $value)
 	{
-		if (!isset(self::$information[$className])) {
+		if (!isset(self::$information[$className]))
+		{
 			self::$information[$className] = array();
 		}
 		self::$information[$className][$key] = $value;
 	}
 
 	/**
-	 * @param string    $className
-	 * @param string    $key
+	 * @param string $className
+	 * @param string $key
 	 * @return null
 	 */
 	public static function get($className, $key)
 	{
 		//return null;
-		if (!isset(self::$information[$className][$key])) {
+		if (!isset(self::$information[$className][$key]))
+		{
 			return null;
 		}
 

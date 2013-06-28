@@ -1,15 +1,14 @@
 <?php
-/**
- * Core\Cli-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Helpers;
 
+/**
+ * Class DbManagement
+ *
+ * @category Core
+ * @package  Core\Helpers
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class DbManagement
 {
 
@@ -58,14 +57,14 @@ class DbManagement
 	/**
 	 * Schema-Tool Instanz
 	 *
-	 * @var Doctrine\ORM\Tools\SchemaTool
+	 * @var \Doctrine\ORM\Tools\SchemaTool
 	 */
 	private $schemaTool = null;
 
 	/**
 	 * Entity-Manager Instanz
 	 *
-	 * @var Doctrine\ORM\EntityManager
+	 * @var \Doctrine\ORM\EntityManager
 	 */
 	private $entityManager = null;
 
@@ -76,35 +75,44 @@ class DbManagement
 	 */
 	private $success = true;
 
+	/**
+	 * Konstruktor
+ 	 */
 	public function __construct()
 	{
-
-		//Doctrine in den ClassLoader holen
+		// Doctrine in den ClassLoader holen
 		$loader = new \Core\Loader('Doctrine', FRAMEWORK_PATH);
 		$loader->register();
 
-		//ORM Configuration
+		// ORM Configuration
 		$config = new \Doctrine\ORM\Configuration();
 		$config->setProxyDir(ROOT_PATH . '/tmp/proxies');
 		$config->setProxyNamespace('Proxy');
 		$driverImpl = $config->newDefaultAnnotationDriver(array(APPLICATION_PATH . '/Models'));
 		$config->setMetadataDriverImpl($driverImpl);
 
-		//Connection Options definieren
-		$connectionOptions = array('driver' => 'pdo_mysql', 'dbname' => DB_DATABASE, 'user' => DB_USER, 'password' => DB_PASSWORD, 'host' => DB_SERVER);
+		// Connection Options definieren
+		$connectionOptions = array(
+			'driver' => 'pdo_mysql',
+			'dbname' => DB_DATABASE,
+			'user' => DB_USER,
+			'password' => DB_PASSWORD,
+			'host' => DB_SERVER
+		);
+
 		$event = new \Doctrine\Common\EventManager();
 		$event->addEventSubscriber(new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit('utf8', 'utf8_unicode_ci'));
 
-		//EntityManager
+		// EntityManager
 		$em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $event);
 		$this->entityManager = $em;
 		$metadatas = $em->getMetadataFactory()->getAllMetadata();
 
-		//SchemaTool initialisieren und UpdateStatements abholen
+		// SchemaTool initialisieren und UpdateStatements abholen
 		$this->schemaTool = new \Doctrine\ORM\Tools\SchemaTool($em);
 		$this->response = $this->schemaTool->getUpdateSchemaSql($metadatas, false);
 
-		//Statements gruppieren
+		// Statements gruppieren
 		$this->group();
 
 	}
@@ -113,7 +121,7 @@ class DbManagement
 	 * Liefert alle Statements als Array;
 	 * Inklusive DROP-Statements
 	 *
-	 * @return multitype:
+	 * @return array
 	 */
 	public function getStatements()
 	{
@@ -139,7 +147,7 @@ class DbManagement
 	 *
 	 * array[TABELLENNAME][STATEMENTS 1...n]
 	 *
-	 * @return multitype:
+	 * @return array
 	 */
 	public function getCreateStatements()
 	{
@@ -151,7 +159,7 @@ class DbManagement
 	 *
 	 * array[TABELLENNAME][STATEMENTS 1...n]
 	 *
-	 * @return multitype:
+	 * @return array:
 	 */
 	public function getAlterStatements()
 	{
@@ -163,7 +171,7 @@ class DbManagement
 	 *
 	 * array[TABELLENNAME][STATEMENTS 1...n]
 	 *
-	 * @return multitype:
+	 * @return array:
 	 */
 	public function getDropStatements()
 	{
@@ -218,7 +226,6 @@ class DbManagement
 		{
 			return false;
 		}
-
 	}
 
 	/**
@@ -280,7 +287,6 @@ class DbManagement
 		}
 	}
 
-
 	/**
 	 * Gruppiert die Statements anhand des Statement-Anfangs
 	 *
@@ -341,7 +347,6 @@ class DbManagement
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -375,7 +380,4 @@ class DbManagement
 
 		return true;
 	}
-
 }
-
-?>

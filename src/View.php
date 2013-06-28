@@ -90,7 +90,8 @@ class View extends ArrayObject
 	{
 		parent::__construct(array(), self::ARRAY_AS_PROPS);
 
-		if ($template !== null) {
+		if ($template !== null)
+		{
 			$this->setTemplate($template);
 		}
 
@@ -109,9 +110,11 @@ class View extends ArrayObject
 	 */
 	public function __toString()
 	{
-		try {
+		try
+		{
 			return $this->render();
-		} catch (Exception $e) {
+		} catch (Exception $e)
+		{
 			return $e->getMessage();
 		}
 	}
@@ -153,9 +156,11 @@ class View extends ArrayObject
 	public function getRoute()
 	{
 		$route = $this->router->getCurrent() ? : 'default';
-		try {
+		try
+		{
 			return $this->router[$route];
-		} catch (\Exception $e) {
+		} catch (\Exception $e)
+		{
 			throw new \ErrorException("Specified route $route not found");
 		}
 	}
@@ -172,7 +177,8 @@ class View extends ArrayObject
 	 */
 	public function url(array $data = array(), $route = null, $reset = null, $absolute = false)
 	{
-		if (!$route) {
+		if (!$route)
+		{
 			$route = $this->router->getCurrent();
 		}
 
@@ -217,7 +223,8 @@ class View extends ArrayObject
 	 */
 	public function getTitle($separator = ' - ')
 	{
-		if (!isset($this->pageTitle)) {
+		if (!isset($this->pageTitle))
+		{
 			return 'No title set';
 		}
 
@@ -263,7 +270,8 @@ class View extends ArrayObject
 	 */
 	public function getKeywords($separator = ', ')
 	{
-		if (empty($this->pageKeywords)) {
+		if (empty($this->pageKeywords))
+		{
 			return false;
 		}
 		sort($this->pageKeywords);
@@ -291,7 +299,8 @@ class View extends ArrayObject
 	 */
 	public function getDescription()
 	{
-		if (empty($this->pageDescription)) {
+		if (empty($this->pageDescription))
+		{
 			return null;
 		}
 
@@ -334,9 +343,12 @@ class View extends ArrayObject
 	 */
 	public function addPlaceholder($key, $value, $prerender = false)
 	{
-		if ($prerender) {
+		if ($prerender)
+		{
 			$this->placeholder[$key] = $value . '';
-		} else {
+		}
+		else
+		{
 			$this->placeholder[$key] = $value;
 		}
 	}
@@ -350,11 +362,13 @@ class View extends ArrayObject
 	 */
 	public function addMultiPlaceholder($key, $value)
 	{
-		if (!array_key_exists($key, $this->placeholder)) {
+		if (!array_key_exists($key, $this->placeholder))
+		{
 			$this->placeholder[$key] = array();
 		}
 
-		if (!is_array($this->placeholder[$key])) {
+		if (!is_array($this->placeholder[$key]))
+		{
 			$this->placeholder[$key] = array();
 		}
 
@@ -401,28 +415,36 @@ class View extends ArrayObject
 	 */
 	public function render($template = null)
 	{
-		if ($template !== null) {
+		if ($template !== null)
+		{
 			$this->setTemplate($template);
 		}
 
-		if (count($this->templates) === 0) {
+		if (count($this->templates) === 0)
+		{
 			return '';
 		}
 
-		foreach (array_reverse($this->templates) as $template) {
-			try {
+		foreach (array_reverse($this->templates) as $template)
+		{
+			try
+			{
 				ob_start();
 				include $template;
 				$this->content = ob_get_clean();
 
 
-				foreach ($this->placeholder as $key => $value) {
+				foreach ($this->placeholder as $key => $value)
+				{
 					$c = $value;
 
-					if (is_array($value)) {
+					if (is_array($value))
+					{
 						$c = '';
-						foreach ($value as $val) {
-							if (!empty($val)) {
+						foreach ($value as $val)
+						{
+							if (!empty($val))
+							{
 								$c .= $val;
 							}
 
@@ -432,7 +454,8 @@ class View extends ArrayObject
 
 					$this->content = str_replace('{' . $key . '}', $c, $this->content);
 				}
-			} catch (Exception $e) {
+			} catch (Exception $e)
+			{
 				ob_end_clean();
 
 				$this->content = '<div style="background: #f99; padding: 0.5em; margin: 0.5em;';
@@ -477,7 +500,8 @@ class View extends ArrayObject
 	 */
 	public function formatNumberStyle($value)
 	{
-		if (!empty($value)) {
+		if (!empty($value))
+		{
 			return $this->convertToCurrency($value);
 		}
 

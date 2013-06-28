@@ -1,14 +1,30 @@
 <?php
+
 namespace Core\Html\Input;
 
 use Core\Html\Input;
 
+/**
+ * Class Checkbox
+ *
+ * @category Core
+ * @package  Core\Html\Input
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Checkbox extends Input
 {
 
 	private $title = null;
 	private $renderOutput = '<label class="checkbox {class}"><input type="checkbox" class="{class}" style="{style}" {id} name="{name}" value="{value}" {attr} /> {title} </label> ';
 
+	/**
+	 * @param int    $id
+	 * @param array  $default
+	 * @param array  $css
+	 * @param bool   $breakafter
+	 * @param string $postValue
+	 * @param bool   $required
+	 */
 	public function __construct($id, $default, $css = array(), $breakafter = false, $postValue = '', $required = false)
 	{
 		parent::__construct($id, $default, $css, $breakafter, $required);
@@ -22,16 +38,21 @@ class Checkbox extends Input
 		{
 			$this->addAttribute('checked', 'checked');
 		}
-
-
 	}
 
+	/**
+	 * @param string $title
+	 * @return void
+	 */
 	public function setTitle($title)
 	{
 		$this->setLabel($title);
 		$this->title = $title;
 	}
 
+	/**
+	 * @return null|string
+	 */
 	public function getTitle()
 	{
 		$output = $this->title;
@@ -43,6 +64,9 @@ class Checkbox extends Input
 		return $output;
 	}
 
+	/**
+	 * @return bool|string
+	 */
 	public function validate()
 	{
 		if ($this->isRequired() && !$this->hasAttribute('checked'))
@@ -60,9 +84,11 @@ class Checkbox extends Input
 		return true;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function __toString()
 	{
-
 		$output = $this->renderStandard($this->renderOutput);
 
 		$output = str_replace('{name}', $this->getName(), $output);

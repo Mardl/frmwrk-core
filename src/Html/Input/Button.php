@@ -1,13 +1,27 @@
 <?php
+
 namespace Core\Html\Input;
 
 use Core\Html\Input;
 
+/**
+ * Class Button
+ *
+ * @category Core
+ * @package  Core\Html\Input
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Button extends Input
 {
 
 	private $renderOutput = '<button type="{type}" class="{class}" style="{style}"  {id} name="{name}">{value}</button>{breakafter}';
 
+	/**
+	 * @param int   $id
+	 * @param array $default
+	 * @param array $css
+	 * @param bool  $breakafter
+	 */
 	public function __construct($id, $default, $css = array(), $breakafter = false)
 	{
 		parent::__construct($id, $default, $css, $breakafter);
@@ -18,6 +32,10 @@ class Button extends Input
 		}
 	}
 
+	/**
+	 * @return mixed
+	 * @throws \ErrorException
+	 */
 	public function __toString()
 	{
 		if (is_null($this->name) && is_null($this->id))
@@ -33,5 +51,4 @@ class Button extends Input
 
 		return $output;
 	}
-
 }

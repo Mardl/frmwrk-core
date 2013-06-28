@@ -1,22 +1,13 @@
 <?php
-/**
- * Core\HTMLHelper-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 use jamwork\common\Registry, Core\SystemMessages;
 
 /**
- * HTML helper
+ * Class HTMLHelper
  *
- * @category Helper
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -81,6 +72,11 @@ class HTMLHelper
 
 	protected $parentView;
 
+	/**
+	 * Constructor
+	 *
+	 * @param View $view
+	 */
 	public function __construct(\Core\View $view = null)
 	{
 		$this->parentView = $view;
@@ -184,7 +180,7 @@ class HTMLHelper
 			$attributes['href'] = $filename;
 		}
 
-		#$attributes['href'] = $this->app('css/'.$filename);
+		// $attributes['href'] = $this->app('css/'.$filename);
 		$this->_cssFiles[] = $attributes;
 	}
 
@@ -254,7 +250,6 @@ class HTMLHelper
 	public function addJsFile($filename)
 	{
 		$this->_jsFiles[] = $filename;
-
 	}
 
 	/**
@@ -265,7 +260,6 @@ class HTMLHelper
 	public function getJsAssets()
 	{
 		return $this->_jsAssets;
-
 	}
 
 	/**
@@ -285,7 +279,6 @@ class HTMLHelper
 				$assetFiles = array_merge($assetFiles, $config->JS_ASSETS[$name]);
 				//throw new \Exception('Javascript asset '.$name.' not found', 404);
 			}
-
 		}
 
 		$assetFiles = array_merge($assetFiles, $this->_jsFiles);
@@ -301,9 +294,7 @@ class HTMLHelper
 	public function getJsVariables()
 	{
 		return $this->_jsVariables;
-
 	}
-
 
 	/**
 	 * Set variable in javascript and remove previous
@@ -329,7 +320,6 @@ class HTMLHelper
 	public function addJsVariable($name, $value)
 	{
 		$this->_jsVariables[$name] = $value;
-
 	}
 
 	/**
@@ -356,7 +346,6 @@ class HTMLHelper
 	public function getBreadcrumbs()
 	{
 		return $this->_breadcrumbs;
-
 	}
 
 	/**
@@ -374,7 +363,7 @@ class HTMLHelper
 	/**
 	 * Get link from breadcrumb home (small house)
 	 *
-	 * @return \Core\Url
+	 * @return string
 	 */
 	public function getBreadcrumbHome()
 	{
@@ -394,7 +383,6 @@ class HTMLHelper
 
 		return $view;
 	}
-
 
 	/**
 	 * "Cuts" a string at an given length
@@ -448,7 +436,8 @@ class HTMLHelper
 	 */
 	public function getRenderedLinks()
 	{
-		return array_map(function ($link)
+		return array_map(
+			function($link)
 			{
 				$result = '<link';
 				foreach ($link as $key => $value)
@@ -458,14 +447,17 @@ class HTMLHelper
 				$result .= ' />';
 
 				return $result;
-			}, $this->_links);
+			},
+			$this->_links
+		);
+
 		// return $this->metas;
 	}
 
 	/**
 	 * Fügt eine MetaInformation hinzu
 	 *
-	 * @param string $attributes Array mit Meta Informationen
+	 * @param string|array $attributes Array mit Meta Informationen
 	 *
 	 * @return void
 	 */
@@ -506,7 +498,6 @@ class HTMLHelper
 		}
 
 		return $result;
-
 	}
 
 	/**
@@ -538,19 +529,18 @@ class HTMLHelper
 	/**
 	 * Liefert einen Standardlink verbunden mit Rechteprüfung
 	 *
-	 * @param string  $name       Name des Links
-	 * @param array   $data       Daten für den Linkaufbau
-	 * @param array   $css        Array mit den CSS-Klassen als Value
-	 * @param array   $attributes Array mit zusätzlichen Linkattributen, Aufbau ATTRIBUTE=>VALUE
-	 * @param string  $route      Name der zu verwendenden Route
-	 * @param string  $reset      Überschreiben fehlender Attribute mit den Standardwerten
-	 * @param boolean $absolute   http davor setzen oder nicht
+	 * @param string $name            Name des Links
+	 * @param array  $data            Daten für den Linkaufbau
+	 * @param array  $css             Array mit den CSS-Klassen als Value
+	 * @param array  $attributes      Array mit zusätzlichen Linkattributen, Aufbau ATTRIBUTE=>VALUE
+	 * @param string $route           Name der zu verwendenden Route
+	 * @param string $reset           Überschreiben fehlender Attribute mit den Standardwerten
+	 * @param bool   $absolute        http davor setzen oder nicht
 	 *
 	 * @return string|null
 	 */
 	public function anchor($name, array $data = array(), $css = array(), $attributes = array(), $route = null, $reset = null, $absolute = false)
 	{
-
 		//var_dump($data);
 		$url = $this->parentView->url($data, $route, $reset, $absolute);
 		//var_dump($url);

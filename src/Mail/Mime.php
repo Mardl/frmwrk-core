@@ -3,9 +3,13 @@
 namespace Core\Mail;
 
 /**
- * Mime
+ * Class Mime
  *
  * Encode files(string) as mime to send attachments via mail
+ *
+ * @category Core
+ * @package  Core\Mail
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
  */
 class Mime extends \ArrayObject
 {
@@ -145,7 +149,6 @@ class Mime extends \ArrayObject
 		$result = rtrim($result) . $ls . '--' . $this->boundary . "--" . $ls;
 
 		return $result;
-
 	}
 
 	/**
@@ -165,7 +168,4 @@ class Mime extends \ArrayObject
 
 		return implode("\n", $result);
 	}
-
 }
-
-?>

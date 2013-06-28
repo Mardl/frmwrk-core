@@ -18,8 +18,8 @@ class Response extends HttpResponse
 	 * Redirect
 	 * TODO: Funktion bereits im Jamwork. Wenn alles aktualisiert ist, kann sie gelöscht werden!
 	 *
-	 * @param string    $url    Target url
-	 * @param int       $status Status
+	 * @param string $url    Target url
+	 * @param int    $status Status
 	 * @return void
 	 */
 	public function redirect($url, $status = 302)

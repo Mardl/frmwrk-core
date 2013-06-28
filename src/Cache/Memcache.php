@@ -1,13 +1,5 @@
 <?php
-/**
- * Core\Cache\Memcache-Class
- *
- * PHP version 5.3
- *
- * @category Cache
- * @package  Core\Cache
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Cache;
 
 use \Memcached as BaseCache;
@@ -25,7 +17,7 @@ class Memcache
 	/**
 	 * Instance-Keeper
 	 *
-	 * @var Core\Cache\Memcache
+	 * @var \Core\Cache\Memcache
 	 */
 	private static $instance = null;
 
@@ -53,17 +45,16 @@ class Memcache
 	}
 
 	/**
+	 * Konstruktor
+	 *
 	 * Wenn der Cache aktiviert ist und die Klasse Memcached existiert wird
 	 * zur private Instanz eine Verbindung zum Memcache aufgebaut und die TTL,
 	 * falls nicht über Config gesetzt, auf 10 Sekunden eingerichtet.
 	 */
 	private function __construct()
 	{
-
 		if (class_exists('\Memcached') && CACHE_ENABLED && !defined('DISABLE_CACHE'))
 		{
-
-
 			$this->memcache = new BaseCache();
 
 			if (defined('CACHE_TTL') && !defined('UPDATE_TTL'))
@@ -89,10 +80,9 @@ class Memcache
 	/**
 	 * Fügt einen Eintrag dem Memcache hinzu
 	 *
-	 * @param string  $key   Cache-Schlüssel
-	 * @param mixed   $value Zu speichender Wert
-	 * @param integer $ttl   Optionale Angabe der Gültigkeit
-	 *
+	 * @param string $key   Cache-Schlüssel
+	 * @param mixed  $value Zu speichender Wert
+	 * @param int    $ttl   Optionale Angabe der Gültigkeit
 	 * @return void
 	 */
 	public function add($key, $value, $ttl = null)
@@ -113,8 +103,7 @@ class Memcache
 	 * Die Funktion liefert auch FALSE wenn der Cache nicht aktiv ist.
 	 *
 	 * @param string $key Cache-Key
-	 *
-	 * @return mixed|boolean
+	 * @return bool|mixed
 	 */
 	public function get($key)
 	{
@@ -126,7 +115,10 @@ class Memcache
 		return false;
 	}
 
-
+	/**
+	 * @param string $key
+	 * @return bool
+	 */
 	public function remove($key)
 	{
 		if ($this->memcache)
@@ -135,6 +127,9 @@ class Memcache
 		}
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getKeys()
 	{
 		$memcache = memcache_connect('localhost', 11211);
@@ -176,6 +171,10 @@ class Memcache
 		return $list;
 	}
 
+	/**
+	 * @param string $prefix
+	 * @return void
+	 */
 	public function truncateByKeyPrefix($prefix)
 	{
 		if ($this->memcache)
@@ -191,5 +190,3 @@ class Memcache
 		}
 	}
 }
-
-?>

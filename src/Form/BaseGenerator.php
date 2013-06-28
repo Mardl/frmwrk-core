@@ -56,7 +56,7 @@ class BaseGenerator
 	/**
 	 * Standardvalidierung nach Pflichtfeldern
 	 *
-	 * @param Core\Form|\Core\Form\Element $elementContainer
+	 * @param \Core\Form|\Core\Form\Element $elementContainer
 	 *
 	 * @return boolean
 	 */

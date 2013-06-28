@@ -1,6 +1,14 @@
 <?php
+
 namespace Core\Html;
 
+/**
+ * Class Element
+ *
+ * @category Core
+ * @package  Core\Html
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Element
 {
 
@@ -16,6 +24,11 @@ class Element
 	protected $breakafter = false;
 	protected $readonly = false;
 
+	/**
+	 * @param int   $id
+	 * @param array $css
+	 * @param bool  $breakafter
+	 */
 	public function __construct($id, $css = array(), $breakafter = false)
 	{
 		$this->id = $id;
@@ -24,21 +37,31 @@ class Element
 
 	}
 
+	/**
+	 * @param Element $element
+	 * @return void
+	 */
 	public function addElement(Element $element)
 	{
 		$this->elements[] = $element;
-
 	}
 
+	/**
+	 * @param array $elements
+	 * @return void
+	 */
 	public function addElements(array $elements)
 	{
 		foreach ($elements as $element)
 		{
 			$this->addElement($element);
 		}
-
 	}
 
+	/**
+	 * @param bool $required
+	 * @return void
+	 */
 	public function setRequired($required = true)
 	{
 		$this->required = $required;
@@ -48,53 +71,75 @@ class Element
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isRequired()
 	{
 		return $this->required;
-
 	}
 
+	/**
+	 * @param string $class
+	 * @return void
+	 */
 	public function setCssClass($class)
 	{
 		$this->cssClasses = array($class);
-
 	}
 
+	/**
+	 * @param string $class
+	 * @return void
+	 */
 	public function addCssClass($class)
 	{
 		$this->cssClasses[] = $class;
-
 	}
 
+	/**
+	 * @param array $classes
+	 * @return void
+	 */
 	public function addCssClasses(array $classes)
 	{
 		foreach ($classes as $class)
 		{
 			$this->addCssClass($class);
 		}
-
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function hasCssClasses()
 	{
 		return (count($this->cssClasses) >= 1);
-
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getCssClasses()
 	{
 		$output = implode(' ', $this->cssClasses);
 
 		return $output;
-
 	}
 
+	/**
+	 * @param string $style
+	 * @param string $value
+	 * @return void
+	 */
 	public function setInlineStyle($style, $value)
 	{
 		$this->cssInline[$style] = $value;
-
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getInlineCss()
 	{
 		$output = '';
@@ -105,15 +150,20 @@ class Element
 		}
 
 		return $output;
-
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function hasInlineCss()
 	{
 		return (count($this->cssInline) >= 1);
-
 	}
 
+	/**
+	 * @param string $label
+	 * @return void
+	 */
 	public function setLabel($label)
 	{
 		if (!($label instanceof Label))
@@ -121,27 +171,37 @@ class Element
 			$label = new Label($label, $this->getName());
 		}
 		$this->label = $label;
-
 	}
 
+	/**
+	 * @return null
+	 */
 	public function getLabel()
 	{
 		return $this->label;
-
 	}
 
+	/**
+	 * @param int $id
+	 * @return void
+	 */
 	public function setId($id)
 	{
 		$this->id = $id;
-
 	}
 
+	/**
+	 * @return int|null
+	 */
 	public function getPlainId()
 	{
 		return $this->id;
-
 	}
 
+	/**
+	 * @param string $count
+	 * @return null|string
+	 */
 	public function getId($count = '')
 	{
 		if (empty($this->id) && empty($this->name))
@@ -157,15 +217,20 @@ class Element
 
 			return ' id="' . $this->id . (!empty($count) ? '-' . $count : '') . '"';
 		}
-
 	}
 
+	/**
+	 * @param string $name
+	 * @return void
+	 */
 	public function setName($name)
 	{
 		$this->name = $name;
-
 	}
 
+	/**
+	 * @return int|null
+	 */
 	public function getName()
 	{
 		if (!is_null($this->name))
@@ -176,16 +241,25 @@ class Element
 		return $this->id;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getElements()
 	{
 		return $this->elements;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function hasElements()
 	{
 		return (count($this->elements) > 0);
 	}
 
+	/**
+	 * @return bool|string
+	 */
 	public function validate()
 	{
 		if ($this->isRequired() && empty($this->value))
@@ -203,6 +277,11 @@ class Element
 		return true;
 	}
 
+	/**
+	 * @param string $name
+	 * @param string $value
+	 * @return void
+	 */
 	public function addAttribute($name, $value)
 	{
 		if (array_key_exists($name, $this->attributes))
@@ -215,11 +294,18 @@ class Element
 		}
 	}
 
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
 	public function hasAttribute($name)
 	{
 		return array_key_exists($name, $this->attributes);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function renderAttributes()
 	{
 		$output = '';
@@ -232,26 +318,45 @@ class Element
 		return $output;
 	}
 
+	/**
+	 * @param bool $readonly
+	 * @return void
+	 */
 	public function setReadonly($readonly)
 	{
 		$this->readonly = $readonly;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function getReadonly()
 	{
 		return $this->readonly;
 	}
 
+	/**
+	 * @param string $output
+	 * @return string
+	 */
 	protected function renderCssClasses($output)
 	{
 		return $this->getCssClasses();
 	}
 
+	/**
+	 * @param string $output
+	 * @return string
+	 */
 	protected function renderInlineStyles($output)
 	{
 		return $this->getInlineCss();
 	}
 
+	/**
+	 * @param string $output
+	 * @return mixed
+	 */
 	protected function renderStandard($output)
 	{
 		$elements = '';
@@ -272,7 +377,10 @@ class Element
 		return $output;
 	}
 
-
+	/**
+	 * @param string $data
+	 * @return mixed
+	 */
 	private function clearUp($data)
 	{
 		$output = str_replace('class=""', '', $data);
@@ -285,5 +393,3 @@ class Element
 		return $output;
 	}
 }
-
-?>

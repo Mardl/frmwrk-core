@@ -34,7 +34,8 @@ class String
 		// Replace other chars to -
 		$string = preg_replace('/[^a-zA-Z0-9]+/', '-', $string);
 		$string = trim($string, '-');
-		if ($string == '') {
+		if ($string == '')
+		{
 			return '-';
 		}
 
@@ -88,17 +89,19 @@ class String
 	}
 
 	/**
-	 * @param string    $string
-	 * @param int       $limit
-	 * @param bool      $end
+	 * @param string $string
+	 * @param int    $limit
+	 * @param bool   $end
 	 * @return string
 	 */
 	public static function reduce($string, $limit = 144, $end = true)
 	{
-		if (strlen($string) > $limit + 3) {
+		if (strlen($string) > $limit + 3)
+		{
 			$string = substr($string, 0, $limit);
 
-			if ($end) {
+			if ($end)
+			{
 				$string .= '...';
 			}
 		}
