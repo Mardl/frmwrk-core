@@ -21,7 +21,7 @@ phpunit:
 	@phpunit $(unitpath)
 
 phpcs:
-	@phpcs --standard=./build/phpcs.xml -p $(path)
+	@phpcs --standard=./build/phpcs.xml --report=summary -p $(path)
 
 lint:
 	@echo "Syntaxchecker $(path)"
