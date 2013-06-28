@@ -36,8 +36,8 @@ class Route
 	protected $defaults = array();
 
 	/**
-	 * @param string    $pattern
-	 * @param array     $defaults
+	 * @param string $pattern
+	 * @param array  $defaults
 	 */
 	public function __construct($pattern, array $defaults = array())
 	{
@@ -112,10 +112,14 @@ class Route
 
 		$url['path'] = $temp['dirname'] . '/' . $temp['filename'];
 
-		if (isset($temp['extension']) && $temp['extension']) {
+		if (isset($temp['extension']) && $temp['extension'])
+		{
 			$result['format'] = $temp['extension'];
-		} else {
-			if (!isset($this->defaults['format'])) {
+		}
+		else
+		{
+			if (!isset($this->defaults['format']))
+			{
 				$this->defaults['format'] = 'html';
 			}
 			$result['format'] = $this->defaults['format'];
@@ -127,20 +131,24 @@ class Route
 		$urlparts = explode('/', $url['path']);
 		$urlparts = array_values(array_filter($urlparts));
 
-		foreach ($parts as $key => $part) {
+		foreach ($parts as $key => $part)
+		{
 
 			// Constant part not exists
-			if (substr($part, 0, 1) != ':' && !isset($urlparts[$key])) {
+			if (substr($part, 0, 1) != ':' && !isset($urlparts[$key]))
+			{
 				return false;
 			}
 
 			// Constant part wrong
-			if (substr($part, 0, 1) != ':' && $urlparts[$key] != $part) {
+			if (substr($part, 0, 1) != ':' && $urlparts[$key] != $part)
+			{
 				return false;
 			}
 
 			// Save dynamic value to $result
-			if (isset($urlparts[$key]) && $urlparts[$key]) {
+			if (isset($urlparts[$key]) && $urlparts[$key])
+			{
 				$result[substr($part, 1)] = $urlparts[$key];
 			}
 		}
@@ -166,9 +174,12 @@ class Route
 
 		$url['path'] = $temp['dirname'] . '/' . $temp['filename'];
 
-		if (isset($temp['extension']) && $temp['extension']) {
+		if (isset($temp['extension']) && $temp['extension'])
+		{
 			$result['format'] = $temp['extension'];
-		} else {
+		}
+		else
+		{
 			$result['format'] = 'html';
 		}
 
@@ -178,20 +189,24 @@ class Route
 		$urlparts = explode('/', $url['path']);
 		$urlparts = array_values(array_filter($urlparts));
 
-		foreach ($parts as $key => $part) {
+		foreach ($parts as $key => $part)
+		{
 
 			// Constant part not exists
-			if (substr($part, 0, 1) != ':' && !isset($urlparts[$key])) {
+			if (substr($part, 0, 1) != ':' && !isset($urlparts[$key]))
+			{
 				return false;
 			}
 
 			// Constant part wrong
-			if (substr($part, 0, 1) != ':' && $urlparts[$key] != $part) {
+			if (substr($part, 0, 1) != ':' && $urlparts[$key] != $part)
+			{
 				return false;
 			}
 
 			// Save dynamic value to $result
-			if (isset($urlparts[$key]) && $urlparts[$key]) {
+			if (isset($urlparts[$key]) && $urlparts[$key])
+			{
 				$result[substr($part, 1)] = $urlparts[$key];
 			}
 		}
@@ -212,44 +227,57 @@ class Route
 	public function url(array $params = array(), $reset = null, $absolute = false)
 	{
 		$defaults = $this->defaults;
-		if ($reset === null && $this == $this->getRouter()->getCurrentRoute() || $reset === false) {
+		if ($reset === null && $this == $this->getRouter()->getCurrentRoute() || $reset === false)
+		{
 			$defaults = ($this->getRouter()->getParams() + $defaults);
 		}
 
 		$parts = preg_split('/[\/\.]/', $this->pattern, 32, PREG_SPLIT_NO_EMPTY);
 
-		foreach ($parts as $key => $part) {
+		foreach ($parts as $key => $part)
+		{
 			// Add constant parts
-			if (substr($part, 0, 1) != ':') {
+			if (substr($part, 0, 1) != ':')
+			{
 				$result[] = $part;
 				continue;
 			}
 
-			if (substr($part, 0, 1) == ':' && isset($params[substr($part, 1)])) {
+			if (substr($part, 0, 1) == ':' && isset($params[substr($part, 1)]))
+			{
 				// Replace values from parameters
 				$result[substr($part, 1)] = String::slug($params[substr($part, 1)]);
 				unset($params[substr($part, 1)]);
-			} else {
-				if (isset($defaults[substr($part, 1)])) {
+			}
+			else
+			{
+				if (isset($defaults[substr($part, 1)]))
+				{
 					// Replace default values
 					$result[substr($part, 1)] = $defaults[substr($part, 1)];
-				} else {
+				}
+				else
+				{
 					throw new \ErrorException('Key ' . substr($part, 1) . ' is not defined in route ' . $this->pattern);
 				}
 			}
 		}
 
 		// Remove values already defined in defaults
-		foreach ($params as $key => $value) {
-			if (!isset($this->defaults[$key])) {
+		foreach ($params as $key => $value)
+		{
+			if (!isset($this->defaults[$key]))
+			{
 				continue;
 			}
 
-			if ($this->defaults[$key] != $value) {
+			if ($this->defaults[$key] != $value)
+			{
 				continue;
 			}
 
-			if ($key == 'format') {
+			if ($key == 'format')
+			{
 				continue;
 			}
 
@@ -257,61 +285,90 @@ class Route
 		}
 
 		// Remove backslash
-		foreach (array_reverse($result) as $key => $value) {
-			if ($value != 'index') {
+		foreach (array_reverse($result) as $key => $value)
+		{
+			if ($value != 'index')
+			{
 				break;
 			}
 			unset($result[$key]);
 		}
 
-		if ($absolute or isset($params['hostname'])) {
-			if (isset($params['hostname'])) {
+		if ($absolute or isset($params['hostname']))
+		{
+			if (isset($params['hostname']))
+			{
 				$url = 'http://' . $params['hostname'] . '/';
-			} else if (isset($defaults['hostname'])) {
+			}
+			else if (isset($defaults['hostname']))
+			{
 				$url = 'http://' . $defaults['hostname'] . '/';
-			} else if (isset($_SERVER['HTTP_HOST'])) {
-				$url = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-			} else {
-				if (defined('DOMAIN')) {
-					$url = 'http://' . DOMAIN . '/';
-				} else {
-					$url = 'http://' . Request::getInstance()->getHost() . '/';
+			}
+			else
+			{
+				if (isset($_SERVER['HTTP_HOST']))
+				{
+					$url = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+				}
+				else
+				{
+					if (defined('DOMAIN'))
+					{
+						$url = 'http://' . DOMAIN . '/';
+					}
+					else
+					{
+						$url = 'http://' . Request::getInstance()->getHost() . '/';
+					}
 				}
 			}
-		} else {
+		}
+		else
+		{
 			$url = '/';
 		}
 		unset($params['hostname']);
 
 		$url .= implode('/', $result);
-		if (strlen($url) > 1 && substr($url, -1) != '/') {
-			if (isset($params['format'])) {
+		if (strlen($url) > 1 && substr($url, -1) != '/')
+		{
+			if (isset($params['format']))
+			{
 				$url .= '.' . $params['format'];
 				unset($params['format']);
-			} else if (isset($defaults['format'])) {
+			}
+			else if (isset($defaults['format']))
+			{
 				$url .= '.' . $defaults['format'];
 			}
-		} else {
-			if (isset($params['format'])) {
+		}
+		else
+		{
+			if (isset($params['format']))
+			{
 				$url .= 'index.' . $params['format'];
 				unset($params['format']);
 			}
 		}
 
-		if (isset($params['anchor'])) {
+		if (isset($params['anchor']))
+		{
 			$anchor = $params['anchor'];
 			unset($params['anchor']);
 		}
 
-		if ($params) {
+		if ($params)
+		{
 			ksort($params);
 			$query = http_build_query($params);
-			if ($query) {
+			if ($query)
+			{
 				$url .= '?' . http_build_query($params);
 			}
 		}
 
-		if (isset($anchor)) {
+		if (isset($anchor))
+		{
 			$url .= '#' . $anchor;
 		}
 

@@ -1,14 +1,32 @@
 <?php
+
 namespace Core\Html\Input;
 
 use Core\Html\Input;
 
+/**
+ * Class Radio
+ *
+ * @category Core
+ * @package  Core\Html\Input
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Radio extends Input
 {
 
 	private $options = array();
 	private $renderOutput = '<label class="checkbox {class}"><input type="radio" class="{class}" style="{style}" {id} name="{name}" value="{value}" {attr} {checked}/> {title}</label>';
 
+	/**
+	 * Konstruktor
+	 *
+	 * @param int   $id
+	 * @param array $default
+	 * @param array $css
+	 * @param bool  $breakafter
+	 * @param array $opt
+	 * @param bool  $required
+	 */
 	public function __construct($id, $default, $css = array(), $breakafter = false, $opt = array(), $required = false)
 	{
 		parent::__construct($id, $default, $css, $breakafter, $required);
@@ -27,15 +45,22 @@ class Radio extends Input
 		}
 	}
 
+	/**
+	 * @param string $value
+	 * @param string $tag
+	 * @param bool   $selected
+	 * @return void
+	 */
 	public function addOption($value, $tag, $selected = false)
 	{
 		$this->options[] = array($value, $tag, $selected);
-
 	}
 
+	/**
+	 * @return bool|string
+	 */
 	public function validate()
 	{
-
 		if ($this->isRequired())
 		{
 			$found = false;
@@ -52,6 +77,9 @@ class Radio extends Input
 		return true;
 	}
 
+	/**
+	 * @return mixed|string
+	 */
 	public function __toString()
 	{
 		$output = '';
@@ -76,6 +104,4 @@ class Radio extends Input
 
 		return $output;
 	}
-
-
 }

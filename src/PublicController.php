@@ -2,9 +2,7 @@
 
 namespace Core;
 
-use App\Models\Right,
-	App\Manager\Right as RightManager,
-	jamwork\common\Registry;
+use App\Models\Right, App\Manager\Right as RightManager, jamwork\common\Registry;
 
 /**
  * Class PublicController
@@ -34,32 +32,38 @@ class PublicController extends Controller
 		$action = $this->request->getRouteParam('action');
 		$prefix = $this->request->getRouteParam('prefix');
 
-		$right = new Right(array(
-			'module'     => $module,
-			'controller' => $controller,
-			'action'     => $action,
-			'prefix'     => $prefix
-		));
+		$right = new Right(
+			array(
+				'module' => $module,
+				'controller' => $controller,
+				'action' => $action,
+				'prefix' => $prefix
+			)
+		);
 
-		if ($this->checkPermissions) {
-			try {
+		if ($this->checkPermissions)
+		{
+			try
+			{
 				$login = Registry::getInstance()->login;
-			} catch (\Exception $e) {
+			} catch (\Exception $e)
+			{
 				$this->response->redirect($this->view->url(array(), 'login', true));
 			}
 
-			if (!RightManager::isAllowed($right, $login)) {
+			if (!RightManager::isAllowed($right, $login))
+			{
 				throw new \Exception('Zugriff auf nicht erlaubte Aktion');
 			}
 		}
 
-		if ($this->view->login) {
+		if ($this->view->login)
+		{
 			$this->view->html->addJsAsset('loggedin');
 		}
 	}
 
 	/**
-	 *
 	 * Übergebene Array wird json encodiert und ausgegeben Header wird sauber angepasst
 	 *
 	 * @param array $json

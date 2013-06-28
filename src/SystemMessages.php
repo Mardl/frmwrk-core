@@ -33,15 +33,16 @@ class SystemMessages
 	 */
 	public static function add($content, $category = 'notice', $arguments = array(), $html = false)
 	{
-		if (!in_array($category, array('notice', 'warning', 'error', 'success'))) {
+		if (!in_array($category, array('notice', 'warning', 'error', 'success')))
+		{
 			throw new \InvalidArgumentException('Invalid category');
 		}
 
 		self::$_messages[] = array(
-			'category'  => $category,
-			'content'   => $content,
+			'category' => $category,
+			'content' => $content,
 			'arguments' => $arguments,
-			'html'      => $html
+			'html' => $html
 		);
 	}
 

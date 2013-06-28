@@ -42,9 +42,9 @@ class Paginator
 	/**
 	 * Konstruktur
 	 *
-	 * @param int   $absoluteCount  Gesamtanzahl
-	 * @param int   $page           Aktuell geöffnete Seite
-	 * @param int   $itemsPerPage   Anzahl der Items pro Seite
+	 * @param int $absoluteCount  Gesamtanzahl
+	 * @param int $page           Aktuell geöffnete Seite
+	 * @param int $itemsPerPage   Anzahl der Items pro Seite
 	 */
 	public function __construct($absoluteCount, $page = 0, $itemsPerPage = 25)
 	{
@@ -91,7 +91,8 @@ class Paginator
 	{
 		$steps = ($this->_absoluteCount / $this->_itemsPerPage);
 
-		if ($steps > 1) {
+		if ($steps > 1)
+		{
 			$view = new View(APPLICATION_PATH . '/Layout/Helpers/paginator.html.php');
 			$view->steps = ceil($steps);
 			$view->last = $view->steps - 1;
@@ -99,30 +100,39 @@ class Paginator
 			$view->class = $this->_class;
 
 
-			if ($view->current < ($steps - 1)) {
+			if ($view->current < ($steps - 1))
+			{
 				$view->next = $view->current + 1;
-			} else {
+			}
+			else
+			{
 				$view->next = $view->steps - 1;
 			}
 
-			if ($this->_page > 0) {
+			if ($this->_page > 0)
+			{
 				$view->prev = $this->_page - 1;
-			} else {
+			}
+			else
+			{
 				$view->prev = 0;
 			}
 
 			$view->start = 0;
 			$view->end = $view->steps;
 
-			if ($view->steps > $this->_pointCount) {
+			if ($view->steps > $this->_pointCount)
+			{
 				$view->end = $view->current + 3;
 				$view->start = $view->current - 2;
 
-				if ($view->start < 0) {
+				if ($view->start < 0)
+				{
 					$view->start = 0;
 				}
 
-				if ($view->end > $view->steps) {
+				if ($view->end > $view->steps)
+				{
 					$view->end = $view->steps;
 				}
 			}

@@ -5,7 +5,11 @@ namespace Core\Mail;
 use Exception, Core\Mail\Mime;
 
 /**
- * Mail
+ * Class Mailer
+ *
+ * @category Core
+ * @package  Core\Mail
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
  */
 class Mailer
 {
@@ -13,42 +17,42 @@ class Mailer
 	/**
 	 * Envelope (for Sendmail)
 	 *
-	 * @var   string
+	 * @var string
 	 */
 	protected $envelope;
 
 	/**
 	 * To
 	 *
-	 * @var   array
+	 * @var array
 	 */
 	protected $to = array();
 
 	/**
 	 * ReplyTo
 	 *
-	 * @var   array
+	 * @var array
 	 */
 	protected $replyTo = array();
 
 	/**
 	 * Subject
 	 *
-	 * @var   string
+	 * @var string
 	 */
 	protected $subject;
 
 	/**
 	 * Headers
 	 *
-	 * @var   array
+	 * @var array
 	 */
 	protected $headers = array();
 
 	/**
 	 * Body
 	 *
-	 * @var   string
+	 * @var string
 	 */
 	protected $body;
 
@@ -113,7 +117,6 @@ class Mailer
 		}
 
 		return $this->to;
-
 	}
 
 	/**
@@ -169,7 +172,6 @@ class Mailer
 		}
 
 		return $this->headers;
-
 	}
 
 	/**
@@ -228,7 +230,6 @@ class Mailer
 		}
 
 		return $status;
-
 	}
 
 	/**
@@ -264,7 +265,4 @@ class Mailer
 
 		return implode(' ', $result);
 	}
-
 }
-
-?>

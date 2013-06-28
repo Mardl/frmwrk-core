@@ -1,11 +1,24 @@
 <?php
+
 namespace Core\Html;
 
+/**
+ * Class Div
+ *
+ * @category Core
+ * @package  Core\Html
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Div extends Element
 {
 
 	private $renderOutput = '<div class="{class}" style="{style}" {id} {attr} >{elements}</div>{breakafter}';
 
+	/**
+	 * @param string $id
+	 * @param array  $css
+	 * @param bool   $breakafter
+	 */
 	public function __construct($id = '', $css = array(), $breakafter = false)
 	{
 		parent::__construct($id, $css, $breakafter);
@@ -16,14 +29,13 @@ class Div extends Element
 		}
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function __toString()
 	{
 		$output = $this->renderStandard($this->renderOutput);
 
 		return $output;
 	}
-
-
 }
-
-?>

@@ -1,6 +1,14 @@
 <?php
+
 namespace Core\Html\Input;
 
+/**
+ * Class Select
+ *
+ * @category Core
+ * @package  Core\Html\Input
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Select extends \Core\Html\Input
 {
 
@@ -11,6 +19,14 @@ class Select extends \Core\Html\Input
 
 	private $renderOutput = '{label}<select class="{class}" style="{style}" {id} name="{name}" {multiple} {size}>{options}</select>{breakafter}';
 
+	/**
+	 * Konstruktor
+	 *
+	 * @param string $id
+	 * @param array  $css
+	 * @param bool   $breakafter
+	 * @param bool   $required
+	 */
 	public function __construct($id = '', $css = array(), $breakafter = false, $required = false)
 	{
 		parent::__construct($id, '', $css, $breakafter, $required);
@@ -21,12 +37,16 @@ class Select extends \Core\Html\Input
 		}
 	}
 
+	/**
+	 * @return bool|string
+	 */
 	public function validate()
 	{
 		if ($this->isRequired())
 		{
 			$found = false;
 			$count = 0;
+
 			foreach ($this->options as $option)
 			{
 				$count++;
@@ -36,6 +56,7 @@ class Select extends \Core\Html\Input
 				}
 				$found = $found || $option[2];
 			}
+
 			if (!$found)
 			{
 				return "Fehlende Eingabe für " . $this->getId();
@@ -45,18 +66,33 @@ class Select extends \Core\Html\Input
 		return true;
 	}
 
+	/**
+	 * @param string $name
+	 * @return void
+	 */
 	public function setName($name)
 	{
 		$this->name = $name;
-
 	}
 
+	/**
+	 * @param string $value
+	 * @param string $tag
+	 * @param bool   $selected
+	 * @return void
+	 */
 	public function addOption($value, $tag, $selected = false)
 	{
 		$this->options[] = array($value, $tag, $selected);
-
 	}
 
+	/**
+	 * @param string $value
+	 * @param string $tag
+	 * @param mixed  $optgroup
+	 * @param bool   $selected
+	 * @return void
+	 */
 	public function addOptionGrouped($value, $tag, $optgroup, $selected = false)
 	{
 		if (!isset($this->optGroups[$optgroup]))
@@ -65,24 +101,31 @@ class Select extends \Core\Html\Input
 		}
 
 		$this->optGroups[$optgroup][] = array($value, $tag, $selected);
-
 	}
 
+	/**
+	 * @param int $size
+	 * @return void
+	 */
 	public function setSize($size)
 	{
 		$this->size = $size;
-
 	}
 
+	/**
+	 * @param bool $boolean
+	 * @return void
+	 */
 	public function setMultiSelect($boolean)
 	{
 		$this->multiselect = $boolean;
-
 	}
 
+	/**
+	 * @return mixed|string
+	 */
 	public function __toString()
 	{
-
 		if (empty($this->options) && empty($this->optGroups))
 		{
 			return "Form element 'select' has no options.";
@@ -102,6 +145,9 @@ class Select extends \Core\Html\Input
 		return $output;
 	}
 
+	/**
+	 * @return string
+	 */
 	private function renderSize()
 	{
 		$size = '';
@@ -113,6 +159,9 @@ class Select extends \Core\Html\Input
 		return $size;
 	}
 
+	/**
+	 * @return string
+	 */
 	private function renderMultiple()
 	{
 		$multiple = '';
@@ -124,6 +173,9 @@ class Select extends \Core\Html\Input
 		return $multiple;
 	}
 
+	/**
+	 * @return string
+	 */
 	private function renderOptions()
 	{
 		$opts = '';
@@ -154,5 +206,4 @@ class Select extends \Core\Html\Input
 
 		return $opts;
 	}
-
 }

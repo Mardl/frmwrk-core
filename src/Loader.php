@@ -1,22 +1,13 @@
 <?php
-/**
- * Core\Loader-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 /**
- * Loader
+ * Class Loader
  *
- * @category Helper
+ * @category Core
  * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
+ * @author   @author   Alexander Jonser <alex@dreiwerken.de>
  */
 class Loader
 {
@@ -36,8 +27,7 @@ class Loader
 	protected $path;
 
 	/**
-	 * Legt fest ob beim Nichtauffinden einer Klasse eine Exception geworfen werden soll
-	 * oder nicht
+	 * Legt fest, ob beim Nichtauffinden einer Klasse eine Exception geworfen werden soll oder nicht
 	 *
 	 * @var string
 	 */
@@ -73,16 +63,13 @@ class Loader
 	public function register()
 	{
 		return spl_autoload_register(array($this, '_autoload'));
-
 	}
 
 	/**
 	 * Load a class
 	 *
 	 * @param string $className Class name
-	 *
 	 * @return bool
-	 *
 	 * @throws \ErrorException Wenn die PHP-Datei nicht gefunden wird
 	 */
 	public function _autoload($className)
@@ -98,7 +85,6 @@ class Loader
 		$classNameSrc = str_replace($this->namespace, '', $className);
 		$fileSrc = $this->path . '/' . $this->namespace . '/src' . trim(strtr($classNameSrc, $this->replace), '_\\');
 		$fileRootSrc = $this->path . '/src' . trim(strtr($classNameSrc, $this->replace), '_\\');
-
 
 		$php = false;
 		$inc = false;
@@ -151,8 +137,5 @@ class Loader
 				}
 			}
 		}
-
-
 	}
-
 }

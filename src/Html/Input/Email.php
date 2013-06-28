@@ -1,11 +1,24 @@
 <?php
+
 namespace Core\Html\Input;
 
 use Core\Html\Input;
 
+/**
+ * Class Email
+ *
+ * @category Core
+ * @package  Core\Html\Input
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Email extends Input
 {
 
+	/**
+	 * E-Mail Validierung
+	 *
+	 * @return bool|string
+	 */
 	public function validate()
 	{
 		$val = $this->getValue();
@@ -27,12 +40,11 @@ class Email extends Input
 			{
 				if (!filter_var($val, FILTER_VALIDATE_EMAIL))
 				{
-					return "Die Emailadresse wird als ungültig angesehen";
+					return "Die E-Mail-Adresse wird als ungültig angesehen!";
 				}
 			}
 		}
 
 		return true;
 	}
-
 }

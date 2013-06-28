@@ -1,20 +1,11 @@
 <?php
-/**
- * Core\Model-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 /**
- * Core\Model-Class
+ * Class Model
  *
- * @category Helper
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -23,19 +14,19 @@ class Model
 
 	/**
 	 * Integer value of gender male
-	 * @var integer
+	 * @var int
 	 */
 	const GENDER_MALE = 1;
 
 	/**
 	 * Integer value of gender female
-	 * @var integer
+	 * @var int
 	 */
 	const GENDER_FEMALE = 2;
 
 	/**
 	 * Integer value of gender unknown
-	 * @var integer
+	 * @var int
 	 */
 	const GENDER_BOTH = 3;
 
@@ -65,15 +56,12 @@ class Model
 	 * Derzeit werden folgende Methode auf Attribute angehandelt
 	 * "set..." Wert für das Attribut setzten
 	 * "get..." Liefere den Wert
-	 * "is..." Vergleiche Wert (Beispiel: $user->isName('John'))
+	 * "is..."  Vergleiche Wert (Beispiel: $user->isName('John'))
 	 * "has..." Prüft ob ein Attribut einen Wert hat (also nicht: null, 0 oder false)
 	 *
 	 * @param string $name   Name der Methode
 	 * @param array  $params Array mit Parametern
-	 *
-	 * @throws \InvalidArgumentException Wenn das Attribut nicht vorhanden ist
-	 * @throws \InvalidArgumentException Wenn die Methode unbekannt ist
-	 *
+	 * @throws \InvalidArgumentException Wenn das Attribut nicht vorhanden oder die Methode unbekannt ist
 	 * @return mixed
 	 */
 	public function __call($name, $params)
@@ -86,11 +74,11 @@ class Model
 			$parts[2] = str_replace($prefix, '', $parts[2]);
 
 			$newMethod = $parts[1] . ucfirst($parts[2]);
+
 			if (method_exists($this, $newMethod))
 			{
 				return $this->$newMethod($params[0]);
 			}
-
 		}
 
 		$method = $parts[1];
@@ -126,10 +114,9 @@ class Model
 	}
 
 	/**
-	 *
 	 * Überprüft, ob für $name ein Attribut vorhanden ist, oder bei Prefix direkt die Function!
 	 *
-	 * @param $name
+	 * @param string $name
 	 * @return bool
 	 */
 	private function existsProperty($name)
@@ -179,6 +166,7 @@ class Model
 
 	/**
 	 * @param int $id
+	 * @return void
 	 */
 	public function setId($id)
 	{
@@ -187,6 +175,7 @@ class Model
 
 	/**
 	 * @param array $data
+	 * @return void
 	 */
 	public function setDataRow($data = array())
 	{
@@ -230,6 +219,7 @@ class Model
 	 *
 	 * @param \DateTime|string $datetime Datetime-Objekt oder String
 	 * @throws \InvalidArgumentException
+	 * @return void
 	 */
 	public function setCreated($datetime = 'now')
 	{
@@ -265,10 +255,12 @@ class Model
 
 	/**
 	 * @param int $userId
+	 * @return void
 	 */
 	public function setCreateduser_Id($userId = 0)
 	{
 		$register = \jamwork\common\Registry::getInstance();
+
 		if (isset($register->login) && $register->login instanceof \Core\Application\Models\User)
 		{
 			$this->createduser_id = $register->login->getId();
@@ -280,7 +272,7 @@ class Model
 	}
 
 	/**
-	 * @return \int|null
+	 * @return int|null
 	 */
 	public function getCreateduser_Id()
 	{
@@ -292,6 +284,7 @@ class Model
 	 *
 	 * @param \DateTime|string $datetime Datetime-Objekt oder String
 	 * @throws \InvalidArgumentException
+	 * @return void
 	 */
 	public function setModified($datetime = 'now')
 	{
@@ -310,7 +303,6 @@ class Model
 	}
 
 	/**
-	 *
 	 * Liefert Modified Datetime als mysql Format zurück
 	 *
 	 * @return string
@@ -327,6 +319,7 @@ class Model
 
 	/**
 	 * @param null $userId
+	 * @return void
 	 */
 	public function setModifieduser_Id($userId = null)
 	{
@@ -340,11 +333,10 @@ class Model
 		{
 			$this->modifieduser_id = !empty($userId) ? $userId : null;
 		}
-
 	}
 
 	/**
-	 * @return \int|null
+	 * @return int|null
 	 */
 	public function getModifieduser_Id()
 	{
@@ -352,7 +344,8 @@ class Model
 	}
 
 	/**
-	 * @param boolean $new
+	 * @param bool $new
+	 * @return void
 	 */
 	public function setNew($new)
 	{
@@ -360,7 +353,7 @@ class Model
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getNew()
 	{
@@ -368,9 +361,9 @@ class Model
 	}
 
 	/**
-	 * Liefert den Tabellenname des Objekts anhand des Klassenkommentars @Table
+	 * Liefert den Tabellennamen des Objekts anhand des Klassenkommentars @Table
 	 *
-	 * @return string|NULL
+	 * @return null|string
 	 */
 	public function getTableName()
 	{
@@ -405,9 +398,9 @@ class Model
 	}
 
 	/**
-	 * Liefert den Tabellenname des Objekts anhand des Klassenkommentars @Table
+	 * Liefert den Prefix des Tabellennamens anhand @Prefix zurück
 	 *
-	 * @return string|NULL
+	 * @return null|string
 	 */
 	public function getTablePrefix()
 	{
@@ -427,6 +420,7 @@ class Model
 		{
 			$this->reflectionClass = new \ReflectionClass($this);
 		}
+
 		$doc = $this->reflectionClass->getDocComment();
 
 		$cache = '-1';
@@ -443,7 +437,7 @@ class Model
 	}
 
 	/**
-	 * @return string
+	 * @return null|string
 	 * @throws \ErrorException
 	 */
 	public function getIdField()
@@ -476,5 +470,4 @@ class Model
 
 		throw new \ErrorException("Kein ID-Feld über @Id definiert");
 	}
-
 }

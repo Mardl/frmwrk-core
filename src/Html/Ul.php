@@ -1,6 +1,13 @@
 <?php
 namespace Core\Html;
 
+/**
+ * Class Ul
+ *
+ * @category Core
+ * @package  Core\Html
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Ul extends Element
 {
 
@@ -8,6 +15,13 @@ class Ul extends Element
 
 	private $renderOutput = '{label}<ul class="{class}" style="{style}" {id}>{items}</ul>{breakafter}';
 
+	/**
+	 * Konstruktor
+	 *
+	 * @param null  $id
+	 * @param array $css
+	 * @param bool  $breakafter
+	 */
 	public function __construct($id = null, $css = array(), $breakafter = false)
 	{
 		parent::__construct($id, $css, $breakafter);
@@ -18,16 +32,20 @@ class Ul extends Element
 		}
 	}
 
-
+	/**
+	 * @param ListItem $item
+	 * @return void
+	 */
 	public function addItem(ListItem $item)
 	{
 		$this->listItems[] = $item;
-
 	}
 
+	/**
+	 * @return mixed|string
+	 */
 	public function __toString()
 	{
-
 		if (empty($this->listItems))
 		{
 			return "Liste ohne Listenpunkte.";
@@ -44,8 +62,6 @@ class Ul extends Element
 		$output = str_replace('{items}', $items, $output);
 		$output = str_replace('{label}', $this->getLabel(), $output);
 
-
 		return $output;
 	}
-
 }
