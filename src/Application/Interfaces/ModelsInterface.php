@@ -1,17 +1,13 @@
 <?php
-/**
- * Interface ModelsInterface
- *
- * PHP version 5.3
- *
- * @category Interface
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Application\Interfaces;
 
 /**
+ * Class ModelsInterface
  *
+ * @category Core
+ * @package  Core\Application\Interfaces
+ * @author   Martin Eisenführer <martin@dreiwerken.de>
  */
 interface ModelsInterface
 {

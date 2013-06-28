@@ -16,7 +16,7 @@ use jamwork\common\HttpRequest;
 /**
  * RequestObject and extends jamwork\common\HttpRequest
  *
- * @category Routing
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -43,13 +43,14 @@ class Request extends HttpRequest
 	public function __construct(array $get, array $post, array $server, array $cookie)
 	{
 		parent::__construct($get, $post, $server, $cookie);
-
 	}
 
+	/**
+	 * @return Request
+	 */
 	public static function getInstance()
 	{
-		if (is_null(self::$instance))
-		{
+		if (is_null(self::$instance)) {
 			self::$instance = new Request($_GET, $_POST, $_SERVER, $_COOKIE);
 		}
 
@@ -64,15 +65,11 @@ class Request extends HttpRequest
 	 */
 	public function isAjax()
 	{
-		if ($this->getServer('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest')
-		{
+		if ($this->getServer('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest') {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
-
 	}
 
 	/**
@@ -82,13 +79,11 @@ class Request extends HttpRequest
 	 */
 	public function isHTTPS()
 	{
-		if ($this->getServer('HTTPS', false))
-		{
+		if ($this->getServer('HTTPS', false)) {
 			return true;
 		}
 		// Nginx
-		if ($this->getServer('HTTP_X_CLIENT_VERIFY') == 'SUCCESS')
-		{
+		if ($this->getServer('HTTP_X_CLIENT_VERIFY') == 'SUCCESS') {
 			return true;
 		}
 
@@ -133,16 +128,13 @@ class Request extends HttpRequest
 			'xda'
 		);
 
-		foreach ($aUserAgents as $cUserAgent)
-		{
-			if (stripos($_SERVER['HTTP_USER_AGENT'], $cUserAgent) !== false)
-			{
+		foreach ($aUserAgents as $cUserAgent) {
+			if (stripos($_SERVER['HTTP_USER_AGENT'], $cUserAgent) !== false) {
 				return true;
 			}
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -183,28 +175,23 @@ class Request extends HttpRequest
 	public function getHost()
 	{
 		$host = $this->getServer('HTTP_HOST');
-		if (!empty($host))
-		{
+		if (!empty($host)) {
 			return $host;
 		}
 
-		if (function_exists('gethostname'))
-		{
+		if (function_exists('gethostname')) {
 			$hostname = gethostname();
-			if ($hostname)
-			{
+			if ($hostname) {
 				return $hostname;
 			}
 		}
 
 		$hostname = php_uname('n');
-		if ($hostname)
-		{
+		if ($hostname) {
 			return $hostname;
 		}
 
-		if (defined('DEFAULT_HTTP_HOST'))
-		{
+		if (defined('DEFAULT_HTTP_HOST')) {
 			return DEFAULT_HTTP_HOST;
 		}
 
@@ -221,25 +208,21 @@ class Request extends HttpRequest
 		return $this->getServer('HTTP_X_FORWARDED_FOR', $this->getServer('HTTP_X_REAL_IP', $this->getServer('REMOTE_ADDR', false)));
 
 		/* alte version */
-		if (!empty($host))
-		{
+		if (!empty($host)) {
 			return $host;
 		}
 		// Apache
-		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-		{
+		if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
 
 		// Nginx
-		if (isset($_SERVER['HTTP_X_REAL_IP']))
-		{
+		if (isset($_SERVER['HTTP_X_REAL_IP'])) {
 			return $_SERVER['HTTP_X_REAL_IP'];
 		}
 
 		// Direkte Verbindung
-		if (isset($_SERVER['REMOTE_ADDR']))
-		{
+		if (isset($_SERVER['REMOTE_ADDR'])) {
 			return $_SERVER['REMOTE_ADDR'];
 		}
 
@@ -264,6 +247,7 @@ class Request extends HttpRequest
 	/**
 	 * Set Route params from URL
 	 * @param array $params
+	 * @return void
 	 */
 	public function setRoute(array $params)
 	{
@@ -311,8 +295,8 @@ class Request extends HttpRequest
 	/**
 	 * Get param from Url with $key
 	 *
-	 * @param      $key
-	 * @param null $default
+	 * @param string    $key
+	 * @param null      $default
 	 * @return null|string
 	 */
 	public function getRouteParam($key, $default = null)
@@ -334,12 +318,10 @@ class Request extends HttpRequest
 		return $this->getParamIfExist($key, $default);
 
 		/* oldschool, SuperGlobale werden nicht verwendet. */
-		if (!isset($_GET[$key]))
-		{
+		if (!isset($_GET[$key])) {
 			return $default;
 		}
-		if (is_scalar($_GET[$key]))
-		{
+		if (is_scalar($_GET[$key])) {
 			return trim($_GET[$key]);
 		}
 		array_walk_recursive($_GET[$key], 'trim');
@@ -361,12 +343,10 @@ class Request extends HttpRequest
 		return $this->getPostIfExist($key, $default);
 
 		/* oldschool, SuperGlobale werden nicht verwendet. */
-		if (!isset($_POST[$key]))
-		{
+		if (!isset($_POST[$key])) {
 			return $default;
 		}
-		if (is_scalar($_POST[$key]))
-		{
+		if (is_scalar($_POST[$key])) {
 			return trim($_POST[$key]);
 		}
 		array_walk_recursive($_POST[$key], 'trim');
@@ -391,12 +371,10 @@ class Request extends HttpRequest
 		return $this->getPostIfExist($key, $ret);
 
 
-		if (!isset($_REQUEST[$key]))
-		{
+		if (!isset($_REQUEST[$key])) {
 			return $default;
 		}
-		if (is_scalar($_REQUEST[$key]))
-		{
+		if (is_scalar($_REQUEST[$key])) {
 			return trim($_REQUEST[$key]);
 		}
 		array_walk_recursive($_REQUEST[$key], 'trim');
@@ -414,16 +392,13 @@ class Request extends HttpRequest
 	 */
 	public function files($key, $default = null)
 	{
-		if (!isset($_FILES[$key]['error']))
-		{
+		if (!isset($_FILES[$key]['error'])) {
 			return $default;
 		}
-		if ($_FILES[$key]['error'] == UPLOAD_ERR_NO_FILE)
-		{
+		if ($_FILES[$key]['error'] == UPLOAD_ERR_NO_FILE) {
 			return $default;
 		}
 
 		return $_FILES[$key];
 	}
-
 }

@@ -1,22 +1,13 @@
 <?php
-/**
- * Core\Router-Class
- *
- * PHP version 5.3
- *
- * @category Routing
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
 use ArrayObject;
 
 /**
- * Router
+ * Class Router
  *
- * @category Routing
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
@@ -53,8 +44,7 @@ class Router extends ArrayObject
 	 */
 	public function offsetGet($route)
 	{
-		if (!isset($this[$route]))
-		{
+		if (!isset($this[$route])) {
 			return parent::offsetGet('default');
 		}
 
@@ -100,8 +90,7 @@ class Router extends ArrayObject
 	 */
 	public function addRoutes(array $routes)
 	{
-		foreach ($routes as $route)
-		{
+		foreach ($routes as $route) {
 			$this->addRoute($route['key'], $route['path'], $route['defaults']);
 		}
 	}
@@ -115,10 +104,8 @@ class Router extends ArrayObject
 	 */
 	public function searchRoute($url)
 	{
-		foreach ($this as $key => $route)
-		{
-			if ($route->match($url))
-			{
+		foreach ($this as $key => $route) {
+			if ($route->match($url)) {
 				$this->current = $key;
 				$this->currentRoute = $route;
 
@@ -127,76 +114,65 @@ class Router extends ArrayObject
 		}
 
 		return false;
-
 	}
 
 	/**
-	 * @param string $url URL
-	 * @param bool   $instance
+	 * @param string $url       URL
+	 * @param bool   $instance  Instanz
 	 *
 	 * @return bool|\Core\Route
 	 */
 	public function findRoute($url, $instance = false)
 	{
 		/** @var $route \Core\Route */
-		foreach ($this as $key => $route)
-		{
+		foreach ($this as $key => $route) {
 			$routeData = $route->matchUrl($url);
-			if ($routeData)
-			{
-				if (!$instance)
-				{
+			if ($routeData) {
+				if (!$instance) {
 					return $routeData;
-				}
-				else
-				{
+				} else {
 					return $route;
 				}
 			}
 		}
 
 		return false;
-
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return mixed
+	 */
 	public function getRouteByArray($data)
 	{
 		$matching = array();
-		foreach ($this as $routeName => $value)
-		{
-			if ($value instanceof \Core\Route && $routeName != 'default')
-			{
+		foreach ($this as $routeName => $value) {
+			if ($value instanceof \Core\Route && $routeName != 'default') {
 				$temp = $value->getDefaults();
 				$matching[$routeName] = 0;
-				foreach ($data as $key => $val)
-				{
-					if (array_key_exists($key, $temp))
-					{
-						if ($key == 'module' && $val == $temp['module'])
-						{
+				foreach ($data as $key => $val) {
+					if (array_key_exists($key, $temp)) {
+						if ($key == 'module' && $val == $temp['module']) {
 							$matching[$routeName] += 3;
-						}
-						else if ($key == 'controller' && $val == $temp['controller'])
-						{
-							$matching[$routeName] += 2;
-						}
-						else if ($key == 'action' && $val == $temp['action'])
-						{
-							$matching[$routeName] += 1;
-						}
-						else if ($key == 'module' && $val != $temp['module'])
-						{
-							$matching[$routeName] -= 3;
-						}
-						else if ($key == 'controller' && $val != $temp['controller'])
-						{
-							$matching[$routeName] -= 2;
-						}
-						else
-						{
-							if ($key == 'action' && $val != $temp['action'])
-							{
-								$matching[$routeName] -= 1;
+						} else {
+							if ($key == 'controller' && $val == $temp['controller']) {
+								$matching[$routeName] += 2;
+							} else {
+								if ($key == 'action' && $val == $temp['action']) {
+									$matching[$routeName] += 1;
+								} else {
+									if ($key == 'module' && $val != $temp['module']) {
+										$matching[$routeName] -= 3;
+									} else {
+										if ($key == 'controller' && $val != $temp['controller']) {
+											$matching[$routeName] -= 2;
+										} else {
+											if ($key == 'action' && $val != $temp['action']) {
+												$matching[$routeName] -= 1;
+											}
+										}
+									}
+								}
 							}
 						}
 					}
@@ -206,17 +182,14 @@ class Router extends ArrayObject
 		$max = 0;
 		$winnerRoute = null;
 
-		foreach ($matching as $route => $count)
-		{
-			if ($count > $max)
-			{
+		foreach ($matching as $route => $count) {
+			if ($count > $max) {
 				$max = $count;
 				$winnerRoute = $route;
 			}
 		}
 
-		if (is_null($winnerRoute))
-		{
+		if (is_null($winnerRoute)) {
 			$winnerRoute = 'default';
 		}
 
@@ -256,7 +229,6 @@ class Router extends ArrayObject
 		return $this->params[$key] = $value;
 	}
 
-
 	/**
 	 * Get params from route
 	 *
@@ -276,13 +248,11 @@ class Router extends ArrayObject
 	 */
 	public function getParam($key)
 	{
-		if (array_key_exists($key, $this->params))
-		{
+		if (array_key_exists($key, $this->params)) {
 			return $this->params[$key];
 		}
 
 		return null;
-
 	}
 
 	/**
@@ -296,5 +266,4 @@ class Router extends ArrayObject
 	{
 		$this->params = $params;
 	}
-
 }
