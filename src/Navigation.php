@@ -218,7 +218,7 @@ class Navigation
 			{
 				if (is_dir($dir . '/' . $file))
 				{
-					$this->_open($dir . '/' . $file);
+					$this->open($dir . '/' . $file);
 				}
 				else
 				{
