@@ -2,12 +2,18 @@
 
 namespace Core\Calendar;
 
-
-class Ics {
+/**
+ * Class Ics
+ *
+ * @category Core
+ * @package  Core\Calendar
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
+class Ics
+{
 
 	protected $prodid = "-//Wellergy Health Management Calendar Version 1.0//DE";
 	protected $version = "2.0";
-
 
 	/*
 	BEGIN:VCALENDAR
@@ -28,5 +34,4 @@ class Ics {
 	END:VEVENT
 	END:VCALENDAR
 	*/
-
 }

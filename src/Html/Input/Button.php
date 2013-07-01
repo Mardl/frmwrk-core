@@ -1,24 +1,45 @@
 <?php
+
 namespace Core\Html\Input;
 
 use Core\Html\Input;
 
-class Button extends Input{
+/**
+ * Class Button
+ *
+ * @category Core
+ * @package  Core\Html\Input
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
+class Button extends Input
+{
 
 	private $renderOutput = '<button type="{type}" class="{class}" style="{style}"  {id} name="{name}">{value}</button>{breakafter}';
 
-	public function __construct($id, $default, $css = array(), $breakafter = false){
+	/**
+	 * @param int   $id
+	 * @param array $default
+	 * @param array $css
+	 * @param bool  $breakafter
+	 */
+	public function __construct($id, $default, $css = array(), $breakafter = false)
+	{
 		parent::__construct($id, $default, $css, $breakafter);
 
-		if (file_exists(APPLICATION_PATH.'/Layout/Html/button.html.php'))
+		if (file_exists(APPLICATION_PATH . '/Layout/Html/button.html.php'))
 		{
-			$this->renderOutput = file_get_contents(APPLICATION_PATH.'/Layout/Html/button.html.php');
+			$this->renderOutput = file_get_contents(APPLICATION_PATH . '/Layout/Html/button.html.php');
 		}
 	}
 
+	/**
+	 * @return mixed
+	 * @throws \ErrorException
+	 */
 	public function __toString()
 	{
-		if (is_null($this->name) && is_null($this->id)){
+		if (is_null($this->name) && is_null($this->id))
+		{
 			throw new \ErrorException("Form element 'input' has neither id nor name.");
 		}
 
@@ -30,5 +51,4 @@ class Button extends Input{
 
 		return $output;
 	}
-
 }

@@ -1,22 +1,13 @@
 <?php
-/**
- * Model Language
- *
- * PHP version 5.3
- *
- * @category Model
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 namespace Core\Application\Models;
 
 use Core\Model as BaseModel;
 
 /**
- * Language
+ * Class Language
  *
- * @category Model
- * @package  Models
+ * @category Core
+ * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @method string getIsocode()
@@ -33,19 +24,19 @@ use Core\Model as BaseModel;
  */
 class Language extends BaseModel implements \Core\Application\Interfaces\ModelsInterface
 {
-    /**
-     * Id
-     *
-     * @var integer
-     *
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
 
 	/**
+	 * Id
 	 *
+	 * @var integer
+	 *
+	 * @Id
+	 * @Column(type="integer")
+	 * @GeneratedValue(strategy="AUTO")
+	 */
+	protected $id;
+
+	/**
 	 * Kurzversion D, I, NL ... however
 	 *
 	 *
@@ -57,13 +48,13 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 
 
 	/**
-     * Landesspezifischer Name
-     *
-     * @var string
-     *
-     * @Column(type="string", length=50, nullable=true)
-     */
-    protected $national;
+	 * Landesspezifischer Name
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string", length=50, nullable=true)
+	 */
+	protected $national;
 
 	/**
 	 * Internationaler Name
@@ -77,39 +68,38 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	/**
 	 * Iso-Code from ISO-639-1
 	 *
-     * @var string
-     *
-     * @Column(type="string", length=10)
-     */
-    protected $isocode;
+	 * @var string
+	 *
+	 * @Column(type="string", length=10)
+	 */
+	protected $isocode;
 
 	/**
-	 *
 	 * Iso-Code from ISO-3166-1
 	 *
-     *
-     * @var string
-     *
-     * @Column(type="string", length=10)
-     */
-    protected $countryCode;
-
-
-	public function getDataRow()
-    {
-    	$data = array(
-    		'id'			=> $this->getId(),
-			'isocode' 		=> $this->getIsocode(),
-			'countryCode'	=> $this->getCountryCode(),
-			'international' => $this->getInternational(),
-			'national'		=> $this->getNational()
-		);
-
-    	return $data;
-    }
+	 * @var string
+	 *
+	 * @Column(type="string", length=10)
+	 */
+	protected $countryCode;
 
 	/**
-	 *
+	 * @return array
+	 */
+	public function getDataRow()
+	{
+		$data = array(
+			'id' => $this->getId(),
+			'isocode' => $this->getIsocode(),
+			'countryCode' => $this->getCountryCode(),
+			'international' => $this->getInternational(),
+			'national' => $this->getNational()
+		);
+
+		return $data;
+	}
+
+	/**
 	 * Liefert Länder-Sprachkennzeichen
 	 * Beispiel de-de oder de-AT
 	 *
@@ -117,6 +107,6 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	 */
 	public function getHtmlLanguage()
 	{
-		return $this->getIsocode().'-'.$this->getCountryCode();
+		return $this->getIsocode() . '-' . $this->getCountryCode();
 	}
 }

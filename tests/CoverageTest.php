@@ -9,7 +9,7 @@
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace unittest\lifemeter;
+namespace tests\Core;
 
 use Core\Config;
 
@@ -29,10 +29,7 @@ class Coverage extends \PHPUnit_Framework_TestCase
 	public function __construct()
 	{
 		$this->whiteList = array(
-			'App/Manager', 
-			'App/Models', 
-			'framework/Core', 
-			'framework/Lifemeter'
+			'src'
 		);
 	}
 

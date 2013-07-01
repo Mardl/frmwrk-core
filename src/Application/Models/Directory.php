@@ -1,25 +1,14 @@
 <?php
-/**
- * Model Directories
- *
- * PHP version 5.3
- *
- * @category Model
- * @package  Models
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 namespace Core\Application\Models;
 
-use Core\Model as BaseModel,
-	Core\Application\Manager\Directory as DirectoryManager,
-	Core\Application\Models\Directory as DirectoryModel;
+use Core\Model as BaseModel, Core\Application\Manager\Directory as DirectoryManager, Core\Application\Models\Directory as DirectoryModel;
 
 
 /**
- * Directories
+ * Class Directories
  *
- * @category Model
- * @package  Models
+ * @category Core
+ * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
  * @method string getName()
@@ -34,6 +23,7 @@ use Core\Model as BaseModel,
  */
 class Directory extends BaseModel
 {
+
 	/**
 	 * Id
 	 *
@@ -57,7 +47,7 @@ class Directory extends BaseModel
 	/**
 	 * Parent
 	 *
-	 * @var \App\Models\Directory
+	 * @var \Core\Application\Models\Directory
 	 *
 	 * @ManyToOne(targetEntity="App\Models\Directory")
 	 */
@@ -76,7 +66,10 @@ class Directory extends BaseModel
 	/**
 	 * Setzt das Parent Directory
 	 *
-	 * @param \Core\Application\Models\Directory $parentDirectory Directory Model des Parents
+	 * @param Directory $parentDirectory Directory Model des Parents
+	 * @return void
+	 */
+	/**
 	 */
 	public function setParentDirectory(DirectoryModel $parentDirectory)
 	{
@@ -122,8 +115,9 @@ class Directory extends BaseModel
 	{
 		if (!is_null($this->parent))
 		{
-			return ($this->parent->getParentIds().','.$this->parent->getId());
+			return ($this->parent->getParentIds() . ',' . $this->parent->getId());
 		}
+
 		return 0;
 	}
 

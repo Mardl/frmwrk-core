@@ -8,11 +8,12 @@
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace unittest\lifemeter\Core;
+namespace tests\Core;
 
 use Core\Route,
 	Core\Router,
-	Core\Request;
+	Core\Request,
+	jamwork\common\Registry;
 
 /**
  * Route test case.
@@ -39,6 +40,12 @@ class RouteTest extends \PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		parent::setUp();
+
+		$reg = Registry::getInstance();
+
+		//Request
+		$request = new Request($_GET, $_POST, $_SERVER, $_COOKIE);
+		$reg->setRequest($request);
 	}
 	
 	/**
@@ -577,9 +584,9 @@ class RouteTest extends \PHPUnit_Framework_TestCase
 		);
 	
 		$this->Route->setRouter($router);
-	
+		$reg = Registry::getInstance()->getRequest();
 		$this->assertEquals(
-			'http://'.Request::getHost().'/user/1/test/test.html',
+			'http://'.$reg->getHost().'/user/1/test/test.html',
 			$this->Route->url(
 				array(
 					'controller' => 'test',

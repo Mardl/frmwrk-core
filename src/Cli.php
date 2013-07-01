@@ -1,28 +1,38 @@
 <?php
-/**
- * Core\Cli-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core;
 
+/**
+ * Class Cli
+ *
+ * @category Core
+ * @package  Core
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class Cli
 {
 
-	public function __construct(){
-		$this->params = $this->_parseParameters();
+	/**
+	 * Konstruktor
+	 */
+	public function __construct()
+	{
+		$this->params = $this->parseParameters();
 		define('DISABLE_HTTP', true);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getParams()
 	{
 		return $this->params;
 	}
 
+	/**
+	 * @param string $key
+	 * @return bool
+	 */
 	public function has($key)
 	{
 		if (empty($this->params) || !array_key_exists($key, $this->params))
@@ -33,6 +43,10 @@ class Cli
 		return true;
 	}
 
+	/**
+	 * @param string $key
+	 * @return bool
+	 */
 	public function get($key)
 	{
 		if (empty($this->params) || !array_key_exists($key, $this->params))
@@ -43,6 +57,11 @@ class Cli
 		return $this->params[$key];
 	}
 
+	/**
+	 * @param string $key
+	 * @param mixed  $check
+	 * @return bool
+	 */
 	public function is($key, $check)
 	{
 		if (empty($this->params) || !array_key_exists($key, $this->params))
@@ -53,23 +72,30 @@ class Cli
 		return $this->params[$key] == $check;
 	}
 
-
-	private function _parseParameters()
+	/**
+	 * @return array
+	 */
+	private function parseParameters()
 	{
 		$params = array();
 
-		foreach ($_SERVER['argv'] as $key => $value){
-			if ($key > 0){
-				$parsed  = $this->_parseParameter(trim($value,'--'));
+		foreach ($_SERVER['argv'] as $key => $value)
+		{
+			if ($key > 0)
+			{
+				$parsed = $this->parseParameter(trim($value, '--'));
 				$params[strtolower($parsed[0])] = $parsed[1];
 			}
 		}
 
 		return $params;
-
 	}
 
-	private function _parseParameter($element)
+	/**
+	 * @param string $element
+	 * @return array
+	 */
+	private function parseParameter($element)
 	{
 		$part = explode('=', $element);
 		if (count($part) == 2)
@@ -81,6 +107,4 @@ class Cli
 			return array($part[0], true);
 		}
 	}
-
 }
-?>

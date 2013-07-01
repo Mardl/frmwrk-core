@@ -15,13 +15,14 @@ use jamwork\common\HttpRequest;
 
 /**
  * RequestObject and extends jamwork\common\HttpRequest
- * 
- * @category Routing
+ *
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
 class Request extends HttpRequest
 {
+
 	protected static $instance;
 
 	/**
@@ -33,7 +34,7 @@ class Request extends HttpRequest
 
 	/**
 	 * Konstruktor
-	 * 
+	 *
 	 * @param array $get    Array $_GET
 	 * @param array $post   Array $_POST
 	 * @param array $server Array $_SERVER
@@ -41,16 +42,22 @@ class Request extends HttpRequest
 	 */
 	public function __construct(array $get, array $post, array $server, array $cookie)
 	{
-		parent::__construct( $get, $post, $server, $cookie);
-		
+		parent::__construct($get, $post, $server, $cookie);
 	}
 
-	public static function getInstance(){
-		if (is_null(self::$instance)){
+	/**
+	 * @return Request
+	 */
+	public static function getInstance()
+	{
+		if (is_null(self::$instance))
+		{
 			self::$instance = new Request($_GET, $_POST, $_SERVER, $_COOKIE);
 		}
+
 		return self::$instance;
 	}
+
 	/**
 	 * Is ajax request?
 	 * Tested with Firefox 3, Opera 9, Internet Explorer 7.
@@ -67,7 +74,6 @@ class Request extends HttpRequest
 		{
 			return false;
 		}
-		
 	}
 
 	/**
@@ -77,7 +83,7 @@ class Request extends HttpRequest
 	 */
 	public function isHTTPS()
 	{
-		if ($this->getServer('HTTPS',false))
+		if ($this->getServer('HTTPS', false))
 		{
 			return true;
 		}
@@ -98,34 +104,34 @@ class Request extends HttpRequest
 	public static function isMobile()
 	{
 		$aUserAgents = array(
-            '240x320',
-            'benq',
-            'blackberry',
-            'iphone',
-            'ipod',
-            'mda',
-            'midp',
-            'mot-',
-            'netfront',
-            'nokia',
-            'opera mini',
-            'opera mobi',
-            'panasonic',
-            'philips',
-            'pocket pc',
-            'portalmmm',
-            'sagem',
-            'samsung',
-            'sda',
-            'sgh-',
-            'sharp',
-            'sie-',
-            'sonyericsson',
-            'symbian',
-            'vodafone',
-            'windows ce',
-            'windows mobile',
-            'xda'
+			'240x320',
+			'benq',
+			'blackberry',
+			'iphone',
+			'ipod',
+			'mda',
+			'midp',
+			'mot-',
+			'netfront',
+			'nokia',
+			'opera mini',
+			'opera mobi',
+			'panasonic',
+			'philips',
+			'pocket pc',
+			'portalmmm',
+			'sagem',
+			'samsung',
+			'sda',
+			'sgh-',
+			'sharp',
+			'sie-',
+			'sonyericsson',
+			'symbian',
+			'vodafone',
+			'windows ce',
+			'windows mobile',
+			'xda'
 		);
 
 		foreach ($aUserAgents as $cUserAgent)
@@ -137,7 +143,6 @@ class Request extends HttpRequest
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -147,7 +152,7 @@ class Request extends HttpRequest
 	 */
 	public function getMethod()
 	{
-		return $this->getServer('REQUEST_METHOD',null);
+		return $this->getServer('REQUEST_METHOD', null);
 	}
 
 	/**
@@ -200,10 +205,10 @@ class Request extends HttpRequest
 
 		if (defined('DEFAULT_HTTP_HOST'))
 		{
-            return DEFAULT_HTTP_HOST;
-        }
+			return DEFAULT_HTTP_HOST;
+		}
 
-        return null;
+		return null;
 	}
 
 	/**
@@ -213,7 +218,7 @@ class Request extends HttpRequest
 	 */
 	public function getClientIp()
 	{
-		return $this->getServer('HTTP_X_FORWARDED_FOR',$this->getServer('HTTP_X_REAL_IP',$this->getServer('REMOTE_ADDR',false)));
+		return $this->getServer('HTTP_X_FORWARDED_FOR', $this->getServer('HTTP_X_REAL_IP', $this->getServer('REMOTE_ADDR', false)));
 
 		/* alte version */
 		if (!empty($host))
@@ -223,7 +228,7 @@ class Request extends HttpRequest
 		// Apache
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
 		{
-	 		return $_SERVER['HTTP_X_FORWARDED_FOR'];
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
 
 		// Nginx
@@ -243,13 +248,13 @@ class Request extends HttpRequest
 
 	/**
 	 * Set params from URL
-     * Similar to $_GET
+	 * Similar to $_GET
 	 *
 	 * @param array $params Parameters
-	 * 
+	 *
 	 * @return void
 	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
-	 * ersetzt durch setRoute
+	 *             ersetzt durch setRoute
 	 */
 	public function setParams(array $params)
 	{
@@ -259,6 +264,7 @@ class Request extends HttpRequest
 	/**
 	 * Set Route params from URL
 	 * @param array $params
+	 * @return void
 	 */
 	public function setRoute(array $params)
 	{
@@ -287,14 +293,14 @@ class Request extends HttpRequest
 
 	/**
 	 * Get param from Url
-     * Similar to $_GET
+	 * Similar to $_GET
 	 *
 	 * @param string $key     Key
 	 * @param mixed  $default Default value
-	 * 
+	 *
 	 * @return string
 	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
-	 * ersetzt durch getRouteParam
+	 *             ersetzt durch getRouteParam
 	 */
 	public function getParam($key, $default = null)
 	{
@@ -306,8 +312,8 @@ class Request extends HttpRequest
 	/**
 	 * Get param from Url with $key
 	 *
-	 * @param $key
-	 * @param null $default
+	 * @param string $key
+	 * @param null   $default
 	 * @return null|string
 	 */
 	public function getRouteParam($key, $default = null)
@@ -320,13 +326,13 @@ class Request extends HttpRequest
 	 *
 	 * @param string $key     Key
 	 * @param mixed  $default Default value
-	 * 
+	 *
 	 * @return string
 	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
 	 */
-	public function get($key, $default=null)
+	public function get($key, $default = null)
 	{
-		return $this->getParamIfExist($key, $default );
+		return $this->getParamIfExist($key, $default);
 
 		/* oldschool, SuperGlobale werden nicht verwendet. */
 		if (!isset($_GET[$key]))
@@ -338,6 +344,7 @@ class Request extends HttpRequest
 			return trim($_GET[$key]);
 		}
 		array_walk_recursive($_GET[$key], 'trim');
+
 		return $_GET[$key];
 	}
 
@@ -346,13 +353,13 @@ class Request extends HttpRequest
 	 *
 	 * @param string $key     Key
 	 * @param mixed  $default Default value
-	 * 
+	 *
 	 * @return string
 	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
 	 */
 	public function post($key, $default = null)
 	{
-		return $this->getPostIfExist($key, $default );
+		return $this->getPostIfExist($key, $default);
 
 		/* oldschool, SuperGlobale werden nicht verwendet. */
 		if (!isset($_POST[$key]))
@@ -364,6 +371,7 @@ class Request extends HttpRequest
 			return trim($_POST[$key]);
 		}
 		array_walk_recursive($_POST[$key], 'trim');
+
 		return $_POST[$key];
 	}
 
@@ -372,15 +380,16 @@ class Request extends HttpRequest
 	 *
 	 * @param string $key     Key
 	 * @param mixed  $default Default value
-	 * 
+	 *
 	 * @return string
 	 * @deprecated Gerne zur Diskussion für Refactoring / Mardl
 	 *
 	 */
 	public function request($key, $default = null)
 	{
-		$ret = $this->getParamIfExist($key, $default );
-		return $this->getPostIfExist($key, $ret );
+		$ret = $this->getParamIfExist($key, $default);
+
+		return $this->getPostIfExist($key, $ret);
 
 
 		if (!isset($_REQUEST[$key]))
@@ -392,6 +401,7 @@ class Request extends HttpRequest
 			return trim($_REQUEST[$key]);
 		}
 		array_walk_recursive($_REQUEST[$key], 'trim');
+
 		return $_REQUEST[$key];
 	}
 
@@ -400,7 +410,7 @@ class Request extends HttpRequest
 	 *
 	 * @param string $key     Key
 	 * @param mixed  $default Default value
-	 * 
+	 *
 	 * @return string
 	 */
 	public function files($key, $default = null)
@@ -413,7 +423,7 @@ class Request extends HttpRequest
 		{
 			return $default;
 		}
+
 		return $_FILES[$key];
 	}
-
 }

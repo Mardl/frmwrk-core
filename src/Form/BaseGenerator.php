@@ -1,20 +1,19 @@
 <?php
-/**
- * Lifemeter\Form\Base-Class
- *
- * PHP version 5.3
- *
- * @category Forms
- * @package  Lifemeter
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core\Form;
 
-use Core\Form,
-	Core\SystemMessages;
+use Core\Form, Core\SystemMessages;
 
+/**
+ * Class BaseGenerator
+ *
+ * @category Core
+ * @package  Core\Form
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
+ */
 class BaseGenerator
 {
+
 	protected $form;
 
 	/**
@@ -49,16 +48,20 @@ class BaseGenerator
 		return $this->form;
 	}
 
-	public function __toString(){
+	/**
+	 * @return mixed
+	 */
+	public function __toString()
+	{
 		return $this->form->__toString();
 	}
 
 	/**
 	 * Standardvalidierung nach Pflichtfeldern
 	 *
-	 * @param Core\Form|\Core\Form\Element $elementContainer
+	 * @param \Core\Form|\Core\Form\Element $elementContainer
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function checkRequired($elementContainer)
 	{

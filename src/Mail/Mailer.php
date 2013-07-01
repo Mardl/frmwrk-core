@@ -2,68 +2,76 @@
 
 namespace Core\Mail;
 
-use Exception,
-	Core\Mail\Mime;
+use Exception, Core\Mail\Mime;
 
 /**
- * Mail
+ * Class Mailer
+ *
+ * @category Core
+ * @package  Core\Mail
+ * @author   Ionel-Alex Caizer <ionel@dreiwerken.de>
  */
-class Mailer {
+class Mailer
+{
 
 	/**
 	 * Envelope (for Sendmail)
 	 *
-	 * @var   string
+	 * @var string
 	 */
 	protected $envelope;
 
 	/**
 	 * To
 	 *
-	 * @var   array
+	 * @var array
 	 */
 	protected $to = array();
 
 	/**
 	 * ReplyTo
 	 *
-	 * @var   array
+	 * @var array
 	 */
 	protected $replyTo = array();
 
 	/**
 	 * Subject
 	 *
-	 * @var   string
+	 * @var string
 	 */
 	protected $subject;
 
 	/**
 	 * Headers
 	 *
-	 * @var   array
+	 * @var array
 	 */
 	protected $headers = array();
 
 	/**
 	 * Body
 	 *
-	 * @var   string
+	 * @var string
 	 */
 	protected $body;
 
 	/**
 	 * Set from
 	 *
-	 * @param string $email Email
+	 * @param string $email    Email
 	 * @param string $username Username
 	 * @return string
 	 */
-	public function setFrom($email, $username = NULL) {
+	public function setFrom($email, $username = null)
+	{
 		$this->envelope = $email;
-		if($username) {
-			return $this->addHeader('From', $username.' <'.$email.'>');
-		} else {
+		if ($username)
+		{
+			return $this->addHeader('From', $username . ' <' . $email . '>');
+		}
+		else
+		{
 			return $this->addHeader('From', $email);
 		}
 	}
@@ -71,16 +79,21 @@ class Mailer {
 	/**
 	 * Set to (Receiver)
 	 *
-	 * @param string $email Email
+	 * @param string $email    Email
 	 * @param string $username Username
 	 * @return array
 	 */
-	public function setTo($email, $username = NULL) {
-		if($username) {
-			$this->to = array($username.' <'.$email.'>');
-		} else {
+	public function setTo($email, $username = null)
+	{
+		if ($username)
+		{
+			$this->to = array($username . ' <' . $email . '>');
+		}
+		else
+		{
 			$this->to = array($email);
 		}
+
 		return $this->to;
 
 	}
@@ -88,48 +101,60 @@ class Mailer {
 	/**
 	 * Add to (Receiver)
 	 *
-	 * @param string $email Email
+	 * @param string $email    Email
 	 * @param string $username Username
 	 * @return array
 	 */
-	public function addTo($email, $username = NULL) {
-		if($username) {
-			$this->to[] = $username.' <'.$email.'>';
-		} else {
+	public function addTo($email, $username = null)
+	{
+		if ($username)
+		{
+			$this->to[] = $username . ' <' . $email . '>';
+		}
+		else
+		{
 			$this->to[] = $email;
 		}
-		return $this->to;
 
+		return $this->to;
 	}
 
 	/**
 	 * Add reply to
 	 *
-	 * @param string $email Email
+	 * @param string $email    Email
 	 * @param string $username Username
 	 * @return array
 	 */
-	public function addReplyTo($email, $username = NULL) {
-		if($username) {
-			$this->replyTo[] = $username.' <'.$email.'>';
-		} else {
+	public function addReplyTo($email, $username = null)
+	{
+		if ($username)
+		{
+			$this->replyTo[] = $username . ' <' . $email . '>';
+		}
+		else
+		{
 			$this->replyTo[] = $email;
 		}
+
 		return $this->replyTo;
 
 	}
 
 	/**
-	 * @param string $key key
+	 * @param string $key   key
 	 * @param string $value value
 	 * @return array
 	 * @throws \Exception
 	 */
-	public function addHeader($key, $value) {
-		if (strpos($value, "\n") !== false) {
+	public function addHeader($key, $value)
+	{
+		if (strpos($value, "\n") !== false)
+		{
 			throw new Exception('Header must not contain newlines');
 		}
 		$this->headers[$key] = $value;
+
 		return $this->headers;
 	}
 
@@ -139,12 +164,14 @@ class Mailer {
 	 * @param array $headers headers
 	 * @return array
 	 */
-	public function addHeaders(array $headers) {
-		foreach($headers as $key => $value) {
+	public function addHeaders(array $headers)
+	{
+		foreach ($headers as $key => $value)
+		{
 			$this->addHeader($key, $value);
 		}
-		return $this->headers;
 
+		return $this->headers;
 	}
 
 	/**
@@ -153,8 +180,10 @@ class Mailer {
 	 * @param string $subject Subject
 	 * @return string
 	 */
-	public function setSubject($subject) {
+	public function setSubject($subject)
+	{
 		$this->subject = $subject;
+
 		return $this->subject;
 	}
 
@@ -164,11 +193,14 @@ class Mailer {
 	 * @param string $body Body
 	 * @return string
 	 */
-	public function setBody($body) {
-		if($body instanceOf MIME) {
+	public function setBody($body)
+	{
+		if ($body instanceOf MIME)
+		{
 			$this->addHeaders($body->getHeaders());
 		}
 		$this->body = $body;
+
 		return $this->body;
 	}
 
@@ -178,23 +210,26 @@ class Mailer {
 	 * @return bool
 	 * @throws \Exception
 	 */
-	public function send() {
+	public function send()
+	{
 		$to = implode(', ', $this->to);
 		$headers = $this->prepareHeaders($this->headers);
 
 		// Detect charset
 		$subject = $this->subject;
 		$encoding = mb_detect_encoding($subject, mb_detect_order(), true);
-		if($encoding != 'ASCII') {
-			$subject = '=?'.$encoding.'?B?'.base64_encode($this->subject).'?=';
+		if ($encoding != 'ASCII')
+		{
+			$subject = '=?' . $encoding . '?B?' . base64_encode($this->subject) . '?=';
 		}
 
 		$status = mail($to, $subject, $this->body, $headers, $this->prepareSendmailParams());
-		if(!$status) {
+		if (!$status)
+		{
 			throw new Exception('Cannot send email');
 		}
-		return $status;
 
+		return $status;
 	}
 
 	/**
@@ -203,13 +238,16 @@ class Mailer {
 	 * @param array $headers Headers
 	 * @return string
 	 */
-	private function prepareHeaders(array $headers) {
+	private function prepareHeaders(array $headers)
+	{
 		$result = array();
-		if (count($this->replyTo) > 0) {
+		if (count($this->replyTo) > 0)
+		{
 			$headers['Reply-To'] = implode(', ', $this->replyTo);
 		}
-		foreach($headers as $key => $value) {
-			$result[] = $key.': '.$value;
+		foreach ($headers as $key => $value)
+		{
+			$result[] = $key . ': ' . $value;
 		}
 
 		return implode("\n", $result);
@@ -220,12 +258,11 @@ class Mailer {
 	 *
 	 * @return string
 	 */
-	private function prepareSendmailParams() {
+	private function prepareSendmailParams()
+	{
 		$result = array();
-		$result[] = '-f '.$this->envelope;
+		$result[] = '-f ' . $this->envelope;
+
 		return implode(' ', $result);
 	}
-
 }
-
-?>

@@ -1,27 +1,35 @@
 <?php
-/**
- * Core\Cli-Class
- *
- * PHP version 5.3
- *
- * @category Helper
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
+
 namespace Core;
 
+/**
+ * Class Navigation
+ *
+ * @category Core
+ * @package  Core
+ * @author   Martin Eisenführer <amrtin@dreiwerken.de>
+ */
 class Navigation
 {
+
 	protected $files = array();
 	protected $links = array();
 	protected $controllerTitles = array();
 	protected $moduleTitles = array();
 
-	public function __construct(){
-		$this->_open(SITE_PATH);
-		$this->_extract();
+	/**
+	 * Konstruktor
+	 */
+	public function __construct()
+	{
+		$this->open(SITE_PATH);
+		$this->extract();
 	}
 
+	/**
+	 * @param null $user
+	 * @return string
+	 */
 	public function render($user = null)
 	{
 		$groups = \jamwork\common\Registry::getInstance()->conf->NAVGROUPS;
@@ -61,12 +69,14 @@ class Navigation
 				$groups[$group]['links'] = $actions;
 			}
 		}
+
 		$navigation = '<div class="tabmenu navigation">';
 		$navigation .= '<ul>';
 
 		foreach ($groups as $group => $actions)
 		{
-			if (empty($actions['links'])){
+			if (empty($actions['links']))
+			{
 				continue;
 			}
 			$point = '';
@@ -78,10 +88,10 @@ class Navigation
 
 			$first = array_shift($keys);
 
-			$point .= '<li class="{current}"><a href="'.$links[$first]['url'].'" class="'.$actions['class'].'"><span>'.$group.'</span></a>';
+			$point .= '<li class="{current}"><a href="' . $links[$first]['url'] . '" class="' . $actions['class'] . '"><span>' . $group . '</span></a>';
 
-
-			if ($linksCount > 1){
+			if ($linksCount > 1)
+			{
 				$point .= '<ul class="subnav">';
 			}
 
@@ -90,7 +100,6 @@ class Navigation
 			$sp = array();
 
 			$counter = count($links);
-
 
 			foreach ($links as $action)
 			{
@@ -107,15 +116,17 @@ class Navigation
 					$right = new \App\Models\Right($data);
 
 					$class = '\Core\Application\Manager\Right';
-					if (class_exists('\App\Manager\Right')){
+					if (class_exists('\App\Manager\Right'))
+					{
 						$class = '\App\Manager\Right';
 					}
 
-					if ($class::isAllowed($right, $user)){
-						$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+					if ($class::isAllowed($right, $user))
+					{
+						$sp[ucfirst($action['module']) . '_' . ucfirst($action['controller'])][] = '<li><a href="' . $action['url'] . '"><span>' . $action['title'] . '</span></a>';
 					}
 
-					$link = strtolower($action['prefix'].$action['module'].$action['controller'].$action['action'].'html');
+					$link = strtolower($action['prefix'] . $action['module'] . $action['controller'] . $action['action'] . 'html');
 
 					if ($link == $current)
 					{
@@ -124,17 +135,15 @@ class Navigation
 				}
 				else
 				{
-					$sp[ucfirst($action['module']).'_'.ucfirst($action['controller'])][] = '<li><a href="'.$action['url'].'"><span>'.$action['title'].'</span></a>';
+					$sp[ucfirst($action['module']) . '_' . ucfirst($action['controller'])][] = '<li><a href="' . $action['url'] . '"><span>' . $action['title'] . '</span></a>';
 
-					$link = strtolower($action['prefix'].$action['module'].$action['controller'].$action['action'].'html');
+					$link = strtolower($action['prefix'] . $action['module'] . $action['controller'] . $action['action'] . 'html');
 
 					if ($link == $current)
 					{
 						$point = str_replace('{current}', 'current', $point);
 					}
 				}
-
-
 			}
 
 			if (count($sp) == 1)
@@ -146,17 +155,20 @@ class Navigation
 			{
 				foreach ($sp as $controller => $actions)
 				{
-					if (count($actions) == 1){
+					if (count($actions) == 1)
+					{
 						$subPoints .= $actions[0];
-					} else {
-						$exp = explode('_',$controller);
+					}
+					else
+					{
+						$exp = explode('_', $controller);
 
 						if (isset($this->controllerTitles[$exp[0]][$exp[1]]))
 						{
 							$controller = $this->controllerTitles[$exp[0]][$exp[1]];
 						}
 
-						$subPoints .= '<li><a href="#"><span>'.$controller.' &raquo;</span></a>';
+						$subPoints .= '<li><a href="#"><span>' . $controller . ' &raquo;</span></a>';
 						$subPoints .= '<ul class="subnav">';
 						$subPoints .= implode('', $actions);
 						$subPoints .= '</ul>';
@@ -165,7 +177,8 @@ class Navigation
 				}
 			}
 
-			if ($linksCount > 1){
+			if ($linksCount > 1)
+			{
 				$point .= $subPoints;
 				$point .= '</ul>';
 			}
@@ -176,9 +189,6 @@ class Navigation
 			{
 				$navigation .= $point;
 			}
-
-
-
 		}
 
 		$navigation .= '</ul>';
@@ -187,58 +197,70 @@ class Navigation
 		return $navigation;
 	}
 
-	private function _open($dir)
+	/**
+	 * @param string $dir
+	 * @return void
+	 */
+	private function open($dir)
 	{
 		$temp = explode('/', $dir);
-		if ( array_pop($temp) == 'Views'){
+
+		if (array_pop($temp) == 'Views')
+		{
 			return;
 		}
+
 		$directory = opendir($dir);
-		while ( ($file = readdir($directory)) == true )
+
+		while (($file = readdir($directory)) == true)
 		{
 			if ($file != '.' && $file != '..')
 			{
-				if (is_dir($dir.'/'.$file))
+				if (is_dir($dir . '/' . $file))
 				{
-					$this->_open($dir.'/'.$file);
+					$this->_open($dir . '/' . $file);
 				}
 				else
 				{
-					if (\Core\String::endsWith($file, '.php')){
-						$this->files[] = $dir.'/'.$file;
+					if (\Core\String::endsWith($file, '.php'))
+					{
+						$this->files[] = $dir . '/' . $file;
 					}
-
 				}
-
 			}
 		}
 	}
 
-	private function _extract()
+	/**
+	 * @return void
+	 */
+	private function extract()
 	{
 		$view = new \Core\View();
 
 		foreach ($this->files as $controller)
 		{
-			//Hole Modul und Controllername aus dem Dateinamen heraus
-			preg_match("/.*\/Modules(\/[A-Z]{1}[a-zA-Z]+)*\/([A-Z]{1}[a-zA-Z]+)\/Controller\/([A-Z]{1}[a-zA-Z]+)\.php/",$controller, $matches);
+			// Hole Modul und Controllername aus dem Dateinamen heraus
+			preg_match("/.*\/Modules(\/[A-Z]{1}[a-zA-Z]+)*\/([A-Z]{1}[a-zA-Z]+)\/Controller\/([A-Z]{1}[a-zA-Z]+)\.php/", $controller, $matches);
 
 			if (!empty($matches) && (count($matches) == 3 || count($matches) == 4))
 			{
-				$prefix = substr($matches[1],1);
+				$prefix = substr($matches[1], 1);
 				$module = $matches[2];
 				$controller = $matches[3];
 
-				if ($prefix != '') {
-					$class = "\\App\\Modules\\".ucfirst($prefix)."\\".ucfirst($module)."\\Controller\\".ucfirst($controller);
+				if ($prefix != '')
+				{
+					$class = "\\App\\Modules\\" . ucfirst($prefix) . "\\" . ucfirst($module) . "\\Controller\\" . ucfirst($controller);
 				}
-				else {
-					$class = "\\App\\Modules\\".ucfirst($module)."\\Controller\\".ucfirst($controller);
+				else
+				{
+					$class = "\\App\\Modules\\" . ucfirst($module) . "\\Controller\\" . ucfirst($controller);
 				}
 
-				//Neue Reflectionklasse instanzieren
+				// Neue Reflectionklasse instanziieren
 				$reflect = new \ReflectionClass($class);
-				//Methoden auslesen
+				// Methoden auslesen
 				$methods = $reflect->getMethods();
 				$properties = $reflect->getDefaultProperties();
 
@@ -252,31 +274,36 @@ class Navigation
 				}
 
 				$classDoc = $reflect->getDocComment();
-				if ($classDoc !== false){
-					preg_match('/.*\@title ([A-Za-z0-9äöüÄÖÜ\-]+).*/s', $classDoc, $matchClassDoc);
-					if (!empty($matchClassDoc)){
-						$this->controllerTitles[$module][$controller] = $matchClassDoc[1];
+				if ($classDoc !== false)
+				{
+					preg_match('/.*\@title ([A-Za-z0-9äöüÄÖÜ \-]+).*/s', $classDoc, $matchClassDoc);
+					if (!empty($matchClassDoc))
+					{
+						$this->controllerTitles[$module][$controller] = trim($matchClassDoc[1]);
 					}
-					preg_match('/.*\@modulTitle ([A-Za-z0-9äöüÄÖÜ\-]+).*/s', $classDoc, $matchClassDoc);
-					if (!empty($matchClassDoc) && !isset($this->moduleTitles[$module])){
-						$this->moduleTitles[$module] = $matchClassDoc[1];
+					preg_match('/.*\@modulTitle ([A-Za-z0-9äöüÄÖÜ \-]+).*/s', $classDoc, $matchClassDoc);
+					if (!empty($matchClassDoc) && !isset($this->moduleTitles[$module]))
+					{
+						$this->moduleTitles[$module] = trim($matchClassDoc[1]);
 					}
 				}
 
 				foreach ($methods as $method)
 				{
-					//Prüfe ob eine Methode eine HTML-Action ist
+					// Prüfe ob eine Methode eine HTML-Action ist
 					preg_match("/(.+)(HTML|Html)Action/", $method->getName(), $matches);
-					if (!empty($matches)){
-						//Lade den Kommentar
+					if (!empty($matches))
+					{
+						// Lade den Kommentar
 						$docComment = $method->getDocComment();
 
 						if ($docComment !== false)
 						{
-							//Prüfe ob im Kommentare der Tag showInNavigation vorhanden is und ob der Wert dann auch true ist
+							// Prüfe, ob im Kommentare der Tag showInNavigation vorhanden ist und ob der Wert dann auch true ist
 							preg_match('/.*\@showInNavigation ([a-z]+).*/', $docComment, $matchDoc);
 
-							if (!empty($matchDoc) && $matchDoc[1] == 'true'){
+							if (!empty($matchDoc) && $matchDoc[1] == 'true')
+							{
 
 								if (\jamwork\common\Registry::getInstance()->hasEventDispatcher())
 								{
@@ -288,17 +315,18 @@ class Navigation
 									}
 								}
 
-								//Name des Navigationspunktes ermitteln
+								// Name des Navigationspunktes ermitteln
 								preg_match('/.*\@navigationName ([A-Za-z0-9äöüÄÖÜ -\/]+).*$/s', $docComment, $matchDoc);
-								$navigationName = $matchDoc[1];
+								$navigationName = trim($matchDoc[1]);
 
 								//Sortierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationSort ([0-9]+).*/s', $docComment, $matchDoc);
-								$navigationSort = $matchDoc[1];
+								preg_match('/.*\@navigationSort ([0-9 ]+).*/s', $docComment, $matchDoc);
+								$navigationSort = trim($matchDoc[1]);
 
 								//Gruppierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationGroup ([A-Za-z0-9äöüÄÖÜ]+).*/s', $docComment, $matchDoc);
-								$navigationGroup = $matchDoc[1];
+								preg_match('/.*\@navigationGroup ([A-Za-z0-9äöüÄÖÜ ]+).*/s', $docComment, $matchDoc);
+
+								$navigationGroup = trim($matchDoc[1]);
 
 								/*
 								 * Config für Navigationspunkt definieren
@@ -316,13 +344,11 @@ class Navigation
 								$conf['title'] = $navigationName;
 								$conf['permissions'] = $checkPermission;
 
-								$this->links[$navigationGroup][$navigationSort.'-'.$navigationName] = $conf;
+								$this->links[$navigationGroup][$navigationSort . '-' . $navigationName] = $conf;
 							}
 						}
 					}
-
 				}
-
 			}
 		}
 	}
@@ -338,4 +364,3 @@ class Navigation
 		return strtolower($str);
 	}
 }
-?>

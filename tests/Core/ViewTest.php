@@ -8,7 +8,7 @@
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace unittest\lifemeter\Core;
+namespace tests\Core;
 
 use Core\View,
 	Core\Request,
@@ -118,7 +118,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testToStringEXPOk()
 	{
-		$this->View = new View(__DIR__.'/../../TestClasses/testtemplate.html.php');
+		$this->View = new View(__DIR__.'/../TestClasses/testtemplate.html.php');
 		$this->assertEquals('ok', $this->View->__toString());
 	}
 	
@@ -132,7 +132,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testToStringEXPNotOk()
 	{
-		$this->View = new View(__DIR__.'/../../TestClasses/testtemplateException.html.php');
+		$this->View = new View(__DIR__.'/../TestClasses/testtemplateException.html.php');
 		$this->assertNotEquals('ok', $this->View->__toString());
 	}
 	
@@ -238,7 +238,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetTitleEXPNoTitleSet()
 	{
-		$this->assertEquals('No title set', $this->View->getTitle());
+		$this->assertEquals('', $this->View->getTitle());
 	
 	}
 	
@@ -419,15 +419,15 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSetTemplateEXPArray1Count()
 	{
-		$template = $this->View->setTemplate(__DIR__.'/../../TestClasses/testtemplate.html.php');
+		$template = $this->View->setTemplate(__DIR__.'/../TestClasses/testtemplate.html.php');
 		
 		$this->assertTrue(is_array($template));
 		$this->assertEquals(1, count($template));
 		
-		$template = $this->View->setTemplate(__DIR__.'/../../TestClasses/testtemplate2.html.php');
+		$template = $this->View->setTemplate(__DIR__.'/../TestClasses/testtemplate2.html.php');
 		$this->assertEquals(1, count($template));
 		$this->assertNotEquals(
-			__DIR__.'/../../TestClasses/testtemplate.html.php',
+			__DIR__.'/../TestClasses/testtemplate.html.php',
 			$template[0]
 		);
 	}
@@ -439,15 +439,15 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAddTemplate()
 	{
-		$template = $this->View->setTemplate(__DIR__.'/../../TestClasses/testtemplate.html.php');
+		$template = $this->View->setTemplate(__DIR__.'/../TestClasses/testtemplate.html.php');
 		
 		$this->assertTrue(is_array($template));
 		$this->assertEquals(1, count($template));
 		
-		$template = $this->View->addTemplate(__DIR__.'/../../TestClasses/testtemplate2.html.php');
+		$template = $this->View->addTemplate(__DIR__.'/../TestClasses/testtemplate2.html.php');
 		$this->assertEquals(2, count($template));
 		$this->assertEquals(
-			__DIR__.'/../../TestClasses/testtemplate2.html.php',
+			__DIR__.'/../TestClasses/testtemplate2.html.php',
 			$template[1]
 		);
 	
@@ -460,9 +460,9 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testRemoveTemplates()
 	{
-		$template = $this->View->setTemplate(__DIR__.'/../../TestClasses/testtemplate.html.php');
-		$template = $this->View->addTemplate(__DIR__.'/../../TestClasses/testtemplate2.html.php');
-		$template = $this->View->addTemplate(__DIR__.'/../../TestClasses/testtemplate3.html.php');
+		$template = $this->View->setTemplate(__DIR__.'/../TestClasses/testtemplate.html.php');
+		$template = $this->View->addTemplate(__DIR__.'/../TestClasses/testtemplate2.html.php');
+		$template = $this->View->addTemplate(__DIR__.'/../TestClasses/testtemplate3.html.php');
 		
 		$template = $this->View->removeTemplates();
 		$this->assertEquals(0, count($template));
@@ -477,26 +477,26 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetTemplates()
 	{
-		$this->View->setTemplate(__DIR__.'/../../TestClasses/testtemplate.html.php');
-		$this->View->addTemplate(__DIR__.'/../../TestClasses/testtemplate2.html.php');
-		$this->View->addTemplate(__DIR__.'/../../TestClasses/testtemplate3.html.php');
+		$this->View->setTemplate(__DIR__.'/../TestClasses/testtemplate.html.php');
+		$this->View->addTemplate(__DIR__.'/../TestClasses/testtemplate2.html.php');
+		$this->View->addTemplate(__DIR__.'/../TestClasses/testtemplate3.html.php');
 		
 		$templates = $this->View->getTemplates();
 		
 		$this->assertTrue(is_array($templates));
 		$this->assertEquals(3, count($templates));
 		$this->assertEquals(
-			__DIR__.'/../../TestClasses/testtemplate2.html.php',
+			__DIR__.'/../TestClasses/testtemplate2.html.php',
 			$templates[1]
 		);
 		
 		$this->assertEquals(
-			__DIR__.'/../../TestClasses/testtemplate.html.php',
+			__DIR__.'/../TestClasses/testtemplate.html.php',
 			$templates[0]
 		);
 		
 		$this->assertEquals(
-			__DIR__.'/../../TestClasses/testtemplate3.html.php',
+			__DIR__.'/../TestClasses/testtemplate3.html.php',
 			$templates[2]
 		);
 	
@@ -509,7 +509,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testRenderEXPOk()
 	{
-		$this->assertEquals('ok', $this->View->render(__DIR__.'/../../TestClasses/testtemplate.html.php'));
+		$this->assertEquals('ok', $this->View->render(__DIR__.'/../TestClasses/testtemplate.html.php'));
 	
 	}
 

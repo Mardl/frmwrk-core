@@ -1,14 +1,4 @@
 <?php
-/**
- * Directory Manager
- *
- * PHP version 5.3
- *
- * @category Manager
- * @package  Manager
- * @author   Reinhard Hampl <reini@dreiwerken.de>
- */
-
 
 namespace Core\Application\Manager;
 
@@ -20,14 +10,15 @@ use jamwork\debug\DebugLogger,
 	jamwork\database\MysqlRecordset as Recordset;
 
 /**
- * Directory
+ * Class Directory
  *
- * @category Manager
- * @package  Manager
+ * @category Core
+ * @package  Core\Application\Manager
  * @author   Reinhard Hampl <reini@dreiwerken.de>
  */
 class Directory
 {
+
 	/**
 	 * @var array
 	 */
@@ -37,11 +28,9 @@ class Directory
 	 * Liefert ein Directory anhand seiner Id
 	 *
 	 * @param int $directoryId Id des gewünschten Directory
-	 *
 	 * @throws \InvalidArgumentException Wenn eine leere Directoryid übermittelt wurde
 	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
-	 *
-	 * @return \Core\Application\Models\Directory
+	 * @return DirectoryModel
 	 */
 	public static function getDirectoryById($directoryId)
 	{
@@ -57,11 +46,7 @@ class Directory
 
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-			->select('id, name, sort, parent_id')
-			->from('directories')
-			->addWhere('id', $directoryId)
-			->limit(0, 1);
+		$query = $con->newQuery()->select('id, name, sort, parent_id')->from('directories')->addWhere('id', $directoryId)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -98,19 +83,11 @@ class Directory
 
 		if ($parentDirectoryId == 0)
 		{
-			$query = $con->newQuery()
-				->select('id, name, sort, parent_id')
-				->from('directories')
-				->addWhereIsNull('parent_id')
-				->orderby('sort');
+			$query = $con->newQuery()->select('id, name, sort, parent_id')->from('directories')->addWhereIsNull('parent_id')->orderby('sort');
 		}
 		else
 		{
-			$query = $con->newQuery()
-				->select('id, name, sort, parent_id')
-				->from('directories')
-				->addWhere('parent_id', $parentDirectoryId)
-				->orderby('sort');
+			$query = $con->newQuery()->select('id, name, sort, parent_id')->from('directories')->addWhere('parent_id', $parentDirectoryId)->orderby('sort');
 		}
 
 		$rs = $con->newRecordSet();
@@ -139,8 +116,7 @@ class Directory
 	/**
 	 * Liefert alle Childelemente des Directories (Directories und Files)
 	 *
-	 * @param integer $idDirectory Id von dem die Children benötigt werden
-	 *
+	 * @param int $idDirectory Id von dem die Children benötigt werden
 	 * @return array mit App\Models\Directory\Files und App\Models\Directory
 	 */
 	public static function getChildren($idDirectory)
@@ -151,9 +127,8 @@ class Directory
 	/**
 	 * Liefert alle Files des Directory
 	 *
-	 *  @param integer $idDirectory Id von dem die Files benötigt werden
-	 *
-	 *  @return array
+	 * @param int $idDirectory Id von dem die Files benötigt werden
+	 * @return array
 	 */
 	public static function getChildrenFiles($idDirectory)
 	{
@@ -174,36 +149,27 @@ class Directory
 
 		if (empty($parentdirModel))
 		{
-			$query = sprintf(
-				"INSERT INTO
+			$query = sprintf("INSERT INTO
 				directories (
 				`parent_id`,
 				`name`,
 				`sort`
 			)
 					VALUES
-					((null), '%s', %d);",
-				mysql_real_escape_string($dirModel->getName()),
-				mysql_real_escape_string($dirModel->getSort())
-			);
+					((null), '%s', %d);", mysql_real_escape_string($dirModel->getName()), mysql_real_escape_string($dirModel->getSort()));
 
 
 		}
 		else
 		{
-			$query = sprintf(
-				"INSERT INTO
+			$query = sprintf("INSERT INTO
 				directories (
 				`parent_id`,
 				`name`,
 				`sort`
 			)
 				VALUES
-				(%d, '%s', %d);",
-				mysql_real_escape_string($parentdirModel->getId()),
-				mysql_real_escape_string($dirModel->getName()),
-				mysql_real_escape_string($dirModel->getSort())
-			);
+				(%d, '%s', %d);", mysql_real_escape_string($parentdirModel->getId()), mysql_real_escape_string($dirModel->getName()), mysql_real_escape_string($dirModel->getSort()));
 			$parentId = $parentdirModel->getId();
 		}
 
@@ -213,10 +179,12 @@ class Directory
 		if (!$rsExecution->isSuccessfull())
 		{
 			SystemMessages::addError('Beim Erstellen des Verzeichnisses ist ein Fehler aufgetreten!');
+
 			return false;
 		}
 
 		$dirModel->setId(mysql_insert_id());
+
 		return $dirModel;
 	}
 
@@ -236,8 +204,7 @@ class Directory
 
 		if (empty($parentdirModel))
 		{
-			$query = sprintf(
-				"UPDATE
+			$query = sprintf("UPDATE
 					directories
 				SET
 					parent_id = (null),
@@ -245,16 +212,11 @@ class Directory
 					sort = %d
 				WHERE
 					id = %d
-				;",
-				mysql_real_escape_string($dirModel->getName()),
-				mysql_real_escape_string($dirModel->getSort()),
-				mysql_real_escape_string($dirModel->getId())
-			);
+				;", mysql_real_escape_string($dirModel->getName()), mysql_real_escape_string($dirModel->getSort()), mysql_real_escape_string($dirModel->getId()));
 		}
 		else
 		{
-			$query = sprintf(
-				"UPDATE
+			$query = sprintf("UPDATE
 					directories
 				SET
 					parent_id = %d,
@@ -262,12 +224,7 @@ class Directory
 					sort = %d
 				WHERE
 					id = %d
-				;",
-				mysql_real_escape_string($dirModel->getParentDirectory()->getId()),
-				mysql_real_escape_string($dirModel->getName()),
-				mysql_real_escape_string($dirModel->getSort()),
-				mysql_real_escape_string($dirModel->getId())
-			);
+				;", mysql_real_escape_string($dirModel->getParentDirectory()->getId()), mysql_real_escape_string($dirModel->getName()), mysql_real_escape_string($dirModel->getSort()), mysql_real_escape_string($dirModel->getId()));
 		}
 
 		$rs = $con->newRecordSet();
@@ -276,6 +233,7 @@ class Directory
 		if (!$rsExecution->isSuccessfull())
 		{
 			SystemMessages::addError('Beim Aktualisieren des Verzeichnisses ist ein Fehler aufgetreten!');
+
 			return false;
 		}
 
@@ -286,7 +244,7 @@ class Directory
 	 * Löscht das gewünschte Verzeichnis
 	 *
 	 * @static
-	 * @param $directoryId ID des Verzeichnisses, das gelöscht werden soll
+	 * @param int $directoryId ID des Verzeichnisses, das gelöscht werden soll
 	 * @return bool
 	 */
 	public static function deleteDirectory($directoryId)
@@ -296,19 +254,17 @@ class Directory
 		if ($directoryId == 0)
 		{
 			SystemMessages::addError('Es wurde keine Verzeichnis ID übergeben!');
+
 			return false;
 		}
 
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = sprintf(
-			"DELETE FROM
+		$query = sprintf("DELETE FROM
 				directories
 			WHERE
 				id = %d
-			;",
-			mysql_real_escape_string($directoryId)
-		);
+			;", mysql_real_escape_string($directoryId));
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
@@ -316,12 +272,14 @@ class Directory
 		if ($rsExecution->isSuccessfull() && mysql_affected_rows() == 0)
 		{
 			SystemMessages::addError('Beim Löschen des Verzeichnisses ist ein Fehler aufgetreten!');
+
 			return false;
 		}
 
 		if (!$rsExecution->isSuccessfull())
 		{
 			SystemMessages::addError('Verzeichnis kann nicht gelöscht werden, da noch Unterelemente existieren!');
+
 			return false;
 		}
 
@@ -333,19 +291,15 @@ class Directory
 	 *
 	 * @param string $searchString Suchphrase
 	 *
-	 * @throws \ErrorException Wenn das keine Daten zurückgegeben werden
+	 * @throws \ErrorException Wenn keine Daten zurückgegeben wurden
 	 *
 	 * @return array
 	 */
-	public static function getDirectorysAsJson ($searchString)
+	public static function getDirectorysAsJson($searchString)
 	{
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-			->select('id, name as value, parent_id')
-			->from('directories')
-			->where("name like '".mysql_real_escape_string($searchString)."%'")
-			->orderby('sort');
+		$query = $con->newQuery()->select('id, name as value, parent_id')->from('directories')->where("name like '" . mysql_real_escape_string($searchString) . "%'")->orderby('sort');
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -373,7 +327,7 @@ class Directory
 	 *
 	 * @param string $directory Bezeichnung
 	 *
-	 * @return \Core\Application\Models\Directory
+	 * @return DirectoryModel
 	 *
 	 * @throws \ErrorException Wenn das gewünschte Directory nicht gefunden wurde
 	 * @throws \InvalidArgumentException Wenn eine leere Bezeichnung übermittelt wurde
@@ -387,11 +341,7 @@ class Directory
 
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()
-			->select('id, name, sort, parent_id as parent')
-			->from('directories')
-			->addWhere('name', $directory)
-			->limit(0, 1);
+		$query = $con->newQuery()->select('id, name, sort, parent_id as parent')->from('directories')->addWhere('name', $directory)->limit(0, 1);
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
@@ -407,6 +357,7 @@ class Directory
 
 
 			$directory = new DirectoryModel($rs);
+
 			return $directory;
 		}
 

@@ -8,7 +8,7 @@
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-namespace unittest\lifemeter\Core;
+namespace tests\Core;
 
 use Core\Loader;
 
@@ -94,11 +94,11 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAutoloadEXPLoadingClass()
 	{
-		$load = new Loader('TestClasses', __DIR__.'/../..');
+		$load = new Loader('tests', __DIR__.'/../..');
 		$load->register();
-		$test = new \TestClasses\ClassTest();
+		$test = new \tests\TestClasses\ClassTest();
 		
-		$this->assertInstanceOf('TestClasses\ClassTest', $test);
+		$this->assertInstanceOf('\tests\TestClasses\ClassTest', $test);
 	
 	}
 	
@@ -111,11 +111,11 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAutoloadEXPLoadingInterface()
 	{
-		$load = new Loader('TestClasses', __DIR__.'/../..');
+		$load = new Loader('tests', __DIR__.'/../..');
 		$load->register();
-		$test = new \TestClasses\InterfaceClassTest();
+		$test = new \tests\TestClasses\InterfaceClassTest();
 	
-		$this->assertInstanceOf('TestClasses\InterfaceClassTest', $test);
+		$this->assertInstanceOf('\tests\TestClasses\InterfaceClassTest', $test);
 	
 	}
 	
@@ -129,9 +129,9 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAutoloadEXPErrorException()
 	{
-		$load = new Loader('TestClasses', __DIR__.'/../..', true);
+		$load = new Loader('tests', __DIR__.'/../..', true);
 		$load->register();
-		$test = new \TestClasses\InvalidClassName();
+		$test = new \tests\TestClasses\InvalidClassName();
 	}
 }
 

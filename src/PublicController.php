@@ -1,30 +1,20 @@
 <?php
-/**
- * Core\PublicController-Class
- *
- * PHP version 5.3
- *
- * @category Controller
- * @package  Core
- * @author   Alexander Jonser <alex@dreiwerken.de>
- */
 
 namespace Core;
 
-use App\Models\Right,
-	App\Manager\Right as RightManager,
-	jamwork\common\Registry;
+use App\Models\Right, App\Manager\Right as RightManager, jamwork\common\Registry;
 
 /**
- * PublicController Class
- * PublicController inkl. Rechteabfrage
+ * Class PublicController
+ * inkl. Rechteabfrage
  *
- * @category Controller
+ * @category Core
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
 class PublicController extends Controller
 {
+
 	/**
 	 * @var bool
 	 */
@@ -37,10 +27,10 @@ class PublicController extends Controller
 	{
 		parent::__construct();
 
-		$module 	= $this->request->getRouteParam('module');
+		$module = $this->request->getRouteParam('module');
 		$controller = $this->request->getRouteParam('controller');
-		$action		= $this->request->getRouteParam('action');
-		$prefix		= $this->request->getRouteParam('prefix');
+		$action = $this->request->getRouteParam('action');
+		$prefix = $this->request->getRouteParam('prefix');
 
 		$right = new Right(
 			array(
@@ -53,10 +43,10 @@ class PublicController extends Controller
 
 		if ($this->checkPermissions)
 		{
-			try {
+			try
+			{
 				$login = Registry::getInstance()->login;
-			}
-			catch (\Exception $e)
+			} catch (\Exception $e)
 			{
 				$this->response->redirect($this->view->url(array(), 'login', true));
 			}
@@ -71,16 +61,13 @@ class PublicController extends Controller
 		{
 			$this->view->html->addJsAsset('loggedin');
 		}
-
 	}
 
-
 	/**
-	 *
-	 * Übergebene Array wird json encodiert und ausgegeben
-	 * Header wird sauber angepasst
+	 * Übergebene Array wird json encodiert und ausgegeben Header wird sauber angepasst
 	 *
 	 * @param array $json
+	 * @return void
 	 */
 	protected function flushJSON(array $json)
 	{
@@ -88,7 +75,7 @@ class PublicController extends Controller
 		$response = $registry->getResponse();
 		$response->addHeader('Content-Type', 'application/json; charset=utf-8');
 
-		$response->setBody( json_encode($json) );
+		$response->setBody(json_encode($json));
 		$response->flush();
 		die();
 	}
@@ -100,6 +87,4 @@ class PublicController extends Controller
 	{
 		return $this->checkPermissions;
 	}
-
-
 }
