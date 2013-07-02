@@ -315,17 +315,22 @@ class Navigation
 									}
 								}
 
+
 								// Name des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationName([A-Za-z0-9äöüÄÖÜ -\/\t]+).*$/s', $docComment, $matchDoc);
-								$navigationName = trim($matchDoc[1]);
+								//preg_match('/.*\@navigationName([A-Za-z0-9äöüÄÖÜ -\/\t]+).*$/s', $docComment, $matchDoc);
+								//$navigationName = trim($matchDoc[1]);
+								$navigationName = $this->analyzeDocComment($docComment, '/.*\@navigationName([A-Za-z0-9äöüÄÖÜ -\/\t]+).*$/s');
 
 								//Sortierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationSort([0-9 \t]+).*/s', $docComment, $matchDoc);
-								$navigationSort = trim($matchDoc[1]);
+								//preg_match('/.*\@navigationSort([0-9 \t]+).*/s', $docComment, $matchDoc);
+								//$navigationSort = trim($matchDoc[1]);
+								$navigationSort = $this->analyzeDocComment($docComment, '/.*\@navigationSort([0-9 \t]+).*/s');
 
 								//Gruppierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationGroup([A-Za-z0-9äöüÄÖÜ \t]+).*/s', $docComment, $matchDoc);
-								$navigationGroup = trim($matchDoc[1]);
+								//preg_match('/.*\@navigationGroup([A-Za-z0-9äöüÄÖÜ \t]+).*/s', $docComment, $matchDoc);
+								//$navigationGroup = trim($matchDoc[1]);
+								$navigationGroup = $this->analyzeDocComment($docComment, '/.*\@navigationGroup([A-Za-z0-9äöüÄÖÜ \t]+).*/s');
+
 
 								/*
 								 * Config für Navigationspunkt definieren
@@ -351,6 +356,11 @@ class Navigation
 			}
 		}
 
+	}
+
+	protected function analyzeDocComment($docComment, $pattern){
+		preg_match($pattern, $docComment, $matchDoc);
+		return trim($matchDoc[1]);
 	}
 
 	/**
