@@ -316,15 +316,15 @@ class Navigation
 								}
 
 								// Name des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationName([A-Za-z0-9äöüÄÖÜ -\/ \s\t]+).*$/s', $docComment, $matchDoc);
+								preg_match('/.*\@navigationName([A-Za-z0-9äöüÄÖÜ -\/\t]+).*$/s', $docComment, $matchDoc);
 								$navigationName = trim($matchDoc[1]);
 
 								//Sortierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationSort([0-9 \s\t]+).*/s', $docComment, $matchDoc);
+								preg_match('/.*\@navigationSort([0-9 \t]+).*/s', $docComment, $matchDoc);
 								$navigationSort = trim($matchDoc[1]);
 
 								//Gruppierung des Navigationspunktes ermitteln
-								preg_match('/.*\@navigationGroup([A-Za-z0-9äöüÄÖÜ \s\t]+).*/s', $docComment, $matchDoc);
+								preg_match('/.*\@navigationGroup([A-Za-z0-9äöüÄÖÜ \t]+).*/s', $docComment, $matchDoc);
 								$navigationGroup = trim($matchDoc[1]);
 
 								/*
