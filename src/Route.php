@@ -226,6 +226,7 @@ class Route
 	 */
 	public function url(array $params = array(), $reset = null, $absolute = false)
 	{
+		$result = array();
 		$defaults = $this->defaults;
 		if ($reset === null && $this == $this->getRouter()->getCurrentRoute() || $reset === false)
 		{
