@@ -2,7 +2,10 @@
 
 namespace Core\Application\Manager;
 
-use jamwork\common\Registry, jamwork\database\Query, Core\SystemMessages, Core\Application\Interfaces\ModelsInterface;
+use jamwork\common\Registry;
+use jamwork\database\Query;
+use Core\SystemMessages;
+use Core\Application\Interfaces\ModelsInterface;
 
 /**
  * Class Base
@@ -263,6 +266,7 @@ class Base
 	 * Führt ein Update anhand des übergebenen Update Objects aus.
 	 * @param \jamwork\database\Query $query
 	 * @return bool
+	 * @deprecated Wo bitte wird das verwendet? Da müsste der Update-Query ja per hand gebaut werden! Mardl
 	 */
 	public function updateByQuery(Query $query)
 	{
