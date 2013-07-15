@@ -144,7 +144,7 @@ class HTMLHelper
 	 */
 	public function addCssAsset($name)
 	{
-		if (isset(Registry::getInstance()->conf))
+		if (isset(Registry::getInstance()->conf) && isset(Registry::getInstance()->conf->CSS_ASSETS[$name]))
 		{
 			foreach (Registry::getInstance()->conf->CSS_ASSETS[$name] as $cssFile)
 			{
