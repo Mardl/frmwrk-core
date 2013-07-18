@@ -49,4 +49,13 @@ class ModelInformation
 
 		return self::$information[$className][$key];
 	}
+
+	/**
+	 * Leert den kompletten Cache
+	 * @return null
+	 */
+	public static function clear()
+	{
+		self::$information = array();
+	}
 }
