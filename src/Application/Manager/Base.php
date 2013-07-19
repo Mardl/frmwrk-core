@@ -212,7 +212,7 @@ class Base
 	/**
 	 * Liefert ein Model von $modelClassName aus dem Query-Select
 	 *
-	 * @param                         $modelClassName
+	 * @param string                  $modelClassName
 	 * @param \jamwork\database\Query $query
 	 * @return \Core\Application\Interfaces\ModelsInterface|bool
 	 */
