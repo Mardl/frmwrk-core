@@ -123,7 +123,7 @@ class Navigation
 
 					if ($class::isAllowed($right, $user))
 					{
-						$sp[ucfirst($action['module']) . '_' . ucfirst($action['controller'])][] = '<li><a href="' . $action['url'] . '"><span>' . $action['title'] . '</span></a>';
+						$sp[ucfirst($action['module']) . '_' . ucfirst($action['controller'])][] = '<li><a href="' . $action['url'] . '"><span>' . $action['title'] . '</span></a></li>';
 					}
 
 					$link = strtolower($action['prefix'] . $action['module'] . $action['controller'] . $action['action'] . 'html');
@@ -135,7 +135,7 @@ class Navigation
 				}
 				else
 				{
-					$sp[ucfirst($action['module']) . '_' . ucfirst($action['controller'])][] = '<li><a href="' . $action['url'] . '"><span>' . $action['title'] . '</span></a>';
+					$sp[ucfirst($action['module']) . '_' . ucfirst($action['controller'])][] = '<li><a href="' . $action['url'] . '"><span>' . $action['title'] . '</span></a></li>';
 
 					$link = strtolower($action['prefix'] . $action['module'] . $action['controller'] . $action['action'] . 'html');
 
@@ -184,7 +184,7 @@ class Navigation
 			}
 
 			$point = str_replace('{current}', '', $point);
-
+			$point .= '</li>';
 			if (!empty($subPoints))
 			{
 				$navigation .= $point;
