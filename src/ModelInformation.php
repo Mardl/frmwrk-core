@@ -11,7 +11,7 @@ namespace Core;
  */
 class ModelInformation
 {
-
+ 
 	/**
 	 * Messages
 	 *
