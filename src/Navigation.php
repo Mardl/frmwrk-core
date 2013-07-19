@@ -27,6 +27,8 @@ class Navigation
 	}
 
 	/**
+	 * Rendert die Navigation
+	 *
 	 * @param null $user
 	 * @return string
 	 */
