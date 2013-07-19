@@ -118,6 +118,8 @@ class Model
 	 *
 	 * @param string $name
 	 * @return bool
+	 *
+	 * @deprecated
 	 */
 	private function existsProperty($name)
 	{
@@ -198,6 +200,7 @@ class Model
 	 */
 	public function clearDataRow($data = array())
 	{
+		/*
 		$ret = array();
 		if (!empty($data))
 		{
@@ -211,6 +214,27 @@ class Model
 			}
 		}
 
+		return $ret;
+		*/
+
+
+		$ret = array();
+		if (!empty($data))
+		{
+			foreach ($data as $key => $value)
+			{
+				$method = 'set' . ucfirst($key);
+				$prefix = $this->getTablePrefix();
+				if (!empty($prefix)) {
+					$key = str_replace($prefix, '', $key);
+					$method = 'set'.ucfirst($key);
+				}
+
+				if (property_exists($this, $key) || method_exists($this, $method)){
+					$ret[$key] = $value;
+				}
+			}
+		}
 		return $ret;
 	}
 
