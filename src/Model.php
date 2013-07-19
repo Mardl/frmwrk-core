@@ -195,7 +195,6 @@ class Model
 	/**
 	 * Überprüft $data nach vorhandene Settern und liefert bereinigtes array zurück
 	 *
-	 *
 	 * @param array $data
 	 * @return array
 	 */
