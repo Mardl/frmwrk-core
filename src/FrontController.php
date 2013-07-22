@@ -20,7 +20,7 @@ class FrontController
 
 	/**
 	 * View
-	 * 
+	 *
 	 * @var   \Core\View
 	 */
 	protected $view;

@@ -224,14 +224,16 @@ class Model
 		{
 			foreach ($data as $key => $value)
 			{
-				$method = 'set' . ucfirst($key);
+				$keyToCheck = $key;
+				$method = 'set' . ucfirst($keyToCheck);
 				$prefix = $this->getTablePrefix();
 				if (!empty($prefix)) {
-					$key = str_replace($prefix, '', $key);
-					$method = 'set'.ucfirst($key);
+					$keyToCheck = str_replace($prefix, '', $keyToCheck);
+					$method = 'set'.ucfirst($keyToCheck);
 				}
 
-				if (property_exists($this, $key) || method_exists($this, $method)){
+				if (property_exists($this, $keyToCheck) || method_exists($this, $method))
+				{
 					$ret[$key] = $value;
 				}
 			}
