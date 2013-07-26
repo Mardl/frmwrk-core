@@ -19,6 +19,6 @@
         "frameworks/jamwork": "dev-master"
     },
     "autoload": {
-        "psr-0": {"Core": "src/"}
+        "classmap": ["src/"]
     }
 }
