@@ -55,7 +55,8 @@ class InitUnittests
 		define('FRAMEWORK_PATH', ROOT_PATH.'/src');
 		define('APPLICATION_PATH', ROOT_PATH.'/tests');
 		define('TESTS_PATH', ROOT_PATH.'/tests');
-		define('VENDOR_PATH', ROOT_PATH.'/Vendor');
+		define('VENDOR_PATH', ROOT_PATH.'/vendor');
+		define('FRAMEWORKS_PATH', VENDOR_PATH.'/frameworks');
 		define('ENV_DEV', 0);
 		define('ENV_STAG', 1);
 		define('ENV_PROD', 2);
@@ -117,7 +118,7 @@ class InitUnittests
 		$loader = new Core\Loader('Core', ROOT_PATH);
 		$loader->register();
 		
-		$loader = new Core\Loader('jamwork', VENDOR_PATH);
+		$loader = new Core\Loader('jamwork', FRAMEWORKS_PATH);
 		$loader->register();
 
 	}

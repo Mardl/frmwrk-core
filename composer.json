@@ -16,7 +16,7 @@
     ],
     "require": {
         "php" : ">=5.3.0",
-        "frameworks/jamwork": "master"
+        "frameworks/jamwork": "dev-master"
     },
     "autoload": {
         "classmap": ["src/"]
