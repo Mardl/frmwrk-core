@@ -108,7 +108,7 @@ class Right
 						//Name des Aktion ermitteln
 
 						$toCheck = strtolower('getActionName:' . "$module:$controller:" . $matches[1] . ":$prefix");
-						$sess->set($toCheck, $matchDoc[1]);
+						$sess->set($toCheck, trim($matchDoc[1]));
 					}
 				}
 			}

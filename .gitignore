@@ -5,6 +5,8 @@ Thumbs.db
 .buildpath
 .idea/
 ._*
-Vendor/
+vendor
 build/logs
 build/coverage
+composer.lock
+composer.phar
