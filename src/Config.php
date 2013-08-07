@@ -63,6 +63,11 @@ class Config
 			if ($this->_hostEndsWith($hostname, $domain) || $domain == 'general')
 			{
 				$configurations[] = $fileName;
+				if (array_key_exists('HTTPS', $_SERVER) && ($_SERVER['HTTPS'] == "on")){
+					if (file_exists(APPLICATION_PATH . '/Conf/ssl.'.$fileName)){
+						$configurations[] = "ssl.".$fileName;
+					}
+				}
 			}
 		}
 

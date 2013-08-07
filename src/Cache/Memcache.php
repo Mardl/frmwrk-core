@@ -63,7 +63,7 @@ class Memcache
 			}
 			else
 			{
-				if (defined('CACHE_TTL') && !defined('UPDATE_TTL'))
+				if (defined('CACHE_TTL') && defined('UPDATE_TTL'))
 				{
 					$this->ttl = UPDATE_TTL;
 				}
