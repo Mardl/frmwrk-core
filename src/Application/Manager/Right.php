@@ -101,7 +101,9 @@ class Right
 				if ($docComment !== false)
 				{
 					//Prüfe ob im Kommentare der Tag showInNavigation vorhanden is und ob der Wert dann auch true ist
-					preg_match('/.*\@actionName ([A-Za-z0-9äöüÄÖÜ -\/]+).*$/s', $docComment, $matchDoc);
+					//preg_match('/.*\@actionName ([A-Za-z0-9äöüÄÖÜ -\/]+).*$/s', $docComment, $matchDoc);
+					preg_match('/.*\@actionName([A-Za-z0-9äöüÄÖÜ \t-\/]+).*/s', $docComment, $matchDoc);
+
 
 					if (!empty($matchDoc))
 					{
@@ -210,7 +212,14 @@ class Right
 			{
 				$title = ", `title` = '$actionName'";
 			}
-			$queryString = sprintf($sql, mysql_real_escape_string($right->getModule()), mysql_real_escape_string($right->getController()), mysql_real_escape_string($right->getAction()), mysql_real_escape_string($right->getPrefix()), $title, $title);
+			$queryString = sprintf($sql,
+				mysql_real_escape_string(lcfirst($right->getModule())),
+				mysql_real_escape_string(lcfirst($right->getController())),
+				mysql_real_escape_string($right->getAction()),
+				mysql_real_escape_string(lcfirst($right->getPrefix())),
+				$title,
+				$title
+			);
 		}
 		else
 		{
