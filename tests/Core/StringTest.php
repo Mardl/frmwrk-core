@@ -102,7 +102,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	public function testSlugEXPSonderzeichen()
 	{
 		$input = "a!b\"c§d\$e%f&g/h(i)j=k?l,m.n;n:p#q'r*s+t@u>v<w€x°y^z_0 1";
-		$output = "a-b-c-d-e-f-g-h-i-j-k-l-m-n-n-p-q-r-s-t-u-v-w-x-y-z-0-1";
+		$output = "a-b-c-d-e-f-g-h-i-j-k-l-m-n-n-p-q-r-s-t-u-v-w-x-y-z_0-1";
 		
 		$this->assertEquals($output, String::slug($input));
 		
