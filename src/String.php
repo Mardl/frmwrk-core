@@ -32,7 +32,7 @@ class String
 		$string = strtr($string, $replace);
 
 		// Replace other chars to -
-		$string = preg_replace('/[^a-zA-Z0-9]+/', '-', $string);
+		$string = preg_replace('/[^a-zA-Z0-9_]+/', '-', $string);
 		$string = trim($string, '-');
 		if ($string == '')
 		{
