@@ -74,6 +74,7 @@ class Right
 		{
 			return $sess->get($toCheck);
 		}
+		$retArray = array();
 
 		$prefixSlash = '';
 		if (!empty($prefix))
@@ -83,6 +84,21 @@ class Right
 
 		$class = "\\App\\Modules\\" . ucfirst($prefixSlash) . ucfirst($module) . "\\Controller\\" . ucfirst($controller);
 		$reflect = new \ReflectionClass($class);
+
+		$classDoc = $reflect->getDocComment();
+		if ($classDoc !== false)
+		{
+			preg_match('/.*\@title([A-Za-z0-9äöüÄÖÜ \-\s\t]+).*/s', $classDoc, $matchClassDoc);
+			if (!empty($matchClassDoc))
+			{
+				$retArray['title'] = trim($matchClassDoc[1]);
+			}
+			preg_match('/.*\@modulTitle([A-Za-z0-9äöüÄÖÜ \-\s\t]+).*/s', $classDoc, $matchClassDoc);
+			if (!empty($matchClassDoc))
+			{
+				$retArray['modulTitle'] = trim($matchClassDoc[1]);
+			}
+		}
 
 		//Methoden auslesen
 		$methods = $reflect->getMethods();
@@ -110,7 +126,8 @@ class Right
 						//Name des Aktion ermitteln
 
 						$toCheck = strtolower('getActionName:' . "$module:$controller:" . $matches[1] . ":$prefix");
-						$sess->set($toCheck, trim($matchDoc[1]));
+						$retArray['actionName'] = trim($matchDoc[1]);
+						$sess->set($toCheck, $retArray);
 					}
 				}
 			}
@@ -122,7 +139,7 @@ class Right
 			return $sess->get($toCheck);
 		}
 
-		return '';
+		return $retArray;
 	}
 
 	/**
@@ -185,10 +202,13 @@ class Right
 
 			try
 			{
-				$actionName = self::getActionName($right->getModule(), $right->getController(), $right->getAction(), $right->getPrefix());
+				$actionInfo = self::getActionName($right->getModule(), $right->getController(), $right->getAction(), $right->getPrefix());
+				$actionName = isset($actionInfo['actionName']) ? $actionInfo['actionName'] : '';
+				$moduleTitle = isset($actionInfo['modulTitle']) ? $actionInfo['modulTitle'] : '';
+				$controllerTitle = isset($actionInfo['title']) ? $actionInfo['title'] : '';
 			} catch (\Exception $e)
 			{
-				$actionName = null;
+				$actionName = '';
 			}
 
 			if (empty($actionName))
@@ -212,10 +232,14 @@ class Right
 			if (!empty($actionName))
 			{
 				$title = ", `title` = '$actionName'";
+				$title .= ", `moduletitle` = '$moduleTitle'";
+				$title .= ", `controllertitle` = '$controllerTitle'";
 				$modified = ", `title` = '$actionName'";
 				$modified .= ", `module` = '".lcfirst($right->getModule())."'";
 				$modified .= ", `controller` = '".lcfirst($right->getController())."'";
 				$modified .= ", `prefix` = '".lcfirst($right->getPrefix())."'";
+				$modified .= ", `moduletitle` = '$moduleTitle'";
+				$modified .= ", `controllertitle` = '$controllerTitle'";
 			}
 			$queryString = sprintf(
 				$sql,

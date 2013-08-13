@@ -57,6 +57,24 @@ class Right extends BaseModel
 	 *
 	 * @Column(type="string")
 	 */
+	protected $moduletitle;
+
+	/**
+	 * Controller
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string")
+	 */
+	protected $controllertitle;
+
+	/**
+	 * Module
+	 *
+	 * @var string
+	 *
+	 * @Column(type="string")
+	 */
 	protected $module;
 
 	/**
