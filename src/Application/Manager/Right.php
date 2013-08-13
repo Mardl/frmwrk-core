@@ -273,6 +273,8 @@ class Right
 		$con = Registry::getInstance()->getDatabase();
 		$query = $con->newQuery()->select('id,
 				title,
+				moduletitle,
+				controllertitle,
 				prefix,
 				module,
 				controller,
