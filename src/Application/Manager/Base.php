@@ -183,7 +183,7 @@ class Base
 	/**
 	 * Liefert ein Array von Models aus dem Query-Select
 	 *
-	 * @param                         $modelClassName
+	 * @param string                  $modelClassName
 	 * @param \jamwork\database\Query $query
 	 * @return array
 	 */
@@ -202,7 +202,11 @@ class Base
 		{
 			while (($rec = $rs->get()) == true)
 			{
-				$models[] = new $modelClassName($rec);
+				/** @var $model \Core\Model */
+				$model = new $modelClassName();
+				$clean = $model->clearDataRow($rec);
+				$model->setDataRow($clean);
+				$models[] = $model;
 			}
 		}
 
@@ -229,7 +233,11 @@ class Base
 
 		if ($rs->isSuccessful() && ($rs->count() > 0))
 		{
-			return new $modelClassName($rs->get());
+			/** @var $model \Core\Model */
+			$model = new $modelClassName();
+			$clean = $model->clearDataRow($rs->get());
+			$model->setDataRow($clean);
+			return $model;
 		}
 
 		return false;
