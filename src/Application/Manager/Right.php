@@ -172,9 +172,9 @@ class Right
 		$sql = "
 			INSERT INTO
 				rights
-				set `module` = '%s',`controller` = '%s',`action` = '%s',`prefix` = '%s',`modified`= NOW() %s
+				set `module` = '%s',`controller` = '%s',`action` = '%s',`prefix` = '%s',`modified`= NOW(), `inaktiv=`0 %s
 			ON DUPLICATE KEY UPDATE
-				`modified` = NOW() %s
+				`modified` = NOW(), `inaktiv=`0 %s
 		";
 
 		if (is_array($right) && !empty($right))
@@ -278,7 +278,8 @@ class Right
 	public static function getAllRights()
 	{
 		$con = Registry::getInstance()->getDatabase();
-		$query = $con->newQuery()->select('id,
+		$query = $con->newQuery()->select(
+				'id,
 				title,
 				moduletitle,
 				controllertitle,
@@ -286,7 +287,9 @@ class Right
 				module,
 				controller,
 				action,
-				modified')->from('rights')->orderBy('prefix,module,controller,action ASC');
+				inaktiv,
+				modified'
+		)->from('rights')->orderBy('prefix,module,controller,action ASC');
 
 		$rights = array();
 		$rs = $con->newRecordSet();

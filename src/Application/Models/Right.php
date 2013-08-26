@@ -13,10 +13,13 @@ use Core\Model as BaseModel, Core\Application\Models\Right\Group as RightGroup;
  *
  * @method string getTitle()
  * @method string getModule()
+ * @method string getModuletitle()
  * @method string getController()
+ * @method string getControllertitle()
  * @method string getAction()
  * @method string getPrefix()
  * @method string getModified()
+ * @method int    getInaktiv()
  * @method \Core\Application\Models\Right\Group getGroups()
  *
  * @method setTitle($value)
@@ -112,6 +115,15 @@ class Right extends BaseModel
 	 * @Column(type="datetime")
 	 */
 	protected $modified;
+
+	/**
+	 * Inaktiv
+	 *
+	 * @var smallint
+	 *
+	 * @Column(type="smallint")
+	 */
+	protected $inaktiv=0;
 
 	/**
 	 * Rights
