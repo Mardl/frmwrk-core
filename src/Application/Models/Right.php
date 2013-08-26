@@ -27,6 +27,7 @@ use Core\Model as BaseModel, Core\Application\Models\Right\Group as RightGroup;
  * @method setController($value)
  * @method setAction($value)
  * @method setPrefix($value)
+ * @method setInactive($value);
  *
  * @MappedSuperclass
  */
