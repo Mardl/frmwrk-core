@@ -98,6 +98,13 @@ class Right
 			{
 				$retArray['modulTitle'] = trim($matchClassDoc[1]);
 			}
+			else{
+				preg_match('/.*\@moduleTitle([A-Za-z0-9äöüÄÖÜ \-\s\t]+).*/s', $classDoc, $matchClassDoc);
+				if (!empty($matchClassDoc))
+				{
+					$retArray['modulTitle'] = trim($matchClassDoc[1]);
+				}
+			}
 		}
 
 		//Methoden auslesen
