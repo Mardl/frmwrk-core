@@ -172,9 +172,9 @@ class Right
 		$sql = "
 			INSERT INTO
 				rights
-				set `module` = '%s',`controller` = '%s',`action` = '%s',`prefix` = '%s',`modified`= NOW(), `inaktiv=`0 %s
+				set `module` = '%s',`controller` = '%s',`action` = '%s',`prefix` = '%s',`modified`= NOW(), `inactive`=0 %s
 			ON DUPLICATE KEY UPDATE
-				`modified` = NOW(), `inaktiv=`0 %s
+				`modified` = NOW(), `inactive`=0 %s
 		";
 
 		if (is_array($right) && !empty($right))
@@ -257,6 +257,7 @@ class Right
 				$title,
 				$modified
 			);
+
 		}
 		else
 		{
@@ -287,7 +288,7 @@ class Right
 				module,
 				controller,
 				action,
-				inaktiv,
+				inactive,
 				modified'
 		)->from('rights')->orderBy('prefix,module,controller,action ASC');
 

@@ -19,7 +19,7 @@ use Core\Model as BaseModel, Core\Application\Models\Right\Group as RightGroup;
  * @method string getAction()
  * @method string getPrefix()
  * @method string getModified()
- * @method int    getInaktiv()
+ * @method int    getInactive()
  * @method \Core\Application\Models\Right\Group getGroups()
  *
  * @method setTitle($value)
@@ -123,7 +123,7 @@ class Right extends BaseModel
 	 *
 	 * @Column(type="smallint")
 	 */
-	protected $inaktiv=0;
+	protected $inactive=0;
 
 	/**
 	 * Rights
