@@ -120,7 +120,7 @@ class Right
 
 				//Lade den Kommentar
 				$docComment = $method->getDocComment();
-
+				$retArray['actionName'] = '';
 				if ($docComment !== false)
 				{
 					//Hold den ActionName um in der Rechteverwaltung einen schönen titel zu haben
