@@ -3,6 +3,7 @@
 namespace Core;
 
 use Core\Request;
+use jamwork\common\Registry;
 
 /**
  * Class Route
@@ -326,7 +327,15 @@ class Route
 		}
 		else
 		{
-			$url = '/';
+
+			try
+			{
+				$url = Registry::getInstance()->conf->BASE_URL;
+			} catch (\Exception $e)
+			{
+				$url = '/';
+			}
+
 		}
 		unset($params['hostname']);
 
