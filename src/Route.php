@@ -333,6 +333,9 @@ class Route
 				$url = Registry::getInstance()->conf->BASE_URL;
 			} catch (\Exception $e)
 			{
+			}
+			if (empty($url))
+			{
 				$url = '/';
 			}
 
