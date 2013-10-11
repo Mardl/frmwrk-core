@@ -291,16 +291,23 @@ class FrontController
 			}
 			else
 			{
-				if (class_exists('\App\Manager\User'))
+				try
 				{
-					$this->view->login = \App\Manager\User::getUserById(Registry::getInstance()->getSession()->get('user'));
-				}
-				else
+					if (class_exists('\App\Manager\User'))
+					{
+						$this->view->login = \App\Manager\User::getUserById(Registry::getInstance()->getSession()->get('user'));
+					}
+					else
+					{
+						$this->view->login = \Core\Application\Manager\User::getUserById(Registry::getInstance()->getSession()->get('user'));
+					}
+
+					Registry::getInstance()->login = $this->view->login;
+				} catch (\Exception $e)
 				{
-					$this->view->login = \Core\Application\Manager\User::getUserById(Registry::getInstance()->getSession()->get('user'));
+					Registry::getInstance()->login = null;
 				}
 
-				Registry::getInstance()->login = $this->view->login;
 			}
 
 			$result = $this->dispatchLoop();
