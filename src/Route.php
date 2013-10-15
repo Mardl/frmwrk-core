@@ -165,10 +165,14 @@ class Route
 	 * @param string $url Url
 	 * @return boolean
 	 */
-	public function matchUrl($url)
+	public function matchUrl($incommingUrl)
 	{
-		$url = parse_url($url);
+		$url = parse_url($incommingUrl);
 		$result = $this->defaults;
+		if (empty($url))
+		{
+			return $result;
+		}
 
 		// Get file extension
 		$temp = pathinfo($url['path']);
