@@ -417,4 +417,80 @@ class User extends BaseModel
 
 		return $this->language;
 	}
+
+	/**
+	 * @param string $username
+	 */
+	public function setUsername($username) {
+		$this->username = $username;
+	}
+
+	/**
+	 * @param string $firstname
+	 * @return void
+	 */
+	public function setFirstname($firstname) {
+		$this->firstname = $firstname;
+	}
+
+	/**
+	 * @param string $lastname
+	 * @return void
+	 */
+	public function setLastname($lastname) {
+		$this->lastname = $lastname;
+	}
+
+	/**
+	 * @param string $email
+	 * @return void
+	 */
+	public function setEmail($email) {
+		$this->email = $email;
+	}
+
+	/**
+	 * @param boolean $emailCorrupted
+	 * @return void
+	 */
+	public function setEmailCorrupted($emailCorrupted) {
+		$this->emailCorrupted = $emailCorrupted;
+	}
+
+	/**
+	 * @param number $gender
+	 * @return void
+	 */
+	public function setGender($gender) {
+		if ($gender != self::GENDER_FEMALE && $gender != self::GENDER_MALE && $gender != self::GENDER_BOTH)
+		{
+			throw new \InvalidArgumentException("Ungültige Geschlechtsangabe");
+		}
+		$this->gender = $gender;
+	}
+
+	/**
+	 * @param number $status
+	 * @return void
+	 */
+	public function setStatus($status) {
+		$this->status = $status;
+	}
+
+	/**
+	 * @param boolean $otp
+	 * @return void
+	 */
+	public function setOtp($otp) {
+		$this->otp = $otp;
+	}
+
+	/**
+	 * @param boolean $admin
+	 * @return void
+	 */
+	public function setAdmin($admin) {
+		$this->admin = $admin;
+	}
+
 }

@@ -11,15 +11,7 @@ use Core\Model as BaseModel, Core\Application\Models\Right\Group as RightGroup;
  * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @method string getTitle()
- * @method string getModule()
- * @method string getModuletitle()
- * @method string getController()
- * @method string getControllertitle()
- * @method string getAction()
- * @method string getPrefix()
  * @method string getModified()
- * @method int    getInactive()
  * @method \Core\Application\Models\Right\Group getGroups()
  *
  * @method setTitle($value)
@@ -156,4 +148,127 @@ class Right extends BaseModel
 
 		$this->groups = $groups;
 	}
+
+	/**
+	 * @param string $title
+	 * @return void
+	 */
+	public function setTitle($title) {
+		$this->title = $title;
+	}
+
+	/**
+	 * @param string $moduletitle
+	 * @return void
+	 */
+	public function setModuletitle($moduletitle) {
+		$this->moduletitle = $moduletitle;
+	}
+
+	/**
+	 * @param string $controllertitle
+	 * @return void
+	 */
+	public function setControllertitle($controllertitle) {
+		$this->controllertitle = $controllertitle;
+	}
+
+	/**
+	 * @param string $module
+	 * @return void
+	 */
+	public function setModule($module) {
+		$this->module = $module;
+	}
+
+	/**
+	 * @param string $controller
+	 * @return void
+	 */
+	public function setController($controller) {
+		$this->controller = $controller;
+	}
+
+	/**
+	 * @param string $action
+	 * @return void
+	 */
+	public function setAction($action) {
+		$this->action = $action;
+	}
+
+	/**
+	 * @param string $prefix
+	 * @return void
+	 */
+	public function setPrefix($prefix) {
+		$this->prefix = $prefix;
+	}
+
+	/**
+	 * @param int $inactive
+	 * @return void
+	 */
+	public function setInactive($inactive) {
+		$this->inactive = $inactive;
+	}
+
+
+	/**
+	 * @return the $title
+	 */
+	public function getTitle() {
+		return $this->title;
+	}
+
+	/**
+	 * @return the $moduletitle
+	 */
+	public function getModuletitle() {
+		return $this->moduletitle;
+	}
+
+	/**
+	 * @return the $controllertitle
+	 */
+	public function getControllertitle() {
+		return $this->controllertitle;
+	}
+
+	/**
+	 * @return the $module
+	 */
+	public function getModule() {
+		return $this->module;
+	}
+
+	/**
+	 * @return the $controller
+	 */
+	public function getController() {
+		return $this->controller;
+	}
+
+	/**
+	 * @return the $action
+	 */
+	public function getAction() {
+		return $this->action;
+	}
+
+	/**
+	 * @return the $prefix
+	 */
+	public function getPrefix() {
+		return $this->prefix;
+	}
+
+	/**
+	 * @return the $inactive
+	 */
+	public function getInactive() {
+		return $this->inactive;
+	}
+
+
 }
