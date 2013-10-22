@@ -89,7 +89,7 @@ class Model
 			throw new \InvalidArgumentException('Die Klasse ' . __CLASS__ . ' hat das Attribut "' . $attribute . '" nicht');
 		}
 
-		syslog(LOG_ERR, get_class($this). "{$method}{$attribute}");
+		syslog(LOG_ERR, get_class($this). " {$method}{$attribute}");
 
 		switch ($method)
 		{

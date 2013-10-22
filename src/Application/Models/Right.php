@@ -11,16 +11,6 @@ use Core\Model as BaseModel, Core\Application\Models\Right\Group as RightGroup;
  * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @method string getModified()
- * @method \Core\Application\Models\Right\Group getGroups()
- *
- * @method setTitle($value)
- * @method setModule($value)
- * @method setController($value)
- * @method setAction($value)
- * @method setPrefix($value)
- * @method setInactive($value);
- *
  * @MappedSuperclass
  */
 class Right extends BaseModel
@@ -116,7 +106,7 @@ class Right extends BaseModel
 	 *
 	 * @Column(type="smallint")
 	 */
-	protected $inactive=0;
+	protected $inactive = 0;
 
 	/**
 	 * Rights
@@ -150,10 +140,19 @@ class Right extends BaseModel
 	}
 
 	/**
+	 * @return \Core\Application\Models\Right\Group
+	 */
+	public function getGroups()
+	{
+		return $this->groups;
+	}
+
+	/**
 	 * @param string $title
 	 * @return void
 	 */
-	public function setTitle($title) {
+	public function setTitle($title)
+	{
 		$this->title = $title;
 	}
 
@@ -161,7 +160,8 @@ class Right extends BaseModel
 	 * @param string $moduletitle
 	 * @return void
 	 */
-	public function setModuletitle($moduletitle) {
+	public function setModuletitle($moduletitle)
+	{
 		$this->moduletitle = $moduletitle;
 	}
 
@@ -169,7 +169,8 @@ class Right extends BaseModel
 	 * @param string $controllertitle
 	 * @return void
 	 */
-	public function setControllertitle($controllertitle) {
+	public function setControllertitle($controllertitle)
+	{
 		$this->controllertitle = $controllertitle;
 	}
 
@@ -177,7 +178,8 @@ class Right extends BaseModel
 	 * @param string $module
 	 * @return void
 	 */
-	public function setModule($module) {
+	public function setModule($module)
+	{
 		$this->module = $module;
 	}
 
@@ -185,7 +187,8 @@ class Right extends BaseModel
 	 * @param string $controller
 	 * @return void
 	 */
-	public function setController($controller) {
+	public function setController($controller)
+	{
 		$this->controller = $controller;
 	}
 
@@ -193,7 +196,8 @@ class Right extends BaseModel
 	 * @param string $action
 	 * @return void
 	 */
-	public function setAction($action) {
+	public function setAction($action)
+	{
 		$this->action = $action;
 	}
 
@@ -201,7 +205,8 @@ class Right extends BaseModel
 	 * @param string $prefix
 	 * @return void
 	 */
-	public function setPrefix($prefix) {
+	public function setPrefix($prefix)
+	{
 		$this->prefix = $prefix;
 	}
 
@@ -209,7 +214,8 @@ class Right extends BaseModel
 	 * @param int $inactive
 	 * @return void
 	 */
-	public function setInactive($inactive) {
+	public function setInactive($inactive)
+	{
 		$this->inactive = $inactive;
 	}
 
@@ -217,56 +223,64 @@ class Right extends BaseModel
 	/**
 	 * @return the $title
 	 */
-	public function getTitle() {
+	public function getTitle()
+	{
 		return $this->title;
 	}
 
 	/**
 	 * @return the $moduletitle
 	 */
-	public function getModuletitle() {
+	public function getModuletitle()
+	{
 		return $this->moduletitle;
 	}
 
 	/**
 	 * @return the $controllertitle
 	 */
-	public function getControllertitle() {
+	public function getControllertitle()
+	{
 		return $this->controllertitle;
 	}
 
 	/**
 	 * @return the $module
 	 */
-	public function getModule() {
+	public function getModule()
+	{
 		return $this->module;
 	}
 
 	/**
 	 * @return the $controller
 	 */
-	public function getController() {
+	public function getController()
+	{
 		return $this->controller;
 	}
 
 	/**
 	 * @return the $action
 	 */
-	public function getAction() {
+	public function getAction()
+	{
 		return $this->action;
 	}
 
 	/**
 	 * @return the $prefix
 	 */
-	public function getPrefix() {
+	public function getPrefix()
+	{
 		return $this->prefix;
 	}
 
 	/**
 	 * @return the $inactive
 	 */
-	public function getInactive() {
+	public function getInactive()
+	{
 		return $this->inactive;
 	}
 

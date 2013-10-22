@@ -11,30 +11,6 @@ use Exception, Core\Application\Manager\Directory\Files as FilesManager, Core\Mo
  * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @method string getUsername()
- * @method string getFirstname()
- * @method string getLastname()
- * @method int getGender()
- * @method string getEmail()
- * @method bool getEmailCorrupted()
- * @method string getBirthday()
- * @method string getCreated()
- * @method int getStatus()
- * @method bool getOtp()
- * @method bool getAdmin()
- * @method \Core\Application\Models\Language getLanguage()
- *
- * @method setUsername($value)
- * @method setFirstname($value)
- * @method setLastname($value)
- * @method setGender(\int $value)
- * @method setEmail($value)
- * @method setEmailCorrupted(\bool $value)
- * @method setCreated($value)
- * @method setStatus(\int $value)
- * @method setOtp(\bool $value)
- * @method setAdmin($value)
- *
  *
  * @MappedSuperclass
  */
@@ -324,30 +300,34 @@ class User extends BaseModel
 		if ($this->avatar > 0)
 		{
 			$fileModel = FilesManager::getFileById($this->avatar);
-			return $fileModel->getThumbnailTarget();
-    	}
-    	else
-    	{
-    		$avatar = 'static/images/avatar_';
-    		return  $avatar.($this->isMale() ? 'male.png' : 'female.png');
-    	}
-    }
 
-    /**
-     * Liefert das Profilbild Object
-     *
-     * @return object
-     */
-    public function getAvatarFile()
-    {
-    	if ($this->avatar > 0)
-    	{
-    		//return $this->avatar;
-    		$fileModel = FilesManager::getFileById($this->avatar);
-    		return $fileModel;
-    	}
-    	return null;
-    }
+			return $fileModel->getThumbnailTarget();
+		}
+		else
+		{
+			$avatar = 'static/images/avatar_';
+
+			return $avatar . ($this->isMale() ? 'male.png' : 'female.png');
+		}
+	}
+
+	/**
+	 * Liefert das Profilbild Object
+	 *
+	 * @return object
+	 */
+	public function getAvatarFile()
+	{
+		if ($this->avatar > 0)
+		{
+			//return $this->avatar;
+			$fileModel = FilesManager::getFileById($this->avatar);
+
+			return $fileModel;
+		}
+
+		return null;
+	}
 
 
 	/**
@@ -420,8 +400,10 @@ class User extends BaseModel
 
 	/**
 	 * @param string $username
+	 * @return void
 	 */
-	public function setUsername($username) {
+	public function setUsername($username)
+	{
 		$this->username = $username;
 	}
 
@@ -429,7 +411,8 @@ class User extends BaseModel
 	 * @param string $firstname
 	 * @return void
 	 */
-	public function setFirstname($firstname) {
+	public function setFirstname($firstname)
+	{
 		$this->firstname = $firstname;
 	}
 
@@ -437,7 +420,8 @@ class User extends BaseModel
 	 * @param string $lastname
 	 * @return void
 	 */
-	public function setLastname($lastname) {
+	public function setLastname($lastname)
+	{
 		$this->lastname = $lastname;
 	}
 
@@ -445,7 +429,8 @@ class User extends BaseModel
 	 * @param string $email
 	 * @return void
 	 */
-	public function setEmail($email) {
+	public function setEmail($email)
+	{
 		$this->email = $email;
 	}
 
@@ -453,15 +438,18 @@ class User extends BaseModel
 	 * @param boolean $emailCorrupted
 	 * @return void
 	 */
-	public function setEmailCorrupted($emailCorrupted) {
+	public function setEmailCorrupted($emailCorrupted)
+	{
 		$this->emailCorrupted = $emailCorrupted;
 	}
 
 	/**
 	 * @param number $gender
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 */
-	public function setGender($gender) {
+	public function setGender($gender)
+	{
 		if ($gender != self::GENDER_FEMALE && $gender != self::GENDER_MALE && $gender != self::GENDER_BOTH)
 		{
 			syslog(LOG_ERR, "Gender: $gender, ID: ".$this->id);
@@ -474,7 +462,8 @@ class User extends BaseModel
 	 * @param number $status
 	 * @return void
 	 */
-	public function setStatus($status) {
+	public function setStatus($status)
+	{
 		$this->status = $status;
 	}
 
@@ -482,7 +471,8 @@ class User extends BaseModel
 	 * @param boolean $otp
 	 * @return void
 	 */
-	public function setOtp($otp) {
+	public function setOtp($otp)
+	{
 		$this->otp = $otp;
 	}
 
@@ -490,8 +480,124 @@ class User extends BaseModel
 	 * @param boolean $admin
 	 * @return void
 	 */
-	public function setAdmin($admin) {
+	public function setAdmin($admin)
+	{
 		$this->admin = $admin;
 	}
+
+	/**
+	 * @param \Core\Application\Models\Address $address
+	 * @return void
+	 */
+	public function setAddress($address)
+	{
+		$this->address = $address;
+	}
+
+	/**
+	 * @return \Core\Application\Models\Address
+	 */
+	public function getAddress()
+	{
+		return $this->address;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getAdmin()
+	{
+		return $this->admin;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getBirthday()
+	{
+		return $this->birthday;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getEmailCorrupted()
+	{
+		return $this->emailCorrupted;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFirstname()
+	{
+		return $this->firstname;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getGender()
+	{
+		return $this->gender;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLanguage()
+	{
+		return $this->language;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLastname()
+	{
+		return $this->lastname;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getOtp()
+	{
+		return $this->otp;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getStatus()
+	{
+		return $this->status;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUsername()
+	{
+		return $this->username;
+	}
+
+	/**
+	 * @param string $avatar
+	 * @return void
+	 */
+	public function setAvatar($avatar)
+	{
+		$this->avatar = $avatar;
+	}
+
 
 }

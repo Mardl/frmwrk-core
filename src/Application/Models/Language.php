@@ -10,15 +10,6 @@ use Core\Model as BaseModel;
  * @package  Core\Application\Models
  * @author   Alexander Jonser <alex@dreiwerken.de>
  *
- * @method string getIsocode()
- * @method string getCountryCode()
- * @method string getInternational()
- * @method string getNational()
- *
- * @method setIsocode($value)
- * @method setCountryCode($value)
- * @method setInternational($value)
- * @method setNational($value)
  *
  * @MappedSuperclass
  */
@@ -109,4 +100,91 @@ class Language extends BaseModel implements \Core\Application\Interfaces\ModelsI
 	{
 		return $this->getIsocode() . '-' . $this->getCountryCode();
 	}
+
+	/**
+	 * @param string $countryCode
+	 * @return void
+	 */
+	public function setCountryCode($countryCode)
+	{
+		$this->countryCode = $countryCode;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCountryCode()
+	{
+		return $this->countryCode;
+	}
+
+	/**
+	 * @param string $international
+	 * @return void
+	 */
+	public function setInternational($international)
+	{
+		$this->international = $international;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getInternational()
+	{
+		return $this->international;
+	}
+
+	/**
+	 * @param string $isocode
+	 * @return void
+	 */
+	public function setIsocode($isocode)
+	{
+		$this->isocode = $isocode;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getIsocode()
+	{
+		return $this->isocode;
+	}
+
+	/**
+	 * @param string $national
+	 * @return void
+	 */
+	public function setNational($national)
+	{
+		$this->national = $national;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNational()
+	{
+		return $this->national;
+	}
+
+	/**
+	 * @param string $short
+	 * @return void
+	 */
+	public function setShort($short)
+	{
+		$this->short = $short;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getShort()
+	{
+		return $this->short;
+	}
+
+
 }

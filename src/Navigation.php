@@ -248,6 +248,10 @@ class Navigation
 			if (!empty($matches) && (count($matches) == 3 || count($matches) == 4))
 			{
 				$prefix = substr($matches[1], 1);
+				if (!$prefix)
+				{
+					$prefix = '';
+				}
 				$module = $matches[2];
 				$controller = $matches[3];
 
