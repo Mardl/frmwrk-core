@@ -452,7 +452,7 @@ class User extends BaseModel
 	{
 		if ($gender != self::GENDER_FEMALE && $gender != self::GENDER_MALE && $gender != self::GENDER_BOTH)
 		{
-			throw new \InvalidArgumentException("Ungültige Geschlechtsangabe");
+			throw new \InvalidArgumentException('Ungültige Geschlechtsangabe ('.$gender.')');
 		}
 		$this->gender = $gender;
 	}
