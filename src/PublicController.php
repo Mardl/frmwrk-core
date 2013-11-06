@@ -68,6 +68,7 @@ class PublicController extends Controller
 	 *
 	 * @param array $json
 	 * @return void
+	 * @deprecated der DIE() hebelt alles aus !
 	 */
 	protected function flushJSON(array $json)
 	{

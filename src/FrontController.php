@@ -97,9 +97,9 @@ class FrontController
 	 * @param \Core\Router $router
 	 * @return void
 	 */
-	public function setRouter(Router $router)
+	public function setRouter(Router $router = null)
 	{
-		$this->router = Registry::getInstance()->router;
+		$this->router = $router == null ? Registry::getInstance()->router : $router;
 	}
 
 	/**
