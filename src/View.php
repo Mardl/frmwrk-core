@@ -452,7 +452,11 @@ class View extends ArrayObject
 
 					}
 
-					$this->content = str_replace('{' . $key . '}', $c, $this->content);
+					if (strpos($this->content, '{' . $key . '}') !== false)
+					{
+						$this->content = str_replace('{' . $key . '}', $c, $this->content);
+					}
+
 				}
 			} catch (Exception $e)
 			{

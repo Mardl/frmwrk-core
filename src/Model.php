@@ -86,7 +86,7 @@ class Model
 
 		if (!property_exists($this, $attribute))
 		{
-			throw new \InvalidArgumentException('Die Klasse ' . __CLASS__ . ' hat das Attribut "' . $attribute . '" nicht');
+			throw new \InvalidArgumentException('Die Klasse ' . __CLASS__ . ' hat das Attribut "' .$prefix . $attribute . '" nicht');
 		}
 
 		syslog(LOG_ERR, get_class($this). " {$method}{$attribute}");
