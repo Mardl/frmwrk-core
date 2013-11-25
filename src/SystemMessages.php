@@ -38,6 +38,22 @@ class SystemMessages
 			throw new \InvalidArgumentException('Invalid category');
 		}
 
+		try {
+			Registry::getInstance()->getEventDispatcher()->triggerEvent(
+				'onAddSystemMessage',
+				$content,
+				array(
+					'category' => $category,
+					'arguments' => $arguments,
+					'html' => $html
+				)
+			);
+		}
+		catch (\Exception $e) {
+
+		}
+
+
 		self::$_messages[] = array(
 			'category' => $category,
 			'content' => $content,

@@ -178,6 +178,14 @@ class Model
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function hasId()
+	{
+		return !empty($this->id);
+	}
+
+	/**
 	 * @param array $data
 	 * @return void
 	 */
