@@ -18,7 +18,9 @@ class Cli
 	public function __construct()
 	{
 		$this->params = $this->parseParameters();
-		define('DISABLE_HTTP', true);
+		if (!defined('DISABLE_HTTP')) {
+			define('DISABLE_HTTP', true);
+		}
 	}
 
 	/**
