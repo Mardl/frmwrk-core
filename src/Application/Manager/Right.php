@@ -153,21 +153,21 @@ class Right
 	 * Erstellt ein neues Recht. Falls es schon existiert wird die "Modified"-Eigenschaft aktualisiert
 	 *
 	 * @param RightModel $right Rechte-Daten
-	 * @throws \InvalidArgumentException Wenn die Rechte-Daten in einem umbekannten Format übergeben werden
+	 * @param bool       $force
 	 * @return bool
 	 */
-	public static function createRight($right)
+	public static function createRight($right, $force=false)
 	{
 		try
 		{
-			return self::createRightEx($right);
+			return self::createRightEx($right, $force);
 		} catch (\Exception $e)
 		{
 			SystemMessages::addError($e->getMessage());
 		}
 	}
 
-	protected static function createRightEx($right)
+	protected static function createRightEx($right, $force=false)
 	{
 		$sql = "
 			INSERT INTO
@@ -198,7 +198,7 @@ class Right
 			$toCheck = strtolower('setright' . $right->getModule() . ':' . $right->getController() . ':' . $right->getAction() . ':' . $right->getPrefix());
 			$reg = Registry::getInstance();
 			$sess = $reg->getSession();
-			if ($sess->has($toCheck))
+			if (!$force && $sess->has($toCheck))
 			{
 				return true;
 			}
