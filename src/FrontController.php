@@ -219,7 +219,17 @@ class FrontController
 		}
 
 		// Controller allow us to use Action-Method depending on the formatm e.g. indexHTMLAction
+		/** @var $class PublicController */
+		$permission = true;
 		$class = new $controllerName();
+		try
+		{
+			$class->checkPermission();
+		} catch (\Core\Exceptions\AccessException $e)
+		{
+			SystemMessages::addError($e->getMessage());
+			$permission = false;
+		}
 		$method = $this->searchAction($class, $parts['action'], $parts['format']);
 
 		$class->setFrontController($this);
@@ -228,7 +238,16 @@ class FrontController
 
 		// Action might set a template, so we need to save the state before the method has been called
 		$templates = $this->view->getTemplates();
-		$class->$method();
+		if ($permission)
+		{
+			$class->$method();
+		}
+		else{
+			if (strtolower($parts['format']) == 'json')
+			{
+				$class->flushJSONResponse();
+			}
+		}
 
 		// Render template when currentPage is last page on stack
 		if ($this->currentPage == $this->lastPage)
@@ -239,7 +258,7 @@ class FrontController
 			}
 
 			// When controller change templates, dont add default template
-			if ($templates == $this->view->getTemplates())
+			if ($permission && $templates == $this->view->getTemplates())
 			{
 				if ($prefix == '')
 				{

@@ -27,22 +27,30 @@ class PublicController extends Controller
 	{
 		parent::__construct();
 
-		$module = $this->request->getRouteParam('module');
-		$controller = $this->request->getRouteParam('controller');
-		$action = $this->request->getRouteParam('action');
-		$prefix = $this->request->getRouteParam('prefix');
+		if ($this->view->login)
+		{
+			$this->view->html->addJsAsset('loggedin');
+		}
+	}
 
-		$right = new Right(
-			array(
-				'module' => $module,
-				'controller' => $controller,
-				'action' => $action,
-				'prefix' => $prefix
-			)
-		);
-
+	public function checkPermission()
+	{
 		if ($this->checkPermissions)
 		{
+			$module = $this->request->getRouteParam('module');
+			$controller = $this->request->getRouteParam('controller');
+			$action = $this->request->getRouteParam('action');
+			$prefix = $this->request->getRouteParam('prefix');
+
+			$right = new Right(
+				array(
+					'module' => $module,
+					'controller' => $controller,
+					'action' => $action,
+					'prefix' => $prefix
+				)
+			);
+
 			try
 			{
 				$login = Registry::getInstance()->login;
@@ -53,14 +61,10 @@ class PublicController extends Controller
 
 			if (!RightManager::isAllowed($right, $login))
 			{
-				throw new \Exception('Zugriff auf nicht erlaubte Aktion');
+				throw new \Core\Exceptions\AccessException('Zugriff auf nicht erlaubte Aktion');
 			}
 		}
 
-		if ($this->view->login)
-		{
-			$this->view->html->addJsAsset('loggedin');
-		}
 	}
 
 	/**
@@ -79,6 +83,16 @@ class PublicController extends Controller
 		$response->setBody(json_encode($json));
 		$response->flush();
 		die();
+	}
+
+	/**
+	 * Function muss in der Anleitung individuell angepasst werden
+	 * @throws \Exception
+	 * @return void
+	 */
+	public function flushJSONResponse()
+	{
+		throw new \Exception('flushJSONResponse muss in der Ableitung implementiert werden!');
 	}
 
 	/**
