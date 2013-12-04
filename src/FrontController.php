@@ -286,6 +286,8 @@ class FrontController
 	 */
 	public function execute($url = null)
 	{
+		/**
+		 * Routerinitialisierung verlagert in init
 		if (is_null($url))
 		{
 			$url = $_SERVER['REQUEST_URI'];
@@ -293,6 +295,14 @@ class FrontController
 
 		$route = $this->router->searchRoute($url);
 		$this->request->setRoute($route->getParams());
+		*/
+
+		if (!is_null($url))
+		{
+			$route = $this->router->searchRoute($url);
+			$this->request->setRoute($route->getParams());
+		}
+
 
 		try
 		{
