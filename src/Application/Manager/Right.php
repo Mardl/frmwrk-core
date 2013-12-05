@@ -29,7 +29,7 @@ class Right
 	{
 		self::createRight($right);
 
-		if ($user->getAdmin() || !defined('CHECK_PERMISSIONS') || (APPLICATION_ENV < ENV_PROD && CHECK_PERMISSIONS == false))
+		if ($user->getAdmin() || !defined('CHECK_PERMISSIONS') || (APPLICATION_ENV == ENV_DEV && CHECK_PERMISSIONS == false))
 		{
 			return true;
 		}
@@ -220,7 +220,7 @@ class Right
 
 			if (empty($actionName))
 			{
-				if (APPLICATION_ENV < ENV_PROD && !defined("UNITTEST"))
+				if (APPLICATION_ENV == ENV_DEV && !defined("UNITTEST"))
 				{
 					$prefixSlash = '';
 					$pre = $right->getPrefix();
