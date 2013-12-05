@@ -1,0 +1,45 @@
+diff --git a/src/Navigation.php b/src/Navigation.php
+index af2b4d3..12ed07d 100644
+--- a/src/Navigation.php
++++ b/src/Navigation.php
+@@ -205,30 +205,19 @@ class Navigation
+ 	 */
+ 	private function open($dir)
+ 	{
+-		$temp = explode('/', $dir);
+-
+-		if (array_pop($temp) == 'Views')
++		// Skips the . and .. directory's
++		$iterator = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
++		foreach (new \RecursiveIteratorIterator($iterator) as $file)
+ 		{
+-			return;
+-		}
+-
+-		$directory = opendir($dir);
++			// Don't parse view's, they won't add navigation elements
++			if (stristr($file->getPath(), 'Views') !== false)
++			{
++				continue;
++			}
+ 
+-		while (($file = readdir($directory)) == true)
+-		{
+-			if ($file != '.' && $file != '..')
++			if($file->getExtension() === 'php')
+ 			{
+-				if (is_dir($dir . '/' . $file))
+-				{
+-					$this->open($dir . '/' . $file);
+-				}
+-				else
+-				{
+-					if (\Core\String::endsWith($file, '.php'))
+-					{
+-						$this->files[] = $dir . '/' . $file;
+-					}
+-				}
++				$this->files[] = sprintf('%s/%s.php', $file->getPath(), $file->getFilename());
+ 			}
+ 		}
+ 	}
