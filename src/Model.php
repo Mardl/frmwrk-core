@@ -51,6 +51,12 @@ class Model
 	 */
 	protected $reflectionClass;
 
+	protected $id;
+	protected $created;
+	protected $createduser_id;
+	protected $modified;
+	protected $modifieduser_id;
+
 	/**
 	 * Abfangen von unbekannten Funktionen
 	 * Derzeit werden folgende Methode auf Attribute angehandelt
