@@ -51,12 +51,6 @@ class Model
 	 */
 	protected $reflectionClass;
 
-	protected $id;
-	protected $created;
-	protected $createduser_id;
-	protected $modified;
-	protected $modifieduser_id;
-
 	/**
 	 * Abfangen von unbekannten Funktionen
 	 * Derzeit werden folgende Methode auf Attribute angehandelt
@@ -295,6 +289,13 @@ class Model
 		return $this->created;
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getCreated()
+	{
+		return $this->created;
+	}
 
 	/**
 	 * @param int $userId
@@ -357,6 +358,14 @@ class Model
 			return $this->modified->format('Y-m-d H:i:s');
 		}
 
+		return $this->modified;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getModified()
+	{
 		return $this->modified;
 	}
 
