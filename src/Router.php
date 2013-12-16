@@ -3,6 +3,7 @@
 namespace Core;
 
 use ArrayObject;
+use jamwork\common\Registry;
 
 /**
  * Class Router
@@ -98,14 +99,53 @@ class Router extends ArrayObject
 	}
 
 	/**
-	 * Search route matching $url
+	 * @param string $url
+	 * @return string
+	 */
+	public function cleanBaseUrl($url)
+	{
+		$link = '';
+		try
+		{
+			$link = Registry::getInstance()->conf->BASE_URL;
+		} catch (\Exception $e)
+		{
+		}
+		if (empty($link))
+		{
+			$link = '/';
+		}
+		$baseLength = strlen($link)-1;
+		if ($baseLength > 0)
+		{
+			if (substr($url, 0, $baseLength+1) == $link)
+			{
+				$url = substr($url, $baseLength);
+			}
+			else
+			{
+				// Base Url ohne leading Slash
+				$relativBaseUrl = substr($link, 1);
+				if (substr($url, 0, $baseLength) == $relativBaseUrl)
+				{
+					$url = substr($url, $baseLength);
+				}
+			}
+		}
+		return $url;
+	}
+
+	/**
+	 * Search route matching $urlIncomming
 	 *
-	 * @param string $url URL
+	 * @param string $urlIncomming URL
 	 *
 	 * @return \Core\Route|boolean
 	 */
-	public function searchRoute($url)
+	public function searchRoute($urlIncomming)
 	{
+		$url = $this->cleanBaseUrl($urlIncomming);
+
 		foreach ($this as $key => $route)
 		{
 			if ($route->match($url))
@@ -121,13 +161,14 @@ class Router extends ArrayObject
 	}
 
 	/**
-	 * @param string $url       URL
-	 * @param bool   $instance  Instanz
+	 * @param string $urlIncomming URL
+	 * @param bool   $instance     Instanz
 	 *
 	 * @return bool|\Core\Route
 	 */
-	public function findRoute($url, $instance = false)
+	public function findRoute($urlIncomming, $instance = false)
 	{
+		$url = $this->cleanBaseUrl($urlIncomming);
 		/** @var $route \Core\Route */
 		foreach ($this as $key => $route)
 		{
