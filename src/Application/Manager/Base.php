@@ -169,6 +169,8 @@ class Base
 		if ($rs->isSuccessful() && ($rs->count() > 0))
 		{
 			$model->setDataRow($rs->get());
+			$model->resetRegisterChange();
+
 
 			return $model;
 		}
@@ -206,6 +208,8 @@ class Base
 				$model = new $modelClassName();
 				$clean = $model->clearDataRow($rec);
 				$model->setDataRow($clean);
+				$model->resetRegisterChange();
+
 				$models[] = $model;
 			}
 		}
@@ -237,6 +241,8 @@ class Base
 			$model = new $modelClassName();
 			$clean = $model->clearDataRow($rs->get());
 			$model->setDataRow($clean);
+			$model->resetRegisterChange();
+
 			return $model;
 		}
 

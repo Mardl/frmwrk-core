@@ -186,6 +186,13 @@ class Model
 	}
 
 	/**
+	 * @return void
+	 */
+	public function resetRegisterChange()
+	{
+		/** Muss in abgeleitender Klasse implementiert werden */
+	}
+	/**
 	 * @param array $data
 	 * @return void
 	 */
