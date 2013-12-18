@@ -205,30 +205,19 @@ class Navigation
 	 */
 	private function open($dir)
 	{
-		$temp = explode('/', $dir);
-
-		if (array_pop($temp) == 'Views')
+		// Skips the . and .. directory's
+		$iterator = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
+		foreach (new \RecursiveIteratorIterator($iterator) as $file)
 		{
-			return;
-		}
-
-		$directory = opendir($dir);
-
-		while (($file = readdir($directory)) == true)
-		{
-			if ($file != '.' && $file != '..')
+			// Don't parse view's, they won't add navigation elements
+			if (stristr($file->getPath(), 'Views') !== false)
 			{
-				if (is_dir($dir . '/' . $file))
-				{
-					$this->open($dir . '/' . $file);
-				}
-				else
-				{
-					if (\Core\String::endsWith($file, '.php'))
-					{
-						$this->files[] = $dir . '/' . $file;
-					}
-				}
+				continue;
+			}
+
+			if($file->getExtension() === 'php')
+			{
+				$this->files[] = sprintf('%s/%s.php', $file->getPath(), $file->getFilename());
 			}
 		}
 	}

@@ -248,12 +248,25 @@ class Right
 				$modified .= ", `moduletitle` = '$moduleTitle'";
 				$modified .= ", `controllertitle` = '$controllerTitle'";
 			}
+			/**
+			 * mysql_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
+			 *
 			$queryString = sprintf(
 				$sql,
 				mysql_real_escape_string(lcfirst($right->getModule())),
 				mysql_real_escape_string(lcfirst($right->getController())),
 				mysql_real_escape_string($right->getAction()),
 				mysql_real_escape_string(lcfirst($right->getPrefix())),
+				$title,
+				$modified
+			);
+			 */
+			$queryString = sprintf(
+				$sql,
+				lcfirst($right->getModule()),
+				lcfirst($right->getController()),
+				$right->getAction(),
+				lcfirst($right->getPrefix()),
 				$title,
 				$modified
 			);
