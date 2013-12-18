@@ -271,11 +271,11 @@ class Model
 	 *
 	 * @return string
 	 */
-	public function getCreatedAsString()
+	public function getCreatedAsString($format = 'Y-m-d H:i:s')
 	{
 		if ($this->created instanceof \DateTime)
 		{
-			return $this->created->format('Y-m-d H:i:s');
+			return $this->created->format($format);
 		}
 
 		return $this->created;
