@@ -189,4 +189,13 @@ class Memcache
 			}
 		}
 	}
+
+	/**
+	 * @param int $delay
+	 * @return bool
+	 */
+	public function flush($delay = 0)
+	{
+		return $this->memcache->flush($delay);
+	}
 }
