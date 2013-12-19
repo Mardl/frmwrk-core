@@ -289,7 +289,7 @@ class Right
 	 *
 	 * @return \Core\Application\Models\Right[]
 	 */
-	public static function getAllRights()
+	public static function getAllRights($prefix=false)
 	{
 		$con = Registry::getInstance()->getDatabase();
 		$query = $con->newQuery()->select(
@@ -304,6 +304,11 @@ class Right
 				inactive,
 				modified'
 		)->from('rights')->orderBy('prefix,module,controller,action ASC');
+
+		if ($prefix !== false)
+		{
+			$query->addWhere('prefix',$prefix);
+		}
 
 		$rights = array();
 		$rs = $con->newRecordSet();
@@ -373,7 +378,8 @@ class Right
 		                                   'action' => $right->getAction(),
 		                                   'prefix' => $right->getPrefix(),
 		                                   'modified' => $datetime->format('Y-m-d H:i:s'),
-		                                   'id' => $right->getId()
+		                                   'id' => $right->getId(),
+		                                   'inactive' => $right->getInactive()
 		                              ));
 	}
 

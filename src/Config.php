@@ -90,10 +90,7 @@ class Config
 			{
 				define($key, $value);
 			}
-			else
-			{
-				$this->_vars[$key] = $value;
-			}
+			$this->_vars[$key] = $value;
 		}
 	}
 
