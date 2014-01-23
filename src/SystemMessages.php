@@ -38,7 +38,7 @@ class SystemMessages
 			throw new \InvalidArgumentException('Invalid category');
 		}
 
-		$hash = md5($category.$content.$arguments.$html);
+		$hash = md5($category.$content.serialize($arguments).$html);
 
 		self::$_messages[$hash] = array(
 			'category' => $category,
