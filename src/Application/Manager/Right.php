@@ -59,7 +59,7 @@ class Right
 	 * @param string $prefix
 	 * @return string
 	 */
-	protected static function getActionName($module, $controller, $action, $prefix = '')
+	protected static function getActionName($module, $controller, $action, $prefix = '', $force=false)
 	{
 		$registry = Registry::getInstance();
 		/**
@@ -70,7 +70,7 @@ class Right
 
 		$toCheck = strtolower('getActionName:' . "$module:$controller:$action:$prefix");
 		$sess = $registry->getSession();
-		if ($sess->has($toCheck))
+		if (!$force && $sess->has($toCheck))
 		{
 			return $sess->get($toCheck);
 		}
@@ -88,18 +88,18 @@ class Right
 		$classDoc = $reflect->getDocComment();
 		if ($classDoc !== false)
 		{
-			preg_match('/.*\@title([A-Za-z0-9äöüÄÖÜ \-\s\t]+).*/s', $classDoc, $matchClassDoc);
+			preg_match('/.*\@title([A-Za-z0-9äöüÄÖÜ\: \-\s\t]+).*/s', $classDoc, $matchClassDoc);
 			if (!empty($matchClassDoc))
 			{
 				$retArray['title'] = trim($matchClassDoc[1]);
 			}
-			preg_match('/.*\@modulTitle([A-Za-z0-9äöüÄÖÜ \-\s\t]+).*/s', $classDoc, $matchClassDoc);
+			preg_match('/.*\@modulTitle([A-Za-z0-9äöüÄÖÜ\: \-\s\t]+).*/s', $classDoc, $matchClassDoc);
 			if (!empty($matchClassDoc))
 			{
 				$retArray['modulTitle'] = trim($matchClassDoc[1]);
 			}
 			else{
-				preg_match('/.*\@moduleTitle([A-Za-z0-9äöüÄÖÜ \-\s\t]+).*/s', $classDoc, $matchClassDoc);
+				preg_match('/.*\@moduleTitle([A-Za-z0-9äöüÄÖÜ\: \-\s\t]+).*/s', $classDoc, $matchClassDoc);
 				if (!empty($matchClassDoc))
 				{
 					$retArray['modulTitle'] = trim($matchClassDoc[1]);
@@ -125,7 +125,7 @@ class Right
 				{
 					//Hold den ActionName um in der Rechteverwaltung einen schönen titel zu haben
 					//preg_match('/.*\@actionName ([A-Za-z0-9äöüÄÖÜ -\/]+).*$/s', $docComment, $matchDoc);
-					preg_match('/.*\@actionName([A-Za-z0-9äöüÄÖÜ \/\-\s\t]+).*/s', $docComment, $matchDoc);
+					preg_match('/.*\@actionName([A-Za-z0-9äöüÄÖÜ\: \/\-\s\t]+).*/s', $docComment, $matchDoc);
 
 
 					if (!empty($matchDoc))
@@ -209,7 +209,7 @@ class Right
 
 			try
 			{
-				$actionInfo = self::getActionName($right->getModule(), $right->getController(), $right->getAction(), $right->getPrefix());
+				$actionInfo = self::getActionName($right->getModule(), $right->getController(), $right->getAction(), $right->getPrefix(), $force);
 				$actionName = isset($actionInfo['actionName']) ? $actionInfo['actionName'] : '';
 				$moduleTitle = isset($actionInfo['modulTitle']) ? $actionInfo['modulTitle'] : '';
 				$controllerTitle = isset($actionInfo['title']) ? $actionInfo['title'] : '';
