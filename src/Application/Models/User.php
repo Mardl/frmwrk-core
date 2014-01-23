@@ -69,7 +69,7 @@ class User extends BaseModel
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string", length=255, unique=true)
+	 * @Column(type="string", length=255)
 	 */
 	protected $email;
 
