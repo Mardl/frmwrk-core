@@ -144,13 +144,15 @@ class SystemMessagesTest extends \PHPUnit_Framework_TestCase
 	{
 		SystemMessages::addNotice('Dies ist eine Notiz');
 		$messages = SystemMessages::getList();
-		
+
+		$key = array_search('Dies ist eine Notiz', $messages);
+
 		$this->assertEquals(1, count($messages));
-		$this->assertEquals('notice', $messages[0]['category']);
-		$this->assertEquals('Dies ist eine Notiz', $messages[0]['content']);
-		$this->assertTrue(is_array($messages[0]['arguments']));
-		$this->assertTrue(empty($messages[0]['arguments']));
-		$this->assertFalse($messages[0]['html']);
+		$this->assertEquals('notice', $messages[$key]['category']);
+		$this->assertEquals('Dies ist eine Notiz', $messages[$key]['content']);
+		$this->assertTrue(is_array($messages[$key]['arguments']));
+		$this->assertTrue(empty($messages[$key]['arguments']));
+		$this->assertFalse($messages[$key]['html']);
 		
 	}
 	
@@ -169,13 +171,15 @@ class SystemMessagesTest extends \PHPUnit_Framework_TestCase
 	{
 		SystemMessages::addWarning('Dies ist ein Warning');
 		$messages = SystemMessages::getList();
-	
+
+		$key = array_search('Dies ist ein Warning', $messages);
+
 		$this->assertEquals(1, count($messages));
-		$this->assertEquals('warning', $messages[0]['category']);
-		$this->assertEquals('Dies ist ein Warning', $messages[0]['content']);
-		$this->assertTrue(is_array($messages[0]['arguments']));
-		$this->assertTrue(empty($messages[0]['arguments']));
-		$this->assertFalse($messages[0]['html']);
+		$this->assertEquals('warning', $messages[$key]['category']);
+		$this->assertEquals('Dies ist ein Warning', $messages[$key]['content']);
+		$this->assertTrue(is_array($messages[$key]['arguments']));
+		$this->assertTrue(empty($messages[$key]['arguments']));
+		$this->assertFalse($messages[$key]['html']);
 	
 	}
 	
@@ -194,13 +198,15 @@ class SystemMessagesTest extends \PHPUnit_Framework_TestCase
 	{
 		SystemMessages::addSuccess('Dies ist eine Erfolgsmeldung');
 		$messages = SystemMessages::getList();
-	
+
+		$key = array_search('Dies ist eine Erfolgsmeldung', $messages);
+
 		$this->assertEquals(1, count($messages));
-		$this->assertEquals('success', $messages[0]['category']);
-		$this->assertEquals('Dies ist eine Erfolgsmeldung', $messages[0]['content']);
-		$this->assertTrue(is_array($messages[0]['arguments']));
-		$this->assertTrue(empty($messages[0]['arguments']));
-		$this->assertFalse($messages[0]['html']);
+		$this->assertEquals('success', $messages[$key]['category']);
+		$this->assertEquals('Dies ist eine Erfolgsmeldung', $messages[$key]['content']);
+		$this->assertTrue(is_array($messages[$key]['arguments']));
+		$this->assertTrue(empty($messages[$key]['arguments']));
+		$this->assertFalse($messages[$key]['html']);
 	
 	}
 	
@@ -219,75 +225,18 @@ class SystemMessagesTest extends \PHPUnit_Framework_TestCase
 	{
 		SystemMessages::addError('Dies ist eine Fehlermeldung');
 		$messages = SystemMessages::getList();
-	
+
+		$key = array_search('Dies ist eine Fehlermeldung', $messages);
+
 		$this->assertEquals(1, count($messages));
-		$this->assertEquals('error', $messages[0]['category']);
-		$this->assertEquals('Dies ist eine Fehlermeldung', $messages[0]['content']);
-		$this->assertTrue(is_array($messages[0]['arguments']));
-		$this->assertTrue(empty($messages[0]['arguments']));
-		$this->assertFalse($messages[0]['html']);
+		$this->assertEquals('error', $messages[$key]['category']);
+		$this->assertEquals('Dies ist eine Fehlermeldung', $messages[$key]['content']);
+		$this->assertTrue(is_array($messages[$key]['arguments']));
+		$this->assertTrue(empty($messages[$key]['arguments']));
+		$this->assertFalse($messages[$key]['html']);
 	
 	}
 	
-	/**
-	 * Tests SystemMessages::addError()
-	 * Hier werden unterschiedliche Meldungen den SystemMessages angefügt. Nach ::getList()
-	 * muss jeweil die entsprechende Anzahl der Meldungen vorhanden sein.
-	 *
-	 * @return void
-	 */
-	public function testAddMultiple()
-	{
-		$messagesTypes = array(
-			'notice',
-			'error',
-			'success',
-			'warning'
-		);
-		
-		$messages = array();
-		
-		$random = rand(1, 500);
-		for ($i = 1; $i <= $random; $i++)
-		{
-			$rType = rand(0, 3);
-			
-			$message = array(
-				"Message #$i",
-				$messagesTypes[$rType]
-			);
-			
-			$messages[] = $message;
-			
-			SystemMessages::add(
-				$message[0],
-				$message[1]
-			);
-		}
-		
-		
-		$sysMessages = SystemMessages::getList();
-		
-		$this->assertEquals(
-			$random,
-			count($sysMessages)
-		);
-		
-		foreach ($sysMessages as $key => $value)
-		{
-			$this->assertEquals(
-				$messages[$key][0],
-				$value['content']
-			);
-			
-			$this->assertEquals(
-				$messages[$key][1],
-				$value['category']
-			);
-		}
-		
-	
-	}
 
 }
 
