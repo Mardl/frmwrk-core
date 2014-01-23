@@ -53,7 +53,7 @@ class SystemMessages
 
 		}
 
-		$hash = md5($category.var_export($content,true).$arguments.$html);
+		$hash = md5($category.$content.var_export($arguments, true).$html);
 
 		self::$_messages[$hash] = array(
 			'category' => $category,
