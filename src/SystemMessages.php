@@ -38,12 +38,15 @@ class SystemMessages
 			throw new \InvalidArgumentException('Invalid category');
 		}
 
-		self::$_messages[] = array(
+		$hash = md5($category.$content.$arguments.$html);
+
+		self::$_messages[$hash] = array(
 			'category' => $category,
 			'content' => $content,
 			'arguments' => $arguments,
 			'html' => $html
 		);
+
 	}
 
 	/**
