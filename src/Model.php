@@ -86,7 +86,8 @@ class Model
 
 		if (!property_exists($this, $attribute))
 		{
-			throw new \InvalidArgumentException('Die Klasse ' . __CLASS__ . ' hat das Attribut "' . $attribute . '" nicht');
+			$msg = sprintf('Die Klasse "%s" enthält das Attribute "%s" nicht', get_called_class(), $attribute);
+			throw new \InvalidArgumentException($msg);
 		}
 
 		syslog(LOG_ERR, get_class($this). " {$method}{$attribute}");
@@ -183,7 +184,6 @@ class Model
 	 */
 	public function setDataRow($data = array())
 	{
-
 		if (!empty($data))
 		{
 			foreach ($data as $key => $value)
@@ -203,24 +203,6 @@ class Model
 	 */
 	public function clearDataRow($data = array())
 	{
-		/*
-		$ret = array();
-		if (!empty($data))
-		{
-			foreach ($data as $key => $value)
-			{
-				$setter = 'set' . ucfirst($key);
-				if ($this->existsProperty($setter))
-				{
-					$ret[$key] = $value;
-				}
-			}
-		}
-
-		return $ret;
-		*/
-
-
 		$ret = array();
 		if (!empty($data))
 		{
