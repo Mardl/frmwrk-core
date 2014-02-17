@@ -202,7 +202,7 @@ class Config
 		$files  = $this->seekConfigFiles($host);
 		if (!$this->hasEnoughConfigs(count($files)))
 		{
-			throw new \LengthException('Keine Konfiguration für den Host gefunden');
+			throw new \LengthException(sprintf('Keine Konfiguration für den Host %s gefunden', $host));
 		}
 
 		$this->loadConfigFromFS($files);

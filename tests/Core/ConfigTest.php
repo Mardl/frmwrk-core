@@ -85,7 +85,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 	 * über CLI $_SERVER['HTTP_HOST'] nicht gesetzt wird
 	 * 
 	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Unbekannter Hostname
+	 * @expectedExceptionMessage Kein Hostname gefunden
 	 * 
 	 * @return void
 	 */
@@ -101,7 +101,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 	 * ist
 	 * 
 	 * @expectedException \LengthException
-	 * @expectedExceptionMessage Keine Konfiguration für den Host .lifemeter.testing.dev gefunden
+	 * @expectedExceptionMessage Keine Konfiguration für den Host lifemeter.testing.dev gefunden
 	 * 
 	 * @return void
 	 */
