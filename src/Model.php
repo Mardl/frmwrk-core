@@ -440,7 +440,7 @@ class Model
 
 		if (!$this->reflectionClass)
 		{
-			$this->reflectionClass = new \ReflectionClass($this);
+			$this->reflectionClass = new \ReflectionClass(get_class($this));
 		}
 		$doc = $this->reflectionClass->getDocComment();
 		$cache = '-1';
