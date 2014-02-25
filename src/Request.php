@@ -66,14 +66,7 @@ class Request extends HttpRequest
 	 */
 	public function isAjax()
 	{
-		if ($this->getServer('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest')
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return $this->getServer('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest';
 	}
 
 	/**
@@ -219,31 +212,6 @@ class Request extends HttpRequest
 	public function getClientIp()
 	{
 		return $this->getServer('HTTP_X_FORWARDED_FOR', $this->getServer('HTTP_X_REAL_IP', $this->getServer('REMOTE_ADDR', false)));
-
-		/* alte version */
-		if (!empty($host))
-		{
-			return $host;
-		}
-		// Apache
-		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-		{
-			return $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}
-
-		// Nginx
-		if (isset($_SERVER['HTTP_X_REAL_IP']))
-		{
-			return $_SERVER['HTTP_X_REAL_IP'];
-		}
-
-		// Direkte Verbindung
-		if (isset($_SERVER['REMOTE_ADDR']))
-		{
-			return $_SERVER['REMOTE_ADDR'];
-		}
-
-		return false;
 	}
 
 	/**
@@ -305,8 +273,6 @@ class Request extends HttpRequest
 	public function getParam($key, $default = null)
 	{
 		return $this->getRouteParam($key, $default);
-
-		return isset($this->params[$key]) ? trim($this->params[$key]) : $default;
 	}
 
 	/**
@@ -333,19 +299,6 @@ class Request extends HttpRequest
 	public function get($key, $default = null)
 	{
 		return $this->getParamIfExist($key, $default);
-
-		/* oldschool, SuperGlobale werden nicht verwendet. */
-		if (!isset($_GET[$key]))
-		{
-			return $default;
-		}
-		if (is_scalar($_GET[$key]))
-		{
-			return trim($_GET[$key]);
-		}
-		array_walk_recursive($_GET[$key], 'trim');
-
-		return $_GET[$key];
 	}
 
 	/**
@@ -360,19 +313,6 @@ class Request extends HttpRequest
 	public function post($key, $default = null)
 	{
 		return $this->getPostIfExist($key, $default);
-
-		/* oldschool, SuperGlobale werden nicht verwendet. */
-		if (!isset($_POST[$key]))
-		{
-			return $default;
-		}
-		if (is_scalar($_POST[$key]))
-		{
-			return trim($_POST[$key]);
-		}
-		array_walk_recursive($_POST[$key], 'trim');
-
-		return $_POST[$key];
 	}
 
 	/**
@@ -390,19 +330,6 @@ class Request extends HttpRequest
 		$ret = $this->getParamIfExist($key, $default);
 
 		return $this->getPostIfExist($key, $ret);
-
-
-		if (!isset($_REQUEST[$key]))
-		{
-			return $default;
-		}
-		if (is_scalar($_REQUEST[$key]))
-		{
-			return trim($_REQUEST[$key]);
-		}
-		array_walk_recursive($_REQUEST[$key], 'trim');
-
-		return $_REQUEST[$key];
 	}
 
 	/**
