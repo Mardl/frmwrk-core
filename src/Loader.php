@@ -29,9 +29,18 @@ class Loader
 	/**
 	 * Legt fest, ob beim Nichtauffinden einer Klasse eine Exception geworfen werden soll oder nicht
 	 *
-	 * @var string
+	 * @var boolean
 	 */
 	protected $exception;
+
+	/**
+	 * Legt fest ob der Namespace aus einem phar-Archive geladen wird
+	 *
+	 * @var boolean
+	 */
+	protected $pharArchive = false;
+
+	protected $pharloaded = false;
 
 	/**
 	 * @var array
@@ -53,6 +62,14 @@ class Loader
 		$this->namespace = $namespace;
 		$this->path = $path;
 		$this->exception = $exception;
+
+		$this->pharArchive = (substr($path, -5) == '.phar');
+
+		if ($this->pharArchive && !file_exists($this->path))
+		{
+			$this->exception = true;
+			$this->error('', '', "Das angegebene PHAR-Archive '".$this->path."' existiert nicht!");
+		}
 	}
 
 	/**
@@ -74,17 +91,52 @@ class Loader
 	 */
 	public function _autoload($className)
 	{
-
 		if (substr($className, 0, strlen($this->namespace)) != $this->namespace)
 		{
 			return false;
 		}
 
-		$file = $this->path . '/' . trim(strtr($className, $this->replace), '_\\');
+		if ($this->pharArchive)
+		{
+			return $this->loadFromPhar($className);
+		}
 
-		$classNameSrc = str_replace($this->namespace, '', $className);
-		$fileSrc = $this->path . '/' . $this->namespace . '/src' . trim(strtr($classNameSrc, $this->replace), '_\\');
-		$fileRootSrc = $this->path . '/src' . trim(strtr($classNameSrc, $this->replace), '_\\');
+		$this->loadFromFilesystem($className);
+
+	}
+
+	/**
+	 * Versucht die Klasse aus einem PHAR Archiv zu laden
+	 *
+	 * @param string $classname
+	 */
+	protected function loadFromPhar($className)
+	{
+		$alias = $this->namespace.'.phar';
+		$file = trim(strtr($className, $this->replace), '_\\');
+		$file = str_replace($this->namespace.'/','', $file);
+
+		if (!$this->pharloaded)
+		{
+			$this->pharloaded = \Phar::loadPhar($this->path, $alias);
+		}
+
+		$srcPhar = "phar://".$alias.'/'.$file.'.php';
+		if (!@include_once($srcPhar))
+		{
+			$this->error($className, $srcPhar);
+		}
+
+	}
+
+	/**
+	 * Versucht die Klasse vom Dateisystem zu laden
+	 *
+	 * @param string $classname
+	 */
+	protected function loadFromFilesystem($className)
+	{
+		$file = $this->path . '/' . trim(strtr($className, $this->replace), '_\\');
 
 		$php = false;
 		$inc = false;
@@ -93,49 +145,47 @@ class Loader
 		{
 			$php = true;
 		}
-		elseif (file_exists($file . '.inc'))
+		else if (file_exists($file . '.inc'))
 		{
 			$inc = true;
-		}
-		elseif (file_exists($fileSrc . '.php'))
-		{
-			$php = true;
-			$file = $fileSrc;
-		}
-		elseif (file_exists($fileSrc . '.inc'))
-		{
-			$inc = true;
-			$file = $fileSrc;
-		}
-		elseif (file_exists($fileRootSrc . '.php'))
-		{
-			$php = true;
-			$file = $fileRootSrc;
-		}
-		elseif (file_exists($fileRootSrc . '.inc'))
-		{
-			$inc = true;
-			$file = $fileRootSrc;
 		}
 
 		if ($php == true)
 		{
 			require_once $file . '.php';
+			return;
 		}
-		else
+		else if ($inc == true)
 		{
-			if ($inc == true)
-			{
-				require_once $file . '.inc';
-			}
-			else
-			{
-				syslog(LOG_ALERT, "Klasse $className (Pfad: $file) wurde nicht gefunden");
-				if ($this->exception)
-				{
-					throw new \ErrorException("Klasse $className (Pfad: $file) wurde nicht gefunden", 404);
-				}
-			}
+			require_once $file . '.inc';
+			return;
+		}
+
+		$this->error($className, $file);
+
+	}
+
+	/**
+	 * Sendet die Fehlermeldung, dass die Datei nicht gefunden wurde ans syslog.
+	 * Wenn Exceptions aktiviert, dann werfe zusätzlich noch eine ErrorException
+	 *
+	 * @param string $className
+	 * @param string $file
+	 *
+	 * @throws \ErrorException Wenn Exception aktiviert
+	 */
+	protected function error($className, $file, $message = null)
+	{
+		if ($message == null)
+		{
+			$message = "Klasse $className (Pfad: $file) wurde nicht gefunden";
+		}
+
+		syslog(LOG_ALERT, $message);
+		if ($this->exception)
+		{
+			throw new \ErrorException($message, 404);
 		}
 	}
+
 }
