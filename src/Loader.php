@@ -138,9 +138,14 @@ class Loader
 	{
 		$file = $this->path . '/' . trim(strtr($className, $this->replace), '_\\');
 
+		$classNameSrc = str_replace($this->namespace, '', $className);
+		$fileSrc = $this->path . '/' . $this->namespace . '/src' . trim(strtr($classNameSrc, $this->replace), '_\\');
+		$fileRootSrc = $this->path . '/src' . trim(strtr($classNameSrc, $this->replace), '_\\');
+
 		$php = false;
 		$inc = false;
 
+		/*
 		if (file_exists($file . '.php'))
 		{
 			$php = true;
@@ -160,6 +165,32 @@ class Loader
 			require_once $file . '.inc';
 			return;
 		}
+		*/
+		if (file_exists($file . '.php'))
+		{
+			$php = true;
+			$file = $fileSrc;
+		}
+		elseif (file_exists($fileSrc . '.inc'))
+		{
+			$inc = true;
+			$file = $fileSrc;
+		}
+		elseif (file_exists($fileRootSrc . '.php'))
+		{
+			$php = true;
+			$file = $fileRootSrc;
+			require_once $file . '.php';
+			return;
+		}
+		elseif (file_exists($fileRootSrc . '.inc'))
+		{
+			$inc = true;
+			$file = $fileRootSrc;
+			require_once $file . '.inc';
+			return;
+		}
+
 
 		$this->error($className, $file);
 
