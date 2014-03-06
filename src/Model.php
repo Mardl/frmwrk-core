@@ -116,6 +116,15 @@ class Model
 	}
 
 	/**
+	 * Reflection kann nicht serialisiert werden und muss nach unserialize wieder auf default initialisiert werden.
+	 * @return void
+	 */
+	public function __wakeup()
+	{
+		$this->reflectionClass = false;
+	}
+
+	/**
 	 * Überprüft, ob für $name ein Attribut vorhanden ist, oder bei Prefix direkt die Function!
 	 *
 	 * @param string $name
