@@ -49,7 +49,7 @@ class Model
 	 *
 	 * @var \ReflectionClass
 	 */
-	protected $reflectionClass;
+	protected $reflectionClass = false;
 
 	/**
 	 * Abfangen von unbekannten Funktionen
