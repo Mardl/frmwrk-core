@@ -15,7 +15,7 @@ class Base
 {
 
 	/**
-	 * @var \jamwork\database\MysqlDatabase
+	 * @var \jamwork\database\PDODatabase
 	 */
 	protected $con = null;
 
@@ -161,7 +161,7 @@ class Base
 		$query = $this->addDeleteWhere($model, $query);
 
 		/**
-		 * @var $rs \jamwork\database\MysqlRecordset
+		 * @var $rs \jamwork\database\PDORecordset
 		 */
 		$rs = $this->con->newRecordSet();
 		$rs->execute($query);
@@ -193,7 +193,7 @@ class Base
 	{
 		$query = $this->addDeleteWhere(new $modelClassName(), $query);
 		/**
-		 * @var $rs \jamwork\database\MysqlRecordset
+		 * @var $rs \jamwork\database\PDORecordset
 		 */
 		$rs = $this->con->newRecordSet();
 		$rs->execute($query);
@@ -229,7 +229,7 @@ class Base
 		$query = $this->addDeleteWhere(new $modelClassName(), $query);
 
 		/**
-		 * @var $rs \jamwork\database\MysqlRecordset
+		 * @var $rs \jamwork\database\PDORecordset
 		 */
 		$rs = $this->con->newRecordSet();
 		$query->limit(0, 1);
@@ -258,7 +258,7 @@ class Base
 	public function getArrayByQuery(Query $query)
 	{
 		/**
-		 * @var $rs \jamwork\database\MysqlRecordset
+		 * @var $rs \jamwork\database\PDORecordset
 		 */
 		$rs = $this->con->newRecordSet();
 		$rs->execute($query);
@@ -285,7 +285,7 @@ class Base
 	public function updateByQuery(Query $query)
 	{
 		/**
-		 * @var $ret \jamwork\database\MysqlRecordset
+		 * @var $ret \jamwork\database\PDORecordset
 		 */
 		$rs = $this->con->newRecordSet();
 		$ret = $rs->execute($query);
