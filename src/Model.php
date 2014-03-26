@@ -481,4 +481,45 @@ class Model
 
 		throw new \ErrorException("Kein ID-Feld über @Id definiert");
 	}
+
+	/**
+	 * Liefert das DateTime-Object von created
+	 *
+	 * @return \DateTime
+	 */
+	public function getCreated()
+	{
+		if (empty($this->created))
+		{
+			return new \DateTime();
+		}
+
+		if (!($this->created instanceof \DateTime))
+		{
+			$this->created = new \DateTime($this->created);
+		}
+
+		return $this->created;
+	}
+
+	/**
+	 * Liefert das DateTime-Object von modified
+	 *
+	 * @return \DateTime
+	 */
+	public function getModified()
+	{
+		if (empty($this->modified))
+		{
+			return new \DateTime();
+		}
+
+		if (!($this->modified instanceof \DateTime))
+		{
+			$this->modified = new \DateTime($this->modified);
+		}
+
+		return $this->modified;
+	}
+
 }
