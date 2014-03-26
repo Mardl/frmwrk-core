@@ -38,35 +38,27 @@ class Right
 
 		$query = $con->newQuery()->select('1')->from('users as u')->innerJoin('right_group_users AS rgu')->on('rgu.user_id = u.id')->innerJoin('right_group_rights AS rgr')->on('rgr.group_id = rgu.group_id')->innerJoin('rights AS r')->on('r.id = rgr.right_id')->addWhere('u.id', $user->getId())->addWhere('r.module', $right->getModule())->addWhere('r.controller', $right->getController())->addWhere('r.action', $right->getAction())->addWhere('r.prefix', $right->getPrefix())->limit(0, 1);
 
-		/**
-		 * @todo Return wert in Session besser über request->param halten für query, damit nicht jedesmal abgefragt wird.
-		 */
-
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
 		return $rsExecution->isSuccessful() && $rsExecution->count() > 0;
-
-		// alte version, wer fragt den returnwert ab ?? @mardl
-		//return $rsExecution->get();
 	}
 
 	/**
 	 * @static
-	 * @param        $module
-	 * @param        $controller
-	 * @param        $action
-	 * @param string $prefix
+	 * @param string  $module
+	 * @param  string $controller
+	 * @param string  $action
+	 * @param string  $prefix
+	 * @param bool    $force
 	 * @return string
 	 */
-	protected static function getActionName($module, $controller, $action, $prefix = '', $force=false)
+	protected static function getActionName($module, $controller, $action, $prefix = '', $force = false)
 	{
 		$registry = Registry::getInstance();
 		/**
-		 * @var $request \jamwork\common\HttpRequest
 		 * @var $sess    \jamwork\common\Session
 		 */
-		$request = $registry->getRequest();
 
 		$toCheck = strtolower('getActionName:' . "$module:$controller:$action:$prefix");
 		$sess = $registry->getSession();
@@ -115,9 +107,6 @@ class Right
 			preg_match("/(.+)(HTML|Html|JSON|Json)Action/", $method->getName(), $matches);
 			if (!empty($matches))
 			{
-				// Initialisieren
-				$request->setParameter("$module:$controller:" . strtolower($matches[1]) . ":$prefix", '');
-
 				//Lade den Kommentar
 				$docComment = $method->getDocComment();
 				$retArray['actionName'] = '';
