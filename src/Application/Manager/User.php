@@ -376,7 +376,7 @@ class User
 		);
 		$query->from('users as u')
 			->addWhere('status', $status, '<=')
-			->orderBy('username')
+			->orderBy('status, username')
 			->limit($offset, $limit);
 
 		$query->distinct();
