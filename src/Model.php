@@ -64,6 +64,17 @@ class Model
 	 * @throws \InvalidArgumentException Wenn das Attribut nicht vorhanden oder die Methode unbekannt ist
 	 * @return mixed
 	 */
+
+	/**
+	 * @var \DateTime
+	 */
+	protected $modified = '';
+
+	/**
+	 * @var \DateTime
+	 */
+	protected $created = '';
+
 	public function __call($name, $params)
 	{
 		$parts = preg_split('/^([a-z]+)/', $name, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -297,12 +308,7 @@ class Model
 	 */
 	public function getCreatedAsString()
 	{
-		if ($this->created instanceof \DateTime)
-		{
-			return $this->created->format('Y-m-d H:i:s');
-		}
-
-		return $this->created;
+		return $this->getCreated()->format('Y-m-d H:i:s');
 	}
 
 	/**
@@ -310,6 +316,10 @@ class Model
 	 */
 	public function getCreated()
 	{
+		if (!($this->created instanceof \DateTime))
+		{
+			$this->created = new \DateTime(!empty($this->created) ? $this->created : '0000-00-00 00:00:00');
+		}
 		return $this->created;
 	}
 
@@ -369,12 +379,7 @@ class Model
 	 */
 	public function getModifiedAsString()
 	{
-		if ($this->modified instanceof \DateTime)
-		{
-			return $this->modified->format('Y-m-d H:i:s');
-		}
-
-		return $this->modified;
+		return $this->getModified()->format('Y-m-d H:i:s');
 	}
 
 	/**
@@ -382,6 +387,10 @@ class Model
 	 */
 	public function getModified()
 	{
+		if (!($this->modified instanceof \DateTime))
+		{
+			$this->modified = new \DateTime(!empty($this->modified) ? $this->modified : '0000-00-00 00:00:00');
+		}
 		return $this->modified;
 	}
 
