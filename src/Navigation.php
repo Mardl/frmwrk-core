@@ -297,7 +297,7 @@ class Navigation
 				foreach ($methods as $method)
 				{
 					// Prüfe ob eine Methode eine HTML-Action ist
-					preg_match("/(.+)(HTML|Html)Action/", $method->getName(), $matches);
+					preg_match("/(.+)(HTML|Html|JSON|Json)Action/", $method->getName(), $matches);
 					if (!empty($matches))
 					{
 						// Lade den Kommentar
@@ -347,6 +347,7 @@ class Navigation
 									'module' => $this->convertToPath($module),
 									'controller' => $this->convertToPath($controller),
 									'action' => $this->convertToPath($matches[1]),
+									'format' => strtolower($matches[2]),
 								);
 
 								$conf['url'] = $view->url($conf, 'default');
