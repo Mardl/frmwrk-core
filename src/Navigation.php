@@ -14,6 +14,7 @@ class Navigation
 
 	protected $files = array();
 	protected $links = array();
+	protected $hasActions = array();
 	protected $controllerTitles = array();
 	protected $moduleTitles = array();
 
@@ -356,6 +357,7 @@ class Navigation
 								$conf['permissions'] = $checkPermission;
 
 								$this->links[$navigationGroup][$navigationSort . '-' . $navigationName] = $conf;
+								$this->hasActions[$conf['url']] = $conf;
 							}
 						}
 					}
