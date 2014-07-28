@@ -42,20 +42,24 @@ class PublicController extends Controller
 			$action = $this->request->getRouteParam('action');
 			$prefix = $this->request->getRouteParam('prefix');
 
-			$right = new Right(
-				array(
-					'module' => $module,
-					'controller' => $controller,
-					'action' => $action,
-					'prefix' => $prefix
-				)
+			$urlArray = array(
+				'module' => $module,
+				'controller' => $controller,
+				'action' => $action,
+				'prefix' => $prefix
 			);
+
+			$right = new Right($urlArray);
 
 			try
 			{
 				$login = Registry::getInstance()->login;
 			} catch (\Exception $e)
 			{
+				$registry = Registry::getInstance();
+				$session = $registry->getSession();
+				$session->set('callUrlAction', $urlArray);
+
 				$this->response->redirect($this->view->url(array(), 'login', true));
 			}
 
