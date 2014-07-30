@@ -55,13 +55,21 @@ class Right
 	 */
 	public static function isAllowed(RightModel $right, UserModel $user)
 	{
-		$reflection = self::controllerExists($right);
-
-		$properties = $reflection->getDefaultProperties();
-
-		if ($properties['checkPermissions'] == false || in_array($right->getAction(), $properties['noPermissionActions']))
+		if (!defined("UNITTEST"))
 		{
-			return true;
+			$reflection = self::controllerExists($right);
+
+			if ($reflection === false)
+			{
+				return false;
+			}
+
+			$properties = $reflection->getDefaultProperties();
+
+			if ($properties['checkPermissions'] == false || in_array($right->getAction(), $properties['noPermissionActions']))
+			{
+				return true;
+			}
 		}
 
 		self::createRight($right);
