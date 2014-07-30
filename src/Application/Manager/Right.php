@@ -18,6 +18,34 @@ class Right
 {
 
 	/**
+	 * @param RightModel $right
+	 * @return bool|\ReflectionClass
+	 */
+	public static function controllerExists(RightModel $right)
+	{
+		if ($right->getPrefix() == '')
+		{
+			$controller = '\\App\Modules\\' . ucfirst($right->getModule()) . '\\Controller\\' . ucfirst($right->getController());
+		}
+		else
+		{
+			$controller = '\\App\Modules\\' . ucfirst($right->getPrefix()) . '\\' . ucfirst($right->getModule()) . '\\Controller\\' . ucfirst($right->getController());
+		}
+
+		try
+		{
+			$reflection = new \ReflectionClass($controller);
+		} catch (\Exception $e)
+		{
+			\Core\SystemMessages::addError($e->getMessage());
+
+			return false;
+		}
+
+		return $reflection;
+	}
+
+	/**
 	 * Zunächst wird das Recht aktualisiert und danach geprüft ob der Benutzer das Recht besitzt.
 	 *
 	 * @param RightModel $right Das zu prüfende Recht
@@ -27,6 +55,15 @@ class Right
 	 */
 	public static function isAllowed(RightModel $right, UserModel $user)
 	{
+		$reflection = self::controllerExists($right);
+
+		$properties = $reflection->getDefaultProperties();
+
+		if ($properties['checkPermissions'] == false || in_array($right->getAction(), $properties['noPermissionActions']))
+		{
+			return true;
+		}
+
 		self::createRight($right);
 
 		if ($user->getAdmin() || !defined('CHECK_PERMISSIONS') || (APPLICATION_ENV == ENV_DEV && CHECK_PERMISSIONS == false))
@@ -156,6 +193,13 @@ class Right
 		}
 	}
 
+	/**
+	 * @param      $right
+	 * @param bool $force
+	 * @return bool|mixed
+	 * @throws \InvalidArgumentException
+	 * @throws \Exception
+	 */
 	protected static function createRightEx($right, $force=false)
 	{
 		$sql = "

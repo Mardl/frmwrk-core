@@ -20,6 +20,8 @@ class PublicController extends Controller
 	 */
 	protected $checkPermissions = true;
 
+	protected $noPermissionActions = array();
+
 	/**
 	 * Construct
 	 */
@@ -63,7 +65,7 @@ class PublicController extends Controller
 				$this->response->redirect($this->view->url(array(), 'login', true));
 			}
 
-			if (!RightManager::isAllowed($right, $login))
+			if (!in_array($action, $this->noPermissionActions) && !RightManager::isAllowed($right, $login))
 			{
 				throw new \Core\Exceptions\AccessException('Zugriff auf nicht erlaubte Aktion');
 			}
