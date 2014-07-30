@@ -4,7 +4,7 @@ namespace Core\Exceptions;
 /**
  * Exception AccessException
  *
- * @category Thomann
+ * @category Dreiwerken
  * @package  App\Exceptions
  * @author   Vadim Justus <vadim@dreiwerken.de>
  */
