@@ -473,6 +473,7 @@ class User
 				'gender' => $user->getGender(),
 				'created' => $datetime->format('Y-m-d H:i:s'),
 				'status' => STATUS_ACTIVE,
+				'language_id' => $user->getLanguageId(),
 				'admin' => $user->getAdmin()
 			)
 		);
