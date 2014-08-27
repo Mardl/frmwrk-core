@@ -19,6 +19,7 @@ class PublicController extends Controller
 	 * @var bool
 	 */
 	protected $checkPermissions = true;
+	protected $needLogin = true;
 
 	protected $noPermissionActions = array();
 
@@ -37,6 +38,10 @@ class PublicController extends Controller
 
 	public function checkPermission()
 	{
+		if (!$this->needLogin)
+		{
+			return;
+		}
 		if ($this->checkPermissions)
 		{
 			$module = $this->request->getRouteParam('module');
