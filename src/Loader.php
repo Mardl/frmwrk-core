@@ -130,7 +130,7 @@ class Loader
 			}
 			else
 			{
-				syslog(LOG_ALERT, "Klasse $className (Pfad: $file) wurde nicht gefunden");
+				//syslog(LOG_ALERT, "Klasse $className (Pfad: $file) wurde nicht gefunden");
 				if ($this->exception)
 				{
 					throw new \ErrorException("Klasse $className (Pfad: $file) wurde nicht gefunden", 404);
