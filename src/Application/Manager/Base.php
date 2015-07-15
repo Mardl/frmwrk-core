@@ -15,7 +15,7 @@ class Base
 {
 
 	/**
-	 * @var \jamwork\database\PDODatabase
+	 * @var \jamwork\database\PDODatabase|\jamwork\database\MssqlDatabase
 	 */
 	protected $con = null;
 

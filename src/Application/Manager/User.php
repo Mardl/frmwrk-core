@@ -469,11 +469,14 @@ class User
 				'lastname' => $user->getLastname(),
 				'password' => $user->setPassword($password, false),
 				'email' => $user->getEmail(),
+				'email_corrupted' => '',
+				'avatar' => null,
 				'birthday' => $user->getBirthday()->format('Y-m-d'),
 				'gender' => $user->getGender(),
 				'created' => $datetime->format('Y-m-d H:i:s'),
 				'status' => STATUS_ACTIVE,
 				'language_id' => $user->getLanguageId(),
+				'otp' => 0,
 				'admin' => $user->getAdmin()
 			)
 		);

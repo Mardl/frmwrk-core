@@ -107,7 +107,7 @@ class User extends BaseModel
 	 *
 	 * @Column(type="integer")
 	 */
-	protected $gender;
+	protected $gender = 0;
 
 	/**
 	 * Created (Registration date)
@@ -220,7 +220,7 @@ class User extends BaseModel
 		{
 			try
 			{
-				$datetime = new \DateTime($datetime);
+				$datetime = new \DateTime($this->clearDateTimeSting($datetime));
 			} catch (\Exception $e)
 			{
 				throw new \InvalidArgumentException('Ungültige Datumsangabe!');

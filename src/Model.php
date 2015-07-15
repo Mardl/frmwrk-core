@@ -278,6 +278,11 @@ class Model
 		return $ret;
 	}
 
+	protected function clearDateTimeSting($datetime)
+	{
+		return str_replace(':000', '', $datetime);
+	}
+
 	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
@@ -291,7 +296,7 @@ class Model
 		{
 			try
 			{
-				$datetime = new \DateTime($datetime);
+				$datetime = new \DateTime($this->clearDateTimeSting($datetime));
 			} catch (\Exception $e)
 			{
 				throw new \InvalidArgumentException('Ungültige Datumsangabe');
@@ -362,7 +367,7 @@ class Model
 		{
 			try
 			{
-				$datetime = new \DateTime($datetime);
+				$datetime = new \DateTime($this->clearDateTimeSting($datetime));
 			} catch (\Exception $e)
 			{
 				throw new \InvalidArgumentException('Ungültige Datumsangabe');
