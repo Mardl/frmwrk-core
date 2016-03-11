@@ -252,7 +252,7 @@ class Route
 			if (substr($part, 0, 1) == ':' && isset($params[substr($part, 1)]))
 			{
 				// Replace values from parameters
-				$result[substr($part, 1)] = String::slug($params[substr($part, 1)]);
+				$result[substr($part, 1)] = MyString::slug($params[substr($part, 1)]);
 				unset($params[substr($part, 1)]);
 			}
 			else

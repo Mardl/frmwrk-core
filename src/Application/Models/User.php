@@ -190,7 +190,7 @@ class User extends BaseModel
 		}
 		else
 		{
-			$this->password = \Core\String::bcryptEncode($password, md5($this->getId() . $this->getBirthday()->format('Ymd') . $this->getGender() . $this->getCreated()->format("Ymd")));
+			$this->password = \Core\MyString::bcryptEncode($password, md5($this->getId() . $this->getBirthday()->format('Ymd') . $this->getGender() . $this->getCreated()->format("Ymd")));
 		}
 
 		return $this->password;

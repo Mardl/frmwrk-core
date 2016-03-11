@@ -10,10 +10,10 @@
  */
 namespace tests\Core;
 
-use Core\String;
+use Core\MyString;
 
 /**
- * String test case.
+ * MyString test case.
  * 
  * Da String nur eine Sammlung von statischen Stringoperationen ist, besteht keine Notwendigkeit
  * von setUp() und tearDown()
@@ -22,7 +22,7 @@ use Core\String;
  * @package  Core
  * @author   Alexander Jonser <alex@dreiwerken.de>
  */
-class StringTest extends \PHPUnit_Framework_TestCase
+class MyStringTest extends \PHPUnit_Framework_TestCase
 {
 	
 	/**
@@ -34,7 +34,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * Tests String::slug()
+	 * Tests MyString::slug()
 	 * Input:  abcdefghijklmnopqrstuvwxyz0123456789
 	 * Output: abcdefghijklmnopqrstuvwxyz0123456789
 	 * 
@@ -43,7 +43,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	public function testSlugEXPEquals()
 	{
 		$input = 'abcdefghijklmnopqrstuvwxyz0123456789';
-		$this->assertEquals($input, String::slug($input));
+		$this->assertEquals($input, MyString::slug($input));
 	}
 	
 	/**
@@ -60,20 +60,20 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	public function testSlugEXPNotEquals()
 	{
 		$input = 'abcdefghijklmnopqrstuvwxyz0123456789ä';
-		$this->assertNotEquals($input, String::slug($input));
+		$this->assertNotEquals($input, MyString::slug($input));
 		
 		$input = 'abcdefghijklmnopqrstuvwxyz0123456789ö';
-		$this->assertNotEquals($input, String::slug($input));
+		$this->assertNotEquals($input, MyString::slug($input));
 		
 		$input = 'abcdefghijklmnopqrstuvwxyz0123456789ü';
-		$this->assertNotEquals($input, String::slug($input));
+		$this->assertNotEquals($input, MyString::slug($input));
 		
 		$input = 'abcdefghijklmnopqrstuvwxyz0123456789ß';
-		$this->assertNotEquals($input, String::slug($input));
+		$this->assertNotEquals($input, MyString::slug($input));
 	}
 	
 	/**
-	 * Tests String::slug()
+	 * Tests MyString::slug()
 	 * Hier wird erwartet, dass Umlaute umgewandelt werden
 	 * Input:  
 	 * 	ä => ae
@@ -85,14 +85,14 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSlugEXPUmlaute()
 	{
-		$this->assertEquals('ae', String::slug('ä'));
-		$this->assertEquals('oe', String::slug('ö'));
-		$this->assertEquals('ue', String::slug('ü'));
-		$this->assertEquals('ss', String::slug('ß'));
+		$this->assertEquals('ae', MyString::slug('ä'));
+		$this->assertEquals('oe', MyString::slug('ö'));
+		$this->assertEquals('ue', MyString::slug('ü'));
+		$this->assertEquals('ss', MyString::slug('ß'));
 	}
 	
 	/**
-	 * Tests String::slug()
+	 * Tests MyString::slug()
 	 * Hier wird erwartet, dass Sonderzeichen in Minus umgewandelt werden
 	 * Input:  a!b"c§d$e%f&g/h(i)j=k?l,m.n;n:p#q'r\*s+t@u>v<w€x°y^z_0
 	 * Output: a-b-c-d-e-f-g-h-i-j-k-l-m-n-n-p-q-r-s-t-u-v-w-x-y-z-0
@@ -104,12 +104,12 @@ class StringTest extends \PHPUnit_Framework_TestCase
 		$input = "a!b\"c§d\$e%f&g/h(i)j=k?l,m.n;n:p#q'r*s+t@u>v<w€x°y^z_0 1";
 		$output = "a-b-c-d-e-f-g-h-i-j-k-l-m-n-n-p-q-r-s-t-u-v-w-x-y-z_0-1";
 		
-		$this->assertEquals($output, String::slug($input));
+		$this->assertEquals($output, MyString::slug($input));
 		
 	}
 	
 	/**
-	 * Tests String::slug()
+	 * Tests MyString::slug()
 	 * Hier wird erwartet, ein leerer String zu einem Minus wird
 	 * Input:  
 	 * Output: -
@@ -121,12 +121,12 @@ class StringTest extends \PHPUnit_Framework_TestCase
 		$input = "";
 		$output = "-";
 	
-		$this->assertEquals($output, String::slug($input));
+		$this->assertEquals($output, MyString::slug($input));
 	
 	}
 	
 	/**
-	 * Tests String::startsWith()
+	 * Tests MyString::startsWith()
 	 * Input 1:
 	 * 	Haystack: Dies ist ein Test
 	 *  Needle:   Dies
@@ -139,12 +139,12 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testStartsWithEXPTrue()
 	{
-		$this->assertTrue(String::startsWith('Dies ist ein Test', 'Dies'));
-		$this->assertTrue(String::startsWith('http://www.dreiwerken.de', 'http://'));
+		$this->assertTrue(MyString::startsWith('Dies ist ein Test', 'Dies'));
+		$this->assertTrue(MyString::startsWith('http://www.dreiwerken.de', 'http://'));
 	}
 	
 	/**
-	 * Tests String::startsWith()
+	 * Tests MyMyString::startsWith()
 	 * Input 1:
 	 * 	Haystack: Dies ist ein Test
 	 *  Needle:   Diesist
@@ -161,13 +161,13 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testStartsWithEXPFalse()
 	{
-		$this->assertFalse(String::startsWith('Dies ist ein Test', 'Diesist'));
-		$this->assertFalse(String::startsWith('http://www.dreiwerken.de', 'https://'));
-		$this->assertFalse(String::startsWith('Dies ist ein Test', 'dies'));
+		$this->assertFalse(MyString::startsWith('Dies ist ein Test', 'Diesist'));
+		$this->assertFalse(MyString::startsWith('http://www.dreiwerken.de', 'https://'));
+		$this->assertFalse(MyString::startsWith('Dies ist ein Test', 'dies'));
 	}
 	
 	/**
-	 * Tests String::endsWith()
+	 * Tests MyString::endsWith()
 	 * 
 	 * Input 1:
 	 * 	Haystack: Dies ist ein Test
@@ -181,13 +181,13 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testEndsWithEXPTrue()
 	{
-		$this->assertTrue(String::endsWith('Dies ist ein Test', 'Test'));
-		$this->assertTrue(String::endsWith('http://www.dreiwerken.de', '.de'));
+		$this->assertTrue(MyString::endsWith('Dies ist ein Test', 'Test'));
+		$this->assertTrue(MyString::endsWith('http://www.dreiwerken.de', '.de'));
 	
 	}
 	
 	/**
-	 * Tests String::endsWith()
+	 * Tests MyString::endsWith()
 	 * Input 1:
 	 * 	Haystack: Dies ist ein Test
 	 *  Needle:   Diesist
@@ -204,9 +204,9 @@ class StringTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testEndsWithEXPFalse()
 	{
-		$this->assertFalse(String::endsWith('Dies ist ein Test', 'Diesist'));
-		$this->assertFalse(String::endsWith('http://www.dreiwerken.de', 'https://'));
-		$this->assertFalse(String::endsWith('Dies ist ein Test', 'dies'));
+		$this->assertFalse(MyString::endsWith('Dies ist ein Test', 'Diesist'));
+		$this->assertFalse(MyString::endsWith('http://www.dreiwerken.de', 'https://'));
+		$this->assertFalse(MyString::endsWith('Dies ist ein Test', 'dies'));
 	}
 
 }

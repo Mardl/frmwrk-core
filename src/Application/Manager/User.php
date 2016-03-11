@@ -250,7 +250,7 @@ class User
 			}
 			else
 			{
-				$checkup = \Core\String::bcryptCheckup($password, $rs['password']);
+				$checkup = \Core\MyString::bcryptCheckup($password, $rs['password']);
 			}
 
 			return $checkup;
@@ -295,7 +295,7 @@ class User
 			}
 			else
 			{
-				$checkup = \Core\String::bcryptCheckup($password, $rs['password']);
+				$checkup = \Core\MyString::bcryptCheckup($password, $rs['password']);
 			}
 
 			if ($checkup)
