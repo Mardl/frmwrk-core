@@ -283,6 +283,69 @@ class Model
 		return str_replace(':000', '', $datetime);
 	}
 
+    /**
+     * @param $dt
+     * @return null
+     */
+    public function getDateTimeAsString($dt)
+    {
+        if ($dt->format('Y') < 1000)
+        {
+            return null;
+        }
+        if (defined('GERMANDATETOSAVE') && GERMANDATETOSAVE === true)
+        {
+            if ($this->isDateTimeToSave()) {
+                return $dt->format('d.m.Y H:i:s');
+            }
+        }
+        return $dt->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Validierung für Setter von Datumsfeldern
+     *
+     * @param \DateTime|string $dt
+     * @throws \InvalidArgumentException
+     * @return \DateTime
+     */
+    public function setDateTimeFrom($dt)
+    {
+        if (!($dt instanceof \DateTime))
+        {
+            try
+            {
+                $dt = new \DateTime(empty($dt) ? '0000-00-00 00:00:00' : $dt);
+            } catch (\Exception $e)
+            {
+                throw new \InvalidArgumentException('Ungültige Datumsangabe');
+            }
+        }
+
+        return $dt;
+    }
+
+    /**
+     * Validierung für Getter von Datumsfeldern
+     *
+     * @param \Datetime|string $dt
+     * @param string           $default
+     * @return \DateTime
+     */
+    public function getDateTimeFrom($dt, $default = '0000-00-00 00:00:00')
+    {
+        if (empty($dt))
+        {
+            $dt = $default;
+        }
+        if (!($dt instanceof \DateTime))
+        {
+            $dt = new \DateTime($dt);
+        }
+
+        return $dt;
+    }
+
 	/**
 	 * Sorgt dafür, dass das Erstellungsdatum immer ein DateTime-Objekt ist.
 	 *
