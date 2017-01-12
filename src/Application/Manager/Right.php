@@ -45,6 +45,55 @@ class Right
 		return $reflection;
 	}
 
+    public static function isAllowed(RightModel $right, UserModel $user)
+    {
+        if (!defined("UNITTEST"))
+        {
+            $reflection = self::controllerExists($right);
+
+            if ($reflection === false)
+            {
+                return false;
+            }
+
+            $properties = $reflection->getDefaultProperties();
+
+            if ($properties['checkPermissions'] == false || in_array($right->getAction(), $properties['noPermissionActions']))
+            {
+                return true;
+            }
+        }
+
+        if ($user->getAdmin() || !defined('CHECK_PERMISSIONS') || (APPLICATION_ENV == ENV_DEV && CHECK_PERMISSIONS == false))
+        {
+            return true;
+        }
+
+        $session = Registry::getInstance()->getSession();
+        $data = array(
+            'module' => $right->getModule(),
+            'controller' => $right->getController(),
+            'action' => $right->getAction(),
+            'prefix' => $right->getPrefix()
+        );
+        $rightJson = json_encode($data);
+        $rightJsonMD = md5($rightJson);
+
+        $foundPermission = array();
+        if ($session->has('foundPermission')) {
+            $foundPermission = $session->get('foundPermission');
+            if (array_key_exists($rightJsonMD, $foundPermission)) {
+                return $foundPermission[$rightJsonMD];
+            }
+        }
+
+        $allowed = self::createAndCheckAllowed($right, $user);
+
+        $foundPermission[$rightJsonMD] = $allowed;
+        $session->set('foundPermission', $foundPermission);
+
+        return $allowed;
+    }
 	/**
 	 * Zunächst wird das Recht aktualisiert und danach geprüft ob der Benutzer das Recht besitzt.
 	 *
@@ -53,31 +102,11 @@ class Right
 	 *
 	 * @return bool
 	 */
-	public static function isAllowed(RightModel $right, UserModel $user)
+	private static function createAndCheckAllowed(RightModel $right, UserModel $user)
 	{
-		if (!defined("UNITTEST"))
-		{
-			$reflection = self::controllerExists($right);
 
-			if ($reflection === false)
-			{
-				return false;
-			}
-
-			$properties = $reflection->getDefaultProperties();
-
-			if ($properties['checkPermissions'] == false || in_array($right->getAction(), $properties['noPermissionActions']))
-			{
-				return true;
-			}
-		}
 
 		self::createRight($right);
-
-		if ($user->getAdmin() || !defined('CHECK_PERMISSIONS') || (APPLICATION_ENV == ENV_DEV && CHECK_PERMISSIONS == false))
-		{
-			return true;
-		}
 
 		$con = Registry::getInstance()->getDatabase();
 
@@ -86,7 +115,7 @@ class Right
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);
 
-		return $rsExecution->isSuccessful() && $rsExecution->count() > 0;
+        return $rsExecution->isSuccessful() && $rsExecution->count() > 0;
 	}
 
 	/**
