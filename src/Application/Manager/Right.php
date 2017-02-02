@@ -82,14 +82,14 @@ class Right
         $foundPermission = array();
         if ($session->has('foundPermission')) {
             $foundPermission = $session->get('foundPermission');
-            if (array_key_exists($rightJsonMD, $foundPermission)) {
-                return $foundPermission[$rightJsonMD];
+            if (isset($foundPermission[$user->getId()]) && (array_key_exists($rightJsonMD, $foundPermission[$user->getId()]))) {
+                return $foundPermission[$user->getId()][$rightJsonMD];
             }
         }
 
         $allowed = self::createAndCheckAllowed($right, $user);
 
-        $foundPermission[$rightJsonMD] = $allowed;
+        $foundPermission[$user->getId()][$rightJsonMD] = $allowed;
         $session->set('foundPermission', $foundPermission);
 
         return $allowed;
