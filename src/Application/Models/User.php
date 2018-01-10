@@ -69,7 +69,7 @@ class User extends BaseModel
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string", length=255)
+	 * @Column(type="string", length=255, nullable=true)
 	 */
 	protected $email;
 
@@ -78,7 +78,7 @@ class User extends BaseModel
 	 *
 	 * @var boolean
 	 *
-	 * @Column(type="boolean", name="email_corrupted")
+	 * @Column(type="boolean", name="email_corrupted", nullable=true)
 	 */
 	protected $emailCorrupted = false;
 
@@ -96,7 +96,7 @@ class User extends BaseModel
 	 *
 	 * @var \DateTime
 	 *
-	 * @Column(type="date")
+	 * @Column(type="date", nullable=true)
 	 */
 	protected $birthday;
 
@@ -105,7 +105,7 @@ class User extends BaseModel
 	 *
 	 * @var integer
 	 *
-	 * @Column(type="integer")
+	 * @Column(type="integer", nullable=true)
 	 */
 	protected $gender = 0;
 
@@ -114,7 +114,7 @@ class User extends BaseModel
 	 *
 	 * @var \DateTime
 	 *
-	 * @Column(type="datetime")
+	 * @Column(type="datetime", nullable=true)
 	 */
 	protected $created;
 
@@ -123,7 +123,7 @@ class User extends BaseModel
 	 *
 	 * @var integer
 	 *
-	 * @Column(type="integer")
+	 * @Column(type="integer", nullable=true)
 	 */
 	protected $status = 1;
 
@@ -141,7 +141,7 @@ class User extends BaseModel
 	 *
 	 * @var bool
 	 *
-	 * @Column(type="boolean", name="otp")
+	 * @Column(type="boolean", name="otp", nullable=true)
 	 */
 	protected $otp = false;
 
@@ -150,7 +150,7 @@ class User extends BaseModel
 	 *
 	 * @var bool
 	 *
-	 * @Column(type="boolean")
+	 * @Column(type="boolean", nullable=true)
 	 */
 	protected $admin = false;
 

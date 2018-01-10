@@ -41,7 +41,7 @@ class Right extends BaseModel
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $moduletitle;
 
@@ -50,7 +50,7 @@ class Right extends BaseModel
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $controllertitle;
 
@@ -59,7 +59,7 @@ class Right extends BaseModel
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $module;
 
@@ -68,7 +68,7 @@ class Right extends BaseModel
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $controller;
 
@@ -77,7 +77,7 @@ class Right extends BaseModel
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $action;
 
@@ -86,7 +86,7 @@ class Right extends BaseModel
 	 *
 	 * @var string
 	 *
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 */
 	protected $prefix = '';
 
@@ -95,7 +95,7 @@ class Right extends BaseModel
 	 *
 	 * @var \DateTime
 	 *
-	 * @Column(type="datetime")
+	 * @Column(type="datetime", nullable=true)
 	 */
 	protected $modified;
 
@@ -104,7 +104,7 @@ class Right extends BaseModel
 	 *
 	 * @var smallint
 	 *
-	 * @Column(type="smallint")
+	 * @Column(type="smallint", nullable=true)
 	 */
 	protected $inactive = 0;
 
