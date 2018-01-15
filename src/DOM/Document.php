@@ -37,10 +37,10 @@ class Document extends \DOMDocument
 	 * @param string $html
 	 * @return bool
 	 */
-	public function loadHTML($html)
+	public function loadHTML($html, $options = 0)
 	{
 		libxml_use_internal_errors(true);
-		$result = parent::loadHTML($html);
+		$result = parent::loadHTML($html, $options);
 		libxml_use_internal_errors(false);
 
 		return $result;
@@ -50,10 +50,10 @@ class Document extends \DOMDocument
 	 * @param string $filename
 	 * @return bool
 	 */
-	public function loadHTMLFile($filename)
+	public function loadHTMLFile($filename, $options = 0)
 	{
 		libxml_use_internal_errors(true);
-		$result = parent::loadHTMLFile($filename);
+		$result = parent::loadHTMLFile($filename, $options);
 		libxml_use_internal_errors(false);
 
 		return $result;

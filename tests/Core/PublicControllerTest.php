@@ -191,6 +191,7 @@ class PublicControllerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSetFrontcontrollerEXPException()
 	{
+        $this->expectException(\TypeError::class);
 		$this->Controller = new TestController();
 		$this->Controller->setFrontController();
 	}

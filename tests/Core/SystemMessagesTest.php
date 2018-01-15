@@ -145,7 +145,8 @@ class SystemMessagesTest extends \PHPUnit_Framework_TestCase
 		SystemMessages::addNotice('Dies ist eine Notiz');
 		$messages = SystemMessages::getList();
 
-		$key = array_shift(array_keys($messages));
+		$toShift = array_keys($messages);
+		$key = array_shift($toShift);
 
 		$this->assertEquals(1, count($messages));
 		$this->assertEquals('notice', $messages[$key]['category']);
@@ -172,7 +173,8 @@ class SystemMessagesTest extends \PHPUnit_Framework_TestCase
 		SystemMessages::addWarning('Dies ist ein Warning');
 		$messages = SystemMessages::getList();
 
-		$key = array_shift(array_keys($messages));
+        $toShift = array_keys($messages);
+        $key = array_shift($toShift);
 
 		$this->assertEquals(1, count($messages));
 		$this->assertEquals('warning', $messages[$key]['category']);
@@ -199,7 +201,8 @@ class SystemMessagesTest extends \PHPUnit_Framework_TestCase
 		SystemMessages::addSuccess('Dies ist eine Erfolgsmeldung');
 		$messages = SystemMessages::getList();
 
-		$key = array_shift(array_keys($messages));
+        $toShift = array_keys($messages);
+        $key = array_shift($toShift);
 
 		$this->assertEquals(1, count($messages));
 		$this->assertEquals('success', $messages[$key]['category']);
@@ -226,7 +229,8 @@ class SystemMessagesTest extends \PHPUnit_Framework_TestCase
 		SystemMessages::addError('Dies ist eine Fehlermeldung');
 		$messages = SystemMessages::getList();
 
-		$key = array_shift(array_keys($messages));
+        $toShift = array_keys($messages);
+        $key = array_shift($toShift);
 
 		$this->assertEquals(1, count($messages));
 		$this->assertEquals('error', $messages[$key]['category']);

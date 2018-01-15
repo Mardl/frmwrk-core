@@ -121,6 +121,8 @@ class InitUnittests
 		$loader = new Core\Loader('jamwork', FRAMEWORKS_PATH);
 		$loader->register();
 
+        require_once VENDOR_PATH . '/autoload.php';
+
 	}
 	
 	/**
