@@ -6,11 +6,16 @@
         {
             "type": "vcs",
             "url": "git@github.com:Mardl/frmwrk-jamwork.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:Mardl/frmwrk-doctrine.git"
         }
 
     ],
     "require": {
         "php" : ">=5.3.0",
+        "Mardl/frmwrk-doctrine": "dev-master",
         "Mardl/frmwrk-jamwork": "dev-master"
     },
     "autoload": {
