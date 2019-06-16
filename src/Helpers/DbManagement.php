@@ -80,10 +80,6 @@ class DbManagement
  	 */
 	public function __construct()
 	{
-		// Doctrine in den ClassLoader holen
-//		$loader = new \Core\Loader('Doctrine', FRAMEWORK_PATH);
-//		$loader->register();
-
 		// ORM Configuration
 		$config = new \Doctrine\ORM\Configuration();
 		$config->setProxyDir(ROOT_PATH . '/tmp/proxies');

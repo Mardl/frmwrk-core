@@ -319,14 +319,14 @@ class Right
 				$modified .= ", `controllertitle` = '$controllerTitle'";
 			}
 			/**
-			 * mysql_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
+			 * mysqli_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
 			 *
 			$queryString = sprintf(
 				$sql,
-				mysql_real_escape_string(lcfirst($right->getModule())),
-				mysql_real_escape_string(lcfirst($right->getController())),
-				mysql_real_escape_string($right->getAction()),
-				mysql_real_escape_string(lcfirst($right->getPrefix())),
+				mysqli_real_escape_string(lcfirst($right->getModule())),
+				mysqli_real_escape_string(lcfirst($right->getController())),
+				mysqli_real_escape_string($right->getAction()),
+				mysqli_real_escape_string(lcfirst($right->getPrefix())),
 				$title,
 				$modified
 			);

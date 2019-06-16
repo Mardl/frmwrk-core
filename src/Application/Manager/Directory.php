@@ -156,7 +156,7 @@ class Directory
 				`sort`
 			)
 					VALUES
-					((null), '%s', %d);", mysql_real_escape_string($dirModel->getName()), mysql_real_escape_string($dirModel->getSort()));
+					((null), '%s', %d);", mysqli_real_escape_string($dirModel->getName()), mysqli_real_escape_string($dirModel->getSort()));
 
 
 		}
@@ -169,7 +169,7 @@ class Directory
 				`sort`
 			)
 				VALUES
-				(%d, '%s', %d);", mysql_real_escape_string($parentdirModel->getId()), mysql_real_escape_string($dirModel->getName()), mysql_real_escape_string($dirModel->getSort()));
+				(%d, '%s', %d);", mysqli_real_escape_string($parentdirModel->getId()), mysqli_real_escape_string($dirModel->getName()), mysqli_real_escape_string($dirModel->getSort()));
 			$parentId = $parentdirModel->getId();
 		}
 
@@ -183,7 +183,7 @@ class Directory
 			return false;
 		}
 
-		$dirModel->setId(mysql_insert_id());
+		$dirModel->setId(mysqli_insert_id());
 
 		return $dirModel;
 	}
@@ -212,7 +212,7 @@ class Directory
 					sort = %d
 				WHERE
 					id = %d
-				;", mysql_real_escape_string($dirModel->getName()), mysql_real_escape_string($dirModel->getSort()), mysql_real_escape_string($dirModel->getId()));
+				;", mysqli_real_escape_string($dirModel->getName()), mysqli_real_escape_string($dirModel->getSort()), mysqli_real_escape_string($dirModel->getId()));
 		}
 		else
 		{
@@ -224,7 +224,7 @@ class Directory
 					sort = %d
 				WHERE
 					id = %d
-				;", mysql_real_escape_string($dirModel->getParentDirectory()->getId()), mysql_real_escape_string($dirModel->getName()), mysql_real_escape_string($dirModel->getSort()), mysql_real_escape_string($dirModel->getId()));
+				;", mysqli_real_escape_string($dirModel->getParentDirectory()->getId()), mysqli_real_escape_string($dirModel->getName()), mysqli_real_escape_string($dirModel->getSort()), mysqli_real_escape_string($dirModel->getId()));
 		}
 
 		$rs = $con->newRecordSet();
@@ -264,12 +264,12 @@ class Directory
 				directories
 			WHERE
 				id = %d
-			;", mysql_real_escape_string($directoryId));
+			;", mysqli_real_escape_string($directoryId));
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		if ($rsExecution->isSuccessfull() && mysql_affected_rows() == 0)
+		if ($rsExecution->isSuccessfull() && mysqli_affected_rows() == 0)
 		{
 			SystemMessages::addError('Beim Löschen des Verzeichnisses ist ein Fehler aufgetreten!');
 
@@ -299,7 +299,7 @@ class Directory
 	{
 		$con = Registry::getInstance()->getDatabase();
 
-		$query = $con->newQuery()->select('id, name as value, parent_id')->from('directories')->where("name like '" . mysql_real_escape_string($searchString) . "%'")->orderby('sort');
+		$query = $con->newQuery()->select('id, name as value, parent_id')->from('directories')->where("name like '" . mysqli_real_escape_string($searchString) . "%'")->orderby('sort');
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($query);

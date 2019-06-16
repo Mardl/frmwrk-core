@@ -359,14 +359,14 @@ class Group
 		$value = "(%d, %d)";
 
 		/**
-		 * mysql_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
+		 * mysqli_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
 		 *
 		foreach ($rights as $right)
 		{
-			$values[] = sprintf($value, mysql_real_escape_string($group->getId()), mysql_real_escape_string($right->getId()));
+			$values[] = sprintf($value, mysqli_real_escape_string($group->getId()), mysqli_real_escape_string($right->getId()));
 		}
 
-		$deleteQuery = sprintf($delete, mysql_real_escape_string($group->getId()));
+		$deleteQuery = sprintf($delete, mysqli_real_escape_string($group->getId()));
 		*/
 		foreach ($rights as $right)
 		{
@@ -446,14 +446,14 @@ class Group
 		$value = "(%d, %d)";
 
 		/**
-		 * mysql_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
+		 * mysqli_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
 		 *
 		foreach ($groups as $group)
 		{
-			$values[] = sprintf($value, mysql_real_escape_string($group->getId()), mysql_real_escape_string($user->getId()));
+			$values[] = sprintf($value, mysqli_real_escape_string($group->getId()), mysqli_real_escape_string($user->getId()));
 		}
 
-		$deleteQuery = sprintf($delete, mysql_real_escape_string($user->getId()));
+		$deleteQuery = sprintf($delete, mysqli_real_escape_string($user->getId()));
 		 */
 
 		foreach ($groups as $group)
@@ -538,14 +538,14 @@ class Group
 		$values = array();
 		$value = "(%d, %d)";
 		/**
-		 * mysql_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
+		 * mysqli_real_escape_string wird hier nicht benötigt, Daten kommen bereits aus der Datenbank
 		 *
 		foreach ($users as $user)
 		{
-			$values[] = sprintf($value, mysql_real_escape_string($group->getId()), mysql_real_escape_string($user->getId()));
+			$values[] = sprintf($value, mysqli_real_escape_string($group->getId()), mysqli_real_escape_string($user->getId()));
 		}
 
-		$deleteQuery = sprintf($delete, mysql_real_escape_string($group->getId()));
+		$deleteQuery = sprintf($delete, mysqli_real_escape_string($group->getId()));
 		 */
 		foreach ($users as $user)
 		{

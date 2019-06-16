@@ -647,7 +647,7 @@ class User
 	{
 		$userModel = self::getUserById($userid);
 
-		$crypttime = md5(crypt(time()));
+		$crypttime = md5(crypt(time(),'OneTimePasswort'));
 		$randompass = substr($crypttime, 0, 8);
 		$randompass = strtolower($randompass);
 

@@ -406,7 +406,7 @@ class Files
 				mimetype
 				)
 			VALUES
-				(%d, '%s', '%s', %d, '%s', %s, '%s');", mysql_real_escape_string($filemodel->getDirectory()->getId()), mysql_real_escape_string($filemodel->getOrgname()), mysql_real_escape_string($filemodel->getName()), mysql_real_escape_string($filemodel->getSize()), mysql_real_escape_string(basename($filemodel->getName(), '.' . @$info['extension'])), mysql_real_escape_string(($filemodel->getParent()) ? $filemodel->getParent()->getId() : 'NULL'), mysql_real_escape_string($filemodel->getMimetype()));
+				(%d, '%s', '%s', %d, '%s', %s, '%s');", mysqli_real_escape_string($filemodel->getDirectory()->getId()), mysqli_real_escape_string($filemodel->getOrgname()), mysqli_real_escape_string($filemodel->getName()), mysqli_real_escape_string($filemodel->getSize()), mysqli_real_escape_string(basename($filemodel->getName(), '.' . @$info['extension'])), mysqli_real_escape_string(($filemodel->getParent()) ? $filemodel->getParent()->getId() : 'NULL'), mysqli_real_escape_string($filemodel->getMimetype()));
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
@@ -418,7 +418,7 @@ class Files
 			return false;
 		}
 
-		$filemodel->setId(mysql_insert_id());
+		$filemodel->setId(mysqli_insert_id());
 
 		return $filemodel;
 	}
@@ -437,47 +437,47 @@ class Files
 		//Delete Sources
 		$query = sprintf("DELETE FROM
 				files
-			WHERE parent_id = %d;", mysql_real_escape_string($filesId));
+			WHERE parent_id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		// Verknpüfungen löschen
-		$query = sprintf("UPDATE nutritioncategory SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
+		$query = sprintf("UPDATE nutritioncategory SET file_id = NULL WHERE file_id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		$query = sprintf("UPDATE object_nutritions SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
+		$query = sprintf("UPDATE object_nutritions SET file_id = NULL WHERE file_id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		$query = sprintf("UPDATE object_questionaries SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
+		$query = sprintf("UPDATE object_questionaries SET file_id = NULL WHERE file_id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		$query = sprintf("UPDATE object_questions SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
+		$query = sprintf("UPDATE object_questions SET file_id = NULL WHERE file_id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		$query = sprintf("UPDATE object_nutritions SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
+		$query = sprintf("UPDATE object_nutritions SET file_id = NULL WHERE file_id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		$query = sprintf("UPDATE object_rezept SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
+		$query = sprintf("UPDATE object_rezept SET file_id = NULL WHERE file_id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		$query = sprintf("UPDATE object_textelements SET file_id = NULL WHERE file_id = %d;", mysql_real_escape_string($filesId));
+		$query = sprintf("UPDATE object_textelements SET file_id = NULL WHERE file_id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
 		// Delete file
 		$query = sprintf("DELETE FROM
 				files
-			WHERE id = %d;", mysql_real_escape_string($filesId));
+			WHERE id = %d;", mysqli_real_escape_string($filesId));
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
 
-		if (!$rsExecution->isSuccessfull() || mysql_affected_rows() == 0)
+		if (!$rsExecution->isSuccessfull() || mysqli_affected_rows() == 0)
 		{
 			SystemMessages::addError('Fehler beim Löschen der Datei!');
 
@@ -512,7 +512,7 @@ class Files
 				basename = '%s',
 				mimetype = '%s'
 			WHERE
-				id = %d;", mysql_real_escape_string($fileModel->getDirectory()->getId()), mysql_real_escape_string($fileModel->getOrgname()), mysql_real_escape_string($fileModel->getName()), mysql_real_escape_string($fileModel->getSize()), mysql_real_escape_string(basename($fileModel->getName(), '.' . $info['extension'])), mysql_real_escape_string($fileModel->getMimetype()), mysql_real_escape_string($fileModel->getId()));
+				id = %d;", mysqli_real_escape_string($fileModel->getDirectory()->getId()), mysqli_real_escape_string($fileModel->getOrgname()), mysqli_real_escape_string($fileModel->getName()), mysqli_real_escape_string($fileModel->getSize()), mysqli_real_escape_string(basename($fileModel->getName(), '.' . $info['extension'])), mysqli_real_escape_string($fileModel->getMimetype()), mysqli_real_escape_string($fileModel->getId()));
 
 		$rs = $con->newRecordSet();
 		$rsExecution = $rs->execute($con->newQuery()->setQueryOnce($query));
