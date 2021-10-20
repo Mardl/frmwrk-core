@@ -2,7 +2,9 @@
 
 namespace Core;
 
-use ArrayObject, Exception, jamwork\common\Registry;
+use ArrayObject;
+use Exception;
+use jamwork\common\Registry;
 
 /**
  * Class View
